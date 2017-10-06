@@ -1,0 +1,319 @@
+external function string 255 StrReplace(string,string,string);
+external procedure UTCTimeToDate(LongInt,var Date,var Time);
+
+global webpublic updating procedure WebBinotelAPICallEnd()
+begin
+	area arequest,newarea,encodearea;
+	string 255 tstr;
+	longint lenth,i,lasti;
+	json jobj;
+	record BinotelCallEndVc BECr;
+	row BinotelCallEndVc BECrw;
+	string 255 node;
+	time timestamp;
+	date datestamp;
+	
+	webgetpostdata(encodearea);
+	writeareatofile(encodearea,"WebBinotelAPICallEnd.txt",0);
+	logtext(0,"WebBinotelAPICallEnd1");
+	tstr = "";
+	lenth = getarealength(encodearea);
+	For(i=0;i<lenth;i=i+1) begin
+		if(getstringfromarea(arequest,i,1)=="=" or i==lenth-1)then begin
+			tstr = urldecode(getstringfromarea(encodearea,lasti,i-lasti));
+			tstr = StrReplace(tstr,"+&gt;+", " > ");
+			addtexttoarea(tstr,arequest);
+		end;
+	end;
+	
+	lenth = getarealength(arequest);
+	tstr = "";
+	lasti = 0;
+	addtexttoarea("{\"",newarea);
+	For(i=0;i<lenth;i=i+1) begin
+	  if(getstringfromarea(arequest,i,1)=="&" or i==lenth-1)then begin
+	  	tstr = urldecode(getstringfromarea(arequest,lasti,i-lasti));
+	  	tstr = StrReplace(tstr,"=", "\":\"");
+	  	tstr = StrReplace(tstr,"[", "(");
+	  	tstr = StrReplace(tstr,"]", ")");
+	  	tstr = StrReplace(tstr,"&", chr(13) & chr(10) & "\"");
+	  	if(getstringfromarea(arequest,i,1)=="&")then begin
+	  		tstr = tstr & "\",";
+	  	end else begin
+	  		tstr = tstr & "\"";
+	  	end;
+	  	addtexttoarea(tstr,newarea);
+	  	lasti = i;
+	  	tstr = "";
+	  end;
+	end; 
+	addtexttoarea("}",newarea);
+	writeareatofile(newarea,"WebBinotelAPICallEnd_nrm.txt",0);
+	weboutstring("{\"status\":\"success\"}");
+	jobj = parsejsonarea(newarea);
+	
+	recordnew(BECr);
+	
+	BECr.TransDate = currentdate;
+	BECr.TransTime = currenttime;
+	
+	BECr.SerNr = NextSerNr("BinotelCallEndVc",currentdate,-1,false,"");
+		
+		node = "requestType";
+		if(JSONNodeExists(jobj,node))then begin
+			BECr.requestType = JSONGet(jobj,node);
+		end;
+		node = "callDetails(companyID)";
+		if(JSONNodeExists(jobj,node))then begin
+			BECr.companyID = JSONGet(jobj,node);
+		end;
+		node = "callDetails(generalCallID)";
+		if(JSONNodeExists(jobj,node))then begin
+			BECr.generalCallID = JSONGet(jobj,node);
+		end;
+		node = "callDetails(callID)";
+		if(JSONNodeExists(jobj,node))then begin
+			BECr.callID = JSONGet(jobj,node);
+		end;
+		node = "callDetails(startTime)";
+		if(JSONNodeExists(jobj,node))then begin
+			BECr.startTime = JSONGet(jobj,node);
+			UTCTimeToDate(StringToLongInt(BECr.startTime),datestamp,timestamp);
+			BECr.BTransDate = datestamp;
+			BECr.BTransTime = timestamp;			
+		end;
+		node = "callDetails(callType)";
+		if(JSONNodeExists(jobj,node))then begin
+			BECr.callType = JSONGet(jobj,node);
+		end;
+		node = "callDetails(internalNumber)";
+		if(JSONNodeExists(jobj,node))then begin
+			BECr.internalNumber = JSONGet(jobj,node);
+		end;
+		node = "callDetails(internalAdditionalData)";
+		if(JSONNodeExists(jobj,node))then begin
+			BECr.internalAdditionalData = JSONGet(jobj,node);
+		end;
+		node = "callDetails(externalNumber)";
+		if(JSONNodeExists(jobj,node))then begin
+			BECr.externalNumber = JSONGet(jobj,node);
+		end;
+		node = "callDetails(srcNumber)";
+		if(JSONNodeExists(jobj,node))then begin
+			BECr.srcNumber = JSONGet(jobj,node);
+		end;
+		node = "callDetails(customerData)(id)";
+		if(JSONNodeExists(jobj,node))then begin
+			BECr.customerDataId = JSONGet(jobj,node);
+		end;
+		node = "callDetails(customerData)(name)";
+		if(JSONNodeExists(jobj,node))then begin
+			BECr.customerDataName = JSONGet(jobj,node);
+		end;
+		node = "callDetails(employeeName)";
+		if(JSONNodeExists(jobj,node))then begin
+			BECr.employeeName = JSONGet(jobj,node);
+		end;
+		node = "callDetails(employeeEmail)";
+		if(JSONNodeExists(jobj,node))then begin
+			BECr.employeeEmail = JSONGet(jobj,node);
+		end;
+		
+		node = "callDetails(dstNumbers)(0)(dstNumber)";
+		if(JSONNodeExists(jobj,node))then begin
+			BECrw.mdstNumber = JSONGet(jobj,node);
+		end;
+		node = "callDetails(dstNumbers)(0)(waitsec)";
+		if(JSONNodeExists(jobj,node))then begin
+			BECrw.mwaitsec = JSONGet(jobj,node);
+		end;
+		node = "callDetails(dstNumbers)(0)(billsec)";
+		if(JSONNodeExists(jobj,node))then begin
+			BECrw.mbillsec = JSONGet(jobj,node);
+		end;
+		node = "callDetails(dstNumbers)(0)(disposition)";
+		if(JSONNodeExists(jobj,node))then begin
+			BECrw.mdisposition = JSONGet(jobj,node);
+		end;
+		node = "callDetails(dstNumbers)(0)(employeeName)";
+		if(JSONNodeExists(jobj,node))then begin
+			BECrw.memployeeName = JSONGet(jobj,node);
+		end;
+		node = "callDetails(dstNumbers)(0)(employeeEmail)";
+		if(JSONNodeExists(jobj,node))then begin
+			BECrw.memployeeEmail = JSONGet(jobj,node);
+		end;
+		matrowput(BECr,0,BECrw);
+		
+		
+		node = "callDetails(waitsec)";
+		if(JSONNodeExists(jobj,node))then begin
+			BECr.waitsec = JSONGet(jobj,node);
+		end;
+		node = "callDetails(billsec)";
+		if(JSONNodeExists(jobj,node))then begin
+			BECr.billsec = JSONGet(jobj,node);
+		end;
+		node = "callDetails(disposition)";
+		if(JSONNodeExists(jobj,node))then begin
+			BECr.disposition = JSONGet(jobj,node);
+		end;
+		node = "callDetails(isNewCall)";
+		if(JSONNodeExists(jobj,node))then begin
+			BECr.isNewCall = JSONGet(jobj,node);
+		end;
+		node = "callDetails(did)";
+		if(JSONNodeExists(jobj,node))then begin
+			BECr.did = JSONGet(jobj,node);
+		end;
+		node = "callDetails(didNumber)";
+		if(JSONNodeExists(jobj,node))then begin
+			BECr.didNumber = JSONGet(jobj,node);
+		end;
+		node = "callDetails(didName)";
+		if(JSONNodeExists(jobj,node))then begin
+			BECr.didName = JSONGet(jobj,node);
+		end;
+		
+		
+	recordstore(BECr,true);
+	
+return;
+end;
+
+global webpublic updating procedure WebBinotelAPIPush()
+begin
+	area arequest,newarea,encodearea;
+	string 255 tstr;
+	longint lenth,i,lasti;
+	json jobj;
+	record BinotelCallPushVc BECr;
+	string 255 node;
+	time timestamp;
+	date datestamp;
+	
+	webgetpostdata(encodearea);
+	writeareatofile(encodearea,"WebBinotelAPICallPush.txt",0);
+	logtext(0,"WebBinotelAPICallPush");
+	tstr = "";
+	lenth = getarealength(encodearea);
+	For(i=0;i<lenth;i=i+1) begin
+		if(getstringfromarea(arequest,i,1)=="=" or i==lenth-1)then begin
+			tstr = urldecode(getstringfromarea(encodearea,lasti,i-lasti));
+			tstr = StrReplace(tstr,"+&gt;+", " > ");
+			addtexttoarea(tstr,arequest);
+		end;
+	end;
+	
+	lenth = getarealength(arequest);
+	tstr = "";
+	lasti = 0;
+	addtexttoarea("{\"",newarea);
+	For(i=0;i<lenth;i=i+1) begin
+	  if(getstringfromarea(arequest,i,1)=="&" or i==lenth-1)then begin
+	  	tstr = urldecode(getstringfromarea(arequest,lasti,i-lasti));
+	  	tstr = StrReplace(tstr,"=", "\":\"");
+	  	tstr = StrReplace(tstr,"[", "(");
+	  	tstr = StrReplace(tstr,"]", ")");
+	  	tstr = StrReplace(tstr,"&","\"");
+	  	if(getstringfromarea(arequest,i,1)=="&")then begin
+	  		tstr = tstr & "\",";
+	  	end else begin
+	  		tstr = tstr & "\"";
+	  	end;
+	  	logtext(0,tstr);
+	  	addtexttoarea(tstr,newarea);
+	  	lasti = i;
+	  	tstr = "";
+	  end;
+	end; 
+	addtexttoarea("}",newarea);
+	
+	jobj = parsejsonarea(newarea);
+	
+	recordnew(BECr);
+	
+	BECr.TransDate = currentdate;
+	BECr.TransTime = currenttime;
+	
+	BECr.SerNr = NextSerNr("BinotelCallPushVc",currentdate,-1,false,"");
+		
+		node = "requestType";
+		if(JSONNodeExists(jobj,node))then begin
+			BECr.requestType = JSONGet(jobj,node);
+		end;
+		node = "companyID";
+		if(JSONNodeExists(jobj,node))then begin
+			BECr.companyID = JSONGet(jobj,node);
+		end;
+		node = "generalCallID";
+		if(JSONNodeExists(jobj,node))then begin
+			BECr.generalCallID = JSONGet(jobj,node);
+		end;
+		node = "callID";
+		if(JSONNodeExists(jobj,node))then begin
+			BECr.callID = JSONGet(jobj,node);
+		end;
+		node = "callType";
+		if(JSONNodeExists(jobj,node))then begin
+			BECr.callType = JSONGet(jobj,node);
+		end;
+		node = "internalNumber";
+		if(JSONNodeExists(jobj,node))then begin
+			BECr.internalNumber = JSONGet(jobj,node);
+		end;
+		node = "internalAdditionalData";
+		if(JSONNodeExists(jobj,node))then begin
+			BECr.internalAdditionalData = JSONGet(jobj,node);
+		end;
+		node = "externalNumber";
+		if(JSONNodeExists(jobj,node))then begin
+			BECr.externalNumber = JSONGet(jobj,node);
+		end;
+		node = "srcNumber";
+		if(JSONNodeExists(jobj,node))then begin
+			BECr.srcNumber = JSONGet(jobj,node);
+		end;
+		node = "employeeName";
+		if(JSONNodeExists(jobj,node))then begin
+			BECr.employeeName = JSONGet(jobj,node);
+		end;
+		node = "employeeEmail";
+		if(JSONNodeExists(jobj,node))then begin
+			BECr.employeeEmail = JSONGet(jobj,node);
+		end;
+		node = "waitsec";
+		if(JSONNodeExists(jobj,node))then begin
+			BECr.waitsec = JSONGet(jobj,node);
+		end;
+		node = "billsec";
+		if(JSONNodeExists(jobj,node))then begin
+			BECr.billsec = JSONGet(jobj,node);
+		end;
+		node = "disposition";
+		if(JSONNodeExists(jobj,node))then begin
+			BECr.disposition = JSONGet(jobj,node);
+		end;
+		node = "isNewCall";
+		if(JSONNodeExists(jobj,node))then begin
+			BECr.isNewCall = JSONGet(jobj,node);
+		end;
+		node = "did";
+		if(JSONNodeExists(jobj,node))then begin
+			BECr.did = JSONGet(jobj,node);
+		end;
+		node = "didNumber";
+		if(JSONNodeExists(jobj,node))then begin
+			BECr.didNumber = JSONGet(jobj,node);
+		end;
+		node = "didName";
+		if(JSONNodeExists(jobj,node))then begin
+			BECr.didName = JSONGet(jobj,node);
+		end;
+		
+		
+	recordstore(BECr,true);
+	
+
+return;
+end;
