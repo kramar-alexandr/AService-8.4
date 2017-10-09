@@ -3,7 +3,7 @@ begin
   string 255 tstr;
   RecordNew(CUr);
   
-  CUr.UUID = StringToUUID(ImportField); // NewAutosyncRegister
+  ImportField; // NewAutosyncRegister
   ImportField; // NewAutosyncRegister
   ImportField; // NewAutosyncRegister
   CUr.Code = ImportField;
@@ -156,7 +156,8 @@ begin
   CUr.Salutation1 = ImportField;
   CUr.Salutation2 = ImportField;
   CUr.Salutation3 = ImportField;
-  CUr.xUserCode = ImportField;
+  //CUr.xUserCode = 
+  ImportField;
   CUr.DealerType = StringToInt(ImportField);
   CUr.GroupInv = StringToInt(ImportField);
   CUr.AddressBooks = ImportField;
@@ -240,7 +241,8 @@ begin
   
   while (NextImportLine(false)) begin
     ReadImportTagcu5Record(CUr);
-    RecordImportStore(CUr,false);
+    //logtext(0,currentcompany & "  " & CUr.Code); 
+		RecordImportStore(CUr,false);
   end;
   
   return;
@@ -318,7 +320,8 @@ begin
   
   while (NextImportLine(false)) begin
     ReadImportTagItemHistVc2Record(ItemHistr);
-    RecordImportStore(ItemHistr,false);
+    //logtext(0,currentcompany & "  " & thetag); 
+ RecordImportStore(ItemHistr,false);
   end;
   
   return;
@@ -486,7 +489,8 @@ begin
   
   while (NextImportLine(false)) begin
     ReadImportTagstockmov1Record(StockMovr);
-    RecordImportStore(StockMovr,false);
+    //logtext(0,currentcompany & "  " & thetag); 
+ RecordImportStore(StockMovr,false);
   end;
   
   return;
@@ -727,6 +731,7 @@ begin
   
   while (NextImportLine(false)) begin
     ReadImportTagORVc2Record(ORr);
+    //logtext(0,currentcompany & "  " & thetag); 
     RecordImportStore(ORr,false);
   end;
   
@@ -927,7 +932,8 @@ begin
   
   while (NextImportLine(false)) begin
     ReadImportTagSVOVcRecord(SVOr);
-    RecordImportStore(SVOr,false);
+    //logtext(0,currentcompany & "  " & thetag); 
+ RecordImportStore(SVOr,false);
   end;
   
   return;
@@ -951,34 +957,58 @@ begin
   integer rwcnt;
   
   RecordNew(INr);
-  
-  INr.UUID = StringToUUID(ImportField); // NewAutosyncRegister
+  //logtext(0,11111);
+  //INr.UUID = StringToUUID(ImportField); // NewAutosyncRegister
+  ImportField;
   ImportField; // NewAutosyncRegister
   ImportField; // NewAutosyncRegister
   INr.Code = ImportField;
+  //logtext(0,"Code " & INr.Code);
   INr.Name = ImportField;
+  //logtext(0,"Name " & INr.Name);
   INr.Unittext = ImportField;
+  //logtext(0,"Unittext " & INr.Unittext);
   INr.MinLevel = StringToVal(ImportField,M4Qty);
+  //logtext(0,"MinLevel " & INr.MinLevel);
   INr.Objects = ImportField;
+  //logtext(0,"Objects " & INr.Objects);
   INr.SalesAcc = ImportField;
+  //logtext(0,"SalesAcc " & INr.SalesAcc);
   INr.UPrice1 = StringToVal(ImportField,M423Val);
+  //logtext(0,"UPrice1 " & INr.UPrice1);
   INr.ItemType = StringToInt(ImportField);
+  //logtext(0,"ItemType " & INr.ItemType);
   INr.Group = ImportField;
-  INr.x1 = ImportField;
-  INr.x2 = ImportField;
+  //logtext(0,"Group " & INr.Group);
+  //INr.x1 = 
+  ImportField;
+  //logtext(0,"x1 " & INr.x1);
+  //INr.x2 =
+  ImportField;
+  //logtext(0,"x2 " & INr.x2);
   INr.InPrice = StringToVal(ImportField,M45Val);
+  //logtext(0,"InPrice " & INr.InPrice);
   INr.InvCode = ImportField;
+  //logtext(0,"InvCode " & INr.InvCode);
   INr.ExtraCost = StringToVal(ImportField,M4Val);
+  //logtext(0,"ExtraCost " & INr.ExtraCost);
   INr.SerNrf = StringToInt(ImportField);
+  //logtext(0,"SerNrf " & INr.SerNrf);
   INr.Department = ImportField;
+  //logtext(0,"Department " & INr.Department);
   INr.Weight = StringToVal(ImportField,M45Val);
+  //logtext(0,"Weight " & INr.Weight);
   INr.Volume = StringToVal(ImportField,M45Val);
+  //logtext(0,"Volume " & INr.Volume);
   INr.EUCodex = ImportField;
+  //logtext(0,"EUCodex " & INr.EUCodex);
   INr.InCurncyCode = ImportField;
+  //logtext(0,"InCurncyCode " & INr.InCurncyCode);
   INr.Bonus = StringToVal(ImportField,M4Qty);
   INr.Recepy = ImportField;
   INr.Markup = StringToVal(ImportField,M4Qty);
-  INr.x3 = ImportField;
+  //INr.x3 = 
+  ImportField;
   INr.BarCode = ImportField;
   INr.UpdateCost = StringToInt(ImportField);
   INr.LastPriceChange = StringToDate(ImportField);
@@ -987,6 +1017,7 @@ begin
   INr.PriceFactor = StringToVal(ImportField,M45Val);
   INr.Terminated = StringToInt(ImportField);
   INr.AvgMarkup = StringToVal(ImportField,M4Val);
+  //logtext(0,"Density " & INr.AvgMarkup);
   INr.LastPurchPrice = StringToVal(ImportField,M45Val);
   INr.LastPurchCurncyCode = ImportField;
   INr.WeighedAvPrice = StringToVal(ImportField,M45Val);
@@ -1005,6 +1036,7 @@ begin
   INr.UnitCoefficient = StringToVal(ImportField,M45Val);
   INr.WarnText1 = ImportField;
   INr.VARList = ImportField;
+  //logtext(0,"Density " & INr.VARList);
   INr.ItemMaterial = StringToInt(ImportField);
   INr.AlcPrc = StringToVal(ImportField,M4UVal);
   INr.DefaultSource = ImportField;
@@ -1024,6 +1056,7 @@ begin
   INr.DispGroups = ImportField;
   INr.HazLevCode = ImportField;
   INr.Density = StringToVal(ImportField,M45Val);
+  //logtext(0,"Density " & INr.Density);
   INr.xClassification = ImportField;
   INr.CredSalesAcc = ImportField;
   INr.CredEUSalesAcc = ImportField;
@@ -1059,6 +1092,7 @@ begin
   INr.ExpCostAcc = ImportField;
   INr.PalletLayers = StringToVal(ImportField,M4UVal);
   INr.QtyonPalletLayer = StringToVal(ImportField,M4UVal);
+  //logtext(0,"DefOrderType " & INr.QtyonPalletLayer);
   INr.UserStr1 = ImportField;
   INr.UserStr2 = ImportField;
   INr.UserStr3 = ImportField;
@@ -1071,6 +1105,7 @@ begin
   INr.UserDate2 = StringToDate(ImportField);
   INr.UserDate3 = StringToDate(ImportField);
   INr.RentGroup = ImportField;
+  //logtext(0,"DefOrderType " & INr.RentGroup);
   INr.FAGroup = ImportField;
   INr.NetWeight = StringToVal(ImportField,M45Val);
   INr.PrimaryCostModel = StringToInt(ImportField);
@@ -1098,6 +1133,7 @@ begin
   INr.Movement = ImportField;
   INr.BrcStr = ImportField;
   INr.Gender = ImportField;
+  //logtext(0,"DefOrderType " & INr.Gender);
   INr.Other = ImportField;
   INr.Other2 = ImportField;
   INr.Reference = ImportField;
@@ -1120,7 +1156,8 @@ begin
   INr.HasExcise = StringToInt(ImportField);
   INr.ProjMaterialsUsageAcc = ImportField;
   INr.DefOrderType = StringToInt(ImportField);
-  INr.GigieneText1 = ImportField;
+  //logtext(0,"DefOrderType " & INr.DefOrderType);
+  /*INr.GigieneText1 = ImportField;
   INr.GigieneText2 = ImportField;
   INr.GigieneText3 = ImportField;
   INr.GigieneText4 = ImportField;
@@ -1155,15 +1192,17 @@ begin
   INr.LCustInt2 = StringToInt(ImportField);
   INr.LCustInt3 = StringToInt(ImportField);
   INr.LCustInt4 = StringToInt(ImportField);
-  INr.LCustInt5 = StringToInt(ImportField);
+  INr.LCustInt5 = StringToInt(ImportField);*/
   
   rwcnt = 0;
   
   while (NextImportLine(false)) begin
     ClearRow(INr,INrw,1);
+    //logtext(0,22222);
     INrw.LangCode = ImportField;
     INrw.Text = ImportField;
-    INrw.LParam = ImportField;
+    //logtext(0,"Text " & INrw.Text);
+    /*INrw.LParam = ImportField;
     INrw.LName = ImportField;
     INrw.LComment1 = ImportField;
     INrw.LComment2 = ImportField;
@@ -1176,11 +1215,12 @@ begin
     INrw.LArInt1 = StringToInt(ImportField);
     INrw.LArInt2 = StringToInt(ImportField);
     INrw.LArInt3 = StringToInt(ImportField);
-    INrw.LArInt4 = StringToInt(ImportField);
+    INrw.LArInt4 = StringToInt(ImportField);*/
     MatRowPut(INr,rwcnt,INrw);
+    //logtext(0,"rwcnt" & rwcnt);
     rwcnt = rwcnt + 1;
   end;
-  
+  /*
   while (NextImportLine(false)) begin
     tstr = ImportField;
     if nonblank(tstr) then begin
@@ -1189,7 +1229,7 @@ begin
       end;
     end;
   end;
-  
+  */
   return;
 end;
 
@@ -1200,7 +1240,8 @@ begin
   
   while (NextImportLine(false)) begin
     ReadImportTagartikel5Record(INr);
-    RecordImportStore(INr,false);
+    //logtext(0,currentcompany & "  " & INr.Code); 
+ RecordImportStore(INr,false);
   end;
   
   return;
@@ -1254,7 +1295,8 @@ begin
   
   while (NextImportLine(false)) begin
     ReadImportTagCCatVc2Record(CCatr);
-    RecordImportStore(CCatr,false);
+    //logtext(0,currentcompany & "  " & thetag); 
+ RecordImportStore(CCatr,false);
   end;
   
   return;
@@ -1288,7 +1330,8 @@ begin
   
   while (NextImportLine(false)) begin
     ReadImportTagSalesGroupVcRecord(SalesGroupr);
-    RecordImportStore(SalesGroupr,false);
+    //logtext(0,currentcompany & "  " & thetag); 
+ RecordImportStore(SalesGroupr,false);
   end;
   
   return;
@@ -1651,7 +1694,8 @@ begin
   
   while (NextImportLine(false)) begin
     ReadImportTaguser2Record(Userr);
-    RecordImportStore(Userr,false);
+    //logtext(0,currentcompany & "  " & thetag); 
+ RecordImportStore(Userr,false);
   end;
   
   return;
@@ -1696,7 +1740,8 @@ begin
   IVr.pdrdays = StringToLongint(ImportField);
   IVr.CustCat = ImportField;
   IVr.pdComment = ImportField;
-  IVr.x1 = ImportField;
+  //IVr.x1 = 
+  ImportField;
   IVr.InvType = StringToInt(ImportField);
   IVr.xStatFlag = StringToInt(ImportField);
   IVr.PriceList = ImportField;
@@ -2002,7 +2047,8 @@ begin
   
   while (NextImportLine(false)) begin
     ReadImportTagIVVc3Record(IVr);
-    RecordImportStore(IVr,false);
+    //logtext(0,currentcompany & "  " & thetag); 
+ RecordImportStore(IVr,false);
   end;
   
   return;
@@ -2035,7 +2081,8 @@ begin
   SHr.Addr2 = ImportField;
   SHr.Addr3 = ImportField;
   SHr.Prntdf = StringToInt(ImportField);
-  SHr.x1 = ImportField;
+  //SHr.x1 = 
+  ImportField;
   SHr.ShipMode = ImportField;
   SHr.OKFlag = StringToInt(ImportField);
   SHr.Location = ImportField;
@@ -2140,7 +2187,8 @@ begin
     SHrw.UnitZval = StringToVal(ImportField,M4UVal);
     SHrw.MeasWeight = StringToVal(ImportField,M423Val);
     SHrw.PosCode = ImportField;
-    SHrw.xCoefficient = ImportField;
+    //SHrw.xCoefficient = 
+    ImportField;
     SHrw.CostAcc = ImportField;
     SHrw.WAB2 = StringToVal(ImportField,M45Val);
     SHrw.TAX2Code = ImportField;
@@ -2172,7 +2220,8 @@ begin
   
   while (NextImportLine(false)) begin
     ReadImportTagship1Record(SHr);
-    RecordImportStore(SHr,false);
+    //logtext(0,currentcompany & "  " & thetag); 
+ RecordImportStore(SHr,false);
   end;
   
   return;
@@ -2215,7 +2264,8 @@ begin
   
   while (NextImportLine(false)) begin
     ReadImportTagacttypeRecord(ActTyper);
-    RecordImportStore(ActTyper,false);
+    //logtext(0,currentcompany & "  " & thetag); 
+ RecordImportStore(ActTyper,false);
   end;
   
   return;

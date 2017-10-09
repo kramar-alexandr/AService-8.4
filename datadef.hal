@@ -377,7 +377,7 @@ begin
     
   EndRecordAdd; 
   
-  RecordAddBegin(INVc,"INVc_Custom");
+  RecordAddBegin(INVc,"CustINVc");
     RecordField(GigieneText1,M4Str,200,0);// Edit ************************** Friday, 17 October 2014 10:22:17
     RecordField(GigieneText2,M4Str,200,0);// Edit ************************** Friday, 17 October 2014 10:22:17
     RecordField(GigieneText3,M4Str,200,0);// Edit ************************** Friday, 17 October 2014 10:22:17
