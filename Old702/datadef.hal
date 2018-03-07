@@ -467,6 +467,7 @@ begin
   RecordField(PrintedFlag,M4Mark,0,0); //Edit***************************Sasha2,10:36 11.01.2016
   RecordField(PrintedSum4,M4Val,0,0); //Edit***************************Sasha2,10:35 11.01.2016
 	RecordField(IgnoreBlankFIFO,M4Mark,0,0);//Edit----------------------Dima  09.02.2016
+	RecordField(Phone2,M4Str,50,0);//Edit----------------------Dima  09.02.2016
   return;
 end; 
 
@@ -2708,7 +2709,12 @@ EndRecord;
   RecordField(OldPhone,M4Str,255,0);// Edit ************************** Monday, 27 February 2017 11:23:05
   RecordField(Name,M4Str,255,0);// Edit ************************** Monday, 27 February 2017 11:23:43
   RecordField(MiddleName,M4Str,255,0);// Edit ************************** Monday, 27 February 2017 11:23:43
-   //----------End Custom
+  RecordField(NoOpros,M4Int,0,0);// Edit ************************** BPI Ukraine - KramarAlexandr - Tuesday, 5 December 2017 13:33:56
+  RecordField(PersonalRebCode,M4Code,5,0);// Edit ************************** BPI Ukraine - KramarAlexandr - Tuesday, 12 December 2017 14:33:44
+  RecordField(DiagnosFinishUsr,M4Str,20,0); // Edit ***************** Dima 8 February 2018, 15:28 
+  RecordField(RepairFinishUsr,M4Str,20,0); // Edit ***************** Dima 8 February 2018, 15:28 
+  RecordField(GiveAwayUsr,M4Str,20,0); // Edit ***************** Dima 8 February 2018, 15:28 
+  //----------End Custom
   ArrayBegin(Math,-,1);
   ArrayField(stp,M4Int,0,0);
   ArrayField(ArtCode,M4Code,20,INVc);
