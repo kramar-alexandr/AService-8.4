@@ -33,7 +33,8 @@ remote procedure HandleSVOReceiptPrinting(record SVOVc,var area);
 external procedure PrintBixolonReceipt(area);
 external procedure ExtractObjWithSeparator(string,string,Boolean,var Integer,var string);// Edit ************************** Monday, 27 February 2017 15:43:57
 remote procedure FindPhonePerson(var record Phone1Vc,string);// Edit ************************** Tuesday, 28 February 2017 16:03:58
-
+remote procedure CountNumberRepeatPhone(string,var array longint,var integer );// Edit ************************** BPI Ukraine - KramarAlexandr - Tuesday, 12 December 2017 15:16:16
+remote updating procedure RA_AttachToMailWEBLinkDsm(record WebNavLinkVc);
 // Edit Start ---------------------------------------------- Edit Start
 	//Wednesday, 3 June 2015 16:58:34
 	
@@ -551,13 +552,30 @@ begin
   string 100 tstr;
   array string 100 fio;
   record Phone1Vc Phoner;
+  array longint sernr;// Edit ************************** BPI Ukraine - KramarAlexandr - Tuesday, 12 December 2017 15:15:43
+  integer count;// Edit ************************** BPI Ukraine - KramarAlexandr - Tuesday, 12 December 2017 15:15:53
   
   GetWindowRecord(wn,SVOr);
-  if(changed>0 and Blank(SVOr.Vlastnik))then begin
+  if(changed>0/* and Blank(SVOr.Vlastnik)*/)then begin
+  	if(nonblank(SVOr.Kontinfo1))then begin
+  		CountNumberRepeatPhone(SVOr.Kontinfo1,sernr,count);
+			if(count>0)then begin
+				SVOr.CustomField9 = count;
+			end;
+  	end else begin
+  		SVOr.CustomField9 = blankval;
+  	end;
   	
-  	FindPhonePerson(Phoner,SVOr.Kontinfo1);
-  	SVOr.Vlastnik = Phoner.Vlastnik;
-  	SVOr.Priynato = Phoner.Priynato;
+  	if(nonblank(SVOr.Kontinfo1))then begin
+			FindPhonePerson(Phoner,SVOr.Kontinfo1);
+  	end;
+  	SVOr.PersonalRebCode = Phoner.PersonalRebCode;
+		if (nonblank(Phoner.Vlastnik)) then begin
+			SVOr.Vlastnik = Phoner.Vlastnik;
+		end;
+		if (nonblank(Phoner.Priynato)) then begin
+			SVOr.Priynato = Phoner.Priynato;
+		end;
   	if(nonblank(Phoner.FirstName))then begin
 			SVOr.Priynato = Phoner.LastName;
 			SVOr.Name = Phoner.FirstName;
@@ -602,10 +620,15 @@ begin
   
   GetWindowRecord(wn,SVOr);
   if(changed>0 and Blank(SVOr.Vlastnik))then begin
-  	
-  	FindPhonePerson(Phoner,SVOr.Phone2);
-  	SVOr.Vlastnik = Phoner.Vlastnik;
-  	SVOr.Priynato = Phoner.Priynato;
+  	if(nonblank(SVOr.Phone2))then begin
+  		FindPhonePerson(Phoner,SVOr.Phone2);
+  	end;
+  	if(nonblank(Phoner.Vlastnik))then begin
+			SVOr.Vlastnik = Phoner.Vlastnik;
+  	end;
+  	if(nonblank(Phoner.Priynato))then begin
+			SVOr.Priynato = Phoner.Priynato;
+  	end;
   	if(nonblank(Phoner.FirstName))then begin
 			SVOr.Priynato = Phoner.LastName;
 			SVOr.Name = Phoner.FirstName;
@@ -1888,6 +1911,27 @@ begin
 		if(readfirstmain(SVOr,1,true))then begin
 			OpenWindow("SVODClass",1,0,"","",SVOr);
 		end;
+	end;
+	
+return;
+end;
+
+
+
+global updating procedure AttachToMailWEBLinkDsm()
+begin
+	record ConfVc Confr;
+	record WebNavLinkVc Web1r;
+	integer notenr;
+	record RLinkVc RLinkr;
+	record RcVc RepSpec;
+	integer wn;
+	
+	wn = curwindow;
+	getwindowrecord(wn,Web1r);
+	
+	if(Web1r.SerNr>-1)then begin
+		RA_AttachToMailWEBLinkDsm(Web1r);
 	end;
 	
 return;
