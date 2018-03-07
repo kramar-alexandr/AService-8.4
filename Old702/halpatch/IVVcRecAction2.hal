@@ -329,8 +329,8 @@ begin
     
     testf = true;
     outPhone = "";
-    //if (IVr.OKFlag==0 or IVr.Invalid==1) then begin testf = false; end;
     if (IVr.Sum4==0) then begin testf = false; end;
+    
     if (testf) then begin
       if (NonBlank(inPhone)) then begin
         Phoner.PhoneNum = inPhone;
@@ -357,18 +357,26 @@ begin
       end;
     end;
  
-    if (NonBlank(Phoner.PhoneNum) and ReadFirstMain(Phoner,1,true)) then begin
-      sign = 1;
-      if (IVr.InvType==kInvoiceTypeCredit or IVr.InvType==kInvoiceTypeCreditSpecialSales or IVr.Sum4<0) then begin
-        sign = -1;
-      end;
-      if (addSum) then begin
-        Phoner.RepairsSum = Phoner.RepairsSum + IVr.Sum4 * sign;
+    if (NonBlank(Phoner.PhoneNum)) then begin
+    	if(ReadFirstMain(Phoner,1,true))then begin
+				sign = 1;
+				if (IVr.InvType==kInvoiceTypeCredit or IVr.InvType==kInvoiceTypeCreditSpecialSales or IVr.Sum4<0) then begin
+					sign = -1;
+				end;
+				if (addSum) then begin
+					Phoner.RepairsSum = Phoner.RepairsSum + IVr.Sum4 * sign;
+				end else begin
+					Phoner.RepairsSum = Phoner.RepairsSum - IVr.Sum4 * sign;
+				end;
+				RECORDSTORE(Phoner,true);
+				outPhone = Phoner.PhoneNum;
       end else begin
-        Phoner.RepairsSum = Phoner.RepairsSum - IVr.Sum4 * sign;
-      end;
-      RECORDSTORE(Phoner,true);
-      outPhone = Phoner.PhoneNum;
+				if (addSum) then begin
+					LogText(0,"Problem to increase RepairSum for invoice #:" & IVr.SerNr);
+				end else begin
+					LogText(0,"Problem to decrease RepairSum for invoice #:" & IVr.SerNr & ". Income phone:" & inPhone);
+				end;
+			end;
     end else begin
       if (addSum) then begin
         LogText(0,"Problem to increase RepairSum for invoice #:" & IVr.SerNr);
@@ -435,7 +443,10 @@ BEGIN
       if (EInvoiceWithPDFFileTest(IVr.CustCode,IVr.CurncyCode,EInvCUr)) then begin 
         CreateAndAttachPdfIV(IVr);
       end;
-      HandlePhone1RepairSum(IVr,true,"",outPhone); //Edit***************************Sasha2,14:00 10.03.2017
+      if(blank(IVr.Phone))then begin
+      	IVr.Phone = IVr.Phone2;
+      end;
+      HandlePhone1RepairSum(IVr,true,IVr.Phone,outPhone); //Edit***************************Sasha2,14:00 10.03.2017
       IVr.Phone = outPhone; //Edit***************************Sasha2,14:44 10.03.2017
     end;  
     RecalculetWeightVolumeIVVc(IVr,false);
@@ -965,7 +976,10 @@ BEGIN
       if (EInvoiceWithPDFFileTest(IVr.CustCode,IVr.CurncyCode,EInvCUr)) then begin 
         CreateAndAttachPdfIV(IVr);
       end;
-      HandlePhone1RepairSum(IVr,true,"",outPhone); //Edit***************************Sasha2,14:00 10.03.2017
+      if(blank(IVr.Phone))then begin
+      	IVr.Phone = IVr.Phone2;
+      end;
+      HandlePhone1RepairSum(IVr,true,IVr.Phone,outPhone); //Edit***************************Sasha2,14:00 10.03.2017
       IVr.Phone = outPhone; //Edit***************************Sasha2,14:44 10.03.2017
     end;
     RecalculetWeightVolumeIVVc(IVr,false);
