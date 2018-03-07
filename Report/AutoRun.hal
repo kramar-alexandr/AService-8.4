@@ -1,4 +1,5 @@
 external updating procedure StockBalDiffMn(string); 
+external procedure ReportRegDateServAndInvEn(); // Edit Dima ************* 2018-03-02 02:19 PM
 
 //------------------------------------------------------------------------------------------------------------------------------
 global updating procedure AutoRun()
@@ -18,8 +19,11 @@ Samsung = 9;
 Gilliver = 10;
 idistribuEsti = 11;
 
+  if (SetCompany(AService,false)) then begin//AService
     logtext(0,currentcompany & " StockBalDiffMn");
     StockBalDiffMn("SA,STRELKOVA,AUDITOR,CHAYKOVSKA,IRA_FM");
+		ReportRegDateServAndInvEn; // Edit Dima ************* 2018-03-02 01:41 PM
+  end;
 
 /*
   if (SetCompany(iStore,false)) then begin
