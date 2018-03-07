@@ -390,6 +390,12 @@ begin
     SetWRect(20,120,350,300);
     EditFieldTL(h,v+=20,80,"На дату",M4Date,Normal,0,d1,false,PasteCurDate);
   EndWindow;
-  
+
+	WindowBegin("Завершенные ремонты за период",ReportRegDateServAndInvRClass,CGRcW,RcType);
+    SetWRect(20,120,350,300);
+    PeriodField(h,20,"Період");
+    EditField(h,40,150,"Сервис",Normal,f1,false,SalesGroupSCLass);
+  EndWindow;
+    
   return;
   end;
