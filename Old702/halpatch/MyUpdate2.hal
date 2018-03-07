@@ -1,0 +1,768 @@
+external procedure ExtractObj(string,var Integer,var string);
+external function Boolean SetInSet2(string,string);
+external function Boolean MySendWebRequest(string,longint,longint,boolean,string,string,string,string,boolean,area,var area,integer);
+external function Boolean FindStringInString(string, string);
+
+SetLangMode(LangUkrainian,"UKR",0);
+
+global procedure SENDSMS(record SVOVc SVOr,record SVOVc SVO2r)
+begin
+	string 255 subject,body,subphone;
+	array string 100 phone,normphone;
+	integer i,lenth,cnt,k;
+	area a_subject,a_body;
+  string 100 host,page;
+  area mainRequest,replyarea;
+  longint port;
+	
+  if (SVOr.NoSMS==0) then begin
+    if(currentcompany==8)then begin
+      if(nonblank(SVOr.PlanShipDate) and blank(SVO2r.PlanShipDate))then begin
+        cnt = 0;
+        subphone = SVOr.Kontinfo1;
+        lenth = len(subphone);
+        For(i=0;i<lenth;i=i+1) begin
+          if(mid(subphone,i,1)==",")then begin
+              cnt = cnt+1;
+          end else begin
+            phone[cnt] = phone[cnt] & mid(subphone,i,1);
+          end;
+        end; 
+        cnt = cnt+1;
+        for(k=0;k<cnt;k=k+1)begin
+          lenth = len(phone[k]);
+          normphone[k] = NormalizePhoneNumber(phone[k]);
+          if(len(normphone[k])==10)then begin
+            normphone[k] = "38" & normphone[k];
+          end;
+          if(len(normphone[k])==11)then begin
+            normphone[k] = "3" & normphone[k];
+          end;
+          if(len(normphone[k])!=12)then begin
+            messagebox(0,"ERROR PHONE");
+            goto LSENDSMS;
+          end;
+        end;
+        subject = "9c7e332509201516 ";
+        For(i=0;i<cnt;i=i+1) begin
+          subject = subject & normphone[i] & ",";
+        end; 
+        subject = mid(subject,0,len(subject)-1);
+        addtexttoarea(subject,a_subject);
+        writeareatofile(a_subject,"SMS/sms_subj.txt",0);
+        body = "[SENDER]AServis[/SENDER][SMS]Ваш ремонт " & SVOr.SerNr & " готов.[/SMS]";
+        //body = convertstringfromcodepage("WINDOWS-1251",body);
+        addtexttoarea(body,a_body);
+        writeareatofile(a_body,"SMS/sms_body.txt",0);
+        //runprogram("SMS/sendSRVSMS.sh","");// Edit ************************** Wednesday, 16 November 2016 15:00:09
+        
+        //Edit-------------------Vitalii 11:20 16.11.2016
+        if(SVOr.SerNr>=9000000)then begin
+          host = "109.95.53.85";//krasnoarm
+        end else begin
+          if(SVOr.SerNr>=3000000)then begin
+            host = "82.144.202.163";//lukanovka
+          end else begin
+            host = "134.249.184.148";//kikvidze
+          end;
+        end;
+        //host = "109.95.53.85";
+        port = 2501;
+        page = "/hansa/sms.php";
+        SetAreaZeroSize(mainRequest);
+        SetAreaZeroSize(replyarea);
+        AddTextToArea("passwd=hj87Hjwofb07QVeg62k&id=" & SVOr.SerNr & "&num=" & right(normphone[0],len(normphone[0])-2) & "&status=3",mainRequest);
+        MySendWebRequest(host,port,-1,false,"POST",page,"application/x-www-form-urlencoded","",false,mainRequest,replyarea,10);
+        logtext(0,"SENDSMS request - " & GetStringFromArea(mainRequest,0,GetAreaLength(mainRequest)) & " reply - " & GetStringFromArea(replyarea,0,GetAreaLength(replyarea)));
+        
+        
+        logtext(0,"SEND SMS");
+      end;
+    end;
+  end;
+	LSENDSMS:;
+return;
+end;
+
+global procedure SENDFIRSTSMS(record SVOVc SVOr)
+begin
+	string 255 subject,body,subphone;
+	array string 100 phone,normphone;
+	integer i,lenth,cnt,k;
+	area a_subject,a_body;
+  string 100 host,page;
+  area mainRequest,replyarea;
+  longint port;
+
+	if (SVOr.NoSMS==0) then begin
+    if(currentcompany==8)then begin
+        cnt = 0;
+        subphone = SVOr.Kontinfo1;
+        lenth = len(subphone);
+        For(i=0;i<lenth;i=i+1) begin
+          if(mid(subphone,i,1)==",")then begin
+              cnt = cnt+1;
+          end else begin
+            phone[cnt] = phone[cnt] & mid(subphone,i,1);
+          end;
+        end; 
+        cnt = cnt+1;
+        for(k=0;k<cnt;k=k+1)begin
+          lenth = len(phone[k]);
+          normphone[k] = NormalizePhoneNumber(phone[k]);
+          if(len(normphone[k])==10)then begin
+            normphone[k] = "38" & normphone[k];
+          end;
+          if(len(normphone[k])==11)then begin
+            normphone[k] = "3" & normphone[k];
+          end;
+          if(len(normphone[k])!=12)then begin
+            messagebox(0,"ERROR PHONE");
+            goto LSENDSMS;
+          end;
+        end;
+        subject = "9c7e332509201516 ";
+        For(i=0;i<cnt;i=i+1) begin
+          subject = subject & normphone[i] & ",";
+        end; 
+        subject = mid(subject,0,len(subject)-1);
+        addtexttoarea(subject,a_subject);
+        writeareatofile(a_subject,"SMS/sms_subj.txt",0);
+        if(SVOr.SerNr>=9000000)then begin
+          body = "[SENDER]AServis[/SENDER][SMS]Ваш ремонт №" & SVOr.SerNr & " принят, тел.044-4515451.[/SMS]";
+        end else begin
+          if(SVOr.SerNr>=8000000)then begin
+            body = "[SENDER]AServis[/SENDER][SMS]Ваш ремонт №" & SVOr.SerNr & " принят, тел.044-2229293.[/SMS]";
+          end else begin
+            if(SVOr.SerNr>=7000000)then begin
+							body = "[SENDER]AServis[/SENDER][SMS]Ваш ремонт №" & SVOr.SerNr & " принят, тел.098-1010132.[/SMS]";
+						end else begin
+							body = "[SENDER]AServis[/SENDER][SMS]Ваш ремонт №" & SVOr.SerNr & " принят, тел.044-2227709.[/SMS]";
+						end;
+          end;
+        end;
+        //body = convertstringfromcodepage("WINDOWS-1251",body);
+        addtexttoarea(body,a_body);
+        writeareatofile(a_body,"SMS/sms_body.txt",0);
+        //runprogram("SMS/sendSRVSMS.sh","");// Edit ************************** Wednesday, 16 November 2016 15:00:04
+        
+        //Edit-------------------Vitalii 11:20 16.11.2016
+        if(SVOr.SerNr>=9000000)then begin
+          host = "109.95.53.85";//krasnoarm
+        end else begin
+          if(SVOr.SerNr>=3000000)then begin
+            host = "82.144.202.163";//lukanovka
+          end else begin
+            host = "134.249.184.148";//kikvidze
+          end;
+        end;
+        //host = "109.95.53.85";
+        port = 2501;
+        page = "/hansa/sms.php";
+        SetAreaZeroSize(mainRequest);
+        SetAreaZeroSize(replyarea);
+        AddTextToArea("passwd=hj87Hjwofb07QVeg62k&id=" & SVOr.SerNr & "&num=" & right(normphone[0],len(normphone[0])-2) & "&status=1",mainRequest);
+        MySendWebRequest(host,port,-1,false,"POST",page,"application/x-www-form-urlencoded","",false,mainRequest,replyarea,10);
+        logtext(0,"GetAreaLength(replyarea) " & GetAreaLength(replyarea));
+        logtext(0,host & page & "SENDFIRSTSMS request - " & GetStringFromArea(mainRequest,0,GetAreaLength(mainRequest)) & " reply - " & GetStringFromArea(replyarea,0,GetAreaLength(replyarea)));
+        logtext(0,"SEND SMS");
+    end;
+  end;
+	
+	LSENDSMS:;
+return;
+end;
+
+global procedure SENDSECONDSMS(longint sernr)
+begin
+	string 255 subject,body,subphone;
+	array string 100 phone,normphone;
+	integer i,lenth,cnt,k;
+	area a_subject,a_body;
+  string 100 host,page;
+  area mainRequest,replyarea;
+  longint port;
+  record SVOVc SVOr;
+  
+  SVOr.SerNr = sernr;
+	if(readfirstmain(SVOr,1,true))then begin
+		if (SVOr.NoSMS==0) then begin
+			if(currentcompany==8)then begin
+					cnt = 0;
+					subphone = SVOr.Kontinfo1;
+					lenth = len(subphone);
+					For(i=0;i<lenth;i=i+1) begin
+						if(mid(subphone,i,1)==",")then begin
+								cnt = cnt+1;
+						end else begin
+							phone[cnt] = phone[cnt] & mid(subphone,i,1);
+						end;
+					end; 
+					cnt = cnt+1;
+					for(k=0;k<cnt;k=k+1)begin
+						lenth = len(phone[k]);
+						normphone[k] = NormalizePhoneNumber(phone[k]);
+						if(len(normphone[k])==10)then begin
+							normphone[k] = "38" & normphone[k];
+						end;
+						if(len(normphone[k])==11)then begin
+							normphone[k] = "3" & normphone[k];
+						end;
+						if(len(normphone[k])!=12)then begin
+							messagebox(0,"ERROR PHONE");
+							goto LSENDSMS;
+						end;
+					end;
+					subject = "9c7e332509201516 ";
+					For(i=0;i<cnt;i=i+1) begin
+						subject = subject & normphone[i] & ",";
+					end; 
+					subject = mid(subject,0,len(subject)-1);
+					addtexttoarea(subject,a_subject);
+					writeareatofile(a_subject,"SMS/sms_subj.txt",0);
+					if(SVOr.SerNr>=9000000)then begin
+						body = "[SENDER]AServis[/SENDER][SMS]Ваш ремонт №" & SVOr.SerNr & " принят, тел.044-4515451.[/SMS]";
+					end else begin
+						if(SVOr.SerNr>=8000000)then begin
+							body = "[SENDER]AServis[/SENDER][SMS]Ваш ремонт №" & SVOr.SerNr & " принят, тел.044-2229293.[/SMS]";
+						end else begin
+							if(SVOr.SerNr>=7000000)then begin
+								body = "[SENDER]AServis[/SENDER][SMS]Ваш ремонт №" & SVOr.SerNr & " принят, тел.098-1010132.[/SMS]";
+							end else begin
+								body = "[SENDER]AServis[/SENDER][SMS]Ваш ремонт №" & SVOr.SerNr & " принят, тел.044-2227709.[/SMS]";
+							end;
+						end;
+					end;
+					//body = convertstringfromcodepage("WINDOWS-1251",body);
+					addtexttoarea(body,a_body);
+					writeareatofile(a_body,"SMS/sms_body.txt",0);
+					//runprogram("SMS/sendSRVSMS.sh","");// Edit ************************** Wednesday, 16 November 2016 15:00:04
+				
+					//Edit-------------------Vitalii 11:20 16.11.2016
+					if(SVOr.SerNr>=9000000)then begin
+						host = "109.95.53.85";//krasnoarm
+					end else begin
+						if(SVOr.SerNr>=3000000)then begin
+							host = "82.144.202.163";//lukanovka
+						end else begin
+							host = "134.249.184.148";//kikvidze
+						end;
+					end;
+					//host = "109.95.53.85";
+					port = 2501;
+					page = "/hansa/sms.php";
+					SetAreaZeroSize(mainRequest);
+					SetAreaZeroSize(replyarea);
+					AddTextToArea("passwd=hj87Hjwofb07QVeg62k&id=" & SVOr.SerNr & "&num=" & right(normphone[0],len(normphone[0])-2) & "&status=2",mainRequest);
+					MySendWebRequest(host,port,-1,false,"POST",page,"application/x-www-form-urlencoded","",false,mainRequest,replyarea,10);
+				  logtext(0,"GetAreaLength(replyarea) " & GetAreaLength(replyarea));
+				  logtext(0,host & page & " SENDFIRSTSMS request - " & GetStringFromArea(mainRequest,0,GetAreaLength(mainRequest)) & " reply - " & GetStringFromArea(replyarea,0,GetAreaLength(replyarea)));
+
+					logtext(0,"SENDSECONDSMS SMS");
+			end;
+		end;
+  end;
+	
+	LSENDSMS:;
+return;
+end;
+
+global updating procedure UnreservOldOrdersMn()
+begin
+  record ORVc ORr;
+  row ORVc ORrw;
+  record RetVc Retr;
+  row RetVc Retrw;
+  boolean TrHs,testf,TrHs1;
+  integer mtrw,i,rescnt,mtrw1,j;
+  
+  
+  
+  ORr.Reserved = 1;
+  TrHs = true;
+  while(loopkey("Reserved",ORr,1,TrHs))begin
+    testf = true;
+    if(ORr.Reserved<1)then begin  TrHs = false; testf = false;  end;
+    
+    if(testf)then begin
+      rescnt = 0;
+      mtrw = matrowcnt(ORr);
+      for(i=0;i<mtrw;i=i+1)begin
+        matrowget(ORr,i,ORrw);
+        rescnt = rescnt + ORrw.Quant - ORrw.Shipd2;
+        
+        if((ORrw.Quant-ORrw.Shipd2)>0)then begin
+          Retr.OrdNr = ORr.SerNr;
+          TrHs1=true;
+          while(loopkey("OrdNr",Retr,1,TrHs1))begin
+            if(Retr.OrdNr!=ORr.SerNr)then begin TrHs1=false; end;
+            if(TrHs1)then begin
+              mtrw1 = matrowcnt(Retr);
+              for(j=0;j<mtrw1;j=j+1)begin
+                matrowget(Retr,j,Retrw);
+                if(Retrw.ArtCode==ORrw.ArtCode and Retrw.OrdRow==i)then begin
+                  rescnt = rescnt - Retrw.Quant;
+                end;
+              end;
+            end;
+          end;
+          resetloop(Retr);
+        end;
+      end;
+      
+      if(rescnt==0)then begin
+        ORr.Reserved=0;
+        RecordStore(ORr,true);
+        logtext(0,currentcompany & " Unreserv Order " & ORr.SerNr);
+      end;
+      
+    end;
+  end; 
+
+return;
+end;
+
+
+global updating procedure FixReservesMn()
+begin
+	record ORVc ORr;
+	row ORVc ORrw;
+	record ItemStatusVc ISr;
+	boolean TrHs,testf,TrHs1;
+	integer mtrw,i,rescnt,mtrw1,j;
+	
+	ISr.Code = "";
+	while(loopmain(ISr,1,true))begin
+		if(ISr.RsrvQty!=0)then begin
+			ISr.RsrvQty = 0;
+			recordStore(ISr,true);
+		end;
+	end;
+	
+	ORr.Reserved = 1;
+  TrHs = true;
+	while(loopkey("Reserved",ORr,1,TrHs))begin
+    testf = true;
+    if(ORr.Reserved<1)then begin  TrHs = false; testf = false;  end;
+    if(ORr.Closed==1)then begin testf = false;  end;
+    
+    if(testf)then begin
+      rescnt = 0;
+      mtrw = matrowcnt(ORr);
+    		for(i=0;i<mtrw;i=i+1)begin
+        matrowget(ORr,i,ORrw);
+        if((ORrw.Quant-ORrw.Shipd1)>0)then begin
+        		ISr.Code = ORrw.ArtCode;
+        		ISr.Location = ";;;";
+        		if(readfirstmain(ISr,2,true))then begin
+        			ISr.RsrvQty = ISr.RsrvQty + (ORrw.Quant-ORrw.Shipd1);
+        			recordstore(ISr,true);
+        		end;
+        		ISr.Code = ORrw.ArtCode;
+        		ISr.Location = ORr.Location;
+        		if(nonblank(ORrw.Location))then begin
+        			ISr.Location = ORrw.Location;
+        		end;
+        		if(readfirstmain(ISr,2,true))then begin
+        			ISr.RsrvQty = ISr.RsrvQty + (ORrw.Quant-ORrw.Shipd1);
+        			recordstore(ISr,true);
+        		end;
+        end;
+      end;   		
+    end;
+	end;
+
+return;
+end;
+
+
+
+global //Edit***************************Sasha2,17:37 15.04.2015 {
+updating procedure ImportWebItemsIn()
+begin
+string 100 artcode,classtoadd,classtodel,tempstr,newdisps;
+record INVc INr;
+record DIVc DIr;
+boolean testf;
+integer cnt,pos;
+record WebSyncRegVc WSRr;
+
+	cnt = 0;
+	while (TestEOF()==false) begin
+		artcode = ImportField;
+		classtoadd = ImportField; 
+		classtodel = ImportField;
+		
+		if(nonblank(artcode))then begin
+			WSRr.ArtCode = artcode;
+			if(readfirstmain(WSRr,1,true))then begin
+			  testf = false;
+			  			  
+			  if (NonBlank(classtodel)) then begin
+			    testf = true;
+			              
+  			  pos = 0;
+  			  newdisps = "";
+          ExtractObj(WSRr.Available,pos,tempstr);
+          while (nonblank(tempstr)) begin
+            if (SetInSet2(tempstr,classtodel)==false) then begin
+              if (Blank(newdisps)) then begin
+                newdisps = tempstr;
+              end else begin
+                newdisps = newdisps & "," & tempstr;
+              end;
+            end;
+            ExtractObj(WSRr.Available,pos,tempstr);
+          end; 
+          //if (NonBlank(newdisps)) then begin
+            WSRr.Available = newdisps; 
+          //end;
+			  end;
+			  
+			  if (NonBlank(classtoadd)) then begin
+			    testf = true;
+			    			    
+  			  if (NonBlank(WSRr.Available)) then begin
+  			  	if(!setinset(classtoadd,WSRr.Available))then begin
+							WSRr.Available = WSRr.Available & "," & classtoadd;
+  				  end;
+  				end else begin
+  				  WSRr.Available = classtoadd;
+  				end;
+			  end; 
+
+				if (testf) then begin
+					WSRr.DateChange = currentdate;
+				  recordStore(WSRr,true);
+				end;
+ LSomeErrorInDI:; 			
+			end;
+		end;
+	NextImportLine(true);   
+  end; 
+
+LImportNewItemsWithClassIn:;
+	
+return;
+end; //Edit***************************Sasha2,17:37 15.04.2015 }
+
+global //Edit***************************Sasha2,16:35 14.12.2016 {
+updating procedure UpdateTextFieldsForQuickSearchMn(record RcVc RepSpec)
+begin
+  record SVOVc SVOr;
+  row SVOVc SVOrw;
+  Integer i,rwcnt;
+  Boolean saveF;
+  
+      SVOr.SerNr = -1;
+      while (LoopMain(SVOr,1,true)) begin
+        rwcnt = MatRowCnt(SVOr);
+        if (rwcnt>0) then begin
+          saveF = false;
+          for (i=0;i<rwcnt;i=i+1) begin
+            MatRowGet(SVOr,i,SVOrw);
+            if (NonBlank(SVOrw.ArtCode)) then begin
+              //if (Blank(SVOr.ArtCodeTextSearch)) then begin
+                SVOr.ArtCodeTextSearch = SVOrw.ArtCode;
+                saveF = true;
+              /*end else begin
+                if (len(SVOr.ArtCodeTextSearch & " " & SVOrw.ArtCode)<=255 and FindStringInString(SVOr.ArtCodeTextSearch,SVOrw.ArtCode)==false) then begin
+                  SVOr.ArtCodeTextSearch = SVOr.ArtCodeTextSearch & " " & SVOrw.ArtCode;
+                  saveF = true;
+                end;
+              end;*/
+              //if (Blank(SVOr.SpecTextSearch)) then begin
+                SVOr.SpecTextSearch = SVOrw.Spec;
+                saveF = true;
+              /*end else begin
+                if (len(SVOr.SpecTextSearch & " " & SVOrw.Spec)<=255 and FindStringInString(SVOr.SpecTextSearch,SVOrw.Spec)==false) then begin
+                  SVOr.SpecTextSearch = SVOr.SpecTextSearch & " " & SVOrw.Spec;
+                  saveF = true;
+                end;
+              end;*/
+              //if (Blank(SVOr.SerialNrTextSearch)) then begin// Edit ************************** Tuesday, 21 February 2017 11:28:19
+                SVOr.SerialNrTextSearch = SVOrw.SerialNr;
+                saveF = true;
+              /*end else begin// Edit ************************** Tuesday, 21 February 2017 11:28:20
+                if (len(SVOr.SerialNrTextSearch & " " & SVOrw.SerialNr)<=255 and FindStringInString(SVOr.SerialNrTextSearch,SVOrw.SerialNr)==false) then begin
+                  SVOr.SerialNrTextSearch = SVOr.SerialNrTextSearch & " " & SVOrw.SerialNr;
+                  saveF = true;
+                end;
+              end;*/
+            end;
+          end;
+          if (saveF) then begin
+            RECORDSTORE(SVOr,true);
+          end;
+        end;
+      end;
+
+  return;
+end; //Edit***************************Sasha2,16:35 14.12.2016 }
+
+global //Edit***************************Sasha2,14:56 16.02.2017 {
+updating procedure UpdPlanShipDateFrPlanShipSVOMn(record RcVc RepSpec)
+begin
+  record SVOVc SVOr;
+  Boolean saveF;
+  
+      SVOr.SerNr = -1;
+      while (LoopMain(SVOr,1,true)) begin
+        if (SVOr.PlanShipDate!=StringToDate(SVOr.PlanShip)) then begin
+          SVOr.PlanShipDate = StringToDate(SVOr.PlanShip);
+          RECORDSTORE(SVOr,true);
+        end;
+      end;
+
+  return;
+end; //Edit***************************Sasha2,14:56 16.02.2017 }
+
+global //Edit***************************Sasha2,15:27 28.02.2017 {
+function string 50 GetPhone1SerNrByPhone(string phone)
+begin
+  record Phone1Vc Phoner;
+  record SVOVc SVOr;
+  string 50 tempPhone,res;
+  Boolean testf;
+    
+    res = "";
+    tempPhone = phone;
+		if(left(tempPhone,1)<"0" or left(tempPhone,1)>"9")then begin
+			tempPhone = "+" & right(tempPhone,len(tempPhone)-1);
+		end;
+				
+		Phoner.PhoneNum = tempPhone;
+		testf = readfirstmain(Phoner,1,true);
+		if (!testf) then begin
+		  Phoner.PhoneNum = "044" & tempPhone;
+		  testf = readfirstmain(Phoner,1,true);
+		end;
+		if (!testf) then begin
+		  Phoner.PhoneNum = "+38044" & tempPhone;
+		  testf = readfirstmain(Phoner,1,true);
+		end;
+		if (!testf) then begin
+		  Phoner.PhoneNum = "+38" & tempPhone;
+		  testf = readfirstmain(Phoner,1,true);
+		end;
+		if (testf) then begin
+	    res = Phoner.PhoneNum;
+	  end;
+    
+    GetPhone1SerNrByPhone = res;
+  return;
+end; //Edit***************************Sasha2,15:27 28.02.2017 }
+
+global //Edit***************************Sasha2,10:51 10.03.2017 {
+updating procedure RecalcRepairSumInPhone1Mn(record RcVc RepSpec)
+begin
+  record IVVc IVr;
+  record SVOVc SVOr;
+  record RLinkVc RLinkr;
+  record Phone1Vc Phoner;
+  Integer notenr,sign,i;
+  boolean testf,foundf;
+  LongInt svorNr;
+  string 100 phone,phone1Code;
+  vector Boolean phone1IsFound;
+  vector val phoneSumBalance;
+  array string 255 indexes;
+  string 255 curindex;
+  
+      IVr.SerNr = -1;
+      while (LoopMain(IVr,1,true)) begin
+        testf = true;
+        svorNr = -1;
+        if (IVr.OKFlag==0 or IVr.Invalid==1) then begin testf = false; end;
+        if (IVr.Sum4==0) then begin testf = false; end;
+        if (testf) then begin
+          if (IVr.SVONr!=-1) then begin
+            svorNr = IVr.SVONr;
+          end else begin
+            notenr = 1;
+            if (ReadRecordLink(IVr,notenr,SVOr,RLinkr)) then begin
+              svorNr = SVOr.SerNr;
+            end;
+          end;
+        end;
+        if (svorNr!=-1) then begin
+          SVOr.SerNr = svorNr;
+          if (ReadFirstMain(SVOr,1,true)) then begin
+            if (NonBlank(SVOr.Kontinfo1)) then begin
+              phone = SVOr.Kontinfo1;
+            end else begin
+              phone = SVOr.Phone2;
+            end;            
+            phone1Code = GetPhone1SerNrByPhone(phone);
+            if (NonBlank(phone1Code)) then begin
+              foundf = phone1IsFound[phone1Code];
+              if (foundf==false) then begin
+                Phoner.PhoneNum = phone1Code;
+                if (ReadFirstMain(Phoner,1,true)) then begin
+                  phone1IsFound[phone1Code] = true;
+                  foundf = true;
+                end;
+              end;
+              if (foundf) then begin
+                sign = 1;
+                if (IVr.InvType==kInvoiceTypeCredit or IVr.InvType==kInvoiceTypeCreditSpecialSales or IVr.Sum4<0) then begin
+                  sign = -1;
+                end;
+                phoneSumBalance[phone1Code] = phoneSumBalance[phone1Code] + IVr.Sum4 * sign;
+              end;
+            end;
+          end;
+        end;
+      end;
+      
+      GetVectorTags(phoneSumBalance,indexes);
+      for (i=0;i<indexes.length;i=i+1) begin
+        curindex = indexes[i];
+        Phoner.PhoneNum = curindex;
+        if (ReadFirstMain(Phoner,1,true) and phoneSumBalance[curindex]<>blankval) then begin
+          Phoner.RepairsSum = phoneSumBalance[curindex];
+          RECORDSTORE(Phoner,true);
+          LogText(0,Phoner.PhoneNum & " Sum:" & Phoner.RepairsSum);
+        end;
+      end;
+
+  return;
+end; //Edit***************************Sasha2,10:51 10.03.2017 }
+
+
+global procedure GitHALFilesMn(record RcVc RepSpec)
+begin
+	
+	logtext(0,"GIT Pull HAL");
+	runprogram("./githal.sh","");
+	
+return;
+end;
+
+global updating procedure FixACTSERVMn(record RcVc RepSpec)
+begin
+	record ActVc Actr,oldActr;
+	boolean testf;
+	record SVOVc SVOr;
+	string 50 sernum;
+	
+	Actr.SerNr = 0;
+	while(loopmain(Actr,1,true))begin
+		testf = true;
+		if(nonblank(Actr.ActType))then begin testf = false; end;
+		if(Actr.OKFlag!=0)then begin testf = false; end;
+		if(Actr.SVOSerNr==-1)then begin testf = false; end;
+		if(Actr.TransDate>stringtodate("21/08/2017"))then begin testf = false; end;
+		sernum = Actr.SVOSerNr;
+		if(left(sernum,1)!="1")then begin testf = false; end;
+		
+		if(testf)then begin 
+			SVOr.SerNr = Actr.SVOSerNr;
+			if(readfirstmain(SVOr,1,true))then begin
+				if(SVOr.OrderStatus>0 or SVOr.DoneMark>0)then begin
+					RecordCopy(oldActr,Actr);
+					Actr.OKFlag = 1;		
+					RecordUpdate(oldActr,Actr,true);
+					logtext(0,SVOr.SerNr);
+				end;
+			end;
+		end;
+		
+	end;
+	
+return;
+end;
+
+
+global updating procedure AttachToMailWEBLink()
+begin
+	record ConfVc Confr;
+	record WebNavLinkVc Web1r;
+	integer notenr;
+	record RLinkVc RLinkr;
+
+	Confr.SerNr = -1;
+	while(loopmain(Confr,1,true))begin
+		logtext(0,Confr.AddrName);
+		
+		notenr = 1;
+		while (ReadRecordLink(Confr,notenr,Web1r,RLinkr)) begin
+			RLinkr.Comment = Web1r.Description;
+			if (RecordStore(RLinkr,true)) then begin  end;
+			notenr = notenr + 1;
+		end;
+		
+		/*Web1r.SerNr = 99;
+		readfirstmain(Web1r,1,true);
+		createrecordlink(Web1r,currentcompany,Confr,currentcompany);
+		createrecordlink(Confr,currentcompany,Web1r,currentcompany);
+		notenr = 1;
+		while (ReadRecordLink(Confr,notenr,Web1r,RLinkr)) begin
+			notenr = notenr + 1;
+		end;
+		if (ReadRecordLink(Confr,notenr-1,Web1r,RLinkr)) then begin
+			RLinkr.Comment = Web1r.Description;
+			logtext(0,Web1r.Description);
+			if (RecordStore(RLinkr,true)) then begin  end;
+		end;
+		
+		Web1r.SerNr = 100;
+		readfirstmain(Web1r,1,true);
+		createrecordlink(Web1r,currentcompany,Confr,currentcompany);
+		createrecordlink(Confr,currentcompany,Web1r,currentcompany);
+		notenr = 1;
+		while (ReadRecordLink(Confr,notenr,Web1r,RLinkr)) begin
+			notenr = notenr + 1;
+		end;
+		if (ReadRecordLink(Confr,notenr-1,Web1r,RLinkr)) then begin
+			RLinkr.Comment = Web1r.Description;
+			logtext(0,Web1r.Description);
+			if (RecordStore(RLinkr,true)) then begin  end;
+		end;
+		
+		logtext(0,Web1r.Description);
+		Web1r.SerNr = 101;
+		readfirstmain(Web1r,1,true);
+		createrecordlink(Web1r,currentcompany,Confr,currentcompany);
+		createrecordlink(Confr,currentcompany,Web1r,currentcompany);
+		notenr = 1;
+		while (ReadRecordLink(Confr,notenr,Web1r,RLinkr)) begin
+			notenr = notenr + 1;
+		end;
+		if (ReadRecordLink(Confr,notenr-1,Web1r,RLinkr)) then begin
+			RLinkr.Comment = Web1r.Description;
+			logtext(0,Web1r.Description);
+			if (RecordStore(RLinkr,true)) then begin  end;
+		end;
+		
+		Web1r.SerNr = 102;
+		readfirstmain(Web1r,1,true);
+		createrecordlink(Web1r,currentcompany,Confr,currentcompany);	
+		createrecordlink(Confr,currentcompany,Web1r,currentcompany);	
+		notenr = 1;
+		while (ReadRecordLink(Confr,notenr,Web1r,RLinkr)) begin
+			notenr = notenr + 1;
+		end;
+		if (ReadRecordLink(Confr,notenr-1,Web1r,RLinkr)) then begin
+			RLinkr.Comment = Web1r.Description;
+			logtext(0,Web1r.Description);
+			if (RecordStore(RLinkr,true)) then begin  end;
+		end;
+		
+		Web1r.SerNr = 103;
+		readfirstmain(Web1r,1,true);
+		createrecordlink(Web1r,currentcompany,Confr,currentcompany);	
+		createrecordlink(Confr,currentcompany,Web1r,currentcompany);	
+		notenr = 1;
+		while (ReadRecordLink(Confr,notenr,Web1r,RLinkr)) begin
+			notenr = notenr + 1;
+		end;
+		if (ReadRecordLink(Confr,notenr-1,Web1r,RLinkr)) then begin
+			RLinkr.Comment = Web1r.Description;
+			logtext(0,Web1r.Description);
+			if (RecordStore(RLinkr,true)) then begin  end;
+		end;*/
+	end;
+
+return;
+end;
