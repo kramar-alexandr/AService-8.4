@@ -1,7 +1,9 @@
 external procedure ExtractObj(string,var Integer,var string);
+external inner function string 255 StrReplace(string,string,string);
+external procedure CuPerRn(record RcVc);// Edit ************************** Monday, 13 November 2017 13:56:48
+external function Boolean MySendWebRequest(string,longint,longint,boolean,string,string,string,string,boolean,area,var area,integer);
 
-
-SetLangMode(LangRussian,"RUS",0);
+SetLangMode(LangUkrainian,"UKR",0);
 
 function val GetItemPrice(string artcode, string PLCode)
 begin
@@ -64,16 +66,26 @@ begin
   	end;
   end;
   
+  if (currentcompany==2 and RepSpec.flags[1]==0) then begin //Edit***************************Sasha2,10:41 12.02.2016 {
+    showclientf = true;
+  end; //Edit***************************Sasha2,10:41 12.02.2016 }
+  
   startreportnoheaderjob("MyItemReportRn");
   
   startformat(15);
     outstring(0,0,"Товар",false);
+    if(currentcompany==9)then begin
+    	outstring(0,0,"Штрих-код",false);
+    end;
     outstring(0,0,"Назва",false);
     if(RepSpec.flags[1]==0)then begin
 			outstring(0,0,"Класифікація",false);
     end;
     if(RepSpec.flags[0]==1)then begin
     	outstring(0,0,"Постачальник",false);
+    	if(currentcompany==6 or currentcompany==2)then begin// Edit ************************** Wednesday, 13 April 2016 14:21:23
+    		outstring(0,0,"Комментар",false);
+    	end;
     	outstring(0,0,"Дата надходження",false);
     	outstring(0,0,"Серiйний номер",false);
     end;
@@ -118,8 +130,11 @@ begin
     		if(RepSpec.ArtMode==0)then begin
     			StartFormat(15)
     				OutString(0,0,ISr.Code,false);
+    				if(currentcompany==9)then begin
+							outstring(0,0,INr.BarCode,false);
+    				end;
     				OutString(1,0,INr.Name,false);
-    				if(RepSpec.flags[1]==0)then begin // Edit ************************** Friday, 19 August 2016 14:38:49
+    				if(RepSpec.flags[1]==0)then begin// Edit ************************** Friday, 19 August 2016 14:38:49
 							outstring(0,0,INr.DispGroups,false);
     				end;
     				OutString(2,0,ISr.Instock,false);
@@ -146,7 +161,7 @@ begin
     					OutString(1,0,INr.InPrice/ISr.Instock,false);
     					OutString(1,0,INr.InPrice,false);
     				end;
-    				if(RepSpec.flags[1]==0)then begin // Edit ************************** Friday, 19 August 2016 14:39:04
+    				if(RepSpec.flags[1]==0)then begin// Edit ************************** Friday, 19 August 2016 14:39:04
 							OutString(4,0,ISr.Location,false);
     				end;
     				For(i=0;i<plcnt;i=i+1) begin
@@ -164,6 +179,9 @@ begin
         		if(testf1)then begin 
         			StartFormat(15)
   						OutString(0,0,ISr.Code,false);
+  						if(currentcompany==9)then begin
+								outstring(0,0,INr.BarCode,false);
+  						end;
   						OutString(1,0,INr.Name,false);
   						if(RepSpec.flags[1]==0)then begin// Edit ************************** Friday, 19 August 2016 14:39:15
 								outstring(0,0,INr.DispGroups,false);
@@ -173,9 +191,15 @@ begin
   							if(readfirstmain(PUr,1,true) and IHr.InFileName=="PUVc")then begin
   								
   								outstring(0,0,PUr.VECode,false);
+  								if(currentcompany==6 or currentcompany==2)then begin// Edit ************************** Wednesday, 13 April 2016 14:21:23
+										outstring(0,0,PUr.Comment,false);
+									end;
   								outstring(0,0,PUr.TransDate,false);
   							end else begin
   								outstring(0,0,"",false);
+  								if(currentcompany==6 or currentcompany==2)then begin// Edit ************************** Wednesday, 13 April 2016 14:21:23
+										outstring(0,0,"",false);
+									end;
   								outstring(0,0,"",false);
   							end;
   							outstring(0,0,IHr.SerialNr,false);
@@ -227,6 +251,207 @@ return;
 end;
 
 
+
+global procedure FullStockEn()
+begin
+record RcVc RepSpec;
+integer compno;
+  compno = CurrentCompany;
+	RepSpec.ArtMode = 1;
+	RepSpec.flags[0] = 1;
+      switch (compno) begin  
+      case 1: delete_file("Stock/ISStockFull.xls");
+      				CreateFile("Stock/ISStockFull.xls");
+              closefile;
+              openexportfile("Stock/ISStockFull.xls",true);
+              MyItemReportRn(RepSpec);
+              RunProgram("Stock/ISStockFull.sh", "");
+      
+      case 10: delete_file("Stock/GLStockFull.xls");
+      				CreateFile("Stock/GLStockFull.xls");
+              closefile;
+              openexportfile("Stock/GLStockFull.xls",true);
+              MyItemReportRn(RepSpec);
+              RunProgram("Stock/GLStockFull.sh", "");
+              
+      case 2: delete_file("Stock/ITEKUAStockFull.xls");
+      				CreateFile("Stock/ITEKUAStockFull.xls");
+              closefile;
+              openexportfile("Stock/ITEKUAStockFull.xls",true);
+              MyItemReportRn(RepSpec);
+              RunProgram("Stock/ITEKUAStockFull.sh", "");
+              
+      case 4: delete_file("Stock/ICStockFull.xls");
+      				CreateFile("Stock/ICStockFull.xls");
+              closefile;
+              openexportfile("Stock/ICStockFull.xls",true);
+              MyItemReportRn(RepSpec);
+              RunProgram("Stock/ICStockFull.sh", "");
+              
+      case 5: delete_file("Stock/TXTStockFull.xls");
+      				CreateFile("Stock/TXTStockFull.xls");
+              closefile;
+              openexportfile("Stock/TXTStockFull.xls",true);
+              MyItemReportRn(RepSpec);
+              RunProgram("Stock/TXTStockFull.sh", "");
+      
+      case 6: delete_file("Stock/MMROPStockFull.xls");
+      				CreateFile("Stock/MMROPStockFull.xls");
+              closefile;
+              openexportfile("Stock/MMROPStockFull.xls",true);
+              RepSpec.f1 = "INV#1_OP,INV#1_OPST,EXB_OP,EXB_OP_ST";
+              MyItemReportRn(RepSpec);
+              RepSpec.f1 = "";
+              RunProgram("Stock/MMROPStockFull.sh", "");
+              
+              delete_file("Stock/MMROLStockFull.xls");
+      				CreateFile("Stock/MMROLStockFull.xls");
+              closefile;
+              openexportfile("Stock/MMROLStockFull.xls",true);
+              RepSpec.f1 = "INV_OLM_ST,INV_OLM,EXB_OLP,EXB_OLP_ST,INV#1_O,EXB_O";
+              MyItemReportRn(RepSpec);
+              RepSpec.f1 = "";
+              RunProgram("Stock/MMROLStockFull.sh", "");
+              
+              /*delete_file("Stock/MMRStockFull.xls");
+      				CreateFile("Stock/MMRStockFull.xls");
+              closefile;
+              openexportfile("Stock/MMRStockFull.xls",true);
+              MyItemReportRn(RepSpec);
+              RunProgram("Stock/MMRStockFull.sh", "");*/
+      
+      case 7: delete_file("Stock/TNMStockFull.xls");
+      				CreateFile("Stock/TNMStockFull.xls");
+              closefile;
+              openexportfile("Stock/TNMStockFull.xls",true);
+              MyItemReportRn(RepSpec);
+              RunProgram("Stock/TNMStockFull.sh", "");
+              
+      case 9: delete_file("Stock/SamsungStockFull.xls");
+      				CreateFile("Stock/SamsungStockFull.xls");
+              closefile;
+              openexportfile("Stock/SamsungStockFull.xls",true);
+              RepSpec.f1 = "INV#1_OL,EXB_OL,EXB_OL_ST,INV#1_OLST,INV#1,EXB";
+              MyItemReportRn(RepSpec);
+              RepSpec.f1 = "";
+              RunProgram("Stock/SamsungStockFull.sh", "");
+      
+  end;
+  closefile;
+return;
+end;
+
+global procedure ManagersFullStockEn()
+begin
+record RcVc RepSpec;
+integer compno;
+  compno = CurrentCompany;
+      switch (compno) begin
+      case 1: RepSpec.f1 = "INV#1,INV#1_LV,INV#1_LVST";
+              RepSpec.f2 = "RRPD,RRPD1";
+      				delete_file("Stock/iStoreStockFullManagers.xls");
+      				CreateFile("Stock/iStoreStockFullManagers.xls");
+              closefile;
+              openexportfile("Stock/iStoreStockFullManagers.xls",true);
+              MyItemReportRn(RepSpec);
+              RunProgram("Stock/iStoreStockFullManagers.sh", "");
+              
+      case 10: RepSpec.f1 = "INV1_GL,INV1_GLST";
+              RepSpec.f2 = "RRP_T";
+      				delete_file("Stock/GulliverStockFullManagers.xls");
+      				CreateFile("Stock/GulliverStockFullManagers.xls");
+              closefile;
+              openexportfile("Stock/GulliverStockFullManagers.xls",true);
+              MyItemReportRn(RepSpec);
+              RunProgram("Stock/GulliverStockFullManagers.sh", "");
+      
+      case 2: delete_file("Stock/ITEKUAStockFullManagers.xls");
+      				CreateFile("Stock/ITEKUAStockFullManagers.xls");
+              closefile;
+              openexportfile("Stock/ITEKUAStockFullManagers.xls",true);
+              RepSpec.ArtMode=1;
+              MyItemReportRn(RepSpec);
+              RepSpec.ArtMode=0;
+              RunProgram("Stock/ITEKUAStockFullManagers.sh", "");
+              
+              if(GetDateID(currentdate)!=6 and GetDateID(currentdate)!=7)then begin              
+								RepSpec.f1 = "INV#2";
+								RepSpec.f2 = "VIP";
+								RepSpec.flags[1] = 1;
+								delete_file("Stock/ITEKUAStockFullManagersINV2.xls");
+								CreateFile("Stock/ITEKUAStockFullManagersINV2.xls");
+								closefile;
+								openexportfile("Stock/ITEKUAStockFullManagersINV2.xls",true);
+								RepSpec.ArtMode=0;
+								MyItemReportRn(RepSpec);
+								RunProgram("Stock/ITEKUAStockFullManagersINV2.sh", "");
+              end;
+              
+      case 4: delete_file("Stock/ICStockFullManagers.xls");
+      				CreateFile("Stock/ICStockFullManagers.xls");
+              closefile;
+              openexportfile("Stock/ICStockFullManagers.xls",true);
+              MyItemReportRn(RepSpec);
+              RunProgram("Stock/ICStockFullManagers.sh", "");
+              
+              delete_file("Stock/D1ICStockFullManagers.xls");
+      				CreateFile("Stock/D1ICStockFullManagers.xls");
+              closefile;
+              openexportfile("Stock/D1ICStockFullManagers.xls",true);
+              
+              RepSpec.f1 = "INV#1_DT,INV#1_DTST";
+              RepSpec.f2 = "RRPD,RRPD1";
+              MyItemReportRn(RepSpec);
+              RunProgram("Stock/D1ICStockFullManagers.sh", "");
+              
+      case 5: delete_file("Stock/TXTStockFullManagers.xls");
+      				CreateFile("Stock/TXTStockFullManagers.xls");
+              closefile;
+              openexportfile("Stock/TXTStockFullManagers.xls",true);
+              MyItemReportRn(RepSpec);
+              RunProgram("Stock/TXTStockFullManagers.sh", "");
+              
+      case 6: delete_file("Stock/MMROPStockFullManagers.xls");
+      				CreateFile("Stock/MMROPStockFullManagers.xls");
+              closefile;
+              openexportfile("Stock/MMROPStockFullManagers.xls",true);
+              RepSpec.f1 = "INV#1_OP,INV#1_OPST";
+              RepSpec.f2 = "P211,P311";
+              MyItemReportRn(RepSpec);
+              RunProgram("Stock/MMROPStockFullManagers.sh", "");
+              
+              delete_file("Stock/MMROLStockFullManagers.xls");
+      				CreateFile("Stock/MMROLStockFullManagers.xls");
+              closefile;
+              openexportfile("Stock/MMROLStockFullManagers.xls",true);
+              RepSpec.f1 = "INV_OLM,INV_OLM_ST,EXB_OLP,EXB_OLP_ST";
+              RepSpec.f2 = "P411,P412";
+              MyItemReportRn(RepSpec);
+              RunProgram("Stock/MMROLStockFullManagers.sh", "");
+      
+      case 7: delete_file("Stock/TNMStockFullManagers.xls");
+      				CreateFile("Stock/TNMStockFullManagers.xls");
+              closefile;
+              openexportfile("Stock/TNMStockFullManagers.xls",true);
+              MyItemReportRn(RepSpec);
+              RunProgram("Stock/TNMStockFullManagers.sh", "");
+              
+      case 9: delete_file("Stock/SamsungStockFullManagers.xls");
+      				CreateFile("Stock/SamsungStockFullManagers.xls");
+              closefile;
+              openexportfile("Stock/SamsungStockFullManagers.xls",true);
+              RepSpec.f1 = "INV#1_OL,INV#1_OLST";
+              RepSpec.f2 = "P111,P112";
+              MyItemReportRn(RepSpec);
+              RunProgram("Stock/SamsungStockFullManagers.sh", "");
+              
+              
+  end;
+  closefile;
+return;
+end;
+
+
 global procedure InvUpdStoRn(record RcVc RepSpec)
 begin
 	record ItemHistVc IHr;
@@ -261,6 +486,49 @@ begin
 	
 return;
 end; 
+
+global procedure FullStockTRWH2En() //Edit***************************Sasha2,11:42 22.09.2014 {
+begin
+record RcVc RepSpec;
+integer compno;
+  compno = CurrentCompany;
+	RepSpec.ArtMode = 1;
+	RepSpec.flags[0] = 1;
+	RepSpec.f1="TRWH#2";
+      switch (compno) begin  
+      case 2: delete_file("Stock/ITEKUAStockTRWH2Full.xls");
+      				CreateFile("Stock/ITEKUAStockTRWH2Full.xls");
+              closefile;
+              openexportfile("Stock/ITEKUAStockTRWH2Full.xls",true);
+              MyItemReportRn(RepSpec);
+              RunProgram("Stock/ITEKUAStockTRWH2Full.sh", "");
+              
+      case 4: delete_file("Stock/ICStockTRWH2Full.xls");
+      				CreateFile("Stock/ICStockTRWH2Full.xls");
+              closefile;
+              openexportfile("Stock/ICStockTRWH2Full.xls",true);
+              MyItemReportRn(RepSpec);
+              RunProgram("Stock/ICStockTRWH2Full.sh", "");
+              
+      case 5: delete_file("Stock/TXTStockTRWH2Full.xls");
+      				CreateFile("Stock/TXTStockTRWH2Full.xls");
+              closefile;
+              openexportfile("Stock/TXTStockTRWH2Full.xls",true);
+              MyItemReportRn(RepSpec);
+              RunProgram("Stock/TXTStockTRWH2Full.sh", "");
+      
+      case 7: delete_file("Stock/TNMStockTRWH2Full.xls");
+      				CreateFile("Stock/TNMStockTRWH2Full.xls");
+              closefile;
+              openexportfile("Stock/TNMStockTRWH2Full.xls",true);
+              MyItemReportRn(RepSpec);
+              RunProgram("Stock/TNMStockTRWH2Full.sh", "");
+      
+  end;
+  closefile;
+return;
+end; //Edit***************************Sasha2,11:42 22.09.2014 }
+
 
 
 procedure PrintSVOInfo2(record SVOVc SVOr)		//Edit----------------------Dima  02.11.2015
@@ -485,4 +753,153 @@ startreportnoheaderjob("ErrorFix");
 endjob;
 
 return;
+end;
+
+global procedure ReportRegDateServAndInvRn(record RcVc RepSpec)
+begin
+	record SVOVc SVOr;
+	boolean TrHs,testf;
+	record IVVc IVr;
+	val sum;
+	string 100 searchstr;
+	
+	startreportnoheaderjob("Выданные ремонты за период");
+	
+	StartFormat(15);
+		outstring(0,0,"Ремонт",false);			
+		outstring(50,0,"Клиент",false);
+		outstring(100,0,"Дата ремонта",false);
+		outstring(150,0,"Дата выдачи",false);	
+		outstring(200,0,"К оплате",false);
+		outstring(250,0,"Выдал",false);	
+	endformat;
+	
+	SVOr.RegDate = RepSpec.sStartDate;
+	TrHs = true;
+	while(loopkey("RegDate",SVOr,1,TrHs))begin
+		testf = true;
+		if(SVOr.RegDate>RepSpec.sEndDate)then begin TrHs = false; testf = false; end;
+		if(RepSpec.f1!=SVOr.SalesGroup)then begin testf = false; end;
+		
+		if(testf)then begin
+			StartFormat(15);
+				outstring(0,"DblSVOVc",SVOr.SerNr,false);			
+				outstring(50,0,SVOr.Kontinfo1,false);
+				outstring(100,0,SVOr.TransDate,false);
+				outstring(150,0,SVOr.RegDate,false);	
+				outstring(200,0,SVOr.WSCost,false);
+				outstring(250,0,SVOr.GiveAwayUsr,false);		
+			endformat;
+			sum = sum + SVOr.WSCost;
+		end;		
+	end;
+	
+	StartFormat(15);
+		outstring(0,0,"Акт",false);			
+		outstring(50,0,"Клиент",false);
+		outstring(100,0,"Дата Акта",false);
+		outstring(150,0,"Дата выдачи",false);	
+		outstring(200,0,"К оплате",false);
+		outstring(250,0,"Выдал",false);	
+	endformat;
+	
+	IVr.InvDate = RepSpec.sStartDate;
+	TrHs = true;
+	while(loopkey("InvDate",IVr,1,TrHs))begin
+		testf = true;
+		if(IVr.InvDate>RepSpec.sEndDate)then begin TrHs = false; testf = false; end;
+		if(IVr.OKFlag==0)then begin testf = false; end;
+		if(IVr.Invalid>0)then begin testf = false; end;
+		if(IVr.SVONr>-1)then begin testf = false; end;
+		if(RepSpec.f1!=IVr.SalesGroup)then begin testf = false; end;
+		/*if(blank(IVr.SalesGroup) and nonblank(RepSpec.f1))then begin
+			switch(RepSpec.f1)begin
+				case "3GR":searchstr = "";
+				case "4GR":searchstr = "";
+				case "7GR":searchstr = "";
+				case "8GR":searchstr = "";
+				case "9GR":searchstr = "KRS";
+			end;
+		end;*/
+		
+		if(testf)then begin
+			if(IVr.InvType==kInvoiceTypeCredit)then begin
+				IVr.Sum4 = -IVr.Sum4;
+			end;
+			
+			StartFormat(15);
+				outstring(0,"DblIVVc",IVr.SerNr,false);			
+				outstring(50,0,IVr.Addr0,false);
+				outstring(100,0,"",false);
+				outstring(150,0,IVr.InvDate,false);	
+				outstring(200,0,IVr.Sum4,false);
+				outstring(250,0,IVr.SalesMan,false);		
+			endformat;
+			
+		end;
+		
+	end;
+	
+	
+	StartFormat(15);
+		outstring(0,0,"",false);			
+		outstring(50,0,"",false);
+		outstring(100,0,"",false);
+		outstring(150,0,"Итого",false);	
+		outstring(200,0,sum,false);
+		outstring(250,0,"",false);	
+	endformat;
+	
+	endjob;
+return;
+end;
+
+global webpublic procedure WebSaveExportReportToFileEn()
+begin
+	area request,reply;
+							
+	setareazerosize(request);
+	addtexttoarea("{",request);
+	addtexttoarea("\"host\":\"smtp.gmail.com\",",request);
+	addtexttoarea("\"port\":465,",request);
+	addtexttoarea("\"secure\":true,",request);
+	addtexttoarea("\"user\":\"aservice.report@gmail.com\",",request);
+	addtexttoarea("\"pass\":\"arPassword123QWE@\",",request);
+	addtexttoarea("\"from\":\"kramar.alexandr@gmail.com\",",request);
+	addtexttoarea("\"to\":\"" & "vci@a-service.in.ua,kramar.alexandr@bpi.in.ua" & "\",",request);
+	addtexttoarea("\"subject\":\"Report: Выполненые ремонты" & "\",",request);
+	addtexttoarea("\"message\":\"\",",request);
+							
+	addtexttoarea("\"filename\":\"FinishRemont.txt" & "\",",request);
+	addtexttoarea("\"path\":\"/Applications/HANSA/Stock/FinishRemont.txt" & "\"",request);
+	addtexttoarea("}",request);
+
+	MySendWebRequest("127.0.0.1",1070,1070,false,"POST","/sendMail","application/json","",false,request,reply,5);
+return;
+end;
+
+// Edit Dima ************* 2018-03-02 02:33 PM
+
+global
+procedure  ReportRegDateServAndInvEn()
+begin
+	record RcVc RepSpec;
+	
+	RepSpec.sStartDate = AddDay(currentdate, -1);
+	RepSpec.sEndDate = AddDay(currentdate, -1); 	
+	delete_file("Stock/FinishRemont.txt");			
+	CreateFile("Stock/FinishRemont.txt");			
+	closefile;										
+	openexportfile("Stock/FinishRemont.txt",true);	
+	ReportRegDateServAndInvRn(RepSpec);
+	WebSaveExportReportToFileEn;
+end;
+
+global webpublic Procedure WebReportRegDateServAndInvEn()
+begin
+	
+	SetCompany(8,false);
+	ReportRegDateServAndInvEn;
+	ReSetCompany(8);
+	return;
 end;
