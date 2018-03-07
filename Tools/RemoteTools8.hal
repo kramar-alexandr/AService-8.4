@@ -354,18 +354,6 @@ begin
                  j = mtrw;			 
                end;
              end; //Edit***************************Sasha2,15:01 20.06.2014
-             // Edit Start ---------------------------------------------- Edit Start
-	//Thursday, 25 May 2017 13:39:16
-	
-             PDr.Code = IVp.PayDeal;
-             if(readfirstmain(PDr,1,true))then begin
-							 if(nonblank(PDr.pdSalesAcc))then begin
-								 salesacc = PDr.pdSalesAcc;
-							 end;
-             end;
-             
-	// Edit End ---------------------------------------------- Edit End
-	
              MatRowGet(WSr,WSIVr.Row,WSrw);
              if (SVOAb.WSHeaderObjectOnSVOIV!=0) then begin
                rowobjects = WSr.Objects;
@@ -378,7 +366,7 @@ begin
            if (SVOAb.WSHeaderObjectOnSVOIV==0) then begin
              rowobjects = AddObjectToObjectList(rowobjects,INr.Objects);        
            end;
-           //SalesAcc = WSrw.SalesAcc;
+           SalesAcc = WSrw.SalesAcc;
          case 1:
            rowobjects = INr.Objects;
        end;
@@ -427,7 +415,7 @@ begin
          IVrw.FIFORowVal = blankval;
          switch (WSIVr.RecType) begin
            case 0:
-             //IVrw.SalesAcc = WSrw.SalesAcc;
+             IVrw.SalesAcc = WSrw.SalesAcc;
              IVrw.FIFO = WSrw.FIFO;
              IVrw.FIFORowVal = WSrw.FIFORowVal;
          end;
@@ -1377,7 +1365,7 @@ begin
   Actr.TransDate = CurrentDate;
   Actr.MainPersons = ORr.SalesMan;
   if (ORr.SalesMan!=CurrentUser) then begin
-    Actr.CCPersons = CurrentUser;
+    //Actr.CCPersons = CurrentUser;
   end;
   Actr.Comment = ORr.Comment;
   Actr.SerNr = NextSerNr("ActVc",Actr.TransDate,-1,false,"");  
@@ -1420,8 +1408,8 @@ begin
   Actr.TodoFlag = 1;
   Actr.SerNr = NextSerNr("ActVc",Actr.TransDate,-1,false,"");
   if (RecordStore(Actr,false)) then begin
-    CreateRecordLink(Actr,curcomp,CUr,curcomp);
-    CreateRecordLink(CUr,curcomp,Actr,curcomp);
+//    CreateRecordLink(Actr,curcomp,CUr,curcomp); we dont like it
+//    CreateRecordLink(CUr,curcomp,Actr,curcomp);
     res = true;
   end;
   MakeActFromCU = res;
@@ -1674,16 +1662,21 @@ begin
   end else begin
     Actr.TransDate = SVOr.TransDate;
   end;  
+  
+  Actr.TransDate = currentdate;// Edit ************************** 29/08/2017
+  
   BlockLoad(ASTb);
   Actr.ActType = ASTb.GenServOrder;
   if (PasteActTypeInAct("",Actr)) then begin
   end;
   Actr.OKFlag = ASTb.SVODone;
   SetActTypeValues(Actr);
-  Actr.MainPersons = SVOr.SalesMan;
+  Actr.MainPersons = SVOr.ServiceManager;// Edit ************************** Monday, 21 August 2017 17:33:56
+  
   if (SVOr.SalesMan!=CurrentUser) then begin
-    Actr.CCPersons = CurrentUser;
+    //Actr.CCPersons = CurrentUser;
   end;
+  //Actr.CCPersons = "SEREGA";// Edit ************************** Monday, 21 August 2017 17:41:21
   Actr.SVOSerNr = SVOr.SerNr;
   if (MatRowCnt(SVOr)>0) then begin
     rownr = activerow;
@@ -2203,8 +2196,9 @@ begin
   return;
 end;  //Edit***************************Sasha2,14:24 22.05.2017 }
 
-global //Edit***************************Sasha2,15:10 22.05.2017 {
-updating procedure PhonesFromSVO(longint SVONr)
+
+global
+updating procedure PhonesFromSVO(record SVOVc SVOr)
 begin
   record Phone1Vc Pr,oldPr;
   record SVOVc SVOr;
@@ -2215,8 +2209,8 @@ begin
   string 1 char,c;
   array string 20 phones;
   
-  SVOr.SerNr = SVONr;
-  if (ReadFirstMain(SVOr,1,true)) then begin
+  //SVOr.SerNr = SVONr;
+  if (true) then begin
     if (nonblank(SVOr.Kontinfo1)) then begin
       tstr = SVOr.Kontinfo1;
       phone = "";
@@ -2333,9 +2327,9 @@ begin
       for (i=0;i<pi;i=i+1) begin
         Pr.PhoneNum = phones[i];
         if (readfirstmain(Pr,1,true)) then begin
-          if setinset((SVONr & ""),Pr.SVONrs) then begin
+          if setinset((SVOr.SerNr & ""),Pr.SVONrs) then begin
             if (SVOr.DoneMark!=0) then begin
-              Pr.SVONrs = StrReplace(Pr.SVONrs,(SVONr & ""),"");
+              Pr.SVONrs = StrReplace(Pr.SVONrs,(SVOr.SerNr & ""),"");
               Pr.SVONrs = StrReplace(Pr.SVONrs,",,",",");
               if (left(Pr.SVONrs,1)==",") then begin
                 Pr.SVONrs = right(Pr.SVONrs,len(Pr.SVONrs)-1);
@@ -2347,9 +2341,9 @@ begin
           end else begin
             if (SVOr.DoneMark==0) then begin
               if (nonblank(Pr.SVONrs)) then begin
-                Pr.SVONrs = Pr.SVONrs & "," & SVONr;
+                Pr.SVONrs = Pr.SVONrs & "," & SVOr.SerNr;
               end else begin
-                Pr.SVONrs = SVONr;
+                Pr.SVONrs = SVOr.SerNr;
               end;
             end;
           end;
@@ -2364,7 +2358,7 @@ begin
           RecordNew(Pr);
           Pr.PhoneNum = phones[i];
           if (SVOr.DoneMark==0) then begin
-            Pr.SVONrs = SVONr & "";
+            Pr.SVONrs = SVOr.SerNr & "";
           end;
           Pr.Vlastnik = SVOr.Vlastnik;
           Pr.Priynato = SVOr.Priynato & " " & SVOr.Name & " " & SVOr.MiddleName;
@@ -2491,9 +2485,9 @@ begin
       for (i=0;i<pi;i=i+1) begin
         Pr.PhoneNum = phones[i];
         if (readfirstmain(Pr,1,true)) then begin
-          if setinset((SVONr & ""),Pr.SVONrs) then begin
+          if setinset((SVOr.SerNr & ""),Pr.SVONrs) then begin
             if (SVOr.DoneMark!=0) then begin
-              Pr.SVONrs = StrReplace(Pr.SVONrs,(SVONr & ""),"");
+              Pr.SVONrs = StrReplace(Pr.SVONrs,(SVOr.SerNr & ""),"");
               Pr.SVONrs = StrReplace(Pr.SVONrs,",,",",");
               if (left(Pr.SVONrs,1)==",") then begin
                 Pr.SVONrs = right(Pr.SVONrs,len(Pr.SVONrs)-1);
@@ -2505,9 +2499,9 @@ begin
           end else begin
             if (SVOr.DoneMark==0) then begin
               if (nonblank(Pr.SVONrs)) then begin
-                Pr.SVONrs = Pr.SVONrs & "," & SVONr;
+                Pr.SVONrs = Pr.SVONrs & "," & SVOr.SerNr;
               end else begin
-                Pr.SVONrs = SVONr;
+                Pr.SVONrs = SVOr.SerNr;
               end;
             end;
           end;
@@ -2521,7 +2515,7 @@ begin
           RecordNew(Pr);
           Pr.PhoneNum = phones[i];
           if (SVOr.DoneMark==0) then begin
-            Pr.SVONrs = SVONr & "";
+            Pr.SVONrs = SVOr.SerNr & "";
           end;
           Pr.Vlastnik = SVOr.Vlastnik;
           Pr.Priynato = SVOr.Priynato & " " & SVOr.Name & " " & SVOr.MiddleName;
@@ -2591,6 +2585,308 @@ begin
 
   MakeActFromHRMCOChange = res;
   return;
+end;
+
+global
+updating procedure PhonesFromSVOMn(record RcVc RepSpec)
+begin
+  boolean TrHs;
+  record Phone1Vc Pr;
+  record SVOVc SVOr;
+  string 255 svonr;
+  
+  if (RepSpec.flags[0]!=0) then begin
+    resetloop(Pr);
+    TrHs = true;
+    while (LoopMain(Pr,1,TrHs)) begin
+      if (TrHs) then begin
+        RecordDelete(Pr);
+        StepBack(Pr);
+      end;
+    end;
+  end else begin
+    resetloop(SVOr);
+    while (loopmain(SVOr,1,true)) begin
+      PhonesFromSVO(SVOr);
+    end;
+  end;
+  
+  return;
+end;
+
+
+global updating procedure NormalizePhonesInSVOMn()
+begin
+	record Phone1Vc Pr,oldPr;
+  record SVOVc SVOr;
+  string 255 phone;
+  boolean TrHs,testf;
+  string 255 tstr,newSVONrs;
+  integer i,j,pos,chrcode,pi;
+  string 1 char,c;
+  array string 20 phones;
+  	
+	while(loopmain(SVOr,1,true))begin
+		SVOr.OldPhone = SVOr.Kontinfo1;
+		if(nonblank(SVOr.Phone2))then begin
+			if(blank(SVOr.OldPhone))then begin
+				SVOr.OldPhone = SVOr.Phone2;
+			end else begin
+				SVOr.Phone2 = "," & SVOr.Phone2;
+			end;
+		end;
+		
+		if (nonblank(SVOr.Kontinfo1)) then begin
+      tstr = SVOr.Kontinfo1;
+      phone = "";
+      //deleting unnessesary chars
+      for (i=0;i<len(tstr);i=i+1) begin
+        char = mid(tstr,i,1);
+        chrcode = asc(char);
+        if ((chrcode == 43) or ((chrcode>=48) and (chrcode<=57))) then begin
+          phone = phone & char;
+        end;
+      end;
+      //parsing
+      pi = 0;
+      while (nonblank(phone)) begin
+        c = mid(phone,0,1);
+        switch (c) begin
+          case "+":
+            char = mid(phone,1,1);
+            switch (char) begin
+              case "3":
+                tstr = mid(phone,0,13);
+                j = 0;
+                for (i=1;i<len(tstr);i=i+1) begin
+                  if (mid(tstr,i,1)=="+") then begin
+                    //error
+                    j = i;
+                    i = len(tstr);
+                  end;
+                end;
+                if (j!=0) then begin
+                  phone = mid(phone,j,(len(phone) - j));
+                end else begin
+                  phones[pi] = tstr;
+                  pi = pi + 1;
+                  phone = mid(phone,13,(len(phone) - 13));
+                end;
+              case "7":
+                tstr = mid(phone,0,13);
+                j = 0;
+                for (i=1;i<len(tstr);i=i+1) begin
+                  if (mid(tstr,i,1)=="+") then begin
+                    //error
+                    j = i;
+                    i = len(tstr);
+                  end;
+                end;
+                if (j!=0) then begin
+                  phone = mid(phone,j,(len(phone) - j));
+                end else begin
+                  phones[pi] = tstr;
+                  pi = pi + 1;
+                  phone = mid(phone,13,(len(phone) - 13));
+                end;
+              otherwise
+                //error
+                phone = mid(phone,1,(len(phone) - 1));
+            end;
+          case "0":
+            tstr = mid(phone,0,10);
+            j = 0;
+            for (i=0;i<len(tstr);i=i+1) begin
+              if (mid(tstr,i,1)=="+") then begin
+                //error
+                j = i;
+                i = len(tstr);
+              end;
+            end;
+            if (j!=0) then begin
+              phone = mid(phone,j,(len(phone) - j));
+            end else begin
+              phones[pi] = "+38" & tstr;
+              pi = pi + 1;
+              phone = mid(phone,10,(len(phone) - 10));
+            end;
+          otherwise
+            if (mid(phone,0,2)=="80") then begin
+              tstr = mid(phone,0,11);
+              j = 0;
+              for (i=0;i<len(tstr);i=i+1) begin
+                if (mid(tstr,i,1)=="+") then begin
+                  //error
+                  j = i;
+                  i = len(tstr);
+                end;
+              end;
+              if (j!=0) then begin
+                phone = mid(phone,j,(len(phone) - j));
+              end else begin
+                phones[pi] = "+3" & tstr;
+                pi = pi + 1;
+                phone = mid(phone,11,(len(phone) - 11));
+              end;
+            end else begin
+              tstr = mid(phone,0,7);
+              j = 0;
+              for (i=0;i<len(tstr);i=i+1) begin
+                if (mid(tstr,i,1)=="+") then begin
+                  //error
+                  j = i;
+                  i = len(tstr);
+                end;
+              end;
+              if (j!=0) then begin
+                phone = mid(phone,j,(len(phone) - j));
+              end else begin
+                phones[pi] = tstr;
+                pi = pi + 1;
+                phone = mid(phone,7,(len(phone) - 7));
+              end;
+            end;
+        end;
+      end;     
+    end;
+    if (nonblank(SVOr.Phone2)) then begin
+      tstr = SVOr.Phone2;
+      phone = "";
+      //deleting unnessesary chars
+      for (i=0;i<len(tstr);i=i+1) begin
+        char = mid(tstr,i,1);
+        chrcode = asc(char);
+        if ((chrcode == 43) or ((chrcode>=48) and (chrcode<=57))) then begin
+          phone = phone & char;
+        end;
+      end;
+      //parsing
+      pi = 0;
+      while (nonblank(phone)) begin
+        c = mid(phone,0,1);
+        switch (c) begin
+          case "+":
+            char = mid(phone,1,1);
+            switch (char) begin
+              case "3":
+                tstr = mid(phone,0,13);
+                j = 0;
+                for (i=1;i<len(tstr);i=i+1) begin
+                  if (mid(tstr,i,1)=="+") then begin
+                    //error
+                    j = i;
+                    i = len(tstr);
+                  end;
+                end;
+                if (j!=0) then begin
+                  phone = mid(phone,j,(len(phone) - j));
+                end else begin
+                  phones[pi] = tstr;
+                  pi = pi + 1;
+                  phone = mid(phone,13,(len(phone) - 13));
+                end;
+              case "7":
+                tstr = mid(phone,0,13);
+                j = 0;
+                for (i=1;i<len(tstr);i=i+1) begin
+                  if (mid(tstr,i,1)=="+") then begin
+                    //error
+                    j = i;
+                    i = len(tstr);
+                  end;
+                end;
+                if (j!=0) then begin
+                  phone = mid(phone,j,(len(phone) - j));
+                end else begin
+                  phones[pi] = tstr;
+                  pi = pi + 1;
+                  phone = mid(phone,13,(len(phone) - 13));
+                end;
+              otherwise
+                //error
+                phone = mid(phone,1,(len(phone) - 1));
+            end;
+          case "0":
+            tstr = mid(phone,0,10);
+            j = 0;
+            for (i=0;i<len(tstr);i=i+1) begin
+              if (mid(tstr,i,1)=="+") then begin
+                //error
+                j = i;
+                i = len(tstr);
+              end;
+            end;
+            if (j!=0) then begin
+              phone = mid(phone,j,(len(phone) - j));
+            end else begin
+              phones[pi] = "+38" & tstr;
+              pi = pi + 1;
+              phone = mid(phone,10,(len(phone) - 10));
+            end;
+          otherwise
+            if (mid(phone,0,2)=="80") then begin
+              tstr = mid(phone,0,11);
+              j = 0;
+              for (i=0;i<len(tstr);i=i+1) begin
+                if (mid(tstr,i,1)=="+") then begin
+                  //error
+                  j = i;
+                  i = len(tstr);
+                end;
+              end;
+              if (j!=0) then begin
+                phone = mid(phone,j,(len(phone) - j));
+              end else begin
+                phones[pi] = "+3" & tstr;
+                pi = pi + 1;
+                phone = mid(phone,11,(len(phone) - 11));
+              end;
+            end else begin
+              tstr = mid(phone,0,7);
+              j = 0;
+              for (i=0;i<len(tstr);i=i+1) begin
+                if (mid(tstr,i,1)=="+") then begin
+                  //error
+                  j = i;
+                  i = len(tstr);
+                end;
+              end;
+              if (j!=0) then begin
+                phone = mid(phone,j,(len(phone) - j));
+              end else begin
+                phones[pi] = tstr;
+                pi = pi + 1;
+                phone = mid(phone,7,(len(phone) - 7));
+              end;
+            end;
+        end;
+      end;
+    end;
+		
+		
+		SVOr.Kontinfo1 = "";
+		SVOr.Phone2 = "";
+		if(pi>0)then begin
+			if(left(phones[0],3)=="+38")then begin
+				phones[0] = mid(phones[0],3,len(phones[0])-3);
+			end;
+			SVOr.Kontinfo1 = phones[0];
+		end;
+		if(pi>1)then begin
+			if(left(phones[1],3)=="+38")then begin
+				phones[1] = mid(phones[1],3,len(phones[1])-3);
+			end;
+			SVOr.Phone2 = phones[1];
+		end;
+		
+		For(i=0;i<pi;i=i+1) begin
+	  	phones[i] = "";
+		end; 
+		
+		recordstore(SVOr,true);
+	end;
+	
+return;
 end;
 
 global procedure  FindPhonePerson(var record Phone1Vc Phonerres,string phoneinput)
