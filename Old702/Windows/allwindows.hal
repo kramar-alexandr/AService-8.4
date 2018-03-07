@@ -2414,19 +2414,20 @@ if (HasTouchScreenLook==false) then begin
   CommunicateButton;
   Tile(0,74,false,"",CustCode);
   EditField(75,vm=(v=6),95,"№",Normal,SerNr,false,TSerSClass);
-  EditField(75,v+=20,95,"Клієнт",Normal,CustCode,false,CUSClass);
+  EditField(55,v+=20,95,"Клієнт",Normal,CustCode,false,CUSClass);
   EnterSkip(PayDeal);
   EditField(h=255,v=vm,-40,"Наймен.",Normal,Addr0,false,0);
   if (StandardHansa==false) then begin
     if (HasLocalization("FIN")) then begin
       EditField(h,vm=(v+=20),180,"Оплата посил",ViewOnly,CalcFinRef,false,0);
     end else begin
-  EditField(h,vm=(v+=20),135,"Офіц. номер",Normal,OfficialSerNr,false,LegalInvNrSClass);
+  /*EditField(h,vm=(v+=20),135,"Офіц. номер",Normal,OfficialSerNr,false,LegalInvNrSClass);
   if (CurrentUser=="SA") then begin
     EditField(h+200,v,100,"LocOKNr",Normal,LocOKNr,false,0); //Edit***************************Sasha2,14:56 15.02.2016
+  end;*/
+		EditField(180,vm=(v+=20),220,"ФІБ",Normal,DelAddr3,false,0);// Edit ************************** BPI Ukraine - KramarAlexandr - Wednesday, 20 December 2017 11:34:08
+		EditField(h+210,v,100,"Телефон",Normal,Phone2,false,0);// Edit ************************** BPI Ukraine - KramarAlexandr - Wednesday, 20 December 2017 11:34:06
   end;
-  
-    end;
   end else begin
     v = v + 20;
     vm = v;
@@ -7124,14 +7125,18 @@ begin
   
   v=vm-20;
   halpushbutton(h2+200,v,h2+325,v+50,"FastPaySVODsm","Швидка оплата");// Edit ************************** Friday, 25 November 2016 11:32:03 
-  EditField(h2+125,v,60, "Готівка",Normal,FastCash,false,0);
-  EditField(h2+125,v+=20,60, "Термін.",Normal,FastTerm,false,0);
+  EditField(h2+240,v+=20,60, "Термін.",Normal,FastTerm,false,0); // Edit ************ Dima 8 February 2018, 15:45
+  EditField(h2+240,v+20,60, "Готівка",Normal,FastCash,false,0);
+
+  EditField(h2+85,v,80,"",ViewOnly,DiagnosFinishUsr,false,0);
+  EditField(h2+85,v+=20,80,"",ViewOnly,RepairFinishUsr,false,0);
+  EditField(h2+85,v+=20,80,"",ViewOnly,GiveAwayUsr,false,0);
   //EditField(h2+125,v+=20,60, "PlanShip",Normal,PlanShip,false,0);/////////
   EnterSkip(Math);
   Tile(2,110,false,"2",Math);
 
   v = 24;
-  MatrixBegin(3,v,-50,v+45,-,50);
+  MatrixBegin(3,v,-50,v+45,-,1);
   MatTypedRow(stp);
   Flip(0);
   MatCol(t=1,32,"Товар",0,ArtCode,false,INSClass);
@@ -7166,7 +7171,8 @@ begin
  	EditField(h=100,v,200,"Власник",Normal,Vlastnik,false,0);EditField(h+300,v,-20,"SN Зареєст.",Normal,CustomField8,false,0);
  	EditField(h,v+=vs,120,"Призвище",Normal,Priynato,false,0);	
  	EditField(h+160,v,120,"Ім'я",Normal,Name,false,0);	
- 	EditField(h+360,v,120,"По батькові",Normal,MiddleName,false,0);	
+ 	EditField(h+360,v,120,"По батькові",Normal,MiddleName,false,0);
+ 	EditField(h+590,v,40,"Поточна знижка",ViewOnly,PersonalRebCode,false,0);	
  	
 	EditField(h,v+=vs,100,"Тел.1",Normal,Kontinfo1,false,0);	
 	HalPushButton(h+110,v-3,h+180,v+15,"CallToClientDsm","Дзвінок");
@@ -7178,14 +7184,17 @@ begin
 	EditField(-130,v,-105,"Пост.Кл.",ViewOnly,CustomField9,false,0);	// Edit ************************** Thursday, 30 June 2016 10:21:49
 	HalPushButton(-90,v-3,-50,v+15,"ServClientOrderDsm","Звіт");
 	
-	EditField(h,v+=vs,-20,"e-mail",Normal,Kontinfo2,false,0);	
+	CheckBox(h-70,v+vs,0,"C опросом",NoOpros);
+	EditField(h+70,v+=vs,-20,"e-mail",Normal,Kontinfo2,false,0);	
 	EditField(h,v+=vs,-20,"Адреса клієнта",Normal,Kontinfo3,false,0);
   v=v+10;
-  EditField(h,v+=vs,-20,"Скарги власн.",Normal,Comment1,false,IssueSClass);
-  EditField(h,v+=vs,-20,"",Normal,Comment2,false,IssueSClass);
+  EditField(h,v+=vs,600,"Скарги власн.",Normal,Comment1,false,0);
+  EditField(h,v+=vs,600,"",Normal,Comment2,false,0);
+  HalPushButton(h+630,v-3,h+690,v+155,"IssuesButtonDsm","Скарги"); // Edit Dima ************* 2018-02-27 04:15 PM
   v=v+10;
-  EditField(h,v+=vs,-20,"Наявні деф.",Normal,Comment3,false,DefectSClass);// Edit ************************** Friday, 29 May 2015 17:19:51
-  EditField(h,v+=vs,-20,"",Normal,Comment4,false,DefectSClass);
+  EditField(h,v+=vs,600,"Наявні деф.",Normal,Comment3,false,0); // Edit Dima ************* 2018-02-26 12:24 PM
+  EditField(h,v+=vs,600,"",Normal,Comment4,false,0); // Edit Dima ************* 2018-02-26 12:26 PM
+  HalPushButton(h+630,v-3,h+690,v+155,"DefectsButtonDsm","Дефекти"); // Edit Dima ************* 2018-02-26 12:38 PM
   v=v+10;
   StaticText(h,v+=vs,"Комплектність",true);
   EditField(h,v+=vs-10,-20,"Батарея:",Normal,Batary,false,0);
@@ -10734,5 +10743,21 @@ begin
     if (GuiType==kGuiiPhone) then begin
       SpecialMenu("Підпис",' ',8,"SignActDsm");
     end;
+  EndWindow;
+end;
+
+window WebNavLinkDClass:1
+  wtag("language","UKR"), wtag("product","*"), wtag("productcode","*"), wtag("device","computer")
+begin
+  real h,h2,h4,v,vs;
+  WindowBegin("Web-посилання",WebNavLinkDClass,CGview,WebNavLinkView);
+  UseView(WebNavLinkVc);
+  SetWRect(20,80,450,200);
+  vs = 20;h = 100;h2 =  330;h4 = 500; v = 6;
+  EditField(h,v,100,"Сер. No",St_i,SerNr,false,0);
+  EditField(h,v+=vs,200,"URL",Normal,URL,false,0);
+  EditField(h,v+=vs,200,"Опис",Normal,Description,false,0);
+  EditField(h,v+=vs,200,"Відкрити",Normal,OpenType,false,SetSClass);
+  SpecialMenu("Добавить всем пользователям",' ',8,"AttachToMailWEBLinkDsm");
   EndWindow;
 end;
