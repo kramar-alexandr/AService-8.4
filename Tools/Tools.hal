@@ -635,6 +635,35 @@ string 50 registerVc;
   RETURN;
 END;
 
+
+global updating
+procedure UpdateSalesGroupsInInvoicesMn()	//Edit----------------------Dima  29.07.2015
+begin
+	record IVCashVc IVCashr;
+	record LocalMachineAccBlock LAccblock;
+	row	LocalMachineAccBlock LAccrw;
+	record UserVc Userr;
+	string 20 customer;
+	vector string 30 SalesGroups;
+	integer i,rwcnt;
+	
+	BlockLoad(LAccblock);
+	rwcnt = MatRowCnt(LAccblock);
+	for(i=0;i<rwcnt;i=i+1) begin
+		MatRowGet(LAccblock,i,LAccrw);
+		Userr.Code = LAccrw.UserCode;
+		if (ReadFirstMain(Userr,1,true)) then begin
+			SalesGroups[LAccrw.CustCode] = Userr.SalesGroup;
+		end;
+	end;
+		
+	while(LoopMain(IVCashr,1,true)) begin
+		IVCashr.SalesGroup = SalesGroups[IVCashr.CustCode];
+		RecordStore(IVCashr,true);
+	end;  
+end;
+
+
 global function string 50 CurrentUserOnServer()
 begin
 	
@@ -794,48 +823,38 @@ begin
 return;
 end;
 
-//Edit***************************Sasha2,16:26 23.05.2017 {
-function string 200 FindUsersWithActiveTasksQueue()
-begin
-  string 200 users;
-  Record UserVc Userr;
-  Boolean testf,TrHs;
-  
-    TrHs = true;
-    while (LoopMain(Userr,1,TrHs)) begin
-      testf = true;
-      if (Userr.Closed!=0) then begin testf = false; end;
-      //if (Userr.InTasksQueue==0) then begin testf = false; end;
-      if (testf) then begin
-        if (len(users & Userr.Code)<200) then begin
-          if (NonBlank(users)) then begin
-            users = users & ",";
-          end;
-          users = users & Userr.Code;
-        end else begin
-          TrHs = false;
-        end;
-      end;
-    end;
-    
-  FindUsersWithActiveTasksQueue = users;
-return;
-end; //Edit***************************Sasha2,16:26 23.05.2017 }
 
-
-global 
-updating procedure CreateActFromSVOToEnginer(record SVOVc SVOr)
+global updating procedure CreateActFromSVOToEnginer(record SVOVc SVOr)
 begin
 	record ActVc Actr,oldActr;
 	string 50 sernum;
 	row SVOVc SVOrw;
 	record INVc INr;
 	boolean creaetf;
+	boolean foundf,TrHs;
+	boolean needcreate;
+	
+	
+	needcreate = false;
 	
 	sernum = SVOr.SerNr;
-	//if(left(sernum,1)=="1" and SVOr.OrderStatus==0 and SVOr.DoneMark==0)then begin
+	if(left(sernum,1)=="1" and SVOr.OrderStatus==0 and SVOr.DoneMark==0)then begin
+		foundf = false;
+		resetloop(SVOr);
 		Actr.SVOSerNr = SVOr.SerNr;
-		if(!readfirstkey("SVOSerNr",Actr,1,true))then begin
+		TrHs = true;
+		while(loopkey("SVOSerNr",Actr,1,TrHs))begin
+			if(Actr.SVOSerNr!=SVOr.SerNr)then begin TrHs = false; end;
+			
+			if(TrHs and Actr.ActType=="SERV")then begin
+				foundf = true;
+				creaetf = false;
+				goto lFoundSVO1;
+			end;
+		end;
+		
+lFoundSVO1:;
+		if(!foundf)then begin
 			creaetf = true;
 			recordnew(Actr);
 			Actr.Comment = SVOr.SerNr & " " & SVOr.Comment1;
@@ -843,72 +862,213 @@ begin
       Actr.AlarmType = kAlarmTypeNone;
 			Actr.SVOSerNr = SVOr.SerNr;
 			Actr.TodoFlag = kTodoFlagTodo;
+			Actr.ActType = "SERV";
 			Actr.SymbNr = 3;
 			if(matrowcnt(SVOr)>0)then begin
 				matrowget(SVOr,0,SVOrw);
 				INr.Code = SVOrw.ArtCode;
 				if(readfirstmain(INr,1,true))then begin
 					Actr.Comment = INr.Code & " " & Actr.Comment;
-					Actr.Phone = left(SVOrw.Spec,20);
-					/*switch(INr.Group)begin //Edit***************************Sasha2,16:14 23.05.2017 {
-						case"APP1":Actr.MainPersons = "BATCHENKO,MOISEEV,DIMA,KAYZER";
+					Actr.Phone = SVOrw.Spec;
+					switch(INr.Group)begin
+						case"APP1":Actr.MainPersons = "BATCHENKO,DIMA,KAYZER";
 											 Actr.Comment = addhours(currenttime,2) & " " & Actr.Comment;
-						case"APP2":Actr.MainPersons = "TRIKOPA,SAO,RABCHUN,KAYZER";
+											 needcreate = true;
+						case"APP2":Actr.MainPersons = "TRIKOPA,SAO,RABCHUN,KAYZER";//"TRIKOPA,SAO,RABCHUN,KAYZER";
 											 Actr.Comment = addhours(currenttime,5) & " " & Actr.Comment;
-						case"APP3":Actr.MainPersons = "TRIKOPA,SAO,RABCHUN,KAYZER";
+											 needcreate = true;
+						case"APP3":Actr.MainPersons = "TRIKOPA,SAO,RABCHUN,KAYZER";//TRIKOPA,SAO,RABCHUN,
 											 Actr.Comment = addhours(currenttime,5) & " " & Actr.Comment;
+											 needcreate = true;
 					end;
 					switch(INr.Code)begin
 						case "IPAD":	Actr.MainPersons = "POGEDAEV,KAYZER";
 												 Actr.Comment = addhours(currenttime,5) & " " & Actr.Comment;
+												 needcreate = true;
 						case "IPHONE3":	Actr.MainPersons = "MOISEEV";
 												 		Actr.Comment = addhours(currenttime,5) & " " & Actr.Comment;
-					end;*/ 
-					Actr.MainPersons = FindUsersWithActiveTasksQueue;
-					Actr.Comment = addhours(currenttime,2) & " " & Actr.Comment; //Edit***************************Sasha2,16:14 23.05.2017 }
+												 		needcreate = true;
+						case "IPHONE2":	Actr.MainPersons = "MOISEEV";
+												 		Actr.Comment = addhours(currenttime,5) & " " & Actr.Comment;
+												 		needcreate = true;
+					end;
+					
 				end;	
 			end;			
 		end else begin
+			if(Actr.ActType=="SERV")then begin
+				Actr.Comment = SVOr.SerNr & " " & SVOr.Comment1;
+			
+			
+				if(matrowcnt(SVOr)>0)then begin
+					matrowget(SVOr,0,SVOrw);
+					INr.Code = SVOrw.ArtCode;
+					if(readfirstmain(INr,1,true))then begin
+						Actr.Comment = INr.Code & " " & Actr.Comment;
+						Actr.Phone = SVOrw.Spec;
+						switch(INr.Group)begin
+							case"APP1":Actr.MainPersons = "BATCHENKO,DIMA,KAYZER";
+												 Actr.Comment = addhours(Actr.StartTime,2) & " " & Actr.Comment;
+												 needcreate = true;
+							case"APP2":Actr.MainPersons = "TRIKOPA,SAO,RABCHUN,KAYZER";//"TRIKOPA,SAO,RABCHUN,KAYZER";
+												 Actr.Comment = addhours(Actr.StartTime,5) & " " & Actr.Comment;
+												 needcreate = true;
+							case"APP3":Actr.MainPersons = "TRIKOPA,SAO,RABCHUN,KAYZER";//TRIKOPA,SAO,RABCHUN,
+												 Actr.Comment = addhours(Actr.StartTime,5) & " " & Actr.Comment;
+												 needcreate = true;
+						end;
+						switch(INr.Code)begin
+							case "IPAD":	Actr.MainPersons = "POGEDAEV,KAYZER";
+														Actr.Comment = addhours(currenttime,5) & " " & Actr.Comment;
+														needcreate = true;
+							case "IPHONE3":	Actr.MainPersons = "MOISEEV";
+															Actr.Comment = addhours(currenttime,5) & " " & Actr.Comment;
+															needcreate = true;
+							case "IPHONE2":	Actr.MainPersons = "MOISEEV";
+															Actr.Comment = addhours(currenttime,5) & " " & Actr.Comment;
+															needcreate = true;
+						end;
+					end;	
+				end;
+			
+				recordstore(Actr,true);
+			end;
+		end;
+	end;
+	if(left(sernum,1)=="1" and (SVOr.OrderStatus>0 or SVOr.DoneMark>0))then begin
+		resetloop(SVOr);
+		Actr.SVOSerNr = SVOr.SerNr;
+		TrHs = true;
+		while(loopkey("SVOSerNr",Actr,1,TrHs))begin
+			if(Actr.SVOSerNr!=SVOr.SerNr)then begin TrHs = false; end;
+			
+			if(TrHs and Actr.ActType=="SERV")then begin
+				if(Actr.OKFlag==0)then begin
+					RecordCopy(oldActr,Actr);
+					Actr.OKFlag = 1;		
+					RecordUpdate(oldActr,Actr,true);
+				end;
+			end;
+		end;
+	end;
+	
+	if(left(sernum,1)=="9" and SVOr.OrderStatus==0 and SVOr.DoneMark==0)then begin
+		
+		foundf = false;
+		resetloop(SVOr);
+		Actr.SVOSerNr = SVOr.SerNr;
+		TrHs = true;
+		while(loopkey("SVOSerNr",Actr,1,TrHs))begin
+			if(Actr.SVOSerNr!=SVOr.SerNr)then begin TrHs = false; end;
+			
+			if(TrHs and Actr.ActType=="SERV")then begin
+				foundf = true;
+				creaetf = false;
+				goto lFoundSVO9;
+			end;
+		end;
+		
+lFoundSVO9:;
+		if(!foundf)then begin
+			
+			recordnew(Actr);
 			Actr.Comment = SVOr.SerNr & " " & SVOr.Comment1;
+			//Actr.AlarmType = kAlarmTypeMessage; //Edit-------------------Vitalii 11:31 23.12.2016
+      Actr.AlarmType = kAlarmTypeNone;
+			Actr.SVOSerNr = SVOr.SerNr;
+			Actr.TodoFlag = kTodoFlagTodo;
+			Actr.ActType = "SERV";
+			Actr.SymbNr = 3;
 			if(matrowcnt(SVOr)>0)then begin
 				matrowget(SVOr,0,SVOrw);
 				INr.Code = SVOrw.ArtCode;
 				if(readfirstmain(INr,1,true))then begin
 					Actr.Comment = INr.Code & " " & Actr.Comment;
-					Actr.Phone = left(SVOrw.Spec,20);
-					/*switch(INr.Group)begin  //Edit***************************Sasha2,16:14 23.05.2017 {
-						case"APP1":Actr.MainPersons = "BATCHENKO,MOISEEV,DIMA,KAYZER";
-											 Actr.Comment = addhours(Actr.StartTime,2) & " " & Actr.Comment;
-						case"APP2":Actr.MainPersons = "TRIKOPA,SAO,RABCHUN,KAYZER";
-											 Actr.Comment = addhours(Actr.StartTime,5) & " " & Actr.Comment;
-						case"APP3":Actr.MainPersons = "TRIKOPA,SAO,RABCHUN,KAYZER";
-											 Actr.Comment = addhours(Actr.StartTime,5) & " " & Actr.Comment;
-					end;
+					Actr.Phone = SVOrw.Spec;
 					switch(INr.Code)begin
-						case "IPAD":	Actr.MainPersons = "POGEDAEV,KAYZER";
-					 								Actr.Comment = addhours(currenttime,5) & " " & Actr.Comment;
-						case "IPHONE3":	Actr.MainPersons = "MOISEEV";
+						case "IMAC":	Actr.MainPersons = "TRIKOPA,SAO,RABCHUN,KAYZER";
+												 	Actr.Comment = addhours(currenttime,5) & " " & Actr.Comment;
+												 	creaetf = true;
+												 	needcreate = true;
+						case "MACBOOK":	Actr.MainPersons = "TRIKOPA,SAO,RABCHUN,KAYZER";
 												 		Actr.Comment = addhours(currenttime,5) & " " & Actr.Comment;
-					end;*/ 
-					Actr.MainPersons = FindUsersWithActiveTasksQueue;
-					Actr.Comment = addhours(currenttime,2) & " " & Actr.Comment; //Edit***************************Sasha2,16:14 23.05.2017 }
+												 		creaetf = true;
+												 		needcreate = true;
+						case "MACBOOK_PRO":	Actr.MainPersons = "TRIKOPA,SAO,RABCHUN,KAYZER";
+												 		Actr.Comment = addhours(currenttime,5) & " " & Actr.Comment;
+												 		creaetf = true;
+												 		needcreate = true;
+						case "MACBOOK_AIR":	Actr.MainPersons = "TRIKOPA,SAO,RABCHUN,KAYZER";
+												 		Actr.Comment = addhours(currenttime,5) & " " & Actr.Comment;
+												 		creaetf = true;
+												 		needcreate = true;
+						case "IPHONE":	Actr.MainPersons = "BATCHENKO,DIMA,KAYZER";
+												 		Actr.Comment = addhours(currenttime,5) & " " & Actr.Comment;
+												 		creaetf = true;
+												 		needcreate = true;
+						otherwise				Actr.MainPersons = "PAVOLOTSKY,LYASHENKO,VUKOLOV,NEDBAEV";
+												 		Actr.Comment = addhours(currenttime,5) & " " & Actr.Comment;
+												 		creaetf = true;
+												 		needcreate = true;
+					end;
+					
 				end;	
+			end;			
+		end else begin
+			if(Actr.ActType=="SERV")then begin
+				Actr.Comment = SVOr.SerNr & " " & SVOr.Comment1;
+			
+				if(matrowcnt(SVOr)>0)then begin
+					matrowget(SVOr,0,SVOrw);
+					INr.Code = SVOrw.ArtCode;
+					if(readfirstmain(INr,1,true))then begin
+						Actr.Comment = INr.Code & " " & Actr.Comment;
+						Actr.Phone = SVOrw.Spec;
+						switch(INr.Code)begin
+							case "IMAC":	Actr.MainPersons = "TRIKOPA,SAO,RABCHUN,KAYZER";
+														Actr.Comment = addhours(currenttime,5) & " " & Actr.Comment;
+														needcreate = true;
+							case "MACBOOK":	Actr.MainPersons = "TRIKOPA,SAO,RABCHUN,KAYZER";
+															Actr.Comment = addhours(currenttime,5) & " " & Actr.Comment;
+															needcreate = true;
+							case "MACBOOK_PRO":	Actr.MainPersons = "TRIKOPA,SAO,RABCHUN,KAYZER";
+															Actr.Comment = addhours(currenttime,5) & " " & Actr.Comment;
+															needcreate = true;
+							case "MACBOOK_AIR":	Actr.MainPersons = "TRIKOPA,SAO,RABCHUN,KAYZER";
+															Actr.Comment = addhours(currenttime,5) & " " & Actr.Comment;
+															needcreate = true;
+							case "IPHONE":	Actr.MainPersons = "BATCHENKO,DIMA,KAYZER";
+															Actr.Comment = addhours(currenttime,5) & " " & Actr.Comment;
+															needcreate = true;
+							otherwise				Actr.MainPersons = "PAVOLOTSKY,LYASHENKO,VUKOLOV,NEDBAEV";
+															Actr.Comment = addhours(currenttime,5) & " " & Actr.Comment;
+															needcreate = true;
+						end;
+					end;	
+				end;
+				recordstore(Actr,true);
+				
 			end;
-			recordstore(Actr,true);
 		end;
-	//end;
-	if((SVOr.OrderStatus>0 or SVOr.DoneMark>0))then begin
+	end;
+	if(left(sernum,1)=="9" and (SVOr.OrderStatus>0 or SVOr.DoneMark>0))then begin
+		resetloop(SVOr);
 		Actr.SVOSerNr = SVOr.SerNr;
-		if(readfirstkey("SVOSerNr",Actr,1,true))then begin
-			if(Actr.OKFlag==0)then begin
-				RecordCopy(oldActr,Actr);
-				Actr.OKFlag = 1;		
-				RecordUpdate(oldActr,Actr,true);
+		TrHs = true;
+		while(loopkey("SVOSerNr",Actr,1,TrHs))begin
+			if(Actr.SVOSerNr!=SVOr.SerNr)then begin TrHs = false; end;
+			
+			if(TrHs and Actr.ActType=="SERV")then begin
+				if(Actr.OKFlag==0)then begin
+					RecordCopy(oldActr,Actr);
+					Actr.OKFlag = 1;		
+					RecordUpdate(oldActr,Actr,true);
+				end;
 			end;
 		end;
 	end;
 	
-	if(creaetf)then begin	
+	if(creaetf and needcreate)then begin	
 		Actr.SerNr = NextSerNr("ActVc",Actr.TransDate,-1,false,"");
 		if(recordstore(Actr,true))then begin
 			CreateRecordLink(SVOr,CurrentCompany,Actr,CurrentCompany);  
