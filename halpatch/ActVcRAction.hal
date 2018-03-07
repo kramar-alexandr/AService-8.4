@@ -1,6 +1,8 @@
+external function Boolean FindAcceptanceRulesAndAmountForActivity(record ActVc,var record AcceptanceRulesVc,var val);
+external function val GetAcceptanceSum_SDVc(record SDVc);
+external function val GetAcceptanceSum_OPVc(record OPVc);
 external function Boolean FindTheUser(var record UserVc);
 external updating function Integer TestLinkedRecordCanBeOKed(record ActVc);
-external function val GetAcceptanceSum_SDVc(record SDVc);
 external function val MulRateToBase1(var string,val,val,val,val,val,val,roundmode);
 external function Boolean ReadAcceptanceRules(Integer,string,var record AcceptanceRulesVc);
 external updating procedure InvalidateTR(Integer,LongInt);
@@ -33,6 +35,8 @@ external function Integer GetINType(string);
 external function val TimeToVal2(Time);
 external updating procedure ActOK(record ActVc);
 external function Boolean ActivityIsForAbsence(record ActVc);
+external function Boolean DateLocked(Date,string);
+external function Boolean DateWarned(Date,string);
 
 procedure ActNLTSer(Date td,var LongInt tserstart,var LongInt tserend)
 begin
@@ -120,9 +124,11 @@ BEGIN
   gTRp.RegDate = CurrentDate;
   gTRp.RegTime = CurrentTime;
   gTRp.TransDate = Actr.TransDate;
-  if (TransInFiscal(gTRp.TransDate)==false) then begin
-    errstr = 1075;
-    goto LMakeTransFromAct;
+  if (rpt==false) then begin
+    if (TransInFiscal(gTRp.TransDate)==false) then begin
+      errstr = 1075;
+      goto LMakeTransFromAct;
+    end;
   end;
   gTRp.Comment = Actr.Comment;
   gTRp.Comment = gTRp.Comment & ", ";
@@ -401,6 +407,10 @@ begin
   
   res = true;
   if (nonblank(s)) then begin
+    if (InString(s,";")!=0) then begin //only coma is allowed
+      res = false;
+      goto LCheckMultipleIndexField;
+    end;
     if (len(s)>maxlen) then begin
       ExtractObj(s,pos,class);
       while (nonblank(class)) begin
@@ -418,6 +428,30 @@ LCheckMultipleIndexField:;
 end;
 
 global
+function Boolean ActStateSeqAllowed(string fromstate,string tostate)
+begin
+  record ActStateSeqVc ASSr;
+  Boolean res;
+
+  res = true;
+  if (fromstate!=tostate) then begin
+    if (CountRecords("ActStateSeqVc")>0) then begin
+      res = false;
+      ASSr.FromState = fromstate;
+      if (ReadFirstMain(ASSr,1,true)) then begin
+        if (nonblank(tostate)) then begin
+          if (SetInSet(tostate,ASSr.AllowedState)) then begin
+            res = true;
+          end;
+        end;
+      end;
+    end;
+  end;
+  ActStateSeqAllowed = res;
+  return;
+end;
+
+global
 updating function LongInt ActVcRecordCheck(var record ActVc Actr,record ActVc Act2r,LongInt stat,LongInt long4)
 BEGIN
   LongInt res;
@@ -431,7 +465,7 @@ BEGIN
   record UserVc EMr;
   Boolean acttypgrf;
   Integer j,jrwcnt;
-  Boolean transf,gentrans,smalldevicesf;
+  Boolean transf,gentrans,smalldevicesf,found;
   Integer errstr;
   string 255 tstr;
   Integer wherecoursor,NoActwithSameTime;
@@ -444,25 +478,17 @@ BEGIN
   record TRVc gTRp;
   val Qty;
   LongInt oldnr;
-  record IVVc IVr;
   record AcceptanceRulesVc Acptr;
-  record POVc POr;
-  record PUVc PUr;
-  record VIVc VIr;
-  record SDVc SDr;
-  record TBBUVc TBBUr;
-  record QTVc QTr;
-  record ORVc ORr;
-  record IntORVc IntORr;
-  record ExpVc Expr;
-  val bc1v;
   row AcceptanceRulesVc Acptrw;
   Integer i,rwcnt;
-  record HMTravelLogVc HMTravelLogr;
+  transaction Boolean gActVcRecordUpdateAfterf;
+  record CompanyTimezoneBlock CTb;
+  val bc1v;
+  Date td;
   
+  BlockLoad(CTb);  
   BlockLoad(CRMb);
   BlockLoad(PRAb);  
-  
   switch (ProgramType) begin
     case typTimeLog: smalldevicesf = true;
   end;
@@ -472,9 +498,14 @@ BEGIN
     end;
   end;
   oldnr = Actr.SerNr;  
-  if (Actr.SerNr==-1) then begin
-    Actr.SerNr = NextSerNr("ActVc",Actr.TransDate,-1,false,"");
+  td = Actr.TransDate;
+  if (blankdate(td)) then begin
+    td = CurrentDate;
   end;
+  if (Actr.SerNr==-1) then begin
+    Actr.SerNr = NextSerNr("ActVc",td,-1,false,"");
+  end;
+  
   gentrans = true;
   transf = false;
   if (Actr.OKFlag==1) then begin
@@ -490,7 +521,7 @@ BEGIN
     goto LActVcRecordCheck;
   end;
 */
-  if (Date2Test("ActVc",Actr.TransDate,"TransDate",-1)==false) then begin
+  if (Date2Test("ActVc",td,"TransDate",-1)==false) then begin
     res = -1;
     goto LActVcRecordCheck;
   end;
@@ -520,22 +551,22 @@ BEGIN
       end;  
     end;
   end;        
-  if (((TestEnablerFile("EnLiveHM")) or (TestEnablerFile("EnTestHM")) or (TestEnablerFile("EnDevHM")))==false) then begin
-  if (nonblank(Actr.CUCode)) then begin
-    CUr.Code = Actr.CUCode;
-    if (ReadFirstMain(CUr,1,true)==false) then begin
-      RecordCheckError(1120,Actr.CUCode,-1,"CUCode");      
+  if (nonblank(Actr.ActResult)) then begin
+    ActTyper.Code = Actr.ActResult;
+    if (ReadFirstMain(ActTyper,1,true)==false) then begin
+      RecordCheckError(1120," " & Actr.ActResult,-1,"ActResult");      
       res = -1; 
       goto LActVcRecordCheck;
     end;
   end;
-  end;
-  if (nonblank(Actr.ActResult)) then begin
-    ActTyper.Code = Actr.ActResult;
-    if (ReadFirstMain(ActTyper,1,true)==false) then begin
-      RecordCheckError(1120,Actr.ActResult,-1,"ActResult");      
-      res = -1; 
-      goto LActVcRecordCheck;
+  if (nonblank(Actr.ActState)) then begin
+    switch (stat) begin
+      case Rs_update:
+        if (ActStateSeqAllowed(Act2r.ActState,Actr.ActState)==false) then begin
+          RecordCheckError(38454," " & Actr.ActState,-1,"ActState");      
+          res = -1; 
+          goto LActVcRecordCheck;
+        end;
     end;
   end;
   if (nonblank(Actr.Supervisor)) then begin
@@ -606,132 +637,62 @@ BEGIN
     end;
   end;
   if (transf) then begin
-  if ((nonblank(Actr.FromFileName)) and (nonblank(Actr.FromSerNr))) then begin
-    bc1v = blankval;
-    switch (Actr.FromFileName) begin
-      case "ExpVc": 
-        Acptr.Register = kAcceptanceExp;
-        Expr.SerNr = StringToLongInt(Actr.FromSerNr);
-        if (ReadFirstMain(Expr,1,true)) then begin
-          bc1v = MulRateToBase1(Expr.CurncyCode,Expr.PayVal,Expr.FrRate,Expr.ToRateB1,Expr.ToRateB2,Expr.BaseRate1,Expr.BaseRate2,DefaultCurRoundOff);
-        end;
-      case "IntORVc": 
-        Acptr.Register = kAcceptanceIntOR;
-        IntORr.SerNr = StringToLongInt(Actr.FromSerNr);
-        if (ReadFirstMain(IntORr,1,true)) then begin
-          bc1v = IntORr.Total;
-        end;
-      case "IVVc":
-        IVr.SerNr = Actr.FromSerNr;
-        if (ReadFirstMain(IVr,1,true)) then begin
-          switch (IVr.InvType) begin
-            case kInvoiceTypeCashInvoiceReceiptPRT:
-              Acptr.Register = kAcceptanceCashIV;
-            case kInvoiceTypeCash:
-              Acptr.Register = kAcceptanceCashIV;
-            case kInvoiceTypeCredit:
-              Acptr.Register = kAcceptanceCredIV;
-            case kInvoiceTypeCreditSpecialSales:
-              Acptr.Register = kAcceptanceCredIV;
-            otherwise
-              Acptr.Register = kAcceptanceIV;
+    if (Actr.TodoFlag==kTodoFlagApproval) then begin
+      if (FindAcceptanceRulesAndAmountForActivity(Actr,Acptr,bc1v)) then begin  
+        if (stat==Rs_update) then begin
+          if (SetInSet(CurrentUser,Act2r.MainPersons)==false and Actr.MainPersons!=Act2r.MainPersons) then begin
+            RecordCheckError(21331,"",-1,"MainPersons");      
+            res = -1; 
+            goto LActVcRecordCheck;
           end;
-          bc1v = MulRateToBase1(IVr.CurncyCode,IVr.Sum4,IVr.FrRate,IVr.ToRateB1,IVr.ToRateB2,IVr.BaseRate1,IVr.BaseRate2,DefaultCurRoundOff);        
         end;
-      case "LeaveApplicationVc": 
-        Acptr.Register = kAcceptanceLeaveApplication;
-      case "LeaveTransferVc": 
-        Acptr.Register = kAcceptanceLeaveTransfer;
-      case "OPVc": 
-        Acptr.Register = kAcceptanceOP;
-      case "ORVc": 
-        Acptr.Register = kAcceptanceOR;
-        ORr.SerNr = StringToLongInt(Actr.FromSerNr);
-        if (ReadFirstMain(ORr,1,true)) then begin
-          bc1v = MulRateToBase1(ORr.CurncyCode,ORr.Sum4,ORr.FrRate,ORr.ToRateB1,ORr.ToRateB2,ORr.BaseRate1,ORr.BaseRate2,DefaultCurRoundOff);
+        if (gActVcRecordUpdateAfterf==false) then begin
+          if (SetInSet(CurrentUser,Actr.MainPersons)==false) then begin
+            if (Actr.ActResult!=Acptr.NotNeededActType and Actr.ActResult!=Acptr.CancelledActType and Actr.ActResult!=Acptr.ForwardedActType) then begin
+              RecordCheckError(21331,"",-1,"MainPersons");      
+              res = -1; 
+              goto LActVcRecordCheck;
+            end;
+          end;
         end;
-      case "POVc": 
-        Acptr.Register = kAcceptancePO;
-        POr.SerNr = StringToLongInt(Actr.FromSerNr);
-        if (ReadFirstMain(POr,1,true)) then begin
-          bc1v = MulRateToBase1(POr.CurncyCode,POr.Sum4,POr.FrRate,POr.ToRateB1,POr.ToRateB2,POr.BaseRate1,POr.BaseRate2,DefaultCurRoundOff);                
+        if (nonblank(Actr.ActResult)) then begin   
+          if (gActVcRecordUpdateAfterf) then begin
+            if (Actr.ActResult!=Acptr.AcceptedActType) and (Actr.ActResult!=Acptr.RejectedActType) and (Actr.ActResult!=Acptr.NotNeededActType) and (Actr.ActResult!=Acptr.CancelledActType) and (Actr.ActResult!=Acptr.ForwardedActType) then begin
+              RecordCheckError(21332,"",-1,"ActResult");      
+              res = -1; 
+              goto LActVcRecordCheck;
+            end;
+          end else begin
+            if (Actr.ActResult!=Acptr.AcceptedActType) and (Actr.ActResult!=Acptr.RejectedActType) and (Actr.ActResult!=Acptr.CancelledActType) and (Actr.ActResult!=Acptr.ForwardedActType) then begin
+              RecordCheckError(21332,"",-1,"ActResult");      
+              res = -1; 
+              goto LActVcRecordCheck;
+            end;
+          end;
         end;
-      case "PUVc": 
-        Acptr.Register = kAcceptancePU;
-        PUr.SerNr = StringToLongInt(Actr.FromSerNr);
-        if (ReadFirstMain(PUr,1,true)) then begin
-          bc1v = PUr.PayVal;
+        if (Actr.ActResult==Acptr.ForwardedActType and nonblank(Actr.ActResult)) then begin
+          rwcnt = MatRowCnt(Acptr);
+          for (i=0;i<rwcnt;i=i+1) begin
+            MatRowGet(Acptr,i,Acptrw);
+            if (SetInSet(Actr.MainPersons,Acptrw.AcceptanceBy)) then begin
+              if (bc1v<=Acptrw.Limit) or (blank(Acptrw.Limit)) then begin //is this needed if we have MainPersons ? 
+                switch (Acptrw.ApproverSelection) begin
+                  case kAcceptanceApproverSelectionAutomatic:
+                    RecordCheckError(21333,"",-1,"ActResult");      
+                    res = -1; 
+                    goto LActVcRecordCheck;
+                end;
+                i = rwcnt;
+              end;
+            end;
+          end;
         end;
-      case "QTVc": 
-        Acptr.Register = kAcceptanceQT;
-        QTr.SerNr = StringToLongInt(Actr.FromSerNr);
-        if (ReadFirstMain(QTr,1,true)) then begin
-          bc1v = MulRateToBase1(QTr.CurncyCode,QTr.Sum4,QTr.FrRate,QTr.ToRateB1,QTr.ToRateB2,QTr.BaseRate1,QTr.BaseRate2,DefaultCurRoundOff);
-        end;
-      case "SDVc": 
-        Acptr.Register = kAcceptanceSD;
-        SDr.SerNr = StringToLongInt(Actr.FromSerNr);
-        if (ReadFirstMain(SDr,1,true)) then begin
-          bc1v = GetAcceptanceSum_SDVc(SDr);
-        end;                
-      case "TBBUVc": 
-        Acptr.Register = kAcceptanceTBBU;
-        TBBUr.PRCode = Actr.FromSerNr;
-        if (ReadFirstMain(TBBUr,1,true)) then begin
-          bc1v = MulRateToBase1(TBBUr.CurncyCode,TBBUr.TotSum,TBBUr.FrRate,TBBUr.ToRateB1,TBBUr.ToRateB2,TBBUr.BaseRate1,TBBUr.BaseRate2,DefaultCurRoundOff);        
-        end;
-      case "VIVc": 
-        Acptr.Register = kAcceptanceVI;
-        VIr.SerNr = StringToLongInt(Actr.FromSerNr);
-        if (ReadFirstMain(VIr,1,true)) then begin
-          bc1v = MulRateToBase1(VIr.CurncyCode,VIr.PayVal,VIr.FrRate,VIr.ToRateB1,VIr.ToRateB2,VIr.BaseRate1,VIr.BaseRate2,DefaultCurRoundOff);        
-        end;
-      case "HMTravelLogVc": 
-        Acptr.Register = kAcceptanceTLog;
-        HMTravelLogr.SerNr = StringToLongInt(Actr.FromSerNr);
-        if (ReadFirstMain(HMTravelLogr,1,true)) then begin
-          bc1v = HMTravelLogr.TotBaseCost;
-        end;        
-    end;
-    if (ReadAcceptanceRules(Acptr.Register,Actr.CUCode,Acptr)) then begin
-      if (stat==Rs_update) then begin
-        if (SetInSet(CurrentUser,Act2r.MainPersons)==false and Actr.MainPersons!=Act2r.MainPersons) then begin
-          RecordCheckError(21331,"",-1,"MainPersons");      
-          res = -1; 
-          goto LActVcRecordCheck;
-        end;
-      end;
-      if (SetInSet(CurrentUser,Actr.MainPersons)==false) then begin
+      end else begin
         RecordCheckError(21331,"",-1,"MainPersons");      
         res = -1; 
         goto LActVcRecordCheck;
       end;
-      if (nonblank(Actr.ActResult)) then begin     
-        if (Actr.ActResult!=Acptr.AcceptedActType) and (Actr.ActResult!=Acptr.RejectedActType) and (Actr.ActResult!=Acptr.NotNeededActType) and (Actr.ActResult!=Acptr.CancelledActType) and (Actr.ActResult!=Acptr.ForwardedActType) then begin
-          RecordCheckError(21332,"",-1,"ActResult");      
-          res = -1; 
-          goto LActVcRecordCheck;
-        end;
-      end;
-      if (Actr.ActResult==Acptr.ForwardedActType and nonblank(Actr.ActResult)) then begin
-        rwcnt = MatRowCnt(Acptr);
-        for (i=0;i<rwcnt;i=i+1) begin
-          MatRowGet(Acptr,i,Acptrw);
-          if (SetInSet(Actr.MainPersons,Acptrw.AcceptanceBy)) then begin
-            if (bc1v<=Acptrw.Limit) or (blank(Acptrw.Limit)) then begin //is this needed if we have MainPersons ? 
-              switch (Acptrw.ApproverSelection) begin
-                case kAcceptanceApproverSelectionAutomatic:
-                  RecordCheckError(21333,"",-1,"ActResult");      
-                  res = -1; 
-                  goto LActVcRecordCheck;
-              end;
-              i = rwcnt;
-            end;
-          end;
-        end;
-      end;
     end;
-  end;
   end;
   
   if (GenActProjTrans(Actr.ActType)) then begin
@@ -924,21 +885,23 @@ L44:;
         goto LActVcRecordCheck;
       end;
     end;
-    if (ATGrr.ForceTime!=0) or (blank(Actr.ActType)) and (Actr.TodoFlag==0) then begin
-      if ((blanktime(Actr.StartTime)) and (Actr.OKFlag!=0)) then begin
-        RecordCheckError(1058,"",-1,"StartTime");      
-        res = -1;
-        goto LActVcRecordCheck;
-      end;
-      if (blanktime(Actr.EndTime)) then begin
-        RecordCheckError(1058,"",-1,"EndTime");      
-        res = -1;
-        goto LActVcRecordCheck;
-      end;
-      if (blanktime(Actr.CostTime)) then begin
-        RecordCheckError(1058,"",-1,"CostTime");      
-        res = -1;
-        goto LActVcRecordCheck;
+    if (Actr.TodoFlag!=kTodoFlagRecurring and Actr.TodoFlag!=kTodoFlagProject) then begin
+      if (ATGrr.ForceTime!=0) or (blank(Actr.ActType)) and (Actr.TodoFlag==0) then begin
+        if ((blanktime(Actr.StartTime)) and (Actr.OKFlag!=0)) then begin
+          RecordCheckError(1058,"",-1,"StartTime");      
+          res = -1;
+          goto LActVcRecordCheck;
+        end;
+        if (blanktime(Actr.EndTime)) then begin
+          RecordCheckError(1058,"",-1,"EndTime");      
+          res = -1;
+          goto LActVcRecordCheck;
+        end;
+        if (blanktime(Actr.CostTime)) then begin
+          RecordCheckError(1058,"",-1,"CostTime");      
+          res = -1;
+          goto LActVcRecordCheck;
+        end;
       end;
     end;
     if (Actr.TodoFlag==0) then begin
@@ -974,13 +937,18 @@ L44:;
     end;
   end;  
   if (transf) then begin
+    if (ATGrr.ForceTextInMatrix!=0) then begin
+      if (MatRowCnt(Actr)==0) then begin
+        RecordCheckError(1058,"",0,"Text");      
+        res = -1;
+        goto LActVcRecordCheck;
+      end;
+    end;
     if (UserCanAction("ActOK",true)==false) then begin
       RecordCheckError(1274,StringFromStringSet(3,"ActOK"),-1,"SerNr");      
       res = -1;
       goto LActVcRecordCheck;
     end;
-  end;
-  if (transf) then begin
     errstr = TestLinkedRecordCanBeOKed(Actr);
     if (errstr!=0) then begin
       RecordCheckError(errstr,"",-1,"ActResult");      
@@ -1040,33 +1008,33 @@ BEGIN
   Time blankt;
   record TLSettingBlock TLSb;
   
-  /*switch (ProgramType) begin
+  switch (ProgramType) begin
     case typTimeLog:   
       BlockLoad(TLSb);
       Actr.MainPersons = TLSb.UserCode;
     otherwise      
-      Actr.MainPersons = CurrentUser;
-  end;*/
-  //Actr.CCPersons = CurrentUser;// Edit ************************** BPI Ukraine - KramarAlexandr - Thursday, 16 November 2017 15:38:48
- 	Actr.Supervisor = CurrentUser;// Edit ************************** Friday, 18 August 2017 10:25:40
+      //Actr.MainPersons = CurrentUser;// Edit ************************** BPI Ukraine - KramarAlexandr - Wednesday, 7 March 2018 16:33:13
+  end;
   Actr.SerNr = -1;  
   Actr.TransDate = CurrentDate;
-  Actr.EndDate = CurrentDate;
-  Actr.StartTime = CurrentTime;
+  if (Actr.TodoFlag!=kTodoFlagRecurring and Actr.TodoFlag!=kTodoFlagProject) then begin
+    Actr.EndDate = CurrentDate;
+    Actr.StartTime = CurrentTime;
+  end;
   Actr.EndTime = blankt;
   Actr.CostTime = blankt;
   Actr.PrioLevel = -1;
   Actr.Invalid = 0;
+  if (Actr.TodoFlag==kTodoFlagProject) then begin
+    Actr.Supervisor = CurrentUser;
+  end;
   if (SingleUserMode) then begin
 //    Actr.SerNr = NextSerNr("ActVc",Actr.TransDate,-1,false,"");
 // not good, if u do 2 actiities and save 2nd one first u have problem
   end;
-  Actr.FromFileName = "";
-  Actr.FromSerNr = "";
   if (IsStandardProduct) then begin
     Actr.CalTimeFlag = kCalTimeFlagTime;
   end;
-  Actr.AlarmType = 1;// Edit ************************** BPI Ukraine - KramarAlexandr - Wednesday, 22 November 2017 17:47:27
   ActVcRecordDefaults = res; 
   RETURN;
 END;
@@ -1074,12 +1042,11 @@ END;
 global
 procedure ActVcRecordDefServer(var record ActVc Actr)
 begin
-
   Actr.TransDate = CurrentDate;
-  Actr.EndDate = CurrentDate;
-  Actr.StartTime = CurrentTime;
-  Actr.AlarmType = 1;
-  Actr.MainPersons = "";
+  if (Actr.TodoFlag!=kTodoFlagRecurring and Actr.TodoFlag!=kTodoFlagProject) then begin
+    Actr.EndDate = CurrentDate;
+    Actr.StartTime = CurrentTime;
+  end;
   return;
 end;
 
@@ -1101,24 +1068,71 @@ BEGIN
   Actr.SerNr = -1;
   Actr.EndDate = blankd;
   Actr.Invalid = 0;
+  if (Actr.TodoFlag==kTodoFlagApproval) then begin
+    Actr.TodoFlag = kTodoFlagTodo;
+  end;
   if (SingleUserMode) then begin
     Actr.SerNr = NextSerNr("ActVc",Actr.TransDate,-1,false,"");
   end;
+/*  
   Actr.FromFileName = "";
   Actr.FromSerNr = "";
+*/  
+  if (Actr.TodoFlag==kTodoFlagProject) then begin
+    Actr.Supervisor = CurrentUser;
+  end;
+  if (DateLocked(Actr.TransDate,"ActVc")) then begin
+    MessageBox(1046,"");
+  end else begin
+    if (DateWarned(Actr.TransDate,"ActVc")) then begin
+      MessageBox(1045,"");
+    end;
+  end;
+  
   ActVcRecordDuplicate = res; 
   RETURN;
 END;
 
 global
 function LongInt ActVcRecordImport(var record ActVc Actr,record ActVc Act2r,LongInt stat,LongInt long4)
-BEGIN
+begin
   LongInt res;
+  Boolean testf;
 
   Actr.LengthClass = ActLenClass(Actr.TransDate,Actr.EndDate);
+/*  
+cannot find proper acttypes
+  if (Actr.TodoFlag==kTodoFlagTodo) then begin
+    testf = true;
+    switch (Actr.FromFileName) begin
+      case "POVc":
+      case "PUVc":
+      case "VIVc":
+      case "OPVc":
+      case "ExpVc":
+      case "IntORVc":
+      case "QTVc":
+      case "ORVc":
+      case "IVVc":
+      case "SDVc":
+      case "TBBUVc":
+      case "LeaveApplicationVc":
+      case "LeaveTransferVc":
+      case "HMTravelLogVc":
+      case "MarginExceptVc":
+      otherwise
+        testf = false;
+    end;
+    if (testf) then begin
+      if (nonblank(Actr.FromSerNr)) then begin
+        Actr.TodoFlag = kTodoFlagApproval;
+      end;
+    end;
+  end;
+*/  
   ActVcRecordImport = res;
-  RETURN;
-END;
+  return;
+end;
 
 global
 function LongInt ActVcRecordImportTest(var record ActVc Actr,record ActVc Act2r,LongInt long3,LongInt long4)
@@ -1151,8 +1165,10 @@ BEGIN
   
   res = true;
   if (Actp.OKFlag!=0) then begin
-    if (GenActProjTrans(Actp.ActType)) then begin
-      res = false;
+    if (Actp.Invalid==0) then begin
+      if (GenActProjTrans(Actp.ActType)) then begin
+        res = false;
+      end;
     end;
     rwcnt = MatRowCnt(Actp);
     for (i=0;i<rwcnt;i=i+1) begin
@@ -1206,7 +1222,7 @@ BEGIN
       res = 0;
     end;
   end;
-LActVcRecordRemoveTest:;  
+LActVcRecordRemoveTest:;
   ActVcRecordRemoveTest = res;
   RETURN;
 END;
@@ -1285,134 +1301,13 @@ global
 function LongInt ActVcRecordSave(var record ActVc Actr,record ActVc Act2r,LongInt stat,LongInt long4)
 BEGIN
   LongInt res;
-	
-	Actr.Supervisor = CurrentUser;// Edit ************************** Friday, 18 August 2017 10:25:40
+
   Actr.LengthClass = ActLenClass(Actr.TransDate,Actr.EndDate);
   Actr.CreationDate = CurrentDate;
   Actr.LastChangedDate = CurrentDate;
   ActVcRecordSave = res;
   RETURN;
 END;
-
-updating procedure LinkRecordToActivity(record ActVc Actr)
-//remember about AcceptanceTaskRecordLink
-begin
-  switch (Actr.FromFileName) begin
-    case "ExpVc": begin
-        record ExpVc Expr;
-        
-        Expr.SerNr = StringToLongInt(Actr.FromSerNr);
-        ReadFirstMain(Expr,1,true);
-        CreateRecordLink(Expr,CurrentCompany,Actr,CurrentCompany);  
-        CreateRecordLink(Actr,CurrentCompany,Expr,CurrentCompany);  
-      end;
-    case "IntORVc": begin
-        record IntORVc IntORr;
-        
-        IntORr.SerNr = StringToLongInt(Actr.FromSerNr);
-        ReadFirstMain(IntORr,1,true);
-        CreateRecordLink(IntORr,CurrentCompany,Actr,CurrentCompany);  
-        CreateRecordLink(Actr,CurrentCompany,IntORr,CurrentCompany);  
-      end;
-    case "IVVc": begin
-        record IVVc IVr;
-        
-        IVr.SerNr = StringToLongInt(Actr.FromSerNr);
-        ReadFirstMain(IVr,1,true);
-        CreateRecordLink(IVr,CurrentCompany,Actr,CurrentCompany);  
-        CreateRecordLink(Actr,CurrentCompany,IVr,CurrentCompany);  
-      end;
-    case "LeaveApplicationVc": begin
-        record LeaveApplicationVc LeaveApplicationr;
-        
-        LeaveApplicationr.SerNr = StringToLongInt(Actr.FromSerNr);
-        ReadFirstMain(LeaveApplicationr,1,true);
-        CreateRecordLink(LeaveApplicationr,CurrentCompany,Actr,CurrentCompany);  
-        CreateRecordLink(Actr,CurrentCompany,LeaveApplicationr,CurrentCompany);  
-      end;
-    case "LeaveTransferVc": begin
-        record LeaveTransferVc LeaveTransferr;
-        
-        LeaveTransferr.SerNr = StringToLongInt(Actr.FromSerNr);
-        ReadFirstMain(LeaveTransferr,1,true);
-        CreateRecordLink(LeaveTransferr,CurrentCompany,Actr,CurrentCompany);  
-        CreateRecordLink(Actr,CurrentCompany,LeaveTransferr,CurrentCompany);  
-      end;
-    case "OPVc": begin
-        record OPVc OPr;
-        
-        OPr.SerNr = StringToLongInt(Actr.FromSerNr);
-        ReadFirstMain(OPr,1,true);
-        CreateRecordLink(OPr,CurrentCompany,Actr,CurrentCompany);  
-        CreateRecordLink(Actr,CurrentCompany,OPr,CurrentCompany);  
-      end;
-    case "ORVc": begin
-        record ORVc ORr;
-        
-        ORr.SerNr = StringToLongInt(Actr.FromSerNr);
-        ReadFirstMain(ORr,1,true);
-        CreateRecordLink(ORr,CurrentCompany,Actr,CurrentCompany);  
-        CreateRecordLink(Actr,CurrentCompany,ORr,CurrentCompany);  
-      end;
-    case "POVc": begin
-        record POVc POr;
-        
-        POr.SerNr = StringToLongInt(Actr.FromSerNr);
-        ReadFirstMain(POr,1,true);
-        CreateRecordLink(POr,CurrentCompany,Actr,CurrentCompany);  
-        CreateRecordLink(Actr,CurrentCompany,POr,CurrentCompany);  
-      end;
-    case "PUVc": begin
-        record PUVc PUr;
-        
-        PUr.SerNr = StringToLongInt(Actr.FromSerNr);
-        ReadFirstMain(PUr,1,true);
-        CreateRecordLink(PUr,CurrentCompany,Actr,CurrentCompany);  
-        CreateRecordLink(Actr,CurrentCompany,PUr,CurrentCompany);  
-      end;
-    case "QTVc": begin
-        record QTVc QTr;
-        
-        QTr.SerNr = StringToLongInt(Actr.FromSerNr);
-        ReadFirstMain(QTr,1,true);
-        CreateRecordLink(QTr,CurrentCompany,Actr,CurrentCompany);  
-        CreateRecordLink(Actr,CurrentCompany,QTr,CurrentCompany);  
-      end;
-    case "SDVc": begin
-        record SDVc SDr;
-        
-        SDr.SerNr = StringToLongInt(Actr.FromSerNr);
-        ReadFirstMain(SDr,1,true);
-        CreateRecordLink(SDr,CurrentCompany,Actr,CurrentCompany);  
-        CreateRecordLink(Actr,CurrentCompany,SDr,CurrentCompany);  
-      end;
-    case "TBBUVc": begin
-        record TBBUVc TBBUr;
-        
-        TBBUr.PRCode = Actr.FromSerNr;
-        ReadFirstMain(TBBUr,1,true);
-        CreateRecordLink(TBBUr,CurrentCompany,Actr,CurrentCompany);  
-        CreateRecordLink(Actr,CurrentCompany,TBBUr,CurrentCompany);  
-      end;
-    case "VIVc": begin
-        record VIVc VIr;
-        
-        VIr.SerNr = StringToLongInt(Actr.FromSerNr);
-        ReadFirstMain(VIr,1,true);
-        CreateRecordLink(VIr,CurrentCompany,Actr,CurrentCompany);  
-        CreateRecordLink(Actr,CurrentCompany,VIr,CurrentCompany);  
-      end;
-    case "HMTravelLogVc": begin
-        record HMTravelLogVc HMTravelLogr;
-        
-        HMTravelLogr.SerNr = StringToLongInt(Actr.FromSerNr);
-        ReadFirstMain(HMTravelLogr,1,true);
-        CreateRecordLink(HMTravelLogr,CurrentCompany,Actr,CurrentCompany);  
-        CreateRecordLink(Actr,CurrentCompany,HMTravelLogr,CurrentCompany);  
-      end;
-  end;
-  return;
-end;
 
 global
 updating function LongInt ActVcRecordSaveAfter(var record ActVc Actr,record ActVc Act2r,LongInt stat,LongInt long4)
@@ -1427,7 +1322,6 @@ BEGIN
   if (Actr.OKFlag==0) then begin
     CreateAlarm(Actr);  
   end;
-  LinkRecordToActivity(Actr);
   ActVcRecordSaveAfter = res;
   RETURN;
 END;
@@ -1439,12 +1333,25 @@ BEGIN
 
   Actr.LengthClass = ActLenClass(Actr.TransDate,Actr.EndDate);
   Actr.LastChangedDate = CurrentDate;
-  if (Actr.TodoFlag==kTodoFlagTimedTodo) then begin
-    if (blankdate(Actr.EndDate)) then begin
-      Actr.EndDate = CurrentDate;
-    end;
-    if (blanktime(Actr.EndTime)) then begin
-      Actr.EndTime = CurrentTime;
+  if (Act2r.OKFlag==0) then begin
+    switch (Actr.TodoFlag) begin
+      case kTodoFlagTimedTodo:
+        if (blankdate(Actr.EndDate)) then begin
+          Actr.EndDate = CurrentDate;
+        end;
+        if (blanktime(Actr.EndTime)) then begin
+          Actr.EndTime = CurrentTime;
+        end;
+      case kTodoFlagProject:
+/*      
+moved to client side
+        if (Actr.EndDate==Act2r.EndDate) then begin//when no manual amendmends
+          Actr.EndDate = CurrentDate;
+        end;
+        if (Actr.EndTime==Act2r.EndTime) then begin//when no manual amendmends
+          Actr.EndTime = CurrentTime;
+        end;
+*/  
     end;
   end;
   ActVcRecordUpdate = res;
@@ -1455,7 +1362,9 @@ global
 updating function LongInt ActVcRecordUpdateAfter(var record ActVc Actr,record ActVc Act2r,LongInt stat,LongInt long4)
 BEGIN
   LongInt res;
+  transaction Boolean gActVcRecordUpdateAfterf;
 
+  gActVcRecordUpdateAfterf = true;
   if ((Actr.OKFlag!=0) and (Act2r.OKFlag==0)) then begin
     ActOK(Actr);   // Swapped to fix order of operation with approval rules.
     CreateConsequences(Actr);
@@ -1479,6 +1388,7 @@ BEGIN
       InvalidateTR(ActYc,Actr.TRSerNr);
     end;
   end;
+  gActVcRecordUpdateAfterf = false;
   ActVcRecordUpdateAfter = res;
   RETURN;
 END;
@@ -1624,18 +1534,14 @@ begin
     if (indexname=="ActComment")  then begin res = 0; end;
     if (indexname=="ActActType")  then begin res = 0; end;
     if (indexname=="ActDateTypeUserMain")  then begin res = 0; end;
+    if (indexname=="ActUserMain")  then begin res = 0; end;
+  end;
+  if (Actr.TodoFlag!=kTodoFlagProject) then begin 
+    if (indexname=="ProjCUCode")  then begin res = 0; end;
+    if (indexname=="ProjTransDate")  then begin res = 0; end;
+    if (indexname=="ProjActType")  then begin res = 0; end;
+    if (indexname=="ProjActState")  then begin res = 0; end;
   end;
   ActVcRecordInIndex = res;
-  return;
-end;
-
-global
-function LongInt ActVcRecordProtectFields(var record ActVc Actr,record ActVc Act2r,LongInt long3,LongInt long4)
-begin
-  LongInt res;
-
-  Act2r.NextApprovers = Actr.NextApprovers;
-  Act2r.NextFYIPersons = Actr.NextFYIPersons;
-  ActVcRecordProtectFields = res;
   return;
 end;
