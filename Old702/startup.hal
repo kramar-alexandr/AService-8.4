@@ -69,8 +69,9 @@ begin
 	
 	Report("Розбіжність складу з балансом",StockBalDiffRClass,StockBalDiffRn,0,modIN); //Edit***************************Sasha2,11:21 17.02.2017
 	Report("Розбіжність складу з балансом",StockBalDiffRClass,StockBalDiffRn,0,modNL); //Edit***************************Sasha2,11:21 17.02.2017
+  Report("Выданные ремонты за период",ReportRegDateServAndInvRClass,ReportRegDateServAndInvRn,0,modSVO);// Edit ************************** BPI Ukraine - KramarAlexandr - Friday, 2 March 2018 15:28:13
   
-	Setting("Настройка Cash Flow",MyCashFlowTClass,modNL);
+  Setting("Настройка Cash Flow",MyCashFlowTClass,modNL);
 	Setting("Настройка Cash Flow - прямий метод",MyCashFlowDirectTClass,modNL);
 	Setting("Валюта ЕККА",POSCurncyTClass,modPOS); //Edit***************************Sasha2,17:25 11.09.2014
 	Setting("Рахунки продавців",LocalMachineAccTClass,modPOS); //Edit***************************Sasha2,17:26 11.09.2014
@@ -112,7 +113,7 @@ begin
   Import("Импорт Item/Group",INITImportIClass,ImportNewItemsWithGroupIn,modIN); //Edit***************************Sasha2,15:52 21.01.2016
 	
 	Maintenance("Fix Actr SERV",MyVClass,FixACTSERVMn,modDBMain);  //Edit**********Dima, 28.01.2014
-	Maintenance("Link To MailBoxes",MyVClass,AttachToMailWEBLink,modDBMain); // Edit ************************** BPI Ukraine - KramarAlexandr - Monday, 4 December 2017 12:27:35
+	Maintenance("Link To MailBoxes",MyWebAttachVClass,AttachToMailWEBLink,modDBMain); // Edit ************************** BPI Ukraine - KramarAlexandr - Monday, 4 December 2017 12:27:35
 
 	Maintenance("Fix FB",MyVClass,FixFBVcMn,modDBMain);  //Edit**********Dima, 28.01.2014
 	Maintenance("Файли для Samsung FTP",SamsungSendFilesByMailEXCELVClass,SamsungSendFilesToFtpMn,modIN); //to delete
@@ -264,7 +265,9 @@ begin
 	SString(31088,"Основний телефон порожній");
 	SString(31089,"Порожня дата завершення ремонту");
 	SString(31090,"Сервіс. майстер");
-    SString(31091,"Прийняв");
+  SString(31091,"Прийняв");
+  SString(31092,"Визначте телефон");
+  SString(31093,"Визначте ім'я клієнта");
   
   StrSetBegin(3); /* Try to keep them in alphabetical order */
   StrSetText(UnCloseAll,"Відкрити записи");// Edit ************************** Wednesday, 15 April 2015 17:21:45
