@@ -119,245 +119,238 @@ begin
 		RecordField(GiveAwayUsr,M4Str,20,0); // Edit ***************** Dima 8 February 2018, 15:28 
       
     SubsetKeyBegin2(RegDate);// Edit ************************** Wednesday, 15 February 2017 19:31:45
-    StoreInBaseKey;
-    AppendFieldToKeyName(SalesGroup);
-    AppendFieldToKeyName(SalesMan);
-    KeySegment(RegDate);
-    KeySegment(SerNr);
-    
-    SubsetKeyBegin2(EndDiagnDate);// Edit ************************** Wednesday, 15 February 2017 19:31:45
-    StoreInBaseKey;
-    AppendFieldToKeyName(SalesGroup);
-    AppendFieldToKeyName(SalesMan);
-    KeySegment(EndDiagnDate);
-    KeySegment(SerNr);
-    
-    SubsetKeyBegin2(Kontinfo1);// Edit ************************** Monday, 6 February 2017 14:21:07
-    StoreInBaseKey;
-    AppendFieldToKeyName(SalesGroup);
-    AppendFieldToKeyName(SalesMan);
-    KeySegment(Kontinfo1);
-    KeySegment(SerNr);
-    
-    SubsetKeyBegin2(Phone2);
-    StoreInBaseKey;
-    AppendFieldToKeyName(SalesGroup);
-    AppendFieldToKeyName(SalesMan);
-    KeySegment(Phone2);
-    KeySegment(SerNr);
-    
-    SubsetKeyBegin2(SerialNrTextSearch);
-    StoreInBaseKey;
-    AppendFieldToKeyName(SalesGroup);
-    AppendFieldToKeyName(SalesMan);
-    KeySegment(SerialNrTextSearch);
-    KeySegment(SerNr);  
-    
-    SubsetKeyBegin2(InnerOrderNr);// Edit ************************** Wednesday, 31 May 2017 09:56:58
-    StoreInBaseKey;
-    AppendFieldToKeyName(SalesGroup);
-    AppendFieldToKeyName(SalesMan);
-    KeySegment(InnerOrderNr);
-    KeySegment(SerNr);  
-    
-    //Ключи для необработанных заказов без сервисного менеджера для распределяющего ***************************************************************************************************
-    SubsetKeyBegin2(UnServSerNr);
-    StoreInBaseKey;
-    AppendFieldToKeyName(SalesGroup);
-    AppendFieldToKeyName(SalesMan);
-    KeySegment(SerNr);
-    SubsetKeyBegin2(UnServTransDate);
-    StoreInBaseKey;
-    AppendFieldToKeyName(SalesGroup);
-    AppendFieldToKeyName(SalesMan);
-    KeySegment(TransDate);
-    KeySegment(SerNr);
-    
-    SubsetKeyBegin2(UnServItemName);
-    StoreInBaseKey;
-    AppendFieldToKeyName(SalesGroup);
-    AppendFieldToKeyName(SalesMan);
-    KeySegment(ItemName);
-    KeySegment(SerNr);
-    
-    SubsetKeyBegin2(UnServGaranty);
-    StoreInBaseKey;
-    AppendFieldToKeyName(SalesGroup);
-    AppendFieldToKeyName(SalesMan);
-    KeySegment(Garanty);
-    KeySegment(SerNr);
-    
-    SubsetKeyBegin2(UnServVIPStatus);
-    StoreInBaseKey;
-    AppendFieldToKeyName(SalesGroup);
-    AppendFieldToKeyName(SalesMan);
-    KeySegment(VIPStatus);
-    KeySegment(SerNr);
-    
-    SubsetKeyBegin2(UnServOrderStatus);
-    StoreInBaseKey;
-    AppendFieldToKeyName(SalesGroup);
-    AppendFieldToKeyName(SalesMan);
-    KeySegment(OrderStatus);
-    KeySegment(SerNr);
-    
-    SubsetKeyBegin2(UnServServiceManager);
-    StoreInBaseKey;
-    AppendFieldToKeyName(SalesGroup);
-    AppendFieldToKeyName(SalesMan);
-    KeySegment(ServiceManager);
-    KeySegment(SerNr);
-    
-    SubsetKeyBegin2(UnServPhone2);// Edit ************************** Monday, 6 February 2017 14:20:13
-    StoreInBaseKey;
-    AppendFieldToKeyName(SalesGroup);
-    AppendFieldToKeyName(SalesMan);
-    KeySegment(Phone2);
-    KeySegment(SerNr);
-    
-    SubsetKeyBegin2(UnServKontinfo1);// Edit ************************** Monday, 6 February 2017 14:20:11
-    StoreInBaseKey;
-    AppendFieldToKeyName(SalesGroup);
-    AppendFieldToKeyName(SalesMan);
-    KeySegment(Kontinfo1);
-    KeySegment(SerNr);
-    
-    SubsetKeyBegin2(UnServSerialNrTextSearch);// Edit ************************** Monday, 6 February 2017 14:20:11
-    StoreInBaseKey;
-    AppendFieldToKeyName(SalesGroup);
-    AppendFieldToKeyName(SalesMan);
-    KeySegment(SerialNrTextSearch);
-    KeySegment(SerNr);
-    
-    //Ключи для ВСех не закрытых заказов на обслуживание для распределяющего ***************************************************************************************************
-    SubsetKeyBegin2(AllUnServSerNr);
-    StoreInBaseKey;
-    AppendFieldToKeyName(SalesGroup);
-    AppendFieldToKeyName(SalesMan);
-    KeySegment(SerNr);
-    
-    SubsetKeyBegin2(AllUnServTransDate);
-    StoreInBaseKey;
-    AppendFieldToKeyName(SalesGroup);
-    AppendFieldToKeyName(SalesMan);
-    KeySegment(TransDate);
-    KeySegment(SerNr);
-    
-    SubsetKeyBegin2(AllUnServItemName);
-    StoreInBaseKey;
-    AppendFieldToKeyName(SalesGroup);
-    AppendFieldToKeyName(SalesMan);
-    KeySegment(ItemName);
-    KeySegment(SerNr);
-    
-    SubsetKeyBegin2(AllUnServGaranty);
-    StoreInBaseKey;
-    AppendFieldToKeyName(SalesGroup);
-    AppendFieldToKeyName(SalesMan);
-    KeySegment(Garanty);
-    KeySegment(SerNr);
-    
-    SubsetKeyBegin2(AllUnServVIPStatus);
-    StoreInBaseKey;
-    AppendFieldToKeyName(SalesGroup);
-    AppendFieldToKeyName(SalesMan);
-    KeySegment(VIPStatus);
-    KeySegment(SerNr);
-    
-    SubsetKeyBegin2(AllUnServOrderStatus);
-    StoreInBaseKey;
-    AppendFieldToKeyName(SalesGroup);
-    AppendFieldToKeyName(SalesMan);
-    KeySegment(OrderStatus);
-    KeySegment(SerNr);
-    
-    SubsetKeyBegin2(AllUnServServiceManager);
-    StoreInBaseKey;
-    AppendFieldToKeyName(SalesGroup);
-    AppendFieldToKeyName(SalesMan);
-    KeySegment(ServiceManager);
-    KeySegment(SerNr);
-    
-    SubsetKeyBegin2(AllUnServKontinfo1);// Edit ************************** Monday, 6 February 2017 14:19:18
-    StoreInBaseKey;
-    AppendFieldToKeyName(SalesGroup);
-    AppendFieldToKeyName(SalesMan);
-    KeySegment(Kontinfo1);
-    KeySegment(SerNr);
-    
-    SubsetKeyBegin2(AllUnServPhone2);// Edit ************************** Monday, 6 February 2017 14:19:19
-    StoreInBaseKey;
-    AppendFieldToKeyName(SalesGroup);
-    AppendFieldToKeyName(SalesMan);
-    KeySegment(Phone2);
-    KeySegment(SerNr);
-    
-    SubsetKeyBegin2(AllUnServSerialNrTextSearch);// Edit ************************** Monday, 6 February 2017 14:19:19
-    StoreInBaseKey;
-    AppendFieldToKeyName(SalesGroup);
-    AppendFieldToKeyName(SalesMan);
-    KeySegment(SerialNrTextSearch);
-    KeySegment(SerNr);
-    
-    //Ключи для ВСех не закрытых заказов на обслуживание для сервисного менеджера  ****************************************************************************************
-    SubsetKeyBegin2(AllServSerNr);
-    StoreInBaseKey;
-    AppendFieldToKeyName(ServiceManager);
-    KeySegment(SerNr);
-    
-    SubsetKeyBegin2(AllServTransDate);
-    StoreInBaseKey;
-    AppendFieldToKeyName(ServiceManager);
-    KeySegment(TransDate);
-    KeySegment(SerNr);
-    
-    SubsetKeyBegin2(AllServItemName);
-    StoreInBaseKey;
-    AppendFieldToKeyName(ServiceManager);
-    KeySegment(ItemName);
-    KeySegment(SerNr);
-    
-    SubsetKeyBegin2(AllServGaranty);
-    StoreInBaseKey;
-    AppendFieldToKeyName(ServiceManager);
-    KeySegment(Garanty);
-    KeySegment(SerNr);
-    
-    SubsetKeyBegin2(AllServVIPStatus);
-    StoreInBaseKey;
-    AppendFieldToKeyName(ServiceManager);
-    KeySegment(VIPStatus);
-    KeySegment(SerNr);
-    
-    SubsetKeyBegin2(AllServOrderStatus);
-    StoreInBaseKey;
-    AppendFieldToKeyName(ServiceManager);
-    KeySegment(OrderStatus);
-    KeySegment(SerNr);
-    
-    SubsetKeyBegin2(AllServServiceManager);
-    StoreInBaseKey;
-    AppendFieldToKeyName(ServiceManager);
-    KeySegment(ServiceManager);
-    KeySegment(SerNr);
-    
-    SubsetKeyBegin2(AllServPhone2);// Edit ************************** Monday, 6 February 2017 14:16:52
-    StoreInBaseKey;
-    AppendFieldToKeyName(ServiceManager);
-    KeySegment(Phone2);
-    KeySegment(SerNr);
-        
-    SubsetKeyBegin2(AllServKontinfo1);// Edit ************************** Monday, 6 February 2017 14:16:52
-    StoreInBaseKey;
-    AppendFieldToKeyName(ServiceManager);
-    KeySegment(Kontinfo1);
-    KeySegment(SerNr);
-    
-    SubsetKeyBegin2(AllServSerialNrTextSearch);// Edit ************************** Monday, 6 February 2017 14:16:52
-    StoreInBaseKey;
-    AppendFieldToKeyName(ServiceManager);
-    KeySegment(SerialNrTextSearch);
-    KeySegment(SerNr);
+  StoreInBaseKey;
+  AppendFieldToKeyName(SalesGroup);
+  AppendFieldToKeyName(SalesMan);
+  KeySegment(RegDate);
+  KeySegment(SerNr);
+  
+  SubsetKeyBegin2(EndDiagnDate);// Edit ************************** Wednesday, 15 February 2017 19:31:45
+  StoreInBaseKey;
+  AppendFieldToKeyName(SalesGroup);
+  AppendFieldToKeyName(SalesMan);
+  KeySegment(EndDiagnDate);
+  KeySegment(SerNr);
+  
+  SubsetKeyBegin2(Kontinfo1);// Edit ************************** Monday, 6 February 2017 14:21:07
+  StoreInBaseKey;
+  AppendFieldToKeyName(SalesGroup);
+  AppendFieldToKeyName(SalesMan);
+  KeySegment(Kontinfo1);
+  KeySegment(SerNr);
+  
+  SubsetKeyBegin2(Phone2);
+  StoreInBaseKey;
+  AppendFieldToKeyName(SalesGroup);
+  AppendFieldToKeyName(SalesMan);
+  KeySegment(Phone2);
+  KeySegment(SerNr);
+  
+  SubsetKeyBegin2(SerialNrTextSearch);
+  StoreInBaseKey;
+  AppendFieldToKeyName(SalesGroup);
+  AppendFieldToKeyName(SalesMan);
+  KeySegment(SerialNrTextSearch);
+  KeySegment(SerNr);  
+  
+  //Ключи для необработанных заказов без сервисного менеджера для распределяющего
+  SubsetKeyBegin2(UnServSerNr);
+  StoreInBaseKey;
+  AppendFieldToKeyName(SalesGroup);
+  AppendFieldToKeyName(SalesMan);
+  KeySegment(SerNr);
+  SubsetKeyBegin2(UnServTransDate);
+  StoreInBaseKey;
+  AppendFieldToKeyName(SalesGroup);
+  AppendFieldToKeyName(SalesMan);
+  KeySegment(TransDate);
+  KeySegment(SerNr);
+  
+  SubsetKeyBegin2(UnServItemName);
+  StoreInBaseKey;
+  AppendFieldToKeyName(SalesGroup);
+  AppendFieldToKeyName(SalesMan);
+  KeySegment(ItemName);
+  KeySegment(SerNr);
+  
+  SubsetKeyBegin2(UnServGaranty);
+  StoreInBaseKey;
+  AppendFieldToKeyName(SalesGroup);
+  AppendFieldToKeyName(SalesMan);
+  KeySegment(Garanty);
+  KeySegment(SerNr);
+  
+  SubsetKeyBegin2(UnServVIPStatus);
+  StoreInBaseKey;
+  AppendFieldToKeyName(SalesGroup);
+  AppendFieldToKeyName(SalesMan);
+  KeySegment(VIPStatus);
+  KeySegment(SerNr);
+  
+  SubsetKeyBegin2(UnServOrderStatus);
+  StoreInBaseKey;
+  AppendFieldToKeyName(SalesGroup);
+  AppendFieldToKeyName(SalesMan);
+  KeySegment(OrderStatus);
+  KeySegment(SerNr);
+  
+  SubsetKeyBegin2(UnServServiceManager);
+  StoreInBaseKey;
+  AppendFieldToKeyName(SalesGroup);
+  AppendFieldToKeyName(SalesMan);
+  KeySegment(ServiceManager);
+  KeySegment(SerNr);
+  
+  SubsetKeyBegin2(UnServPhone2);// Edit ************************** Monday, 6 February 2017 14:20:13
+  StoreInBaseKey;
+  AppendFieldToKeyName(SalesGroup);
+  AppendFieldToKeyName(SalesMan);
+  KeySegment(Phone2);
+  KeySegment(SerNr);
+  
+  SubsetKeyBegin2(UnServKontinfo1);// Edit ************************** Monday, 6 February 2017 14:20:11
+  StoreInBaseKey;
+  AppendFieldToKeyName(SalesGroup);
+  AppendFieldToKeyName(SalesMan);
+  KeySegment(Kontinfo1);
+  KeySegment(SerNr);
+  
+  SubsetKeyBegin2(UnServSerialNrTextSearch);// Edit ************************** Monday, 6 February 2017 14:20:11
+  StoreInBaseKey;
+  AppendFieldToKeyName(SalesGroup);
+  AppendFieldToKeyName(SalesMan);
+  KeySegment(SerialNrTextSearch);
+  KeySegment(SerNr);
+  
+  //Ключи для ВСех не закрытых заказов на обслуживание для распределяющего
+  SubsetKeyBegin2(AllUnServSerNr);
+  StoreInBaseKey;
+  AppendFieldToKeyName(SalesGroup);
+  AppendFieldToKeyName(SalesMan);
+  KeySegment(SerNr);
+  
+  SubsetKeyBegin2(AllUnServTransDate);
+  StoreInBaseKey;
+  AppendFieldToKeyName(SalesGroup);
+  AppendFieldToKeyName(SalesMan);
+  KeySegment(TransDate);
+  KeySegment(SerNr);
+  
+  SubsetKeyBegin2(AllUnServItemName);
+  StoreInBaseKey;
+  AppendFieldToKeyName(SalesGroup);
+  AppendFieldToKeyName(SalesMan);
+  KeySegment(ItemName);
+  KeySegment(SerNr);
+  
+  SubsetKeyBegin2(AllUnServGaranty);
+  StoreInBaseKey;
+  AppendFieldToKeyName(SalesGroup);
+  AppendFieldToKeyName(SalesMan);
+  KeySegment(Garanty);
+  KeySegment(SerNr);
+  
+  SubsetKeyBegin2(AllUnServVIPStatus);
+  StoreInBaseKey;
+  AppendFieldToKeyName(SalesGroup);
+  AppendFieldToKeyName(SalesMan);
+  KeySegment(VIPStatus);
+  KeySegment(SerNr);
+  
+  SubsetKeyBegin2(AllUnServOrderStatus);
+  StoreInBaseKey;
+  AppendFieldToKeyName(SalesGroup);
+  AppendFieldToKeyName(SalesMan);
+  KeySegment(OrderStatus);
+  KeySegment(SerNr);
+  
+  SubsetKeyBegin2(AllUnServServiceManager);
+  StoreInBaseKey;
+  AppendFieldToKeyName(SalesGroup);
+  AppendFieldToKeyName(SalesMan);
+  KeySegment(ServiceManager);
+  KeySegment(SerNr);
+  
+  SubsetKeyBegin2(AllUnServKontinfo1);// Edit ************************** Monday, 6 February 2017 14:19:18
+  StoreInBaseKey;
+  AppendFieldToKeyName(SalesGroup);
+  AppendFieldToKeyName(SalesMan);
+  KeySegment(Kontinfo1);
+  KeySegment(SerNr);
+  
+  SubsetKeyBegin2(AllUnServPhone2);// Edit ************************** Monday, 6 February 2017 14:19:19
+  StoreInBaseKey;
+  AppendFieldToKeyName(SalesGroup);
+  AppendFieldToKeyName(SalesMan);
+  KeySegment(Phone2);
+  KeySegment(SerNr);
+  
+  SubsetKeyBegin2(AllUnServSerialNrTextSearch);// Edit ************************** Monday, 6 February 2017 14:19:19
+  StoreInBaseKey;
+  AppendFieldToKeyName(SalesGroup);
+  AppendFieldToKeyName(SalesMan);
+  KeySegment(SerialNrTextSearch);
+  KeySegment(SerNr);
+  
+  //Ключи для ВСех не закрытых заказов на обслуживание для сервисного менеджера
+  SubsetKeyBegin2(AllServSerNr);
+  StoreInBaseKey;
+  AppendFieldToKeyName(ServiceManager);
+  KeySegment(SerNr);
+  
+  SubsetKeyBegin2(AllServTransDate);
+  StoreInBaseKey;
+  AppendFieldToKeyName(ServiceManager);
+  KeySegment(TransDate);
+  KeySegment(SerNr);
+  
+  SubsetKeyBegin2(AllServItemName);
+  StoreInBaseKey;
+  AppendFieldToKeyName(ServiceManager);
+  KeySegment(ItemName);
+  KeySegment(SerNr);
+  
+  SubsetKeyBegin2(AllServGaranty);
+  StoreInBaseKey;
+  AppendFieldToKeyName(ServiceManager);
+  KeySegment(Garanty);
+  KeySegment(SerNr);
+  
+  SubsetKeyBegin2(AllServVIPStatus);
+  StoreInBaseKey;
+  AppendFieldToKeyName(ServiceManager);
+  KeySegment(VIPStatus);
+  KeySegment(SerNr);
+  
+  SubsetKeyBegin2(AllServOrderStatus);
+  StoreInBaseKey;
+  AppendFieldToKeyName(ServiceManager);
+  KeySegment(OrderStatus);
+  KeySegment(SerNr);
+  
+  SubsetKeyBegin2(AllServServiceManager);
+  StoreInBaseKey;
+  AppendFieldToKeyName(ServiceManager);
+  KeySegment(ServiceManager);
+  KeySegment(SerNr);
+  
+  SubsetKeyBegin2(AllServPhone2);// Edit ************************** Monday, 6 February 2017 14:16:52
+  StoreInBaseKey;
+  AppendFieldToKeyName(ServiceManager);
+  KeySegment(Phone2);
+  KeySegment(SerNr);
+  
+  SubsetKeyBegin2(AllServKontinfo1);// Edit ************************** Monday, 6 February 2017 14:16:52
+  StoreInBaseKey;
+  AppendFieldToKeyName(ServiceManager);
+  KeySegment(Kontinfo1);
+  KeySegment(SerNr);
+  
+  SubsetKeyBegin2(AllServSerialNrTextSearch);// Edit ************************** Monday, 6 February 2017 14:16:52
+  StoreInBaseKey;
+  AppendFieldToKeyName(ServiceManager);
+  KeySegment(SerialNrTextSearch);
+  KeySegment(SerNr);
     
   EndRecordAdd; 
   
@@ -572,19 +565,6 @@ begin
     RecordField(ParamVal2,M4Val,0,0);
   EndBlock;
   
-  RecordBegin(INNnum1Vc,-,"");
-    ImpExpLevel(0);
-  	RegisterForAllCompanies(true);
-  	RecordField(ArtCode,M4Str,20,0);
-  	RecordField(ItemNo,M4Int,0,0);
-  	MainKeyBegin(ArtCode,0);
-  	KeySegment(ArtCode);
-  	KeySegment(ItemNo);
-  	KeyBegin(ItemNo);
-  	KeySegment(ItemNo);
-  	KeySegment(ArtCode);
-  EndRecord;
-  
   RecordBegin(SVOHistSerialVc,-,"");		//Edit----------------------Dima  14.05.2015
     //ImpExpLevel(0);
   	RecordField(SerialNr,M4Str,30,0);
@@ -772,36 +752,7 @@ begin
     KeySegment(FromCompNr);
     KeySegment(SerNr);
   EndRecord; //Edit***************************Sasha2,11:15 04.05.2016 }
-			
-  RecordBegin(SamsungSendLog1Vc,-,""); //Edit***************************Sasha2,11:15 04.05.2016 {
-    RecordField(SerNr,M4Long,0,0);
-    RecordField(TransDate,M4Date,0,0);
-    RecordField(CurDate,M4Date,0,0);
-    RecordField(TransTime,M4Time,0,0);
-    RecordField(FileName1,M4Str,100,0);
-    RecordField(FileName2,M4Str,100,0);
-    RecordField(FileName3,M4Str,100,0);
-    MainKeyBegin(SerNr,0);
-    KeySegment(SerNr);
-    KeyBegin(TransDate);
-    KeySegment(TransDate);
-    KeySegment(SerNr);
-  EndRecord; //Edit***************************Sasha2,11:15 04.05.2016 }
-  
-  RecordBegin(PhoneVc,-,"");//Edit-------------------Vitalii 17:10 03.11.2016
-    RecordField(PhoneNum,M4Str,50,0);
-    RecordField(Vlastnik,M4Str,100,0);
-    RecordField(Priynato,M4Str,100,0);
-    MainKeyBegin(PhoneNum,0);
-    KeySegment(PhoneNum);
-    KeyBegin(Vlastnik);
-    KeySegment(Vlastnik);
-    KeySegment(PhoneNum);
-    KeyBegin(Priynato);
-    KeySegment(Priynato);
-    KeySegment(PhoneNum);
-  EndRecord;
-  
+
   RecordBegin(Phone1Vc,-,"");//Edit-------------------Vitalii 17:10 03.11.2016
     RecordField(PhoneNum,M4Str,50,0);
     RecordField(Vlastnik,M4Str,100,0);
@@ -958,191 +909,7 @@ begin
 		EndArray;
 	EndBlock;	
 	
-	BlockBegin(SamsungSettingsBlock,-,"" ) //Edit***************************Sasha2,10:01 12.04.2016 
-    //BlockInServer;
-    //BlockForAllCompanies;
-    RecordField(FileName,M4Str,100,0);
-    RecordField(DirName,M4Str,100,0);
-    RecordField(PLCode,M4Str,60,0);
-    RecordField(Locations,M4Str,60,0);
-    RecordField(Qty,M4Val,0,0);
-    RecordField(HostIP,M4Str,60,0);
-    RecordField(Port,M4Int,0,0);
-    RecordField(Login,M4Str,60,0);
-    RecordField(Password,M4Str,60,0);
-    RecordField(SenderCode,M4Str,60,0);
-    RecordField(SenderName,M4Str,60,0);
-    RecordField(SalesNextDocNum,M4Long,0,0);
-    RecordField(SalesNextDocNum2,M4Long,0,0);
-    RecordField(SalesNextDocNum3,M4Long,0,0);
-    RecordField(LocationCode,M4Str,60,0);
-  EndBlock;
   
-  BlockBegin(SamsungItemsBlock,-,"");
-		RecordField(Math,M4Matrix,0,0);
-		ArrayBegin(Math,-,1);
-		ArrayField(ArtCode,M4Str,200,0);
-    ArrayField(Name,M4Str,200,0);
-    ArrayField(EAN,M4Str,200,0);
-		EndArray;
-	EndBlock;
-	
-	BlockBegin(BinotelSettingsBlock,-,"");
-		RecordField(ApiKey,M4Str,100,0);
-		RecordField(ApiSecret,M4Str,100,0);
-	EndBlock;
-	
-	RecordBegin(BinotelCallEndVc,-,"");//Edit-------------------Vitalii 17:10 03.11.2016
-    RecordField(SerNr,M4Long,0,0);
-    RecordField(TransDate,M4Date,0,0);
-    RecordField(TransTime,M4Time,0,0);
-    
-    RecordField(BTransDate,M4Date,0,0);
-    RecordField(BTransTime,M4Time,0,0);
-    
-    RecordField(requestType,M4Str,255,0);
-    RecordField(companyID,M4Str,255,0);
-    RecordField(generalCallID,M4Str,255,0);
-    RecordField(callID,M4Str,255,0);
-    RecordField(startTime,M4Str,255,0);
-    RecordField(callType,M4Str,255,0);
-    RecordField(internalNumber,M4Str,255,0);
-    RecordField(internalAdditionalData,M4Str,255,0);
-    RecordField(externalNumber,M4Str,255,0);
-    RecordField(srcNumber,M4Str,255,0);
-    RecordField(customerDataId,M4Str,255,0);
-    RecordField(customerDataName,M4Str,255,0);
-    RecordField(employeeName,M4Str,255,0);
-    RecordField(employeeEmail,M4Str,255,0);
-    
-    RecordField(waitsec,M4Str,255,0);
-    RecordField(billsec,M4Str,255,0);
-    RecordField(disposition,M4Str,255,0);
-    RecordField(isNewCall,M4Str,255,0);
-    RecordField(trunkNumber,M4Str,255,0);
-    
-    RecordField(did,M4Str,255,0);
-    RecordField(didNumber,M4Str,255,0);
-    RecordField(didName,M4Str,255,0);
-    RecordField(smsContent,M4Str,255,0);
-		
-		RecordField(Math,M4Matrix,0,0);
-		ArrayBegin(Math,-,1);
-		ArrayField(mdstNumber,M4Str,255,0);
-    ArrayField(mwaitsec,M4Str,255,0);
-    ArrayField(mbillsec,M4Str,255,0);
-    ArrayField(mdisposition,M4Str,255,0);
-    ArrayField(mtrunkNumber,M4Str,255,0);
-    ArrayField(memployeeName,M4Str,255,0);
-    ArrayField(memployeeEmail,M4Str,255,0);
-		EndArray;
-    
-    MainKeyBegin(SerNr,0);
-    KeySegment(SerNr);
-    KeyBegin(internalNumber);
-    KeySegment(internalNumber);
-    KeySegment(TransDate);
-    KeySegment(TransTime);
-    KeySegment(SerNr);
-    KeyBegin(callType);
-    KeySegment(callType);
-    KeySegment(TransDate);
-    KeySegment(TransTime);
-    KeySegment(SerNr);
-    KeyBegin(TransDate);
-    KeySegment(TransDate);
-    KeySegment(TransTime);
-    KeySegment(SerNr);
-    KeyBegin(externalNumber);
-    KeySegment(externalNumber);
-    KeySegment(TransDate);
-    KeySegment(TransTime);
-    KeySegment(SerNr);
-    KeyBegin(generalCallID);
-    KeySegment(generalCallID);
-    KeySegment(SerNr);
-    KeyBegin(customerDataId);
-    KeySegment(customerDataId);
-    KeySegment(SerNr);
-    KeyBegin(disposition);
-    KeySegment(disposition);
-    KeySegment(SerNr);
-    
-    KeyBegin(didNumber);
-    KeySegment(didNumber);
-    KeySegment(TransDate);
-    KeySegment(TransTime);
-    KeySegment(SerNr);
-  EndRecord;
-  
-  RecordBegin(BinotelCallPushVc,-,"");//Edit-------------------Vitalii 17:10 03.11.2016
-    RecordField(SerNr,M4Long,0,0);
-    RecordField(TransDate,M4Date,0,0);
-    RecordField(TransTime,M4Time,0,0);
-       
-    RecordField(requestType,M4Str,255,0);
-    RecordField(companyID,M4Str,255,0);
-    RecordField(generalCallID,M4Str,255,0);
-    RecordField(callID,M4Str,255,0);
-    RecordField(startTime,M4Str,255,0);
-    RecordField(callType,M4Str,255,0);
-    RecordField(internalNumber,M4Str,255,0);
-    RecordField(internalAdditionalData,M4Str,255,0);
-    RecordField(externalNumber,M4Str,255,0);
-    RecordField(srcNumber,M4Str,255,0);
-    RecordField(customerDataId,M4Str,255,0);
-    RecordField(customerDataName,M4Str,255,0);
-    RecordField(employeeName,M4Str,255,0);
-    RecordField(employeeEmail,M4Str,255,0);
-    
-    RecordField(waitsec,M4Str,255,0);
-    RecordField(billsec,M4Str,255,0);
-    RecordField(disposition,M4Str,255,0);
-    RecordField(isNewCall,M4Str,255,0);
-    RecordField(trunkNumber,M4Str,255,0);
-    
-    RecordField(did,M4Str,255,0);
-    RecordField(didNumber,M4Str,255,0);
-    RecordField(didName,M4Str,255,0);
-    RecordField(smsContent,M4Str,255,0);
-
-    MainKeyBegin(SerNr,0);
-    KeySegment(SerNr);
-    KeyBegin(internalNumber);
-    KeySegment(internalNumber);
-    KeySegment(TransDate);
-    KeySegment(TransTime);
-    KeySegment(SerNr);
-    KeyBegin(callType);
-    KeySegment(callType);
-    KeySegment(TransDate);
-    KeySegment(TransTime);
-    KeySegment(SerNr);
-    KeyBegin(TransDate);
-    KeySegment(TransDate);
-    KeySegment(TransTime);
-    KeySegment(SerNr);
-    KeyBegin(externalNumber);
-    KeySegment(externalNumber);
-    KeySegment(TransDate);
-    KeySegment(TransTime);
-    KeySegment(SerNr);
-    KeyBegin(generalCallID);
-    KeySegment(generalCallID);
-    KeySegment(SerNr);
-    KeyBegin(customerDataId);
-    KeySegment(customerDataId);
-    KeySegment(SerNr);
-    KeyBegin(disposition);
-    KeySegment(disposition);
-    KeySegment(SerNr);
-    
-    KeyBegin(didNumber);
-    KeySegment(didNumber);
-    KeySegment(TransDate);
-    KeySegment(TransTime);
-    KeySegment(SerNr);
-  EndRecord;
   
   RecordBegin(PhoneLightVc,-,"");
     RecordField(PhoneNum,M4Str,20,0);
