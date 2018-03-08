@@ -2201,7 +2201,6 @@ global
 updating procedure PhonesFromSVO(record SVOVc SVOr)
 begin
   record Phone1Vc Pr,oldPr;
-  record SVOVc SVOr;
   string 255 phone;
   boolean TrHs,testf;
   string 255 tstr,newSVONrs;

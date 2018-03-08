@@ -296,7 +296,7 @@ Integer svoi,svorwcnt;
 record LangNrVc LangNrr;
 Boolean printf,langf;
 Integer intdocnr;
-string 30 formcode,langcode;
+string 30 langcode;
 record SVOSerVc SVOSerr;
 // Edit Start ---------------------------------------------- Edit Start
 	//Monday, 26 July 2010 11:12:22

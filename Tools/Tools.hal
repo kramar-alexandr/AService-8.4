@@ -635,7 +635,7 @@ string 50 registerVc;
   RETURN;
 END;
 
-
+/*
 global updating
 procedure UpdateSalesGroupsInInvoicesMn()	//Edit----------------------Dima  29.07.2015
 begin
@@ -662,7 +662,7 @@ begin
 		RecordStore(IVCashr,true);
 	end;  
 end;
-
+*/
 
 global function string 50 CurrentUserOnServer()
 begin

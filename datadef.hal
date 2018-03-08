@@ -112,8 +112,12 @@ begin
     RecordField(OldPhone,M4Str,255,0);// Edit ************************** Monday, 27 February 2017 11:23:05
     RecordField(Name,M4Str,255,0);// Edit ************************** Monday, 27 February 2017 11:23:43
     RecordField(MiddleName,M4Str,255,0);// Edit ************************** Monday, 27 February 2017 11:23:43
-    RecordField(InnerOrderNr,M4Str,50,0);// Edit ************************** Monday, 29 May 2017 16:43:44
-    
+		RecordField(NoOpros,M4Int,0,0);// Edit ************************** BPI Ukraine - KramarAlexandr - Tuesday, 5 December 2017 13:33:56
+		RecordField(PersonalRebCode,M4Code,5,0);// Edit ************************** BPI Ukraine - KramarAlexandr - Tuesday, 12 December 2017 14:33:44
+		RecordField(DiagnosFinishUsr,M4Str,20,0); // Edit ***************** Dima 8 February 2018, 15:28 
+		RecordField(RepairFinishUsr,M4Str,20,0); // Edit ***************** Dima 8 February 2018, 15:28 
+		RecordField(GiveAwayUsr,M4Str,20,0); // Edit ***************** Dima 8 February 2018, 15:28 
+      
     SubsetKeyBegin2(RegDate);// Edit ************************** Wednesday, 15 February 2017 19:31:45
     StoreInBaseKey;
     AppendFieldToKeyName(SalesGroup);
@@ -225,13 +229,6 @@ begin
     KeySegment(SerialNrTextSearch);
     KeySegment(SerNr);
     
-    SubsetKeyBegin2(UnServInnerOrderNr);// Edit ************************** Wednesday, 31 May 2017 09:55:54
-    StoreInBaseKey;
-    AppendFieldToKeyName(SalesGroup);
-    AppendFieldToKeyName(SalesMan);
-    KeySegment(InnerOrderNr);
-    KeySegment(SerNr);
-    
     //Ключи для ВСех не закрытых заказов на обслуживание для распределяющего ***************************************************************************************************
     SubsetKeyBegin2(AllUnServSerNr);
     StoreInBaseKey;
@@ -302,13 +299,6 @@ begin
     KeySegment(SerialNrTextSearch);
     KeySegment(SerNr);
     
-    SubsetKeyBegin2(AllUnServInnerOrderNr);// Edit ************************** Wednesday, 31 May 2017 09:55:27
-    StoreInBaseKey;
-    AppendFieldToKeyName(SalesGroup);
-    AppendFieldToKeyName(SalesMan);
-    KeySegment(InnerOrderNr);
-    KeySegment(SerNr);
-    
     //Ключи для ВСех не закрытых заказов на обслуживание для сервисного менеджера  ****************************************************************************************
     SubsetKeyBegin2(AllServSerNr);
     StoreInBaseKey;
@@ -367,12 +357,6 @@ begin
     StoreInBaseKey;
     AppendFieldToKeyName(ServiceManager);
     KeySegment(SerialNrTextSearch);
-    KeySegment(SerNr);
-    
-    SubsetKeyBegin2(AllServInnerOrderNr);// Edit ************************** Wednesday, 31 May 2017 09:53:50
-    StoreInBaseKey;
-    AppendFieldToKeyName(ServiceManager);
-    KeySegment(InnerOrderNr);
     KeySegment(SerNr);
     
   EndRecordAdd; 
@@ -461,15 +445,21 @@ begin
     RecordField(PrintedFlag,M4Mark,0,0); //Edit***************************Sasha2,10:36 11.01.2016
     RecordField(PrintedSum4,M4Val,0,0); //Edit***************************Sasha2,10:35 11.01.2016
   	RecordField(IgnoreBlankFIFO,M4Mark,0,0);//Edit----------------------Dima  09.02.2016
+  	RecordField(Phone2,M4Str,50,0);//Edit----------------------Dima  09.02.2016
+
   EndRecordAdd;
   
   RecordAddBegin(ActTypeVc,"acttype_custom");
     RecordField(MainPersons,M4Str,255,0);// Edit ************************** Thursday, 17 August 2017 15:20:18
-  RecordField(CC,M4Str,255,0);// Edit ************************** Thursday, 17 August 2017 15:20:18
+  	RecordField(CC,M4Str,255,0);// Edit ************************** Thursday, 17 August 2017 15:20:18
   EndRecordAdd;
   
   RecordAddBegin(SHVc,"SHVc_Custom");
     ArrayField(IMEI,M4Str,30,0); //Edit***************************Sasha2,14:25 15.04.2016
+  EndRecordAdd;
+  
+  RecordAddBegin(ActVc,"ActVc_Custom");
+    RecordField(Comment1,M4Str,200,0);// Edit ************************** BPI Ukraine - KramarAlexandr - Monday, 27 November 2017 16:07:23
   EndRecordAdd;
   
   ////------------------------------------------------PRICE ETICETKA
@@ -1152,6 +1142,17 @@ begin
     KeySegment(TransDate);
     KeySegment(TransTime);
     KeySegment(SerNr);
+  EndRecord;
+  
+  RecordBegin(PhoneLightVc,-,"");
+    RecordField(PhoneNum,M4Str,20,0);
+    RecordField(SerNum,M4Long,0,0);
+    MainKeyBegin(PhoneNum,0);
+    KeySegment(PhoneNum);
+    KeySegment(SerNum);
+    KeyBegin(SerNum);
+    KeySegment(SerNum);
+    KeySegment(PhoneNum);
   EndRecord;
   
 return;
