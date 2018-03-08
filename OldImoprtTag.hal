@@ -220,7 +220,7 @@ begin
   CUr.OPBookVAT = StringToInt(ImportField);
   CUr.BillingTypePreference = StringToInt(ImportField);
   CUr.TaxCondition = StringToInt(ImportField);
-  CUr.Partner = StringToInt(ImportField);
+  CUr.IsPartner = StringToInt(ImportField);
   
   while (NextImportLine(false)) begin
     tstr = ImportField;
@@ -885,6 +885,11 @@ begin
   SVOr.OldPhone = ImportField;
   SVOr.Name = ImportField;
   SVOr.MiddleName = ImportField;
+  SVOr.NoOpros = StringToInt(ImportField);
+  SVOr.PersonalRebCode = ImportField;
+	SVOr.DiagnosFinishUsr = ImportField;
+	SVOr.RepairFinishUsr = ImportField;
+	SVOr.GiveAwayUsr = ImportField;
   
   rwcnt = 0;
   
@@ -1933,6 +1938,7 @@ begin
   IVr.PrintedFlag = StringToInt(ImportField);
   IVr.PrintedSum4 = StringToVal(ImportField,M4Val);
   IVr.IgnoreBlankFIFO = StringToInt(ImportField);
+  IVr.Phone2 = ImportField;
   
   rwcnt = 0;
   

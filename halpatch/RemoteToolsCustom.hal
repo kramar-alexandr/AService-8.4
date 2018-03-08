@@ -460,7 +460,6 @@ begin
   string 5 hr,mn;
   integer minute, curcomp, days,i,min;
   date startdate;
-  record SamsungSendLog1Vc SSLr;
 
     t1 = StringToTime("22:50");
     t2 = StringToTime("23:00");

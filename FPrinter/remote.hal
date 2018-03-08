@@ -17,22 +17,6 @@ return;
 end;
 
 
-global
-updating procedure DellSUPP()
-begin
-  boolean TrHs;
-  Record INNnum1Vc INSUPr;
-  
-  TrHs = true;
-  while (LoopMain(INSUPr,0,TrHs)) begin
-    if (TrHs) then begin
-      RecordDelete(INSUPr);
-      StepBack(INSUPr);
-    end;
-  end;
-RETURN;
-END;
-
 //----------------------------------------------------------------------------------------------------
 
 
