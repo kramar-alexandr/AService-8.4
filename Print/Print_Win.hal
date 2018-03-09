@@ -3,7 +3,7 @@ remote function Boolean Getformcode(Integer,Integer,string,string,string,LongInt
 external procedure GetUserAccessGroup(string,var string);
 
 
-SetLangMode(LangUkrainian,"RUS",0);
+SetLangMode(LangRussian,"RUS",0);
 
 
 window MyPrintTClass:1

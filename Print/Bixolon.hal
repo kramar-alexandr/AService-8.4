@@ -1,7 +1,7 @@
 external procedure M4PadString(string,Integer,string,Boolean,var string);
 external procedure  FindPhonePerson(var record Phone1Vc,string);
 
-SetLangMode(LangUkrainian,"RUS",0);
+SetLangMode(LangRussian,"RUS",0);
 
 
 

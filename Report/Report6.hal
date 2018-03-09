@@ -3,7 +3,7 @@ external inner function string 255 StrReplace(string,string,string);
 external procedure CuPerRn(record RcVc);// Edit ************************** Monday, 13 November 2017 13:56:48
 external function Boolean MySendWebRequest(string,longint,longint,boolean,string,string,string,string,boolean,area,var area,integer);
 
-SetLangMode(LangUkrainian,"UKR",0);
+SetLangMode(LangRussian,"RUS",0);
 
 function val GetItemPrice(string artcode, string PLCode)
 begin

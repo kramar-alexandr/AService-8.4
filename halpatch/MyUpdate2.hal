@@ -4,7 +4,7 @@ external function Boolean MySendWebRequest(string,longint,longint,boolean,string
 external function Boolean FindStringInString(string, string);
 external function Boolean MySendAsyncWebRequest(string,longint,boolean,string,string,string,string,area,string,integer);
 
-SetLangMode(LangUkrainian,"UKR",0);
+SetLangMode(LangRussian,"RUS",0);
 
 
 global
