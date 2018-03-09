@@ -8360,7 +8360,7 @@ begin
 end;
 
 window OPPDClass:1
-  wtag("language","UKR"), wtag("product","*"), wtag("productcode","*"), wtag("device","computer")
+  wtag("language","RUS"), wtag("product","*"), wtag("productcode","*"), wtag("device","computer")
 begin
   real h,h2,h3,v,vs;
   WindowBegin("AP Prepayment",OPPDClass,CGview,-);
@@ -8390,7 +8390,7 @@ begin
 end;
 
 window OPPLClass:1
-  wtag("language","UKR"), wtag("product","*"), wtag("productcode","*"), wtag("device","computer")
+  wtag("language","RUS"), wtag("product","*"), wtag("productcode","*"), wtag("device","computer")
 begin
   WindowBegin("Предоплаты AP",OPPLClass,CGmlist,-);
   SetWRect(20,80,700,355);
@@ -10098,7 +10098,7 @@ end;
 
 
 window WebNavLinkDClass:1
-  wtag("language","UKR"), wtag("product","*"), wtag("productcode","*"), wtag("device","computer")
+  wtag("language","RUS"), wtag("product","*"), wtag("productcode","*"), wtag("device","computer")
 begin
   real h,h2,h4,v,vs;
   WindowBegin("Web-посилання",WebNavLinkDClass,CGview,WebNavLinkView);
