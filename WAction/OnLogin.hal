@@ -261,9 +261,9 @@ begin
       asyncremote.RegisterAtPresenceServer(CurrentUser,1,1,DeviceOperatingSystem,false);
     end;
 */
-    asyncremote.RegisterAtPresenceServer(CurrentUser,1,1,DeviceOperatingSystem,true);
+    /*asyncremote.RegisterAtPresenceServer(CurrentUser,1,1,DeviceOperatingSystem,true);// Edit ************************** BPI Ukraine - KramarAlexandr - Friday, 9 March 2018 15:28:29
     SendLogAction(kActionLogin,-1,-1,"","Login");
-    asyncremote.SendHansaWorldIDUserTask2(CurrentUser,DatabaseID,GuiType);
+    asyncremote.SendHansaWorldIDUserTask2(CurrentUser,DatabaseID,GuiType);*/
 
   end;
   BlockLoad(LLb);
@@ -879,4 +879,12 @@ begin
 		end;
 	//end;
 return;
+end;
+
+
+
+
+global function integer EmailValidationStatusWithStdID()// Edit ************************** BPI Ukraine - KramarAlexandr - Friday, 9 March 2018 15:29:23
+begin		
+	EmailValidationStatusWithStdID = 2;
 end;
