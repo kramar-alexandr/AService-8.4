@@ -24,7 +24,6 @@ external function Boolean SetInSet2(string,string); //Edit**********************
 
 SetLangMode(LangRussian,"RUS",0);
 
-
 global
 function string 255 CreateInvoiceNumberDisputedMark(LongInt SerNr, string OfficialSerNr, Integer Disputed)
 begin
