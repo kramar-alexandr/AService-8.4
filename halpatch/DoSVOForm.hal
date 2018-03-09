@@ -357,9 +357,9 @@ LActPrintNote1:;
 		end else begin
 			tstr = SVOr.Kontinfo2;
 			if(SVOr.NoOpros==1)then begin
-				tstr = tstr & "/ РќР° РѕРїСЂРѕСЃ СЃРѕРіР»Р°СЃРµРЅ";
+				tstr = tstr & "/ Ќа опрос согласен";
 			end else begin
-				tstr = tstr & "/ РћС‚ РѕРїСЂРѕСЃР° РѕС‚РєР°Р°Р»Р·РёСЃСЊ";
+				tstr = tstr & "/ Ћт опроса откаалзись";
 			end;
 			OUTFORMFIELD("MY_Kontinfo2",tstr);
 		end;
