@@ -1181,7 +1181,7 @@ record BaseCurBlock bascur; //Edit***************************Sasha2,10:23 20.08.
     StartFormat(15);
      OutString(0,0,USetStr(2426),false);
      //OutString(55,0,USetStr(2435),false);// Edit ************************** BPI Ukraine - KramarAlexandr - Wednesday, 21 February 2018 11:49:00
-    	OutString(55,0,"Р РµРјРѕРЅС‚ РІС‹РґР°РЅ",false);// Edit ************************** BPI Ukraine - KramarAlexandr - Wednesday, 21 February 2018 11:49:12
+    	OutString(55,0,"ђемонт выдан",false);// Edit ************************** BPI Ukraine - KramarAlexandr - Wednesday, 21 February 2018 11:49:12
      OutString(100,0,USetStr(2436),false);
      OutString(170,0,USetStr(2707),false);
      OutString(240,0,USetStr(2438),false);
@@ -1212,7 +1212,7 @@ record BaseCurBlock bascur; //Edit***************************Sasha2,10:23 20.08.
 	    if (RepSpec.flags[23]!=0) then begin
 	    end else begin
 	      //OutString(90,0,USetStr(2358),false);// Edit ************************** BPI Ukraine - KramarAlexandr - Wednesday, 21 February 2018 11:50:55
-	      OutString(90,0,"Р РµРјРѕРЅС‚ РІС‹РґР°РЅ",false);// Edit ************************** BPI Ukraine - KramarAlexandr - Wednesday, 21 February 2018 11:51:04
+	      OutString(90,0,"ђемонт выдан",false);// Edit ************************** BPI Ukraine - KramarAlexandr - Wednesday, 21 February 2018 11:51:04
 	      OutString(120,0,USetStr(8178),false);
 	    end;
 	    OutString(145,0,USetStr(8447),false);
