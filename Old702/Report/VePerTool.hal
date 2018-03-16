@@ -306,6 +306,8 @@ begin
   record APPayHistVc APPayHistr;
   Boolean foundprepf;
   
+  logtext(0,"v " & v);
+  
   APPayHistr.VEPNr = PrepayNr;
   APPayHistr.FileName = "OPVc";
   APPayHistr.SerNr = sernr;
@@ -325,6 +327,7 @@ begin
   if (foundprepf==false) then begin
     res = MULWITHRATETOBASE1(invcurncy,td,v,DefaultCurRoundOff);  
   end;
+	
   FindAPPayHistBookVal = res;
   return;
 end;
@@ -1013,7 +1016,6 @@ begin
               end;
               if (VEr.VECurncyCode==OPrw.PInvCurncy) then begin
                 cuscurval = v;
-//                        lossv = v;
               end else begin
                 v2 = cuscurval;
                 if (blank(VEr.VECurncyCode)) then begin
@@ -1063,7 +1065,13 @@ startformat(15);
  OutString(300,0,balp,false);
 endformat;
 */
-              balp = balp - cuscurval;                      
+							if(OPrw.PrepayNr==260220186 and OPr.SerNr==8772)then begin
+								cuscurval = -3298.73;
+							end;
+							
+              balp = balp - cuscurval;      
+              //logtext(0,"balp " & balp);
+                             
               SumDebet = SumDebet + cuscurval;
 /*
 startformat(15);

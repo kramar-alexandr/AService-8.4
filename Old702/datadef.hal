@@ -2556,6 +2556,19 @@ begin
   RecordField(ParamVal2,M4Val,0,0);
   EndBlock;
   
+  RecordBegin(INNnum1Vc,-,"");
+  ImpExpLevel(0);
+	RegisterForAllCompanies(true);
+	RecordField(ArtCode,M4Str,20,0);
+	RecordField(ItemNo,M4Int,0,0);
+	MainKeyBegin(ArtCode,0);
+	KeySegment(ArtCode);
+	KeySegment(ItemNo);
+	KeyBegin(ItemNo);
+	KeySegment(ItemNo);
+	KeySegment(ArtCode);
+EndRecord;
+  
    RecordBegin(SVOVc,-,"");
   RecordField(SerNr,M4Long,0,0);
   SerialNoBlock(SVOSerBlock);

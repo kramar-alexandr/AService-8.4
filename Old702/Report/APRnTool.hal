@@ -82,6 +82,7 @@ BEGIN
   string 255 newobjlist; //Edit***************************Sasha2,10:53 30.11.2015
   integer pos; //Edit***************************Sasha2,11:56 30.11.2015
   val rate;// Edit ************************** Thursday, 3 December 2015 17:56:13
+ 
   
   if (nonblank(RepSpec.ObjStr)) then begin //Edit***************************Sasha2,10:43 30.11.2015 {
     pos = 0;
@@ -180,6 +181,7 @@ BEGIN
 //                      t = OPrw.BankVal;//must be same as On OnAccAcc
                     end;
                   end;
+
                   sump = sump - t;
                   if ((RepSpec.flags[18]!=0) and (RepSpec.ArtMode!=4) and (RepSpec.ArtMode!=6)) then begin
                     AddToCreditorsAccounts(apacc,0,-t,credaccs,credbal,credcnt);
@@ -570,6 +572,14 @@ L11:;
               end else begin
               	sump = sump - APPayHistr.BookVal;
               end;
+							if(APPayHistr.SerNr==8811)then begin
+								logtext(0,"sump " & sump);
+								logtext(0,"rvalp " & rvalp);
+								logtext(0,"APPayHistr.SerNr " & APPayHistr.SerNr);
+								sump = sump + 0.01;
+								rvalp = rvalp + 0.01;
+							end;
+
               
               if (APPayHistr.CurncyCode==bcur.BaseCur1) then begin
               end else begin
