@@ -365,7 +365,7 @@ end; //##ii
 window SVODClass:1
   wtag("language","RUS"), wtag("product","*"), wtag("productcode","*"), wtag("device","computer")
 begin
-  real h,h1,h2,h3,h4,t,v,vm,vs;
+  real h,h1,h2,h3,h4,t,v,vm,vs,vx;
   string 255 label;
   Integer mode; //Edit***************************Sasha2,15:56 27.10.2016
   
@@ -430,14 +430,16 @@ begin
 		EditField(h1,v+=vs,60,"Дата видачі",mode,RegDate,false,PasteCurDate);
 		EditField(h2,v,60,"Час",mode,OutTime,false,0);// Edit ************************** Monday, 24 October 2016 17:56:02
 		if(currentuser=="SA")then begin
-			EditField(-200,v,-20,"OldPhone",ViewOnly,OldPhone,false,0);
+			//EditField(-200,v,-20,"OldPhone",ViewOnly,OldPhone,false,0);
 		end;
 	
 		v=vm-20;
+		vx = v;
 		halpushbutton(h2+200,v,h2+325,v+50,"FastPaySVODsm","Швидка оплата");// Edit ************************** Friday, 25 November 2016 11:32:03 
-		EditField(h2+240,v+=20,60, "Термін.",Normal,FastTerm,false,0); // Edit ************ Dima 8 February 2018, 15:45
-		EditField(h2+240,v+20,60, "Готівка",Normal,FastCash,false,0);
-		EditField(h2+85,v,80,"",ViewOnly,DiagnosFinishUsr,false,0);
+		EditField(h2+240,v+=25,60, "Термін.",Normal,FastTerm,false,0); // Edit ************ Dima 8 February 2018, 15:45
+		EditField(h2+240,v+=20,60, "Готівка",Normal,FastCash,false,0);
+		v = vx;
+		EditField(h2+85,v+=20,80,"",ViewOnly,DiagnosFinishUsr,false,0);
 		EditField(h2+85,v+=20,80,"",ViewOnly,RepairFinishUsr,false,0);
 		EditField(h2+85,v+=20,80,"",ViewOnly,GiveAwayUsr,false,0);
 	
