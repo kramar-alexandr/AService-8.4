@@ -22,7 +22,6 @@ external procedure GTrans2EClass_Tool(Integer,var real,var real,var real);
 external procedure GBaseEClass_Tool(Integer,var real,var real);
 external procedure TransGenVClass_Tool(Integer,var real,var real);
 external procedure GetCurUser(var record UserVc);
-external procedure JobRClass_RUS();
 external function string 60 UserDefined(string,string);
 external outer function string 255 MasterBannerURL();
 external procedure ItemStatusUserSettings(string,var Boolean,var Boolean,var Boolean,var Boolean,var Boolean,var Boolean,var Boolean,var Boolean,var Boolean,var Boolean,var Boolean,var Boolean,var Boolean,var Boolean);
@@ -30,7 +29,6 @@ external function Boolean AllowedInCountry(integer);
 external function Integer ResourceWindowResourceType();
 external function Boolean ResPlan_Rental();
 external function Boolean ResPlan_ProdOperations();
-remote function Boolean ReadPOSButtons(string,string,longint,var string,var string,var string,var record POSButtonsVc,var Integer);
 external function Boolean TouchScreenLook();
 external procedure ExtractObj(string,var Integer,var string);
 external function Boolean IsSessionOpen(string,string,Date,Time);
@@ -114,7 +112,6 @@ external procedure ALLVATRClass_ENG();*/
 
 // Language functions RUS
 external function Boolean DisplayLoginKeyPad_RUS();
-external function string 255 VATZoneEditFieldLabelRUS(Integer);
 external function real VATZoneButtonsLabelsRUS(real,real,real,real);
 external procedure LoginButtons2_RUS(Real,Real);
 external procedure FORMDEF_RUS();
@@ -127,7 +124,6 @@ external procedure TSERWTouch_RUS();
 external procedure TSERWTEST_RUS();
 external procedure INVFORM_RUS(Boolean);
 external procedure DisplayRecordDetails_RUS(LongInt,LongInt,string,date,time,string,string,string,string,string,string,string,string,string,string,string,Integer,string,string,string,val,string,Boolean,string,string);
-external procedure DrawPOSInterface_RUS(string,string,record POSButtonsVc,Integer,string,Integer);
 external procedure DisplayRecordDetailsCustDisplay_RUS(LongInt,LongInt,string,date,time,string,string,string,string,string,string,Integer,string,string,string,val);
 external function string 255 ResDayWClassWindowTitle_RUS();
 external function string 255 ResMonWClassWindowTitle_RUS();
