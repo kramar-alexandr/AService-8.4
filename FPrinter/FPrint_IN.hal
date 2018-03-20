@@ -1,16 +1,16 @@
 external updating procedure DellSUPP();
 remote updating procedure DellINMn();
 external updating procedure SynchServToOfflineSettingsm();
-external updating function boolean PrintFiscalReceipt(record IVCashVc);
+//external updating function boolean PrintFiscalReceipt(record IVCashVc);
 remote function MyServLog(string);
-external procedure prt(string,string,boolean);
+//external procedure prt(string,string,boolean);
 remote updating procedure MyConvertCur(var record CashVc);
 external procedure MyCashInOutClient(val);
 remote updating procedure SavingCash(var record CashVc);
 external updating function Boolean SendServiceRequest(string,Boolean,area,var Area);
 external updating function Boolean ServiceRequestAsync(string,string,Boolean,area,string);
 external procedure ReadTXServiceReply(var record TXServiceReplyVc,var Area,Boolean);
-external procedure prt(string,string,var boolean);
+//external procedure prt(string,string,var boolean);
 
 
 //----------------------------------------------------------------------------------------------------
@@ -164,7 +164,7 @@ begin
   boolean successf;
 	
 	//RunProgram("Datecs/prt.exe","cancel");
-	prt("cancel","",successf);
+	////prt("cancel","",successf);
 	RETURN;
 END;
 
@@ -175,7 +175,7 @@ procedure MyBigReportMn()
 begin
 	boolean successf;
 	//RunProgram("Datecs/prt.exe","bigreport");
-	prt("bigreport","",successf);
+	////prt("bigreport","",successf);
 	RETURN;
 END;
 
@@ -195,12 +195,12 @@ begin
 	if ((RecSpec.flags[1]==1)and (RecSpec.flags[2]==1) and (RecSpec.flags[3]==1)) then begin
 		if(RecSpec.flags[4]!=1) then begin
 			//RunProgram("Datecs/prt.exe","nullcheck");
-			prt("nullcheck","",successf);
+			////prt("nullcheck","",successf);
 			Sleep(3);
 		end;
 		
 		//RunProgram("Datecs/prt.exe","zreport");
-		prt("zreport","",successf);
+		//prt("zreport","",successf);
 		DellSUPP;
 	end;
 	
@@ -244,7 +244,7 @@ begin
 		
 		//command = "periodreportshort " & ds & ms & ys & " " & de & me & ye;
 		//StopAlert(ds & ms & ys & " " & de & me & ye);
-		prt("periodreportshort",ds & ms & ys & " " & de & me & ye,successf);
+		//prt("periodreportshort",ds & ms & ys & " " & de & me & ye,successf);
 		//RunProgram("Datecs/prt.exe",command);
 		
 	end;
@@ -266,7 +266,7 @@ begin
 	if ((RecSpec.flags[1]==1)) then begin
 		IVCashr.SerNr=RecSpec.long2;
 		if (ReadFirstMain(IVCashr,1,true)==true) then begin
-			PrintFiscalReceipt(IVCashr);
+			//PrintFiscalReceipt(IVCashr);
 			CloseWindow(wn);
 		end;
 	end;
@@ -284,7 +284,7 @@ string 255 com;
 integer sq;
 boolean successf;
 
-  prt("xreport","",successf);
+  //prt("xreport","",successf);
 	
 	
 	RETURN;
@@ -298,7 +298,7 @@ begin
   boolean successf;
 	
 	//RunProgram("Datecs/prt.exe","nullcheck");
-	prt("nullcheck","",successf);
+	//prt("nullcheck","",successf);
 	RETURN;
 END;	
 
@@ -309,7 +309,7 @@ begin
   boolean successf;
 	
 	//RunProgram("Datecs/prt.exe","nullcheck");
-	prt("errorfix","",successf);
+	//prt("errorfix","",successf);
 	RETURN;
 END; 
 
@@ -320,7 +320,7 @@ updating function SetTimePrinter()
 begin
   boolean successf;
 
-	prt("settimeprinter","",successf);
+	//prt("settimeprinter","",successf);
 	
 	RETURN;
 END;	 
@@ -356,7 +356,7 @@ begin
   boolean successf;
 
 	
-	prt("UPString",USetStr(31001),successf);
+	//prt("UPString",USetStr(31001),successf);
 	
 	RETURN;
 END;	 
@@ -368,7 +368,7 @@ begin
   boolean successf;
 
 	
-	prt("DOWNString",USetStr(31001),successf);
+	//prt("DOWNString",USetStr(31001),successf);
 	
 	RETURN;
 END;
@@ -390,7 +390,7 @@ begin
 	GetWindowRecord(wn,RepSpec);
 	cash = RepSpec.vals0*100;
 	//comand=valtostring(cash,M4Val,"",SysFormatRec.decimalPt,0);
-	prt("cashin",cash,res);
+	//prt("cashin",cash,res);
 	selectwindow(wn);  
 	closewindow(wn);
 
@@ -413,7 +413,7 @@ begin
 	GetWindowRecord(wn,RepSpec);	
 	cash = -RepSpec.vals0*100;
 	//comand=valtostring(cash,M4Val,"",SysFormatRec.decimalPt,0);
-	prt("cashin",cash,res);
+	//prt("cashin",cash,res);
 	selectwindow(wn);  
 	closewindow(wn);	
 
