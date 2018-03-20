@@ -70,7 +70,7 @@ external function Boolean HasInAppsAvailable();
 external function Integer CountCountries();
 
 // Language functions ENG
-external function Boolean DisplayLoginKeyPad_ENG();
+/*external function Boolean DisplayLoginKeyPad_ENG();
 external function string 255 VATZoneEditFieldLabelENG(Integer);
 external function real VATZoneButtonsLabelsENG(real,real,real,real);
 external procedure LoginButtons2_ENG(Real,Real);
@@ -110,7 +110,7 @@ external procedure LoginButtons_ENG(Real);
 external procedure FORMDEF2_ENG();
 external procedure FORMDEF3_ENG();
 external procedure ARS2RClass_ENG();
-external procedure ALLVATRClass_ENG();
+external procedure ALLVATRClass_ENG();*/
 
 // Language functions RUS
 external function Boolean DisplayLoginKeyPad_RUS();
