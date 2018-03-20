@@ -2274,7 +2274,7 @@ end else begin
       page = 1;
     end;
     //stopalert("about to call ReadPOSButtons, page:" & page);
-    ReadPOSButtons("IVDClass",LMb.POSButtonGroup,page,bc1,bc2,compname,POSBr,acnt);
+    //ReadPOSButtons("IVDClass",LMb.POSButtonGroup,page,bc1,bc2,compname,POSBr,acnt);
     SetWRect(lt,tp,rt,bm);
       AbsoluteWindowSize;
     if (TestEnablerFile("EnNoFullscreenWindow")==false) then begin
@@ -2338,7 +2338,7 @@ end else begin
 
         SoftEditField(2000,-22,200,""  ,Normal ,"ivcashcommandlastitemsernrf",false,0,M4Str,255);         
 
-        DrawPOSInterface_RUS(bc1,bc2,POSBr,acnt,"",100);         
+        //DrawPOSInterface_RUS(bc1,bc2,POSBr,acnt,"",100);         
       end else begin
 
         v = 20;
@@ -2382,7 +2382,7 @@ end else begin
 
         SoftEditField(2000,-22,200,""  ,Normal ,"ivcashcommandlastitemsernrf",false,0,M4Str,255);         
 
-        DrawPOSInterface_RUS(bc1,bc2,POSBr,acnt,"",100);         
+        //DrawPOSInterface_RUS(bc1,bc2,POSBr,acnt,"",100);         
       end;
       BottomBar;
     end else begin
@@ -2424,7 +2424,7 @@ end else begin
         SoftEditField(-260,-22,200,"Товар/Команда"  ,Normal ,"ivcashcommand",false,0,M4Str,255);
     end;
     SoftEditField(2000,-22,200,""  ,Normal ,"ivcashcommandlastitemsernrf",false,0,M4Str,255);
-    DrawPOSInterface_RUS(bc1,bc2,POSBr,acnt,"",100);
+    //DrawPOSInterface_RUS(bc1,bc2,POSBr,acnt,"",100);
     BottomBar;
   end;
 end;
