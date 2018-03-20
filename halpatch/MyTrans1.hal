@@ -3,12 +3,7 @@ external function Boolean PUDClassAfterEditField(Integer,string,Integer,Integer,
 external function LongInt GetCurUserLastNr(string);
 external function Boolean PasteCustInOrder(var record ORVc,string,string,var string,var string);
 external procedure ORVc_PasteCurncyCode(var record ORVc,string);
-remote updating procedure CreateNewSVOinCom(record SVOVc);
-remote updating procedure CreateNewSVOinCom1(record SVOVc);
-remote updating procedure CreateNewINinStore(record INVc);
-remote updating procedure CreateNewINiPoint(record INVc);
-remote updating procedure CreateNewINTNM(record INVc);
-remote updating procedure CreateNewINinSMG(record INVc);
+
 
 	SetLangMode(LangRussian,"RUS",0);
 
@@ -487,94 +482,6 @@ LRecordAction_raPasteSVOInIP:;
   RecordAction_raPasteSVOInIP = res;
   RETURN;
 END;
-
-
-global updating procedure MyImportSVOToCompDsm()
-begin
-record SVOVc SVOr;
-integer wn;
-  wn = CurWindow;
-  getwindowrecord(wn,SVOr);
-  
-  If(CurrentCompany==1) then begin
-	  CreateNewSVOinCom(SVOr);
-	end; 
-	If(CurrentCompany==2) then begin
-	  CreateNewSVOinCom1(SVOr);
-	end;
-	
-return;
-end;
-
-global updating procedure MyINtoISTOREDsm()
-begin
-record INVc INr;
-integer wn;
-  wn = CurWindow;
-  getwindowrecord(wn,INr);
-
-  If(CurrentCompany==2) then begin
-	  CreateNewINinStore(INr);
-	end;
-	If(CurrentCompany==5) then begin
-	  CreateNewINinStore(INr);
-	end; 
-	
-return;
-end;
-
-global updating procedure MyINtoSMGDsm()
-begin
-record INVc INr;
-integer wn;
-  wn = CurWindow;
-  getwindowrecord(wn,INr);
-
-  If(CurrentCompany==2) then begin
-	  CreateNewINinSMG(INr);
-	end;
-  If(CurrentCompany==1) then begin
-	  CreateNewINinSMG(INr);
-	end; 
-		
-return;
-end;
-
-global updating procedure MyINtoIPOINTDsm()
-begin
-record INVc INr;
-integer wn;
-  wn = CurWindow;
-  getwindowrecord(wn,INr);
-
-  If(CurrentCompany==1) then begin
-	  CreateNewINiPoint(INr);
-	end; 
-	
-  If(CurrentCompany==5) then begin
-	  CreateNewINiPoint(INr);
-	end;
-
-	If(CurrentCompany==6) then begin
-	  CreateNewINiPoint(INr);
-	end;
-	
-return;
-end;
-
-global updating procedure MyINtoTNMDsm()
-begin
-record INVc INr;
-integer wn;
-  wn = CurWindow;
-  getwindowrecord(wn,INr);
-
-  If(CurrentCompany==5) then begin
-	  CreateNewINTNM(INr);
-	end; 
-	
-return;
-end;
 
 global
 updating function Integer RecordAction_raPasteSVOInStockMov(var record StockMovVc SMp,var record SVOVc SVOp)

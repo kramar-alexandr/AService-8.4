@@ -1,10 +1,6 @@
 external procedure GetFullCurncyRate (var string,Date,var val,var val,var val,var val,var val);
 external procedure RebuildStockMn(record RcVc);
-external function Boolean GetItemPriceDiscount3(string,val,var record INVc,string,val,val,val,val,val,string,string,string,string,
-                                                var val,var string,var val,var string,var val,var string,Integer,var Boolean,Date,
-                                                string,Boolean,var Boolean,string,var string,var val,string);
 external function Boolean PasteItemInSVO(var record SVOVc,Integer);
-external function Boolean PasteCUInSVO(var record SVOVc,var string);
 external function roundmode SetRoundModeD(Integer);
 
 

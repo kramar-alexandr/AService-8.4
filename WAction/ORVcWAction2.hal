@@ -23,7 +23,7 @@ external function roundmode DefaultRoundMode();
 external procedure CalcPrice(val,val,val,var val,Integer);
 external procedure RecalcORSubtotal(var record ORVc);
 remote procedure GetCurUser(var record UserVc);
-remote updating function Boolean BA_ORMinMarkupWarning(record ORVc,var Integer);
+//remote updating function Boolean BA_ORMinMarkupWarning(record ORVc,var Integer);
 remote function Boolean ORDelWithTBIV(record ORVc);
 external procedure CustMessages(string,string);
 remote function Boolean ReadFirstItem(string,var record INVc,Boolean,Boolean);
@@ -440,14 +440,14 @@ BEGIN
               testf = false;
             end; 
           end;
-          if (testf) then begin
+          /*if (testf) then begin
             if (BA_ORMinMarkupWarning(ORr,i)==true) then begin
               if (UserCanAction("DisallowSaleBelowGP",false)) then begin
                 testf = false;
                 MessageBox(1274,StringFromStringSet(3,"DisallowSaleBelowGP"));
               end;
             end;
-          end;
+          end;*/
           r = ORTestApprovalStatus(ORr);
           if (r!=0) then begin
             MessageBox(r,"");

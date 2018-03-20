@@ -53,7 +53,7 @@ external procedure StockMovSumUp(var record StockMovVc);
 external function LongInt GetCurUserLastNr(string);
 external procedure IVVc_PasteSalesMan(var record IVVc,string);
 external updating function integer SendCheckUserEmailAddress(record UserVc);
-external procedure DoSendValidateUserEmailAddress(record GlobalUserVc,record UserVc,Boolean,Boolean);
+//external procedure DoSendValidateUserEmailAddress(record GlobalUserVc,record UserVc,Boolean,Boolean);
 external function Boolean FindTheUser(var record UserVc);
 
 global
@@ -2726,7 +2726,7 @@ begin
 
   Userr.Code = code;
   if (FindTheUser(Userr)) then begin
-    DoSendValidateUserEmailAddress(GlobalUserr,Userr,false,true);
+    //DoSendValidateUserEmailAddress(GlobalUserr,Userr,false,true);
   end;
 
   return;
@@ -2740,7 +2740,7 @@ begin
 
   Userr.Code = code;
   if (FindTheUser(Userr)) then begin
-    DoSendValidateUserEmailAddress(GlobalUserr,Userr,false,true);
+    //DoSendValidateUserEmailAddress(GlobalUserr,Userr,false,true);
   end;
 
   return;
@@ -2758,7 +2758,7 @@ begin
 
   Userr.Code = usercode;
   if (FindTheUser(Userr)) then begin
-    DoSendValidateUserEmailAddress(GlobalUserr,Userr,false,false);
+    //DoSendValidateUserEmailAddress(GlobalUserr,Userr,false,false);
   end;
 
   return;
