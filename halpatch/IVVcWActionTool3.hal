@@ -661,7 +661,6 @@ begin
     end;
   end;
 	
-	logtext(0,"MatRowCnt(CreditIVr) " & MatRowCnt(CreditIVr));
   rwcnt = MatRowCnt(CreditIVr);
   for (i=0;i<rwcnt;i=i+1) begin
     MatRowGet(CreditIVr,i,IVrw);
@@ -707,7 +706,6 @@ LkInvoiceRowTypeNormal:;
         rwcnt = MatRowCnt(CreditIVr);
     end;
   end;
-  logtext(0,"MatRowCnt(CreditIVr) " & MatRowCnt(CreditIVr));
   switch (invtype) begin
     case kInvoiceTypeDebit:
       ClearRow(CreditIVr,IVrw,kInvoiceRowTypeDebit);
@@ -731,7 +729,6 @@ LkInvoiceTypeCredit:;
       end;
       ApplyCreditNoteTerms(CreditIVr);
   end;
-  logtext(0,"3 MatRowCnt(CreditIVr) " & MatRowCnt(CreditIVr));
   if (correctionf) then begin
     RecordCopy(tmpIVr,CreditIVr);
     rwcnt = MatRowCnt(CreditIVr);
@@ -793,11 +790,8 @@ LkInvoiceTypeCredit:;
       end;
     end;
   end;
-  logtext(0,"4 MatRowCnt(CreditIVr) " & MatRowCnt(CreditIVr));
-  logtext(0,"1res " & res);
   IVSumup(CreditIVr,true);
 LCreateCreditNoteIV:; 
-logtext(0,"2res " & res); 
   CreateCreditNoteIV = res;
   return;
 end;
