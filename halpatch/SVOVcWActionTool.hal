@@ -94,52 +94,33 @@ BEGIN
     //SVOp.Comment1 = CUr.OrderComment;// Edit ************************** BPI Ukraine - KramarAlexandr - Wednesday, 7 March 2018 16:58:28
     SVOp.RebCode = CUr.RebCode;
     SVOp.ItemFrPartner = CUr.IsPartner; //Edit***************************Sasha2,16:21 15.12.2015 {
-    SVOp.Vlastnik = CUr.Name;
-    SVOp.Priynato = CUr.Person;
-    
-    k=0;
-		pos = 0;
-		ExtractObjWithSeparator(" ",CUr.Person,true,pos,tstr);
-		while (nonblank(tstr)) begin    
-			fio[k] = tstr;
-			k=k+1;
+    if (CurrentCompany==8 and CUr.IsPartner==1) then begin //Edit***************************Sasha2,16:21 15.12.2015 {
+      SVOp.Vlastnik = CUr.Name;
+      SVOp.Priynato = CUr.Person;
+      
+      k=0;
+			pos = 0;
 			ExtractObjWithSeparator(" ",CUr.Person,true,pos,tstr);
-		end;
-	
-		if(k>0)then begin
-			SVOp.Priynato = fio[0];
-		end;
-		if(k>1)then begin
-			SVOp.Name = fio[1];
-		end;
-		if(k>2)then begin
-			SVOp.MiddleName = fio[2];
-		end;
-    
-    SVOp.Kontinfo1 = CUr.Phone;
-    SVOp.Kontinfo2 = CUr.eMail;
-    SVOp.Kontinfo3 = CUr.InvAddr0; //Edit***************************Sasha2,16:21 15.12.2015 }
-    SVOp.CustVATCode = CUr.VATCode;
-    if (CUr.TaxTemplateCode!=SVOp.CustTaxTemplateCode) then begin
-      SVOVc_FillupTaxTemplate(SVOp);
-      SVOp.CustTaxTemplateCode = CUr.TaxTemplateCode;
-    end;
-    SVOp.Phone = CUr.Phone;
-    SVOp.Fax = CUr.Fax;
-    SVOp.VATNr = CUr.VATNr;
-    tstr = CUr.PLCode;
-    GetPriceList(SVOp.CustCat,SVOp.TransDate,SVOp.RegTime,SVOp.PriceList,SVOp.InclVAT);
-    if (blank(SVOp.PriceList)) then begin
-      PDr.Code = SVOp.PayDeal;
-      if (GetPD(PDr)) then begin
-        SVOp.PriceList = PDr.PriceList;
-        PLDefR.Code = SVOp.PriceList;
-        if (ReadFirstMain(PLDefR,1,true)) then begin
-          SVOp.InclVAT = PLDefR.InclVAT;
-        end;
-      end;
-    end;    
-    SVOp.RebCode = CUr.RebCode;
+			while (nonblank(tstr)) begin    
+				fio[k] = tstr;
+				k=k+1;
+				ExtractObjWithSeparator(" ",CUr.Person,true,pos,tstr);
+			end;
+		
+			if(k>0)then begin
+				SVOp.Priynato = fio[0];
+			end;
+			if(k>1)then begin
+				SVOp.Name = fio[1];
+			end;
+			if(k>2)then begin
+				SVOp.MiddleName = fio[2];
+			end;
+      
+      SVOp.Kontinfo1 = CUr.Phone;
+      SVOp.Kontinfo2 = CUr.eMail;
+      SVOp.Kontinfo3 = CUr.InvAddr0;
+    end; //Edit***************************Sasha2,16:21 15.12.2015 }
     warntext = CUr.WarnText1;
     SVOGetRate(SVOp);
     res = true;
