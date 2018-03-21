@@ -46,6 +46,7 @@ external updating function Boolean UserLicensesExpired();
 external procedure LogoutHansaWorldID();
 external procedure SendHansaWorldIDUserTask2(string,string,Integer);
 external procedure GetUserAccessGroup(string,var string);// Edit ************************** Thursday, 30 March 2017 10:16:28
+remote  procedure MyBonusCurrentUserRemote(var val,var val,var boolean);
 
 global
 function Integer GetPOSOffLineCompNo()
