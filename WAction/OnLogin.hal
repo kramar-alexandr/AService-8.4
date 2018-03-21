@@ -862,8 +862,12 @@ global procedure UpdateMasterWClassOnKPIs(string str)
 begin
 	Integer wn;
 	string 20 accessgroup;
-	//if(currentuser=="SA")then begin
+		
 		GetUserAccessGroup(currentuser,accessgroup);
+		if(currentuser=="SA")then begin
+			messagebox(0,accessgroup);
+		end;
+		
 		if(accessgroup!="FIN+" and accessgroup!="ADMIN" and accessgroup!="ISTUD")then begin
 			wn = curwindow;
 			if(wn>0)then begin
