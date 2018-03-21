@@ -660,7 +660,8 @@ begin
       CreditIVr.Location = defreturnlocation;
     end;
   end;
-
+	
+	logtext(0,"MatRowCnt(CreditIVr) " & MatRowCnt(CreditIVr));
   rwcnt = MatRowCnt(CreditIVr);
   for (i=0;i<rwcnt;i=i+1) begin
     MatRowGet(CreditIVr,i,IVrw);
