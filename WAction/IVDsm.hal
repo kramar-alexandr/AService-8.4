@@ -1748,7 +1748,9 @@ begin
   Integer normalstate;
   Integer res;
   record LocalMachineBlock LMb;
-
+	
+	messagebox(0,"CreateCreditNoteIVDsm");
+	
   normalstate = 0;//Rs_normal
   wn = CurWindow;
   DeselectWindow(wn,false);
