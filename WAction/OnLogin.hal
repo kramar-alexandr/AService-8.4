@@ -466,8 +466,8 @@ LOtherwise01:;
         nwn = OpenMasterWClass2(mailboxnr,mailboxname);
         //nwn = OpenToDoWClass(mailboxnr,mailboxname,acptRepSpec);    // Edit ************************** Thursday, 13 October 2016 10:49:36
       end;
-      GetUserAccessGroup(currentuser,accessgroup);
-      if(usercanaction("ViewRemontQueryToDO",false))then begin
+     GetUserAccessGroup(currentuser,accessgroup);
+      if(accessgroup!="FIN+" and accessgroup!="ADMIN" and accessgroup!="ISTUD")then begin
 				acptRepSpec.f1 = CurrentUser;// Edit ************************** Thursday, 13 October 2016 16:26:39
 				acptRepSpec.sStartDate = stringtodate("01/01/2012");
 				acptRepSpec.sEndDate = Currentdate;
@@ -476,8 +476,9 @@ LOtherwise01:;
 				acptRepSpec.Period2Str = acptRepSpec.sStartDate;
 				acptRepSpec.Period2Str = acptRepSpec.Period2Str & ":";
 				acptRepSpec.Period2Str = acptRepSpec.Period2Str & acptRepSpec.sEndDate;
-				nwn = OpenToDoWClass(mailboxnr,mailboxname,acptRepSpec);// Edit ************************** Thursday, 13 October 2016 10:49:44    
+				nwn = OpenToDoWClass(mailboxnr,mailboxname,acptRepSpec);// Edit ************************** Thursday, 13 October 2016 10:49:44
       end;
+      ShowUserInfo;//***************************************************************************** function added by dima-f 13.09.17
   end;
   end else begin
     accpetancef = true;
@@ -488,7 +489,7 @@ LOtherwise01:;
        //nwn = OpenToDoWClass(mailboxnr,mailboxname,acptRepSpec);  // Edit ************************** Thursday, 13 October 2016 10:51:13  
     end;
     GetUserAccessGroup(currentuser,accessgroup);
-      if(usercanaction("ViewRemontQueryToDO",false))then begin
+      if(accessgroup!="FIN+" and accessgroup!="ADMIN" and accessgroup!="ISTUD")then begin
 			acptRepSpec.f1 = CurrentUser;// Edit ************************** Thursday, 13 October 2016 13:10:06
 			acptRepSpec.sStartDate = stringtodate("01/01/2012");
 			acptRepSpec.sEndDate = Currentdate;
@@ -497,8 +498,10 @@ LOtherwise01:;
 			acptRepSpec.Period2Str = acptRepSpec.sStartDate;
 			acptRepSpec.Period2Str = acptRepSpec.Period2Str & ":";
 			acptRepSpec.Period2Str = acptRepSpec.Period2Str & acptRepSpec.sEndDate;
-			nwn = OpenToDoWClass(mailboxnr,mailboxname,acptRepSpec);  // Edit ************************** Thursday, 13 October 2016 10:51:19  
+			nwn = OpenToDoWClass(mailboxnr,mailboxname,acptRepSpec);  // Edit ************************** Thursday, 13 October 2016 10:51:19
     end;
+    ShowUserInfo;//***************************************************************************** function added by dima-f 13.09.17
+
   end;
   if (CurrentUser=="$MASTER") then begin
     RecordNew(Userr);
