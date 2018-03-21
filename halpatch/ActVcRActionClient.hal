@@ -37,9 +37,7 @@ begin
   if (GetWindowClass(wn)=="RecActDClass") then begin
     Actr.TodoFlag = kTodoFlagRecurring;
   end;
-  if (Actr.TodoFlag==kTodoFlagProject) then begin
-    Actr.Supervisor = CurrentUser;
-  end;
+  Actr.Supervisor = CurrentUser;// Edit ************************** BPI Ukraine - KramarAlexandr - Wednesday, 21 March 2018 16:27:12
   ActVcRecordDefaultsClient = res; 
   return;
 end;

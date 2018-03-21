@@ -1008,33 +1008,33 @@ BEGIN
   Time blankt;
   record TLSettingBlock TLSb;
   
-  switch (ProgramType) begin
+  /*switch (ProgramType) begin
     case typTimeLog:   
       BlockLoad(TLSb);
       Actr.MainPersons = TLSb.UserCode;
     otherwise      
-      //Actr.MainPersons = CurrentUser;// Edit ************************** BPI Ukraine - KramarAlexandr - Wednesday, 7 March 2018 16:33:13
-  end;
+      Actr.MainPersons = CurrentUser;
+  end;*/
+  //Actr.CCPersons = CurrentUser;// Edit ************************** BPI Ukraine - KramarAlexandr - Thursday, 16 November 2017 15:38:48
+ 	Actr.Supervisor = CurrentUser;// Edit ************************** Friday, 18 August 2017 10:25:40
   Actr.SerNr = -1;  
   Actr.TransDate = CurrentDate;
-  if (Actr.TodoFlag!=kTodoFlagRecurring and Actr.TodoFlag!=kTodoFlagProject) then begin
-    Actr.EndDate = CurrentDate;
-    Actr.StartTime = CurrentTime;
-  end;
+  Actr.EndDate = CurrentDate;
+  Actr.StartTime = CurrentTime;
   Actr.EndTime = blankt;
   Actr.CostTime = blankt;
   Actr.PrioLevel = -1;
   Actr.Invalid = 0;
-  if (Actr.TodoFlag==kTodoFlagProject) then begin
-    Actr.Supervisor = CurrentUser;
-  end;
   if (SingleUserMode) then begin
 //    Actr.SerNr = NextSerNr("ActVc",Actr.TransDate,-1,false,"");
 // not good, if u do 2 actiities and save 2nd one first u have problem
   end;
+  Actr.FromFileName = "";
+  Actr.FromSerNr = "";
   if (IsStandardProduct) then begin
     Actr.CalTimeFlag = kCalTimeFlagTime;
   end;
+  Actr.AlarmType = 1;// Edit ************************** BPI Ukraine - KramarAlexandr - Wednesday, 22 November 2017 17:47:27
   ActVcRecordDefaults = res; 
   RETURN;
 END;
@@ -1301,7 +1301,8 @@ global
 function LongInt ActVcRecordSave(var record ActVc Actr,record ActVc Act2r,LongInt stat,LongInt long4)
 BEGIN
   LongInt res;
-
+	
+	Actr.Supervisor = CurrentUser;// Edit ************************** Friday, 18 August 2017 10:25:40
   Actr.LengthClass = ActLenClass(Actr.TransDate,Actr.EndDate);
   Actr.CreationDate = CurrentDate;
   Actr.LastChangedDate = CurrentDate;
