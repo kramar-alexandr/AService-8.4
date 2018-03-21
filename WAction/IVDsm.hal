@@ -1760,6 +1760,7 @@ begin
       BlockLoad(LMb);
       messagebox(0,"CreateCreditNoteIVDsm");
       res = CreateCreditNoteIV(IVr,kInvoiceTypeCredit,IVCreditr,LMb.DefReturnLocation,false);
+      messagebox(0,"111CreateCreditNoteIVDsm");
       messagebox(0,res & " mtr " & matrowcnt(IVCreditr));
       if (res==0) then begin
         if (TouchScreenInterface) then begin
