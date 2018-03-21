@@ -328,7 +328,7 @@ begin
   if (ProgramType!=typStdAccounts) then begin
     ARPayr.CustCode = custcode;
     if (ReadFirstKey("CustCode",ARPayr,1,true)) then begin
-      MessageBox(0,USetStr(2025));
+      ///MessageBox(0,USetStr(2025));
     end;           
   end;           
   return;
