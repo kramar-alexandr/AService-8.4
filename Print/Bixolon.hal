@@ -1,7 +1,7 @@
 external procedure M4PadString(string,Integer,string,Boolean,var string);
 external procedure  FindPhonePerson(var record Phone1Vc,string);
 
-SetLangMode(LangRussian,"RUS",0);
+SetLangMode(LangUkrainian,"UKR",0); 
 
 
 
@@ -18,10 +18,6 @@ begin
 	string 10 rebate;
 	record Phone1Vc Phoner;
 	val sumreb;
-	record SalesGroupVc SGr;
-	record ReceiptPrinterSBlock RPSb;
-	
-	blockload(RPSb);
 	
 	SetLeftAlignment = chr(27) & chr(97) & "0";
 	SetMiddleAlignment = chr(27) & chr(97) & "1";
@@ -56,23 +52,24 @@ begin
 		end;
 	end;
 	
-	if(nonblank(WSr.SalesGroup))then begin
-		SGr.SGroupCode = WSr.SalesGroup;
-		if(readfirstmain(SGr,1,true))then begin
-			Name = SGr.BixName;
-			Address = SGr.BixAddress;
-			Phone = SGr.BixPhone;
-		end else begin
-			Name = RPSb.DefName;
-			Address = RPSb.DefAddress;
-			Phone = RPSb.DefPhone;
-		end;
-	end else begin
-		Name = RPSb.DefName;
-		Address = RPSb.DefAddress;
-		Phone = RPSb.DefPhone;
-	end;
-	
+	switch (WSr.SalesGroup) begin
+		case "3GR":
+					Name = "СПД-ФО Іваненко В.І.";
+					Address = "Україна, Київ, вул. Білоруська, 8";
+					Phone = "Телефон \(044\) 222-57-74";	
+		case "8GR":
+					Name = "СПД-ФО Моісеєв Д. А.";
+					Address = "Україна, Київ, просп. Московський, 6";
+					Phone = "Телефон \(044\) 222-92-93";		
+		case "9GR":
+					Name = "СПД-ФО Головізнін С. Г.";
+					Address = "Україна, Київ, вул. Червоноармійська,21";
+					Phone = "Телефон \(044\) 451-5-451";			
+		otherwise
+					Name = "СПД-ФО Форманчук Д.В.";
+					Address = "Україна, Київ, вул. Кіквідзе,3";
+					Phone = "Телефон \(044\) 222-77-09";	
+	end;	
 
 	SetAreaZeroSize(aFile);
 
@@ -121,7 +118,21 @@ begin
 //Signature	
 	addtexttoarea(chr(13) & chr(10),aFile);
 	addtexttoarea(SetLeftAlignment,aFile);
-	addtexttoarea(SmallLetterOn,aFile);	
+	addtexttoarea(SmallLetterOn,aFile);
+	//addtexttoarea("Гарантія на виконання робіт становить:" & chr(13) & chr(10) ,aFile);
+	//addtexttoarea("-для iPhone,iPod,iPad - 1 рік" & chr(13) & chr(10) ,aFile);
+	//addtexttoarea("-для Мас і ноутбуків - 3 місяці" & chr(13) & chr(10) ,aFile);	
+	//addtexttoarea("-заміна пристрою - 3 місяці" & chr(13) & chr(10) ,aFile);
+	//addtexttoarea(chr(13) & chr(10),aFile);
+/*	
+	addtexttoarea("Замовник претензій по об'єму,якості та" & chr(13) & chr(10) ,aFile);
+	addtexttoarea("строкам виконання робіт не має." & chr(13) & chr(10) ,aFile);
+	addtexttoarea(chr(13) & chr(10),aFile);
+	addtexttoarea(SetRightAlignment,aFile);	
+	addtexttoarea("________________" & chr(13) & chr(10) ,aFile);
+	addtexttoarea(SVOr.Vlastnik & chr(13) & chr(10) ,aFile);
+*/
+		
 		
 	addtexttoarea(SetLeftAlignment,aFile);
 	addtexttoarea("Замовлення № " & WSr.SVONr & chr(13) & chr(10) ,aFile);
@@ -155,10 +166,6 @@ begin
 	integer rowLength,i,rwcnt;
 	row IVVc IVrw;
 	string 200 Name,Address,Phone;
-	record SalesGroupVc SGr;
-	record ReceiptPrinterSBlock RPSb;
-	
-	blockload(RPSb);
 	
 	SetLeftAlignment = chr(27) & chr(97) & "0";
 	SetMiddleAlignment = chr(27) & chr(97) & "1";
@@ -175,22 +182,24 @@ begin
 	rowLength = 32;
 
 	
-	if(nonblank(IVr.SalesGroup))then begin
-		SGr.SGroupCode = IVr.SalesGroup;
-		if(readfirstmain(SGr,1,true))then begin
-			Name = SGr.BixName;
-			Address = SGr.BixAddress;
-			Phone = SGr.BixPhone;
-		end else begin
-			Name = RPSb.DefName;
-			Address = RPSb.DefAddress;
-			Phone = RPSb.DefPhone;
-		end;
-	end else begin
-		Name = RPSb.DefName;
-		Address = RPSb.DefAddress;
-		Phone = RPSb.DefPhone;
-	end;
+	switch (IVr.SalesGroup) begin
+		case "3GR":
+					Name = "СПД-ФО Іваненко В.І.";
+					Address = "Україна, Київ, вул. Білоруська, 8";
+					Phone = "Телефон \(044\) 222-57-74";	
+		case "8GR":
+					Name = "СПД-ФО Моісеєв Д. А.";
+					Address = "Україна, Київ, просп. Московський, 6";
+					Phone = "Телефон \(044\) 222-92-93";		
+		case "9GR":
+					Name = "СПД-ФО Головізнін С. Г.";
+					Address = "Україна, Київ, вул. Червоноармійська,21";
+					Phone = "Телефон \(044\) 451-5-451";			
+		otherwise
+					Name = "СПД-ФО Форманчук Д.В.";
+					Address = "Україна, Київ, вул. Кіквідзе,3";
+					Phone = "Телефон \(044\) 222-77-09";	
+	end;		
 
 	SetAreaZeroSize(aFile);
 
@@ -275,10 +284,6 @@ begin
 	string 10 rebate;
 	record Phone1Vc Phoner;
 	val sumreb;
-	record SalesGroupVc SGr;
-	record ReceiptPrinterSBlock RPSb;
-	
-	blockload(RPSb);
 	
 	SetLeftAlignment = chr(27) & chr(97) & "0";
 	SetMiddleAlignment = chr(27) & chr(97) & "1";
@@ -306,22 +311,25 @@ begin
 		end;
 	end;
 	
-	if(nonblank(SVOr.SalesGroup))then begin
-		SGr.SGroupCode = SVOr.SalesGroup;
-		if(readfirstmain(SGr,1,true))then begin
-			Name = SGr.BixName;
-			Address = SGr.BixAddress;
-			Phone = SGr.BixPhone;
-		end else begin
-			Name = RPSb.DefName;
-			Address = RPSb.DefAddress;
-			Phone = RPSb.DefPhone;
-		end;
-	end else begin
-		Name = RPSb.DefName;
-		Address = RPSb.DefAddress;
-		Phone = RPSb.DefPhone;
-	end;
+	switch (SVOr.SalesGroup) begin
+		case "3GR":
+					Name = "СПД-ФО Іваненко В.І.";
+					Address = "Україна, Київ, вул. Білоруська, 8";
+					Phone = "Телефон \(044\) 222-57-74";	
+		case "8GR":
+					Name = "СПД-ФО Моісеєв Д. А.";
+					Address = "Україна, Київ, просп. Московський, 6";
+					Phone = "Телефон \(044\) 222-92-93";		
+		case "9GR":
+					Name = "СПД-ФО Головізнін С. Г.";
+					Address = "Україна, Київ, вул. Червоноармійська,21";
+					Phone = "Телефон \(044\) 451-5-451";			
+		otherwise
+					Name = "СПД-ФО Форманчук Д.В.";
+					Address = "Україна, Київ, вул. Кіквідзе,3";
+					Phone = "Телефон \(044\) 222-77-09";	
+	end;	
+
 	SetAreaZeroSize(aFile);
 
 	
@@ -357,8 +365,14 @@ begin
 	s1 = "Разом без ПДВ";
 	s2 = "ПДВ";
 	s3 = "Разом до сплати";	
+	//M4PadString(ValToString(WSr.Sum4,M4Val,"",".",0),rowLength - Len(s1)," ",true,sTot);
+	//sTot = s1 & sTot;
+	//M4PadString(ValToString(WSr.Sum3,M4Val,"",".",0),rowLength - Len(s2)," ",true,sVAT);
+	//sVAT = s2 & sVAT;
 	M4PadString(ValToString(SVOr.WSCost,M4Val,"",".",0),rowLength - Len(s3)," ",true,sPay);
 	sPay = s3 & sPay;
+	//addtexttoarea(sTot & chr(13) & chr(10) ,aFile);
+	//addtexttoarea(sVAT & chr(13) & chr(10) ,aFile);
 	addtexttoarea(SetBoldOn,aFile);
 	addtexttoarea(sPay & chr(13) & chr(10) ,aFile);
 	addtexttoarea(SetBoldOff,aFile);
@@ -368,7 +382,12 @@ begin
 	addtexttoarea(chr(13) & chr(10),aFile);
 	addtexttoarea(SetLeftAlignment,aFile);
 	addtexttoarea(SmallLetterOn,aFile);
-
+	//addtexttoarea("Гарантія на виконання робіт становить:" & chr(13) & chr(10) ,aFile);
+	//addtexttoarea("-для iPhone,iPod,iPad - 1 рік" & chr(13) & chr(10) ,aFile);
+	//addtexttoarea("-для Мас і ноутбуків - 3 місяці" & chr(13) & chr(10) ,aFile);	
+	//addtexttoarea("-заміна пристрою - 3 місяці" & chr(13) & chr(10) ,aFile);
+	//addtexttoarea(chr(13) & chr(10),aFile);		
+		
 	addtexttoarea(SetLeftAlignment,aFile);
 	addtexttoarea("Замовлення № " & SVOr.SerNr & chr(13) & chr(10) ,aFile);
 	addtexttoarea("Дата " & CurrentDate & chr(13) & chr(10) ,aFile);
@@ -383,6 +402,7 @@ begin
 	addtexttoarea(chr(13) & chr(10),aFile);
 	addtexttoarea(chr(13) & chr(10),aFile);
 	
+
 //Cut receipt  
   addtexttoarea(chr(29) & chr(86) & "1",aFile);
   
