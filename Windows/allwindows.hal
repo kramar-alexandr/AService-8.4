@@ -8704,7 +8704,7 @@ end;
 
 
 window NotepadDClass:2
-   wtag("language","UKR"), wtag("product","*"), wtag("productcode","*"), wtag("device","computer,android,android_tab")
+   wtag("language","RUS"), wtag("product","*"), wtag("productcode","*"), wtag("device","computer,android,android_tab")
 begin
   real h;
   WindowBegin("Нотатка",NotepadDClass,CGview,NotepadView);
