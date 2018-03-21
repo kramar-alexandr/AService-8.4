@@ -625,7 +625,7 @@ begin
   ORr.AcceptanceStatus = StringToInt(ImportField);
   ORr.CustTaxTemplateCode = ImportField;
   ImportPackedMatrix(TMr);
-  PackFieldMatrix(ORr,"TaxMatrix",TMr);
+  //PackFieldMatrix(ORr,"TaxMatrix",TMr);
   ORr.TerminalID = ImportField;
   ORr.OfficialSerNr = ImportField;
   ORr.Hash = ImportField;
