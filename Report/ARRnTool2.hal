@@ -510,16 +510,16 @@ BEGIN
 	      //OutLongInt(360,0,IVr.LastRemndr,true);
 	      OutValBiDi(360,0,rval,M4Val,true,490);
 	      OutValBiDi(410,0,rs,M4Val,true,490);
-	      if (NonBlank(ORr.Comment) and RepSpec.flags[14]==1) then begin
-	      	OutString(440,0,ORr.Comment,false);
+	      if (IVr.SVONr>0 and RepSpec.flags[14]==1) then begin
+	      	OutString(440,0,IVr.SVONr,false);
 	      end else begin
           OutString(440,0,"",false);
         end;
 	    end else begin
 	      //OutLongInt(360,0,IVr.LastRemndr,true);
 	      OutValBiDi(360,0,rs,M4Val,true,490);
-	      if (NonBlank(ORr.Comment)and RepSpec.flags[14]==1) then begin
-	      	OutString(390,0,ORr.Comment,false);
+	      if (IVr.SVONr>0 and RepSpec.flags[14]==1) then begin
+	      	OutString(390,0,IVr.SVONr,false);
         end else begin
           OutString(390,0,"",false);
 	      end;
@@ -531,7 +531,7 @@ BEGIN
         OutString(500,0,SVOrw.Spec,true);
         OutString(650,0,SVOrw.SerialNr,true);
         OutString(800,0,SVOr.TransDate,true);
-        OutString(850,0,SVOr.SerNr,true);
+        OutString(850,0,ORr.Comment,false);
       end;
     end else begin  
       if (RepSpec.flags[23]!=0) then begin
@@ -1187,20 +1187,20 @@ record BaseCurBlock bascur; //Edit***************************Sasha2,10:23 20.08.
      if (RepSpec.flags[2]==1) then begin
        OutStringAdjustBiDi(360,0,USetStr(2425),true,M4Val,400);
        OutStringAdjustBiDi(410,0,USetStr(3201),true,M4Val,450);
-       OutString(470,0,USetStr(2434),true);
+       OutString(470,0,USetStr(2707),true);
      end else begin
        OutStringAdjustBiDi(380,0,USetStr(2425),true,M4Val,420);
        if (RepSpec.ArtMode==0) then begin
          OutStringAdjustBiDi(425,0,USetStr(3201),true,M4Val,465);
-         OutString(480,0,USetStr(2434),true);
+         OutString(480,0,USetStr(2707),true);
        end else begin
-         OutString(450,0,USetStr(2434),true);
+         OutString(450,0,USetStr(2707),true);
        end;
      end;
      OutString(500,0,USetStr(12426),true); //Edit-------------------Vitalii 15:30 03.01.2017
      OutString(650,0,USetStr(11644),true);
      OutString(800,0,USetStr(8151),true);
-     OutString(850,0,USetStr(2707),true);// Edit ************************** Tuesday, 3 January 2017 16:00:12
+     OutString(850,0,USetStr(2434),true);// Edit ************************** Tuesday, 3 January 2017 16:00:12
     EndFormat;
   end;
   if (RepSpec.ArtMode==1) then begin
@@ -1247,12 +1247,12 @@ record BaseCurBlock bascur; //Edit***************************Sasha2,10:23 20.08.
   //     if (lightFlag==false) then begin
   //       OutString(350,0,USetStr(2711),true);
   //     end;  
-       OutString(450,0,USetStr(2434),true);
+       OutString(450,0,USetStr(2707),true);
      end; //Edit***************************Sasha2,13:35 19.08.2014 }
      OutString(500,0,USetStr(12426),true); //Edit-------------------Vitalii 15:30 03.01.2017
      OutString(650,0,USetStr(11644),true);
      OutString(800,0,USetStr(8151),true);
-     OutString(850,0,USetStr(2707),true);// Edit ************************** Tuesday, 3 January 2017 16:00:12   
+		 OutString(850,0,USetStr(2434),true);  
     EndFormat;   
   end;
   if ((RepSpec.ArtMode==2) or (RepSpec.ArtMode==5)) then begin
