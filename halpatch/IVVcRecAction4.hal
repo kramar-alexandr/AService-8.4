@@ -1866,7 +1866,7 @@ no way of making credit notes ?
 
   IVr.AuthorizationCode = "";
   IVSumup(IVr,true);            
-  IVOpenPrepExists(IVr.CustCode);
+  //IVOpenPrepExists(IVr.CustCode);// Edit ************************** BPI Ukraine - KramarAlexandr - 03, 21 03 2018 y. î 11:28:34
   IVr.MachineName = CurMachineName;
   IVr.TerminalID = CurTerminalID;
   IVr.BranchID = CurBranchID;
