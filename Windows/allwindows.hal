@@ -8744,7 +8744,7 @@ end;
 window WorkflowWClass:4
   wtag("language","RUS"), wtag("product","*"), wtag("productcode","*"), wtag("device","computer,iPhone,iPad,android,android_tab")
 begin
-  WindowBegin("“правление рабочими процессами",WorkflowWClass,CGother,RcType); //SP
+  WindowBegin("“правление рабочими процессами_",WorkflowWClass,CGother,RcType); //SP
   UseView(RcVc);
   CloseOnCancel;
   DynamicWindow;
