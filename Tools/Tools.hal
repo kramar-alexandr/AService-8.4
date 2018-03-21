@@ -1082,6 +1082,7 @@ end;
 
 global procedure UpdateToDoWclass()
 	begin
+		logtext(0,"UpdateToDoWclass" & currenttime);
     AllClientsRemoteAsync.UpdateMasterWClassOnKPIs("");
 end;
 
