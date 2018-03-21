@@ -59,6 +59,23 @@ begin
   return;
 end;
 
+//***************************************************************************** function added by dima-f 13.09.17
+procedure  ShowUserInfo()
+BEGIN
+  val cnt, ttl;
+  boolean showFlag;
+  cnt=0;
+  ttl=0;
+  showFlag=false;
+  MyBonusCurrentUserRemote(cnt, ttl, showFlag);
+	if(showFlag==true) begin
+			MessageBox(0,"Співробітник:" & CurrentUser & "   Кількість ремонтів:" & cnt & "   Прибуток:" & ttl);
+	end;
+  return;
+END;
+//****************************************************************************************************** end
+
+
 global
 function Boolean CheckOffLineRecords(Boolean openf)
 begin
