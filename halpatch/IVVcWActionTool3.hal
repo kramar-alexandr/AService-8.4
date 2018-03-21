@@ -707,6 +707,7 @@ LkInvoiceRowTypeNormal:;
         rwcnt = MatRowCnt(CreditIVr);
     end;
   end;
+  logtext(0,"MatRowCnt(CreditIVr) " & MatRowCnt(CreditIVr));
   switch (invtype) begin
     case kInvoiceTypeDebit:
       ClearRow(CreditIVr,IVrw,kInvoiceRowTypeDebit);
