@@ -871,7 +871,7 @@ begin
 	addtexttoarea("\"message\":\"\",",request);
 							
 	addtexttoarea("\"filename\":\"FinishRemont.txt" & "\",",request);
-	addtexttoarea("\"path\":\"/Applications/HANSA/Stock/FinishRemont.txt" & "\"",request);
+	addtexttoarea("\"path\":\"/usr/local/bin/StandardERPServer/Stock/FinishRemont.txt" & "\"",request);
 	addtexttoarea("}",request);
 
 	MySendWebRequest("127.0.0.1",1070,1070,false,"POST","/sendMail","application/json","",false,request,reply,5);
