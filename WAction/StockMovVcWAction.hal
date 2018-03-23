@@ -1059,6 +1059,7 @@ begin
   end;
   
   if(currentuser=="SA")then begin
+  	messagebox(0,1);
   	res = true;
   end;
   
