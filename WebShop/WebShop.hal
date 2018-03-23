@@ -1,7 +1,7 @@
 external function roundmode SetRoundModeD(Integer);
 external procedure ExtractObj(string,var Integer,var string);
 
-SetLangMode(LangUkrainian,"UKR",0);
+SetLangMode(LangRussian,"RUS",0);
 
 procedure CR(var area areply)
 begin
