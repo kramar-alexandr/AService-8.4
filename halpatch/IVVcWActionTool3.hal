@@ -1642,9 +1642,9 @@ BEGIN
 	if(nonblank(IVr.Phone2))then begin
 		Phoner.PhoneNum = IVr.Phone2;
 		if(readfirstmain(Phoner,1,true))then begin
-			IVr.Addr0 = Phoner.LastName & " " & Phoner.FirstName & " " & Phoner.MiddleName;
+			IVr.DelAddr3 = Phoner.LastName & " " & Phoner.FirstName & " " & Phoner.MiddleName;
 		end else begin
-			IVr.Addr0 = "";
+			IVr.DelAddr3 = "";
 		end;
 	end;
 	
