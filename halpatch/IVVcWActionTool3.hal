@@ -1631,6 +1631,28 @@ LDoCLInFromIVD:;
   return;
 end;
 
+// Edit Start ---------------------------------------------- Edit Start
+	//Friday, 23 March 2018 13:14:16
+	
+global
+procedure RA_VDClassPhone2EFAfter(var record IVVc IVr)
+BEGIN
+	record Phone1Vc Phoner;
+	
+	if(nonblank(IVr.Phone2))then begin
+		Phoner.PhoneNum = IVr.Phone2;
+		if(readfirstmain(Phoner,1,true))then begin
+			IVr.Addr0 = Phoner.LastName & " " & Phoner.FirstName & " " & Phoner.MiddleName;
+		end else begin
+			IVr.Addr0 = "";
+		end;
+	end;
+	
+return;
+end;
+
+	// Edit End ---------------------------------------------- Edit End
+	
 global
 procedure PastePDInInv(var record IVVc IVp,string prevpaydeal,Boolean pastepdpricelistf)
 BEGIN
