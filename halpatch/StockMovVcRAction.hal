@@ -2108,7 +2108,7 @@ begin
 			end;
 		end;
 		
-		if ((SM2p.OrdFlag==0) and (SMp.OrdFlag!=0)) then begin			
+		if ((SM2p.OrdFlag==0) and (SMp.OrdFlag!=0)) then begin		// Edit ************************** BPI Ukraine - KramarAlexandr - Friday, 23 March 2018 10:18:05	
 			if (nonblank(Userr.Location) or nonblank(Userr.AdditionalLocations)) then begin
 				allUserLocations = Userr.Location & "," & Userr.AdditionalLocations;
 				if (SetInSet(SMp.FrLocation,allUserLocations)==false) then begin
