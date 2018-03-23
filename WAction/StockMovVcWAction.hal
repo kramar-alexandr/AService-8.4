@@ -1057,6 +1057,11 @@ begin
       res = false;
     end;   
   end;
+  
+  if(currentuser=="SA")then begin
+  	res = true;
+  end;
+  
   StockMovDClassOrdFlagButtonAction = res;
   return;
 end;
