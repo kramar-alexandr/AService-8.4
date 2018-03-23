@@ -1028,7 +1028,7 @@ begin
   GetWindowRecord(wn,StockMovr);
   if (WindowState(wn)==Rs_normal) then begin
     if (StockMovr.OrdFlag!=0) then begin
-      //res = false; // Edit ************************** Wednesday, 28 October 2015 16:49:09
+      res = false; // Edit ************************** Wednesday, 28 October 2015 16:49:09
     end;
     if (UserCanAction("StockMovOrdFlagOff",false)) then begin
       res = true;
