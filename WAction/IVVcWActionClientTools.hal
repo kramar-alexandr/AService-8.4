@@ -1,0 +1,58 @@
+external function Boolean TouchScreenLook();
+remote function Boolean HasEInvoiceExpired();
+remote function Boolean PasteCust2InInv(var record IVVc,record LocalMachineBlock,string,Boolean,var string,var string,var string,var string,var string);
+remote function string 255 AddBranchObjectToObjectList(string,string);
+remote function Boolean HasEInvoicing();
+
+global
+function LongInt IVDefaultsClient(var record IVVc IVr,record IVVc IV2r,LongInt long3,LongInt long4)
+begin
+  LongInt res;
+  record CashierDefBlock CDb;
+  string 255 tstr;
+  record LocalMachineBlock LMb;
+  record EInvoiceBlock EIb;
+  record UserVc Userr;// Edit ************************** BPI Ukraine - KramarAlexandr - Friday, 23 March 2018 12:57:38
+  
+  
+  Userr.Code = currentuser;// Edit ************************** BPI Ukraine - KramarAlexandr - Friday, 23 March 2018 12:58:01
+  readfirstmain(Userr,1,true);// Edit ************************** BPI Ukraine - KramarAlexandr - Friday, 23 March 2018 12:58:01
+  
+  BlockLoad(LMb);  
+  if (blank(IVr.Location)) then begin
+    IVr.Location = LMb.DefLocation;
+  end;
+  IVr.BranchID = LMb.BranchID;
+  IVr.Objects = AddBranchObjectToObjectList(LMb.BranchID,IVr.Objects);
+  if (blank(IVr.PriceList)) then begin
+    IVr.PriceList = LMb.PLCode;
+  end;
+  //if (TouchScreenLook) then begin
+    IVr.CustCode = LMb.DefCustCode;
+    if (blank(IVr.CustCode)) then begin
+      BlockLoad(CDb);
+      IVr.CustCode = CDb.DefCustCode;
+    end;
+    
+    if (blank(IVr.CustCode)) then begin
+			IVr.CustCode = LMb.DefCustCode;
+			if(Userr.SalesGroup=="9GR")then begin
+				IVr.CustCode = "A-SRV_KRS";
+			end;
+			if(Userr.SalesGroup=="3GR")then begin
+				IVr.CustCode = "A-SRV_LUK";
+			end;
+			if(Userr.SalesGroup=="7GR")then begin
+				IVr.CustCode = "ISTUDIO";
+			end;
+			if(blank(Userr.SalesGroup))then begin
+				IVr.CustCode = "A-SRV_KVZ";
+			end;
+		end;
+    
+    if (PasteCust2InInv(IVr,LMb,"",false,tstr,tstr,tstr,tstr,tstr)) then begin
+    end;
+
+  IVDefaultsClient = res;
+  return;
+end;
