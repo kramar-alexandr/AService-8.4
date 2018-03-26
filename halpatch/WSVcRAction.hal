@@ -449,6 +449,18 @@ begin
     end;
     goto LWSVcRecordCheck;
   end;  
+  
+  // Edit Start ---------------------------------------------- Edit Start
+	//Monday, 26 March 2018 11:25:47
+	
+  if(stat==updatemode)then begin
+  	if((WSp.OKFlag==1 and WS2p.OKFlag==1) or WSp.OKFlag==0)then begin
+			WSp.TransDate = currentdate;
+  	end;
+  end;
+  
+	// Edit End ---------------------------------------------- Edit End
+	
   if (Date2Test("WSVc",WSp.TransDate,"TransDate",-1)==false) then begin
     res = -1;
     goto LWSVcRecordCheck;
