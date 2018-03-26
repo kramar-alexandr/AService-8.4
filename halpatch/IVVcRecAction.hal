@@ -344,7 +344,7 @@ begin
 	integer notenr;// Edit ************************** BPI Ukraine - KramarAlexandr - Wednesday, 20 December 2017 12:49:46
 	longint svorNr;// Edit ************************** BPI Ukraine - KramarAlexandr - Wednesday, 20 December 2017 12:49:59
 	string 50 phone;
-	
+	boolean foundfit;
 	
 	/*if(currentuser=="SA")then begin
 		res = 0;
@@ -1142,6 +1142,10 @@ LSkipOfficialSerNrCheck:;
       end;
     end;
   end;
+  
+  
+  
+  
   if (nonblank(IVp.OfficialSerNr)) and (MatRowCnt(LINrb)>0)  then begin    
     errcode = 0;
     if (HasLocalization("ARG")==false) then begin
@@ -1470,7 +1474,34 @@ L12:;
       end;
     end;
   end;
+  // Edit Start ---------------------------------------------- Edit Start
+	//Monday, 26 March 2018 11:17:10
+	
+	if(IVp.OKFlag==0)then begin
+		if(IVp.UpdStockFlag==0)then begin
+			if(IVp.SVONr<0 and IVp.OrderNr<0)then begin
+				foundfit = false;
+				rwcnt = MatRowCnt(IVp);
+				for (i=0;i<rwcnt;i=i+1) begin
+					MatRowGet(IVp,i,IVrw);
+					if(IVrw.stp==kInvoiceRowTypeNormal)then begin
+						if(nonblank(IVrw.ArtCode))then begin
+							INr.Code = IVrw.ArtCode;
+							if(readfirstmain(INr,1,true))then begin
+								if(INr.ItemType==kItemTypeStocked)then begin
+									foundfit = true;
+									IVp.UpdStockFlag = 1;
+								end;
+							end;
+						end;
+					end;
+				end;
+			end;
+		end;
+  end;
   
+	// Edit End ---------------------------------------------- Edit End
+	
   switch (stat) begin
     case Rs_insert:
       if (IVp.InvType!=kInvoiceTypeCredit and IVp.InvType!=kInvoiceTypeCreditSpecialSales) or (IVp.CredInv<=0) then begin
