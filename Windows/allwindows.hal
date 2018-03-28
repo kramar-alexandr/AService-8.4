@@ -398,8 +398,8 @@ begin
 		CheckBox(-70,v,0,"Виконано",DoneMark);
 		
 		EditField(h+350,v+=vs,100,"До сплати",ViewOnly,WSCost,false,0);
-		EditField(h+250,v+=vs,50,"Передать ремонт на точку",Normal,MoveSVOToSG,false,SalesGroupSClass);
-		EditField(h+250,v+=vs,200,"Статус передачи",ViewOnly,MoveSVOToSGStatus,false,0);
+		//EditField(h+250,v+=vs,50,"Передать ремонт на точку",Normal,MoveSVOToSG,false,SalesGroupSClass);
+		//EditField(h+250,v+=vs,200,"Статус передачи",ViewOnly,MoveSVOToSGStatus,false,0);
 
 		
 		v=40;
