@@ -706,6 +706,11 @@ begin
         goto LWSVcRecordCheck;
       end;
     end;*/ // Edit ************************** Tuesday, 25 October 2011 14:02:50
+    if(WSrw.ItemType==0)then begin// Edit ************************** BPI Ukraine - KramarAlexandr - Wednesday, 28 March 2018 12:03:23
+    	RecordCheckError(2279,"",i,"ItemType");      
+			res = -1;
+			goto LWSVcRecordCheck;  
+    end;
     if (nonblank(WSrw.ArtCode)) then begin
       if (GetItemType(WSp.SVONr,WSp.WONr,WSrw.MotherNr,WSrw.ItemType)==0) then begin
         RecordCheckError(2279,"",i,"ItemType");      
