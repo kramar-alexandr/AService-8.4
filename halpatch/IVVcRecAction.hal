@@ -1477,7 +1477,7 @@ L12:;
   // Edit Start ---------------------------------------------- Edit Start
 	//Monday, 26 March 2018 11:17:10
 	
-	if(IVp.OKFlag==0)then begin
+	if(IVp.OKFlag==0 and IVp.InvType!=kInvoiceTypeCredit)then begin
 		if(IVp.UpdStockFlag==0)then begin
 			if(IVp.SVONr<0 and IVp.OrderNr<0)then begin
 				foundfit = false;
