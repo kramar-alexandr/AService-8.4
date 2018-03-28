@@ -223,3 +223,30 @@ LMoveForServiceVcRecordRemoveTest:;
   MoveForServiceVcRecordRemoveTest = res; 
   RETURN;
 END;
+
+
+global
+updating function LongInt IssueVcRecordCheck(var record IssueVc Issuer,record IssueVc Issue2r,LongInt stat,LongInt check)
+BEGIN
+	
+		if(Issuer.SerNr<0)then begin
+			Issuer.SerNr = NextSerNr("IssueVc",currentdate,-1,false,""); 
+		end;
+		
+		IssueVcRecordCheck = 0;
+
+return;
+end;
+
+global
+updating function LongInt DefectVcRecordCheck(var record DefectVc Defectr,record DefectVc Defect2r,LongInt stat,LongInt check)
+BEGIN
+	
+		if(Defectr.SerNr<0)then begin
+			Defectr.SerNr = NextSerNr("DefectVc",currentdate,-1,false,""); 
+		end;
+		
+		DefectVcRecordCheck = 0;
+
+return;
+end;
