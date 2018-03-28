@@ -1,0 +1,71 @@
+
+procedure ReadImportTagIssueVcRecord(record IssueVc Issuer)
+begin
+  string 255 tstr;
+  
+  RecordNew(Issuer);
+  Issuer.IssueName = ImportField;
+  Issuer.SerNr = NextSerNr("IssueVc",currentdate,-1,true,"");
+  
+  
+  return;
+end;
+
+global
+updating procedure ReadImportTagIssueVc(string thetag)
+begin
+  record IssueVc Issuer;
+  
+  while (NextImportLine(false)) begin
+    ReadImportTagIssueVcRecord(Issuer);
+ 		RecordImportStore(Issuer,false);
+  end;
+  
+  return;
+end;
+
+global
+function string 120 ReadRecordIdStrIssueVc(Integer compnr,string thetag)
+begin
+  record IssueVc Issuer;
+  
+  Issuer.SerNr = NextSerNr("IssueVc",currentdate,-1,true,"");
+  ReadRecordIdStrIssueVc = BuildRecordIdStr(Issuer,compnr);
+  return;
+end;
+
+
+procedure ReadImportTagDefectVcRecord(record DefectVc Defectr)
+begin
+  string 255 tstr;
+  RecordNew(Defectr);
+  Defectr.DefectName = ImportField;
+  Defectr.SerNr = NextSerNr("DefectVc",currentdate,-1,true,"");
+  
+  
+  return;
+end;
+
+global
+updating procedure ReadImportTagDefectVc(string thetag)
+begin
+  record DefectVc Defectr;
+  
+  while (NextImportLine(false)) begin
+    ReadImportTagDefectVcRecord(Defectr);
+ 		RecordImportStore(Defectr,false);
+  end;
+  
+  return;
+end;
+
+global
+function string 120 ReadRecordIdStrDefectVc(Integer compnr,string thetag)
+begin
+  record DefectVc Defectr;
+  
+  Defectr.SerNr = NextSerNr("DefectVc",currentdate,-1,true,"");
+  ReadRecordIdStrDefectVc = BuildRecordIdStr(Defectr,compnr);
+  return;
+end;
+
