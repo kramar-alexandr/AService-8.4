@@ -685,15 +685,23 @@ begin
 	EndBlock; //Edit***************************Sasha2,17:27 11.09.2014 }
 	
 	RecordBegin(IssueVc,-,"");
+		RecordField(SerNr,M4Long,0,0);
     RecordField(IssueName,M4Str,60,IssueVc);
-    MainKeyBegin(IssueName,0);
+    MainKeyBegin(SerNr,0);
+    KeySegment(SerNr);
+    KeyBegin(IssueName);
     KeySegment(IssueName);
+    KeySegment(SerNr);
   EndRecord;
 
 	RecordBegin(DefectVc,-,"");
+		RecordField(SerNr,M4Long,0,0);
 		RecordField(DefectName,M4Str,60,DefectVc);
-		MainKeyBegin(DefectName,0);
-		KeySegment(DefectName);
+		MainKeyBegin(SerNr,0);
+		KeySegment(SerNr);
+		KeyBegin(DefectName);
+    KeySegment(DefectName);
+    KeySegment(SerNr);
   EndRecord;
   
   RecordBegin(MonthsStructVc,-,"");	//Edit----------------------Dima  02.02.2016
