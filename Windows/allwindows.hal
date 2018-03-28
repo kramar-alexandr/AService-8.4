@@ -393,19 +393,24 @@ begin
   vs = 20; h3 = 550;
   Tile(0,130,false,"",CustCode);
 		EditField(h=90,v=6, 82,"Номер",Normal,SerNr,false,TSerSClass);
-		EnterSkip(CustCode);
-		EditField(h2=240,v,300,"Власник",Normal,Addr0,false,0);
-		EditField(h,vm=(v+=vs),82, "Клієнт",Normal,CustCode,false,CUSClass);
-	
-		halpushbutton(h-45,vm+20,h+80,vm+50,"ChangeSVOSalesGroup","Перенести ремонт"); 
-		HalPushButton(h-45,vm+50,h+80,vm+80,"PrintAndSetRegDateInSVODsm","Видати");//Edit-------------------Vitalii 13:51 27.10.2016
-		EditField(240,vm,80, "Прийняв",Normal,CustomField7,false,UserSClass);// Edit ************************** Monday, 31 May 2010 9:22:11 AM
-		EditField(240,vm+20,80,"Гр.Пр.",ViewOnly,SalesGroup,false,0);
+		EditField(240,v,80,"Гр.Пр.",ViewOnly,SalesGroup,false,0);
+		EditField(h+350,v,100,"Сервіс. майстер",Normal,ServiceManager,false,UserSClass);// Edit ************************** Monday, 31 May 2010 9:22:11 AM
+		CheckBox(-70,v,0,"Виконано",DoneMark);
+		
+		EditField(h+350,v+=vs,100,"До сплати",ViewOnly,WSCost,false,0);
+		EditField(h+250,v+=vs,50,"Передать ремонт на точку",Normal,MoveSVOToSG,false,SalesGroupSClass);
+		EditField(h+250,v+=vs,200,"Статус передачи",ViewOnly,MoveSVOToSGStatus,false,0);
 
-		EditField(h+350,vm,100,"Сервіс. майстер",Normal,ServiceManager,false,UserSClass);// Edit ************************** Monday, 31 May 2010 9:22:11 AM
-		EditField(h+350,vm+20,100,"До сплати",ViewOnly,WSCost,false,0);
+		
+		v=40;
+		vm = (v + vs);
+		HalPushButton(h-45,v,h+80,v+50,"ChangeSVOSalesGroup","Принять ремонт"); 
+		HalPushButton(h-45,v+30,h+80,v+80,"PrintAndSetRegDateInSVODsm","Видати");//Edit-------------------Vitalii 13:51 27.10.2016
+		
 
-		vm = vm-32;
+		
+		h2=240;
+		vm = 0;
 		ButtonFrame(h+500,vm+16,130,6,"");
 		RadioButton(h+500,vm+16,0,0,"В очікуванні",OrderStatus);
 		RadioButton(h+500,vm+16+16,5,0,"На діагностиці",OrderStatus);
@@ -413,16 +418,24 @@ begin
 		RadioButton(h+500,vm+48+16,1,0,"Діаг. заверш.",OrderStatus);
 		RadioButton(h+500,vm+64+16,3,0,"Очікує запч.",OrderStatus);
 		RadioButton(h+500,vm+80+16,2,0,"Ремонт виконано",OrderStatus);
-		vm = vm + 32;
-  
-		CheckBox(-70,16,0,"Виконано",DoneMark);
+		//vm = vm + 32;
+  	
+  	vm = 20;
+  	
+		
+		
 		TileButton(1,"Дата");
 		TileButton(2,"Товари");
-  Tile(1,85,false,"1",CustContact);
+  	Tile(1,85,false,"1",CustContact);
 		EditField(h1=110,v=vm-20,60,"Дата замовл.",mode,TransDate,false,PasteCurDate);
+
 		h2=h2-40;
 		EditField(h2,v,60,"Час",mode,RegTime,false,0);// Edit ************************** Friday, 17 December 2010 09:38:48
 		EditField(h3+130,v,130,"Конт. особа",Normal,CustContact,false,ContactSClass);
+		EditField(h3+130,v+vs,130,"Власник",ViewOnly,Addr0,false,0);
+		EditField(h3+130,v+2*vs,130, "Клієнт",ViewOnly,CustCode,false,CUSClass);
+		
+		
 		EditField(h1,v+=vs,60,"Дата заверш.діагн.",mode,EndDiagnDate,false,PasteCurDate); //Edit***************************Sasha2,15:40 25.10.2016
 		EditField(h2,v,60,"Час",mode,EndDiagnTime,false,0); //Edit***************************Sasha2,15:40 25.10.2016
 		EditField(h1,v+=vs,60,"Дата заверш. рем.",mode,PlanShipDate,false,PasteCurDate);
@@ -439,6 +452,7 @@ begin
 		EditField(h2+240,v+=25,60, "Термін.",Normal,FastTerm,false,0); // Edit ************ Dima 8 February 2018, 15:45
 		EditField(h2+240,v+=20,60, "Готівка",Normal,FastCash,false,0);
 		v = vx;
+		EditField(h2+85,v,80,"",Normal,CustomField7,false,UserSClass);// Edit ************************** Monday, 31 May 2010 9:22:11 AM
 		EditField(h2+85,v+=20,80,"",ViewOnly,DiagnosFinishUsr,false,0);
 		EditField(h2+85,v+=20,80,"",ViewOnly,RepairFinishUsr,false,0);
 		EditField(h2+85,v+=20,80,"",ViewOnly,GiveAwayUsr,false,0);
