@@ -994,3 +994,32 @@ begin
 
   return;
 end;
+
+
+
+
+global updating procedure FillALSGMn()
+begin
+	record UserVc USr;
+	record SVOVc SVOr;
+	
+	USr.Code = "";
+	while(loopmain(USr,1,true))begin
+		if(blank(USr.SalesGroup))then begin
+			USr.SalesGroup = "1GR";
+			recordstore(USr,true);
+		end;
+	end;
+	
+	SVOr.SerNr = -1;
+	while(loopmain(SVOr,1,true))begin
+		if(loopmain(SVOr,1,true))then begin
+			if(blank(SVOr.SalesGroup))then begin
+				SVOr.SalesGroup = "1GR";
+				recordstore(SVOr,true);
+			end;
+		end;
+	end;
+
+return;
+end;
