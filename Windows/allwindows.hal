@@ -433,7 +433,7 @@ begin
 		EditField(h2,v,60,"Час",mode,RegTime,false,0);// Edit ************************** Friday, 17 December 2010 09:38:48
 		EditField(h3+130,v,130,"Конт. особа",Normal,CustContact,false,ContactSClass);
 		EditField(h3+130,v+vs,130,"Власник",ViewOnly,Addr0,false,0);
-		EditField(h3+130,v+2*vs,130, "Клієнт",ViewOnly,CustCode,false,CUSClass);
+		EditField(h3+130,v+2*vs,130, "Клієнт",Normal,CustCode,false,CUSClass);
 		
 		
 		EditField(h1,v+=vs,60,"Дата заверш.діагн.",mode,EndDiagnDate,false,PasteCurDate); //Edit***************************Sasha2,15:40 25.10.2016
