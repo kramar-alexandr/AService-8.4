@@ -30,6 +30,8 @@ remote updating procedure FastPayInvoicesSVO(record RcVc);// Edit **************
 external procedure NormPhoneNumber(string, var array string);//-------------------------------------- dima-f 15.09.17
 remote procedure SendSMSText(string,longint,string,string);
 external procedure  FindPhonePerson(var record Phone1Vc,string);
+external procedure  CreateSVOSerNoterForMove(record SVOVc,string);// Edit ************************** BPI Ukraine - KramarAlexandr - Thursday, 29 March 2018 11:27:11
+external updating procedure CreateCustomActivityFromSVO(record SVOVc,string,string,date,string,string);// Edit ************************** BPI Ukraine - KramarAlexandr - Tuesday, 12 December 2017 11:56:41
 
 SetLangMode(LangRussian,"RUS",0);
 
@@ -57,7 +59,58 @@ begin
 	GetUserSerNrSeries = res;
 end;
 // Edit End ---------------------------------------------- Edit End
+// Edit Start ---------------------------------------------- Edit Start
+	//Thursday, 29 March 2018 11:46:34
+	
+updating
+procedure CloseActivity(var record ActVc Actr, string actResult)
+begin
+    record ActVc lActr;
+    recordcopy(lActr,Actr);
+    Actr.ActResult = actResult;
+    Actr.OKFlag = 1;
+    if(recordupdate(lActr,Actr,true)!=0)then begin
+    	Actr.ActResult = actResult;
+			Actr.OKFlag = 1;
+			recordstore(Actr,true);
+    end;
+end;
 
+
+global updating
+procedure CloseActivitiesFromSVO(var record SVOVc SVOr,string acttype)
+begin
+	boolean TrHs,testf,testf1;
+	record ActVc Actr;
+	
+	resetloop(Actr);
+	
+	
+	Actr.SVOSerNr = SVOr.SerNr;
+	TrHs = true;
+	while(loopkey("SVOSerNr",Actr,1,TrHs)) begin
+		testf = true;
+		if(Actr.SVOSerNr!=SVOr.SerNr)then begin
+				TrHs=false;
+				testf = false;
+		end;
+		if(Actr.OKFlag>0)then begin testf = false; end;
+		
+		if(testf)then begin
+							
+			if(Actr.ActType==acttype) then begin
+				if(Actr.OKFlag==0) then begin
+					CloseActivity(Actr,"OK");
+				end;
+			end;
+			
+		end;
+	end;
+end;
+
+
+	// Edit End ---------------------------------------------- Edit End
+	
 global
 function LongInt SVOVcRecordDefaultsClient(LongInt wn,var record SVOVc SVOr,record SVOVc SVO2r,LongInt stat,LongInt long4)
 BEGIN
@@ -402,6 +455,7 @@ global
 updating function LongInt SVOVcRecordUpdate(var record SVOVc SVOr,record SVOVc SVO2r,LongInt stat,LongInt long4)
 BEGIN
   LongInt res;
+  record SalesGroupVc SGr;
   
   SetSVOFlags(SVOr);
   if (blankdate(SVO2r.EndDiagnDate) and nonblankdate(SVOr.EndDiagnDate)) then begin
@@ -413,6 +467,24 @@ BEGIN
   if (blankdate(SVO2r.RegDate) and nonblankdate(SVOr.RegDate)) then begin
 	SVOr.GiveAwayUsr = currentuser;
   end;
+  
+  // Edit Start ---------------------------------------------- Edit Start
+	//Thursday, 29 March 2018 11:20:01
+	
+  if(nonblank(SVOr.MoveSVOToSG))then begin
+  	
+  	SGr.SGroupCode = SVOr.MoveSVOToSG;
+  	readfirstmain(SGr,1,true);
+  	SVOr.MoveSVOToSGStatus = "Ремонт перемещается на " & SGr.SGroupName;
+  	SVOr.MoveSVOToSG = "";
+  	CreateSVOSerNoterForMove(SVOr,currenttime & " " & currentdate & " " & currentuser & " " & SVOr.MoveSVOToSGStatus);
+  	CreateCustomActivityFromSVO(SVOr,"MOVE",SVOr.SalesMan,currentdate,SVOr.MoveSVOToSGStatus,SGr.SGroupCode);
+  	
+  end;
+  
+	// Edit End ---------------------------------------------- Edit End
+	
+  
   SVOVcRecordUpdate = res; 
   RETURN;
 END;

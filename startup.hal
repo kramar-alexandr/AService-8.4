@@ -264,6 +264,7 @@ begin
   SString(31091,"Прийняв");
   SString(31092,"Визначте телефон");
   SString(31093,"Визначте ім'я клієнта");
+  SString(31094,"Передача ремонта");
   
   StrSetBegin(3); /* Try to keep them in alphabetical order */
   StrSetText(UnCloseAll,"Відкрити записи");// Edit ************************** Wednesday, 15 April 2015 17:21:45

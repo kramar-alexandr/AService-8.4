@@ -36,6 +36,8 @@ external procedure ExtractObjWithSeparator(string,string,Boolean,var Integer,var
 remote procedure FindPhonePerson(var record Phone1Vc,string);// Edit ************************** Tuesday, 28 February 2017 16:03:58
 remote procedure CountNumberRepeatPhone(string,var array longint,var integer );// Edit ************************** BPI Ukraine - KramarAlexandr - Tuesday, 12 December 2017 15:16:16
 remote updating procedure RA_AttachToMailWEBLinkDsm(record WebNavLinkVc);
+external updating procedure  CreateSVOSerNoterForMove(record SVOVc,string);// Edit ************************** BPI Ukraine - KramarAlexandr - Thursday, 29 March 2018 11:27:11
+external updating procedure CloseActivitiesFromSVO(var record SVOVc,string);
 // Edit Start ---------------------------------------------- Edit Start
 	//Wednesday, 3 June 2015 16:58:34
 	
@@ -1749,6 +1751,7 @@ begin
 	record SVOVc SVOr;
 	integer wn;
 	integer state;
+	record SalesGroupVc SGr;
 	
 	wn = curwindow;
 	state = windowstate(wn);
@@ -1762,6 +1765,11 @@ begin
 				if(SVOr.SalesGroup!=USr.SalesGroup)then begin
 					SVOr.SalesGroup=USr.SalesGroup;
 					SVOr.ServiceManager = "";// Edit ************************** Friday, 23 October 2015 09:54:42
+					SGr.SGroupCode = SVOr.SalesGroup;
+					readfirstmain(SGr,1,true);
+					SVOr.MoveSVOToSGStatus = "Ремонт принят на " & SGr.SGroupName;
+					CreateSVOSerNoterForMove(SVOr,currenttime & " " & currentdate & " " & currentuser & " " & SVOr.MoveSVOToSGStatus);
+					CloseActivitiesFromSVO(SVOr,"MOVE");
 					putwindowrecord(wn,SVOr);
 					WindowDoOK(wn,0);
 					//recordstore(SVOr,true);
@@ -1901,7 +1909,6 @@ BEGIN
   NotepadDClassOnEnterKey = res;
   RETURN;
 END;
-
 
 global procedure OpenSVODsm()
 begin
