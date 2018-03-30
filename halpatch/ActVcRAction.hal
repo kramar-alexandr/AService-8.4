@@ -37,6 +37,9 @@ external updating procedure ActOK(record ActVc);
 external function Boolean ActivityIsForAbsence(record ActVc);
 external function Boolean DateLocked(Date,string);
 external function Boolean DateWarned(Date,string);
+external procedure  CreateSVOSerNoterForMove(record SVOVc,string);// Edit ************************** BPI Ukraine - KramarAlexandr - Thursday, 29 March 2018 11:27:11
+
+SetLangMode(LangRussian,"RUS",0);
 
 procedure ActNLTSer(Date td,var LongInt tserstart,var LongInt tserend)
 begin
@@ -1331,6 +1334,9 @@ global
 updating function LongInt ActVcRecordUpdate(var record ActVc Actr,record ActVc Act2r,LongInt stat,LongInt long4)
 BEGIN
   LongInt res;
+  record SVOVc SVOr;// Edit ************************** BPI Ukraine - KramarAlexandr - Friday, 30 March 2018 10:05:46
+  record UserVc USr;// Edit ************************** BPI Ukraine - KramarAlexandr - Friday, 30 March 2018 10:05:45
+  record SalesGroupVc SGr;
 
   Actr.LengthClass = ActLenClass(Actr.TransDate,Actr.EndDate);
   Actr.LastChangedDate = CurrentDate;
@@ -1353,8 +1359,38 @@ moved to client side
           Actr.EndTime = CurrentTime;
         end;
 */  
+
     end;
   end;
+
+ // Edit Start ---------------------------------------------- Edit Start
+	//Friday, 30 March 2018 09:51:50
+  if(Actr.ActType=="MOVE" and Act2r.OKFlag==0 and Actr.OKFlag==1)then begin
+  	if(Actr.SVOSerNr>0)then begin
+  		SVOr.SerNr = Actr.SVOSerNr;
+  		if(readfirstmain(SVOr,1,true))then begin
+  			USr.Code = currentuser;
+  			if(readfirstmain(USr,1,true))then begin
+  				if(SVOr.SalesGroup!=USr.SalesGroup)then begin
+						SVOr.SalesGroup=USr.SalesGroup;
+						SVOr.ServiceManager = "";// Edit ************************** Friday, 23 October 2015 09:54:42
+						SGr.SGroupCode = SVOr.SalesGroup;
+						readfirstmain(SGr,1,true);
+						SVOr.MoveSVOToSGStatus = "Ремонт принят на " & SGr.SGroupName;
+						CreateSVOSerNoterForMove(SVOr,currenttime & " " & currentdate & " " & currentuser & " " & SVOr.MoveSVOToSGStatus);
+						Actr.ActResult = "OK";
+						recordstore(SVOr,true);
+					end;
+  				
+  			end;
+  		end;
+  	end;
+  end;
+  
+	// Edit End ---------------------------------------------- Edit End
+
+
+
   ActVcRecordUpdate = res;
   RETURN;
 END;
