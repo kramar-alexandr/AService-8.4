@@ -93,18 +93,27 @@ begin
 	totpay = RepSpec.vals0 + RepSpec.vals1 + RepSpec.vals2;
 	SVOr.SerNr = RepSpec.long1;
 	if(readfirstmain(SVOr,1,true))then begin
-		if((SVOr.WSCost!=0 and totpay>=SVOr.WSCost) or SVOr.WSCost==0)then begin
-			if(readfirstmain(SVOr,1,true))then begin
-				recordcopy(SVO2r,SVOr);
-				SVOr.FastCash = RepSpec.vals0;
-				SVOr.FastTerm = RepSpec.vals1;
-				SVOr.FastBank = RepSpec.vals2;
-				recordupdate(SVO2r,SVOr,true);
-				PrintAndSetRegDateInSVOExecute(SVOr);
-				closewindow(wn);
+		if(RepSpec.flags[0]>0)then begin
+			if((SVOr.WSCost!=0 and totpay>=SVOr.WSCost) or SVOr.WSCost==0)then begin
+				if(readfirstmain(SVOr,1,true))then begin
+					recordcopy(SVO2r,SVOr);
+					SVOr.FastCash = blankval;
+					SVOr.FastTerm = blankval;
+					SVOr.FastBank = blankval;
+					switch(RepSpec.flags[0])begin
+						case 1:SVOr.FastCash = RepSpec.vals0;
+						case 2:SVOr.FastTerm = RepSpec.vals0;
+						case 3:SVOr.FastBank = RepSpec.vals0;
+					end;
+					recordupdate(SVO2r,SVOr,true);
+					PrintAndSetRegDateInSVOExecute(SVOr);
+					closewindow(wn);
+				end;
+			end else begin
+				messagebox(0,"Необходима полная оплата");
 			end;
 		end else begin
-			messagebox(0,"Необходима полная оплата");
+			messagebox(0,"Выберите способ оплаты");
 		end;
 	end;
 	
@@ -126,6 +135,7 @@ BEGIN
   	GetWindowRecord(wn,SVOr);
   	if(SVOr.DoneMark==0)then begin
 			RepSpec.long1 = SVOr.SerNr;
+			RepSpec.vals0 = SVOr.WSCost;
 			OpenWindow("ManagerFastPaySVOWClass",1,wn,"","",RepSpec);
   	end else begin
   		messagebox(0,"Ремонт уже завершен");
