@@ -96,8 +96,8 @@ begin
 		if(SVOr.WSCost!=0 and totpay>=SVOr.WSCost)then begin
 			if(readfirstmain(SVOr,1,true))then begin
 				recordcopy(SVO2r,SVOr);
-				SVOr.FastTerm = RepSpec.vals0;
-				SVOr.FastCash = RepSpec.vals1;
+				SVOr.FastCash = RepSpec.vals0;
+				SVOr.FastTerm = RepSpec.vals1;
 				SVOr.FastBank = RepSpec.vals2;
 				recordupdate(SVO2r,SVOr,true);
 				PrintAndSetRegDateInSVOExecute(SVOr);
