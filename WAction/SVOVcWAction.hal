@@ -93,7 +93,7 @@ begin
 	totpay = RepSpec.vals0 + RepSpec.vals1 + RepSpec.vals2;
 	SVOr.SerNr = RepSpec.long1;
 	if(readfirstmain(SVOr,1,true))then begin
-		if(SVOr.WSCost!=0 and totpay>=SVOr.WSCost)then begin
+		if((SVOr.WSCost!=0 and totpay>=SVOr.WSCost) or SVOr.WSCost==0)then begin
 			if(readfirstmain(SVOr,1,true))then begin
 				recordcopy(SVO2r,SVOr);
 				SVOr.FastCash = RepSpec.vals0;
@@ -125,12 +125,8 @@ BEGIN
   if (WindowState(wn)==Rs_normal) then begin
   	GetWindowRecord(wn,SVOr);
   	if(SVOr.DoneMark==0)then begin
-			if ((SVOr.WSCost!=blankval) and (SVOr.WSCost!=0)) then begin
-			
-				RepSpec.long1 = SVOr.SerNr;
-				OpenWindow("ManagerFastPaySVOWClass",1,wn,"","",RepSpec);
-			
-			end;
+			RepSpec.long1 = SVOr.SerNr;
+			OpenWindow("ManagerFastPaySVOWClass",1,wn,"","",RepSpec);
   	end else begin
   		messagebox(0,"ђемонт уже завершен");
   		if ((SVOr.WSCost!=blankval) and (SVOr.WSCost!=0)) then begin
