@@ -44,40 +44,112 @@ external updating procedure CloseActivitiesFromSVO(var record SVOVc,string);
 SetLangMode(LangRussian,"RUS",0);
 
 global //Edit-------------------Vitalii 13:52 27.10.2016
+updating procedure PrintAndSetRegDateInSVOExecute(var record SVOVc SVOr)
+BEGIN
+  record SVOVc SVO2r;
+  Integer wn,nwn;
+  area aFile;
+  Boolean testf;
+	
+  wn = CurWindow;
+	if ((SVOr.WSCost!=blankval) and (SVOr.WSCost!=0)) then begin
+		SetExportCodePage("CP1251");
+		HandleSVOReceiptPrinting(SVOr,aFile);
+		AddAreaToArea(aFile,aFile);
+		PrintBixolonReceipt(aFile);
+	end;
+	if (BlankDate(SVOr.RegDate)) then begin
+		testf = true;
+		if (BlankDate(SVOr.PlanShipDate)) then begin //Edit***************************Sasha2,14:47 16.02.2017
+			testf = false;
+			MessageBox(31089,"");
+		end;
+		if (testf) then begin
+			recordcopy(SVO2r,SVOr);
+			SVOr.RegDate = currentDate;
+			SVOr.OutTime = CurrentTime;
+			recordupdate(SVO2r,SVOr,true);
+		end;
+	end;
+	
+  RETURN;
+END;
+
+
+
+global //Edit-------------------Vitalii 13:52 27.10.2016
+updating procedure DblConfirmPaymentManagerDsm()
+begin
+	record SVOVc SVOr,SVO2r;
+  Integer wn,nwn;
+  area aFile;
+  Boolean testf;
+  record RcVc RepSpec;
+  val totpay;
+	
+	wn = curwindow;
+	deselectwindow(wn,true);
+	getwindowrecord(wn,RepSpec);
+	totpay = RepSpec.vals0 + RepSpec.vals1 + RepSpec.vals2;
+	SVOr.SerNr = RepSpec.long1;
+	if(readfirstmain(SVOr,1,true))then begin
+		if(SVOr.WSCost!=0 and totpay>=SVOr.WSCost)then begin
+			if(readfirstmain(SVOr,1,true))then begin
+				recordcopy(SVO2r,SVOr);
+				SVOr.FastTerm = RepSpec.vals0;
+				SVOr.FastCash = RepSpec.vals1;
+				SVOr.FastBank = RepSpec.vals2;
+				recordupdate(SVO2r,SVOr,true);
+				PrintAndSetRegDateInSVOExecute(SVOr);
+				closewindow(wn);
+			end;
+		end else begin
+			messagebox(0,"Необходима полная оплата");
+		end;
+	end;
+	
+return;
+end;
+
+global //Edit-------------------Vitalii 13:52 27.10.2016
 updating procedure PrintAndSetRegDateInSVODsm()
 BEGIN
   record SVOVc SVOr,SVO2r;
   Integer wn,nwn;
   area aFile;
   Boolean testf;
+  record RcVc RepSpec;
 	
-  wn = CurWindow;
+	
+	wn = CurWindow;
   if (WindowState(wn)==Rs_normal) then begin
-    GetWindowRecord(wn,SVOr);
-    if ((SVOr.WSCost!=blankval) and (SVOr.WSCost!=0)) then begin
-      SetExportCodePage("CP1251");
-      HandleSVOReceiptPrinting(SVOr,aFile);
-      AddAreaToArea(aFile,aFile);
-      PrintBixolonReceipt(aFile);
-    end;
-    if (BlankDate(SVOr.RegDate)) then begin
-      testf = true;
-      if (BlankDate(SVOr.PlanShipDate)) then begin //Edit***************************Sasha2,14:47 16.02.2017
-        testf = false;
-        MessageBox(31089,"");
-      end;
-      if (testf) then begin
-        SVOr.RegDate = currentDate;
-    	  SVOr.OutTime = CurrentTime;
-    	  PutWindowRecord(wn,SVOr);
-    	  WindowDoOK(wn,0);
-      end;
-    end;
-	end else begin
+  	GetWindowRecord(wn,SVOr);
+  	if(SVOr.DoneMark==0)then begin
+			if ((SVOr.WSCost!=blankval) and (SVOr.WSCost!=0)) then begin
+			
+				RepSpec.long1 = SVOr.SerNr;
+				OpenWindow("ManagerFastPaySVOWClass",1,wn,"","",RepSpec);
+			
+			end;
+  	end else begin
+  		messagebox(0,"Ремонт уже завершен");
+  		if ((SVOr.WSCost!=blankval) and (SVOr.WSCost!=0)) then begin
+				SetExportCodePage("CP1251");
+				HandleSVOReceiptPrinting(SVOr,aFile);
+				AddAreaToArea(aFile,aFile);
+				PrintBixolonReceipt(aFile);
+			end;
+  	end;
+  end else begin
 	  MessageBox(1356,"");
   end;
+	
+  
+  
+  
   RETURN;
 END;
+
 
 global //Edit***************************Sasha2,17:13 25.10.2016 {
 updating procedure SetRegDateInSVODsm()
