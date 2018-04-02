@@ -69,6 +69,9 @@ BEGIN
 			SVOr.RegDate = currentDate;
 			SVOr.OutTime = CurrentTime;
 			recordupdate(SVO2r,SVOr,true);
+			nwn = motherwindow(wn);
+			putwindowrecord(nwn,SVOr);
+			setwindowstate(nwn,0);
 		end;
 	end;
 	
@@ -106,6 +109,9 @@ begin
 						case 3:SVOr.FastBank = RepSpec.vals0;
 					end;
 					recordupdate(SVO2r,SVOr,true);
+					nwn = motherwindow(wn);
+					putwindowrecord(nwn,SVOr);
+					setwindowstate(nwn,0);
 					PrintAndSetRegDateInSVOExecute(SVOr);
 					closewindow(wn);
 				end;
