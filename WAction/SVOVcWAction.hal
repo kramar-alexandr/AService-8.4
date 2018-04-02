@@ -69,9 +69,9 @@ BEGIN
 			SVOr.RegDate = currentDate;
 			SVOr.OutTime = CurrentTime;
 			recordupdate(SVO2r,SVOr,true);
-			nwn = motherwindow(wn);
-			putwindowrecord(nwn,SVOr);
-			setwindowstate(nwn,0);
+			//nwn = motherwindow(wn);
+			//putwindowrecord(nwn,SVOr);
+			//setwindowstate(nwn,0);
 		end;
 	end;
 	
@@ -110,9 +110,12 @@ begin
 					end;
 					recordupdate(SVO2r,SVOr,true);
 					nwn = motherwindow(wn);
-					putwindowrecord(nwn,SVOr);
-					setwindowstate(nwn,0);
+					
+					//
 					PrintAndSetRegDateInSVOExecute(SVOr);
+					putwindowrecord(nwn,SVOr);
+					//setwindowstate(nwn,0);
+					//UpdateBrowses("SVOVc");
 					closewindow(wn);
 				end;
 			end else begin
