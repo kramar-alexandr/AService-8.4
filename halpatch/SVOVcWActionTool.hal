@@ -79,7 +79,7 @@ BEGIN
     tstr2 = SVOp.Objects;
     RemoveOldPersObjects(SVOp.SalesMan,tstr2);
     SVOp.Objects = tstr2;
-    SVOp.SalesMan = tstr;
+    //SVOp.SalesMan = tstr;// Edit ************************** BPI Ukraine - KramarAlexandr - Monday, 2 April 2018 11:07:54
     Userr.Code = SVOp.SalesMan;
     if (ReadFirstMain(Userr,1,true)) then begin
       SVOp.Objects = AddObjectToObjectList(SVOp.Objects,Userr.PersObjx);
