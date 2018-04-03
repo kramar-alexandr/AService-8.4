@@ -1,5 +1,8 @@
 external procedure ExtractObj(string,var Integer,var string);
 
+SetLangMode(LangRussian,"RUS",0);
+
+
 global updating procedure RecalcWebRegMn()
 begin
 	record WebSyncRegVc WSRr;
