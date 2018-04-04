@@ -945,6 +945,25 @@ begin
 		KeySegment(ItemNo);
 		KeySegment(ArtCode);
 	EndRecord;
+	
+	RecordBegin(SVOCashUpVc,-,"");
+		RecordField(SerNr,M4Long,0,0);
+		RecordField(SalesGroup,M4Code,20,0);
+		RecordField(TransDate,M4Date,0,0);
+		RecordField(TransTime,M4Time,0,0);
+		RecordField(OKFlag,M4Int,0,0);
+		RecordField(SalesMan,M4Code,20,0);
+		RecordField(CashSum,M4Val,0,0);
+		RecordField(TermSum,M4Val,0,0);
+		RecordField(BankSum,M4Val,0,0);
+		RecordField(RecieveMan,M4Code,20,0);
+		
+		MainKeyBegin(SerNr,0);
+		KeySegment(SerNr);
+		KeyBegin(SalesGroup);
+		KeySegment(SalesGroup);
+		KeySegment(SerNr);
+	EndRecord;
 	  
 return;
 end;
