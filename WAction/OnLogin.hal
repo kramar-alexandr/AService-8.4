@@ -887,13 +887,13 @@ begin
 	Integer wn;
 	string 20 accessgroup;
 		
-		GetUserAccessGroup(currentuser,accessgroup);
-		if(accessgroup!="FIN+" and accessgroup!="ADMIN" and accessgroup!="ISTUD")then begin
+		//GetUserAccessGroup(currentuser,accessgroup);
+		//if(accessgroup!="FIN+" and accessgroup!="ADMIN" and accessgroup!="ISTUD")then begin
 			wn = FindWindow("ToDoWClass");
 			if(wn>0)then begin
 				updatebrowses("ToDoWClass");
 			end;
-		end;
+		//end;
 	//end;
 return;
 end;

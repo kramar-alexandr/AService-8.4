@@ -2113,7 +2113,7 @@ window SVOCashUpDClass:1
 begin 
 real vs,v,h,h1,h2,h3;
   WindowBegin("Выдача денег",SVOCashUpDClass,CGview,-);	// Edit ************************** BPI Ukraine - KramarAlexandr - Wednesday, 4 April 2018 09:51:33
-  SetWRect(240,80,200,200);
+  SetWRect(20,80,850,720);
   Sizeable(-1,-1,0,0);
   UseView(SVOCashUpVc);
   vs = 20; h3 = 550;
@@ -2127,6 +2127,22 @@ real vs,v,h,h1,h2,h3;
   EditField(90,v+=vs,80,"Терминал",Normal,TermSum,false,0);
   EditField(90,v+=vs,80,"Банк",Normal,BankSum,false,0);
   CheckBox(90,v+=vs, 70,"Подтверждено",OKFlag);
+  
+  v=v+20;
+  MatrixBegin(3,v+=vs,-50,-20,-,99);
+		Flip(0);
+		MatCol(1,32,"Заказ",0,SVONr,false,SVOSClass);
+		MatCol(1,94,"Акт",0,IVNr,true,IVSCLass);
+		MatCol(1,160,"Дата",0,RowDate,true,0);
+		MatCol(1,230,"Время",0,RowTime,true,0);
+		MatCol(1,300,"Выдал",0,Sign,true,0);
+		MatCol(1,380,"Нал",0,CashSum,true,0);
+		MatCol(1,430,"Терм",0,TermSum,true,0);
+		MatCol(1,480,"Банк",0,BankSum,true,0);
+		//InsertRowTest;
+		DeleteRowTest;
+		EndMatrix;
+		
   EndWindow;
  end; 
 

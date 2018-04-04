@@ -957,7 +957,17 @@ begin
 		RecordField(TermSum,M4Val,0,0);
 		RecordField(BankSum,M4Val,0,0);
 		RecordField(RecieveMan,M4Code,20,0);
-		
+		RecordField(Math,M4Matrix,0,0);
+		ArrayBegin(Math,-,1);
+		ArrayField(SVONr,M4Long,0,0);
+    ArrayField(IVNr,M4Long,0,0);
+    ArrayField(CashSum,M4Val,0,0);
+    ArrayField(TermSum,M4Val,0,0);
+    ArrayField(BankSum,M4Val,0,0);
+    ArrayField(RowDate,M4Date,0,0);
+    ArrayField(RowTime,M4Time,0,0);  
+    ArrayField(Sign,M4Code,20,0);    
+		EndArray;
 		MainKeyBegin(SerNr,0);
 		KeySegment(SerNr);
 		KeyBegin(SalesGroup);

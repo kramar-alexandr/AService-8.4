@@ -22,12 +22,15 @@ function LongInt SVOCashUpVcRecordDefaults(var record SVOCashUpVc SVOCr,record S
 BEGIN
   LongInt res;
 	record SVOCashUpVc oldSVOCr;
+	row SVOCashUpVc SVOCrw;
 	record UserVc USr;
 	date lastdate;
 	time lasttime;
 	record SVOVc SVOr;
 	boolean testf;
 	val cashsum,termsum,banksum;
+	record IVVc IVr;
+	
 	
 	SVOCr.SalesMan = CurrentUser;
 	USr.Code = currentuser;
@@ -52,6 +55,29 @@ BEGIN
   			cashsum = cashsum + SVOr.FastCash;
   			termsum = termsum + SVOr.FastTerm;
   			banksum = banksum + SVOr.FastBank;
+  			ClearRow(SVOCr,SVOCrw,1);
+  			SVOCrw.SVONr = SVOr.SerNr;
+  			SVOCrw.CashSum = SVOr.FastCash;
+  			SVOCrw.TermSum = SVOr.FastTerm;
+  			SVOCrw.BankSum = SVOr.FastBank;
+  			SVOCrw.RowDate = SVOr.RegDate;
+  			SVOCrw.RowTime = SVOr.OutTime;
+  			SVOCrw.Sign = SVOr.CustomField7;
+  			matrowput(SVOCr,matrowcnt(SVOCr),SVOCrw);
+  		end;
+  	end;
+  	
+  	IVr.InvDate = lastdate;
+  	while(loopkey("InvDate",IVr,1,true))begin
+  		testf = true;
+  		if(IVr.InvDate==oldSVOCr.TransDate and IVr.TransTime<lasttime)then begin testf = false; end;
+  		if(IVr.OKFlag==0)then begin testf = false; end;
+  		if(IVr.Invalid==1)then begin testf = false; end;
+  		if(IVr.SalesGroup!=oldSVOCr.SalesGroup)then begin testf = false; end;
+  		if(IVr.SVONr>0)then begin testf = false; end;
+  		  		
+  		if(testf)then begin
+  			
   		end;
   	end;
   	
@@ -74,7 +100,7 @@ BEGIN
   res = 1;
   
   if(SVOCr.OKFlag==1)then begin
-  	res = 0;
+  	//res = 0;
   end;
   
   
