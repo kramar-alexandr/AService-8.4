@@ -1049,7 +1049,7 @@ begin
       res = false;
     end;
     if (StockMov2r.OrdFlag!=0) then begin
-      res = false;
+      //res = false;
     end;
   end;  
   if (StockMovr.OrdFlag!=0) then begin
@@ -1059,7 +1059,6 @@ begin
   end;
   
   if(currentuser=="SA")then begin
-  	messagebox(0,1);
   	res = true;
   end;
   
