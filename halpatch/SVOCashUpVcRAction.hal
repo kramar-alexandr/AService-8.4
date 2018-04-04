@@ -1,0 +1,119 @@
+
+
+global
+updating function LongInt SVOCashUpVcRecordCheck(var record SVOCashUpVc SVOCr,record SVOCashUpVc SVOC2r,LongInt stat,LongInt long4)
+BEGIN
+  LongInt res;
+	
+	
+	if (SVOCr.SerNr==-1) then begin
+    SVOCr.SerNr = NextSerNr("SVOCashUpVc",currentdate,-1,false,"");
+  end;
+	
+  res = 0;
+LSVOCashUpVcRecordCheck:;  
+
+  SVOCashUpVcRecordCheck = res;
+  RETURN;
+END;
+
+global
+function LongInt SVOCashUpVcRecordDefaults(var record SVOCashUpVc SVOCr,record SVOCashUpVc SVOC2r,LongInt stat,LongInt long4)
+BEGIN
+  LongInt res;
+	record SVOCashUpVc oldSVOCr;
+	record UserVc USr;
+	date lastdate;
+	time lasttime;
+	record SVOVc SVOr;
+	boolean testf;
+	val cashsum,termsum,banksum;
+	
+	SVOCr.SalesMan = CurrentUser;
+	USr.Code = currentuser;
+	readfirstmain(USr,1,true);
+	SVOCr.SalesGroup = USr.SalesGroup;
+  SVOCr.TransDate = currentdate;
+  SVOCr.TransTime = currenttime;
+	
+	oldSVOCr.SalesGroup = SVOCr.SalesGroup;
+	oldSVOCr.SerNr = 99999999;
+	if(readlastkey("SalesGroup",oldSVOCr,2,false))then begin
+  	lastdate = oldSVOCr.TransDate;
+  	lasttime = oldSVOCr.TransTime;
+  	SVOr.RegDate = lastdate;
+  	while(loopkey("RegDate",SVOr,1,true))begin
+  		testf = true;
+  		if(SVOr.RegDate==oldSVOCr.TransDate and SVOr.OutTime<lasttime)then begin testf = false; end;
+  		if(SVOr.RegDate<oldSVOCr.TransDate)then begin testf = false; end;
+  		if(SVOr.SalesGroup!=oldSVOCr.SalesGroup)then begin testf = false; end;
+  		
+  		if(testf)then begin
+  			cashsum = cashsum + SVOr.FastCash;
+  			termsum = termsum + SVOr.FastTerm;
+  			banksum = banksum + SVOr.FastBank;
+  		end;
+  	end;
+  	
+  	SVOCr.CashSum = cashsum;
+  	SVOCr.TermSum = termsum;
+  	SVOCr.BankSum = banksum;
+  end;
+  
+  SVOCashUpVcRecordDefaults = res; 
+  RETURN;
+END;
+
+
+global
+function LongInt SVOCashUpVcRecordRemoveTest(var record SVOCashUpVc SVOCr,record SVOCashUpVc SVOC2r,LongInt stat,LongInt long4)
+BEGIN
+  LongInt res;
+  record DBLockBlock DBLb;
+
+  res = 1;
+  
+  if(SVOCr.OKFlag==1)then begin
+  	res = 0;
+  end;
+  
+  
+LSVOCashUpVcRecordRemoveTest:;
+  SVOCashUpVcRecordRemoveTest = res;
+  RETURN;
+END;
+
+global
+function Boolean SVOCashUpDClassActiveEditField(Integer wn,string fieldname,Integer fn,Integer wnst,Integer rownr,Integer changed)
+begin
+  Boolean res;
+  record SVOCashUpVc SVOCr;
+  
+  res = true;
+
+  getwindowrecord(wn,SVOCr);
+  if(SVOCr.OKFlag==1)then begin
+  	res = false;
+  end;
+
+  SVOCashUpDClassActiveEditField = res;
+  return;
+end;
+
+global
+function Boolean SVOCashUpDClassOKFlagButtonAction(Integer wn,Integer value)
+begin
+  Boolean res;
+  record SVOCashUpVc SVOCr;
+	
+  res = true;
+  GetWindowRecord(wn,SVOCr);
+  
+  if(SVOCr.OKFlag==1)then begin
+  	res = false;
+  end;
+  
+  SVOCashUpDClassOKFlagButtonAction = res;
+  return;
+end;
+
