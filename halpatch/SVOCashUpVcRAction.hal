@@ -1,4 +1,4 @@
-
+SetLangMode(LangRussian,"RUS",0);
 
 global
 updating function LongInt SVOCashUpVcRecordCheck(var record SVOCashUpVc SVOCr,record SVOCashUpVc SVOC2r,LongInt stat,LongInt long4)
@@ -8,6 +8,21 @@ BEGIN
 	
 	if (SVOCr.SerNr==-1) then begin
     SVOCr.SerNr = NextSerNr("SVOCashUpVc",currentdate,-1,false,"");
+  end;
+  if(blank(SVOCr.SalesMan))then begin
+  	res = -1;
+  	RecordCheckError(1058,"",-1,"SalesMan");  
+  	goto LSVOCashUpVcRecordCheck;
+  end;
+  if(blank(SVOCr.SalesGroup))then begin
+  	res = -1;
+  	RecordCheckError(1058,"",-1,"SalesGroup");  
+  	goto LSVOCashUpVcRecordCheck;
+  end;
+  if(blank(SVOCr.RecieveMan) and SVOCr.OKFlag==1)then begin
+  	res = -1;
+  	RecordCheckError(1058,"",-1,"RecieveMan");  
+  	goto LSVOCashUpVcRecordCheck;
   end;
 	
   res = 0;
@@ -27,9 +42,18 @@ BEGIN
 	date lastdate;
 	time lasttime;
 	record SVOVc SVOr;
-	boolean testf;
+	boolean testf,TrHs;
 	val cashsum,termsum,banksum;
 	record IVVc IVr;
+	record IPrsVc IPrsr;
+	record IPVc IPr;
+	row IPVc IPrw;
+	record CLInVc CLInr;
+	row CLInVc CLInrw;
+	record CLOutVc CLOutr;
+	row CLOutVc CLOUtrw;
+	integer i,mtrw;
+	val ivcash,ivterm,ivbank;
 	
 	
 	SVOCr.SalesMan = CurrentUser;
@@ -52,18 +76,21 @@ BEGIN
   		if(SVOr.SalesGroup!=oldSVOCr.SalesGroup)then begin testf = false; end;
   		
   		if(testf)then begin
-  			cashsum = cashsum + SVOr.FastCash;
-  			termsum = termsum + SVOr.FastTerm;
-  			banksum = banksum + SVOr.FastBank;
-  			ClearRow(SVOCr,SVOCrw,1);
-  			SVOCrw.SVONr = SVOr.SerNr;
-  			SVOCrw.CashSum = SVOr.FastCash;
-  			SVOCrw.TermSum = SVOr.FastTerm;
-  			SVOCrw.BankSum = SVOr.FastBank;
-  			SVOCrw.RowDate = SVOr.RegDate;
-  			SVOCrw.RowTime = SVOr.OutTime;
-  			SVOCrw.Sign = SVOr.CustomField7;
-  			matrowput(SVOCr,matrowcnt(SVOCr),SVOCrw);
+  			if(SVOr.FastCash!=0 or SVOr.FastTerm!=0 or SVOr.FastBank!=0 or SVOr.WSCost!=0)then begin
+					cashsum = cashsum + SVOr.FastCash;
+					termsum = termsum + SVOr.FastTerm;
+					banksum = banksum + SVOr.FastBank;
+					ClearRow(SVOCr,SVOCrw,1);
+					SVOCrw.SVONr = SVOr.SerNr;
+					SVOCrw.CashSum = SVOr.FastCash;
+					SVOCrw.TermSum = SVOr.FastTerm;
+					SVOCrw.BankSum = SVOr.FastBank;
+					SVOCrw.RowDate = SVOr.RegDate;
+					SVOCrw.RowTime = SVOr.OutTime;
+					SVOCrw.Sign = SVOr.CustomField7;
+					matrowput(SVOCr,matrowcnt(SVOCr),SVOCrw);
+					SVOCr.SVOQty = SVOCr.SVOQty + 1;
+  			end;
   		end;
   	end;
   	
@@ -77,6 +104,117 @@ BEGIN
   		if(IVr.SVONr>0)then begin testf = false; end;
   		  		
   		if(testf)then begin
+  			resetloop(IPrsr);
+  			IPrsr.IVNr = IVr.SerNr;
+  			TrHs = true;
+  			ivcash = blankval;
+				ivterm = blankval;
+				ivbank = blankval;
+				while (LoopKey("IVKey",IPrsr,2,TrHs)) begin
+					testf = true;
+					if(IPrsr.IVNr!=IVr.SerNr)then begin	TrHs = false; testf = false;	end;
+					if(IPrsr.TransType!=1 and IPrsr.TransType!=3)then begin testf = false;	end;
+  				
+  				if(testf)then begin
+  					
+  					switch(IPrsr.TransType)begin
+  						case 1:	IPr.SerNr = IPrsr.TransNr;
+  										if(readfirstmain(IPr,1,true))then begin
+  											mtrw = matrowcnt(IPr);
+  											For(i=0;i<mtrw;i=i+1) begin
+													matrowget(IPr,i,IPrw);
+													if(IPrw.InvoiceNr==IVr.SerNr)then begin
+														switch(IPr.PayMode)begin
+															case"03":cashsum = cashsum + IPrw.RecVal;
+																				ivcash = ivcash + IPrw.RecVal;
+															case"08":cashsum = cashsum + IPrw.RecVal;
+																				ivcash = ivcash + IPrw.RecVal;
+															case"11":cashsum = cashsum + IPrw.RecVal;
+																				ivcash = ivcash + IPrw.RecVal;
+															case"T1":termsum = termsum + IPrw.RecVal;
+																				ivterm = ivterm + IPrw.RecVal;
+															case"T2":termsum = termsum + IPrw.RecVal;
+																				ivterm = ivterm + IPrw.RecVal;
+															case"T3":termsum = termsum + IPrw.RecVal;
+																				ivterm = ivterm + IPrw.RecVal;
+															case"T4":termsum = termsum + IPrw.RecVal;
+																				ivterm = ivterm + IPrw.RecVal;
+															otherwise banksum = banksum + IPrw.RecVal;
+																				ivbank = ivbank + IPrw.RecVal;
+														end;
+													end;
+												end; 
+  										end;
+  						case 3:	CLInr.SerNr = IPrsr.TransNr;
+  										if(readfirstmain(CLInr,1,true))then begin
+  											mtrw = matrowcnt(CLInr);
+  											For(i=0;i<mtrw;i=i+1) begin
+													matrowget(CLInr,i,CLInrw);
+													if(CLInrw.TransNr==IVr.SerNr)then begin
+														switch(CLInr.PayMode)begin
+															case"03":cashsum = cashsum + CLInrw.Sum;
+																				ivcash = ivcash + CLInrw.Sum;
+															case"08":cashsum = cashsum + CLInrw.Sum;
+																				ivcash = ivcash + CLInrw.Sum;
+															case"11":cashsum = cashsum + CLInrw.Sum;
+																				ivcash = ivcash + CLInrw.Sum;
+															case"T1":termsum = termsum + CLInrw.Sum;
+																				ivterm = ivterm + CLInrw.Sum;
+															case"T2":termsum = termsum + CLInrw.Sum;
+																				ivterm = ivterm + CLInrw.Sum;
+															case"T3":termsum = termsum + CLInrw.Sum;
+																				ivterm = ivterm + CLInrw.Sum;
+															case"T4":termsum = termsum + CLInrw.Sum;
+																				ivterm = ivterm + CLInrw.Sum;
+															otherwise banksum = banksum + CLInrw.Sum;
+																				ivbank = ivbank + CLInrw.Sum;
+														end;
+													end;
+												end; 
+  										end;
+  							/*case 4:	CLOutr.SerNr = IPrsr.TransNr;
+  										if(readfirstmain(CLOutr,1,true))then begin
+  											mtrw = matrowcnt(CLOutr);
+  											For(i=0;i<mtrw;i=i+1) begin
+													matrowget(CLOutr,i,CLOutrw);
+													if(CLOutrw.TransNr==IVr.SerNr)then begin
+														switch(CLInr.PayMode)begin
+															case"03":cashsum = cashsum - CLOutrw.Sum;
+																				ivcash = ivcash - CLOutrw.Sum;
+															case"08":cashsum = cashsum - CLOutrw.Sum;
+																				ivcash = ivcash - CLOutrw.Sum;
+															case"11":cashsum = cashsum - CLOutrw.Sum;
+																				ivcash = ivcash - CLOutrw.Sum;
+															case"T1":termsum = termsum - CLOutrw.Sum;
+																				ivterm = ivterm - CLOutrw.Sum;
+															case"T2":termsum = termsum - CLOutrw.Sum;
+																				ivterm = ivterm - CLOutrw.Sum;
+															case"T3":termsum = termsum - CLOutrw.Sum;
+																				ivterm = ivterm - CLOutrw.Sum;
+															case"T4":termsum = termsum - CLOutrw.Sum;
+																				ivterm = ivterm - CLOutrw.Sum;
+															otherwise banksum = banksum - CLOutrw.Sum;
+																				ivbank = ivbank - CLOutrw.Sum;
+														end;
+													end;
+												end; 
+  										end;*/
+  					end;
+  				end;
+  			end;
+  			
+  			if(ivcash!=0 or ivterm!=0 or ivbank!=0)then begin
+  				SVOCr.IVQty = SVOCr.IVQty + 1;
+					ClearRow(SVOCr,SVOCrw,1);
+					SVOCrw.IVNr = IVr.SerNr;
+					SVOCrw.CashSum = ivcash;
+					SVOCrw.TermSum = ivterm;
+					SVOCrw.BankSum = ivbank;
+					SVOCrw.RowDate = IVr.InvDate;
+					SVOCrw.RowTime = IVr.RegTime;
+					SVOCrw.Sign = IVr.SalesMan;
+					matrowput(SVOCr,matrowcnt(SVOCr),SVOCrw);
+  			end;
   			
   		end;
   	end;
@@ -143,3 +281,163 @@ begin
   return;
 end;
 
+global procedure SVOCashUpRn(record RcVc RepSpec)
+begin
+	record SVOCashUpVc SVOCr;
+	row SVOCashUpVc SVOCrw;
+	record UserVc USr;
+	integer i,mtrw;
+	
+	SVOCr.SerNr = RepSpec.long1;
+	if(readfirstmain(SVOCr,1,true))then begin
+		StartReportNoheaderJob("Выдача денег");
+			startformat(15);
+				OutString(0,0,"#",false);
+				OutString(100,0,SVOCr.SerNr,false);
+			endformat;
+			startformat(15);
+				OutString(0,0,"Дата",false);
+				OutString(100,0,SVOCr.TransDate,false);
+			endformat;
+			startformat(15);
+				OutString(0,0,"Время",false);
+				OutString(100,0,SVOCr.TransTime,false);
+			endformat;
+			USr.Code = SVOCr.SalesMan;
+			readfirstmain(USr,1,true);
+			startformat(15);
+				OutString(0,0,"Кассир",false);
+				OutString(100,0,USr.Name,false);
+			endformat;
+			USr.Code = SVOCr.RecieveMan;
+			readfirstmain(USr,1,true);
+			startformat(15);
+				OutString(0,0,"Принял",false);
+				OutString(100,0,USr.Name,false);
+			endformat;
+			startformat(15);
+				OutString(0,0,"Ремонтов",false);
+				OutString(100,0,SVOCr.SVOQty,false);
+			endformat;
+			startformat(15);
+				OutString(0,0,"Продаж",false);
+				OutString(100,0,SVOCr.IVQty,false);
+			endformat;
+			startformat(15);
+				OutString(0,0,"Наличные",false);
+				OutString(100,0,SVOCr.CashSum,false);
+			endformat;
+			startformat(15);
+				OutString(0,0,"Терминал",false);
+				OutString(100,0,SVOCr.TermSum,false);
+			endformat;
+			startformat(15);
+				OutString(0,0,"Банк",false);
+				OutString(100,0,SVOCr.BankSum,false);
+			endformat;
+			
+			Black_Divider(0,1);
+			
+			startformat(15);
+				OutString(0,0,"# Ремонта",false);
+				OutString(70,0,"# Акта",false);
+				OutString(140,0,"Нал",false);
+				OutString(210,0,"Терминал",false);
+				OutString(280,0,"Банк",false);
+				OutString(350,0,"Итого",false);
+			endformat;
+			
+			mtrw = matrowcnt(SVOCr);
+			For(i=0;i<mtrw;i=i+1) begin
+	  		matrowget(SVOCr,i,SVOCrw);
+	  		startformat(15);
+	  			if(SVOCrw.SVONr>0)then begin
+						OutString(0,0,SVOCrw.SVONr,false);
+					end else begin
+						OutString(0,0,"",false);
+					end;
+					if(SVOCrw.IVNr>0)then begin
+						OutString(70,0,SVOCrw.IVNr,false);
+					end else begin
+						OutString(70,0,"",false);
+					end;
+					OutString(140,0,SVOCrw.CashSum,false);
+					OutString(210,0,SVOCrw.TermSum,false);
+					OutString(280,0,SVOCrw.BankSum,false);
+					OutString(350,0,SVOCrw.CashSum + SVOCrw.TermSum + SVOCrw.BankSum,false);
+				endformat;
+			end; 
+			
+		endjob;
+	end;
+
+return;
+end;
+
+Global procedure DblSVOCashSign()
+begin
+	integer wn;
+	record SVOCashUpVc SVOCr;
+	record RcVc RepSpec;
+	
+	wn = curwindow;
+	if(windowstate(wn)==0)then begin
+		getwindowrecord(wn,SVOCr);
+		if(SVOCr.OKFlag==0)then begin
+			SVOCr.SalesMan = CurrentUser;
+			PutWindowRecord(wn,SVOCr);
+		end else begin
+			messagebox(0,"Запись должна быть не заокеена");
+		end;
+	end else begin
+		messagebox(0,"Сохраните изменения в окне");
+	end;
+
+return;
+end;
+
+Global procedure DblSVOCashSignRec()
+begin
+	integer wn;
+	record SVOCashUpVc SVOCr;
+	record RcVc RepSpec;
+	
+	wn = curwindow;
+	if(windowstate(wn)==0)then begin
+		getwindowrecord(wn,SVOCr);
+		if(SVOCr.OKFlag==0)then begin
+			SVOCr.RecieveMan = CurrentUser;
+			PutWindowRecord(wn,SVOCr);
+		end else begin
+			messagebox(0,"Запись должна быть не заокеена");
+		end;
+	end else begin
+		messagebox(0,"Сохраните изменения в окне");
+	end;
+
+return;
+end;
+
+global procedure DblSVOCashUpRn()
+begin
+	integer wn;
+	record SVOCashUpVc SVOCr;
+	record RcVc RepSpec;
+	
+	wn = curwindow;
+	if(windowstate(wn)==0)then begin
+		getwindowrecord(wn,SVOCr);
+		if(SVOCr.OKFlag==1)then begin
+			RepSpec.Media = mtScreen;
+			RepSpec.long1 = SVOCr.SerNr;
+			RepSpec.repname = "SVOCashUpRn";
+			RunReport(RepSpec,0);
+		end else begin
+			messagebox(0,"Запись должна быть заокеена");
+		end;
+	end else begin
+		messagebox(0,"Сохраните изменения в окне");
+	end;
+	
+return;
+end;

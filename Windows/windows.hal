@@ -2118,21 +2118,29 @@ real vs,v,h,h1,h2,h3;
   UseView(SVOCashUpVc);
   vs = 20; h3 = 550;
   EditField(h=90,v=6,80,"#",Normal,SerNr,false,0);
-  EditField(90,v+=vs,80,"Группа продаж",Normal,SalesGroup,false,SalesGroupSClass);
-  EditField(90,v+=vs,80,"Дата",Normal,TransDate,false,PasteCurDate);
-  EditField(90,v+=vs,80,"Время",Normal,TransTime,false,0);
-  EditField(90,v+=vs,80,"Сдал",Normal,SalesMan,false,0);
-  EditField(90,v+=vs,80,"Принял",Normal,RecieveMan,false,0);
-  EditField(90,v+=vs,80,"Наличные",Normal,CashSum,false,0);
-  EditField(90,v+=vs,80,"Терминал",Normal,TermSum,false,0);
-  EditField(90,v+=vs,80,"Банк",Normal,BankSum,false,0);
-  CheckBox(90,v+=vs, 70,"Подтверждено",OKFlag);
+  EditField(h,v+=vs,80,"Группа продаж",Normal,SalesGroup,false,SalesGroupSClass);
+  EditField(h,v+=vs,80,"Дата",Normal,TransDate,false,PasteCurDate);
+  EditField(h,v+=vs,80,"Время",Normal,TransTime,false,0);
+  EditField(h,v+=vs,80,"Сдал",ViewOnly,SalesMan,false,0);
+  EditField(h,v+=vs,80,"Принял",ViewOnly,RecieveMan,false,0);
+  EditField(h,v+=vs,80,"Наличные",Normal,CashSum,false,0);
+  EditField(h,v+=vs,80,"Терминал",Normal,TermSum,false,0);
+  EditField(h,v+=vs,80,"Банк",Normal,BankSum,false,0);
+  CheckBox(h,v+=vs, 70,"Подтверждено",OKFlag);
   
-  v=v+20;
-  MatrixBegin(3,v+=vs,-50,-20,-,99);
+  EditField(h=250,v=6,80,"Ремонтов",Normal,SVOQty,false,0);
+  EditField(h,v+=vs,80,"Продаж",Normal,IVQty,false,0);
+  
+  HalPushButton(h,v+=vs,h+100,v+=vs,"DblSVOCashUpRn","Печать");
+  
+  HalPushButton(h,v+=vs,h+100,v+=vs,"DblSVOCashSign","Сдал");
+  HalPushButton(h,v+=vs,h+100,v+=vs,"DblSVOCashSignRec","Принял");
+  
+  v=200;
+  MatrixBegin(3,v+=vs,-50,-20,-,199);
 		Flip(0);
 		MatCol(1,32,"Заказ",0,SVONr,false,SVOSClass);
-		MatCol(1,94,"Акт",0,IVNr,true,IVSCLass);
+		MatCol(1,94,"Акт",0,IVNr,true,IVLCLass);
 		MatCol(1,160,"Дата",0,RowDate,true,0);
 		MatCol(1,230,"Время",0,RowTime,true,0);
 		MatCol(1,300,"Выдал",0,Sign,true,0);

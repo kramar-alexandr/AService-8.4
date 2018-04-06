@@ -958,6 +958,8 @@ begin
 		RecordField(BankSum,M4Val,0,0);
 		RecordField(RecieveMan,M4Code,20,0);
 		RecordField(Math,M4Matrix,0,0);
+		RecordField(SVOQty,M4Int,0,0);
+		RecordField(IVQty,M4Int,0,0);
 		ArrayBegin(Math,-,1);
 		ArrayField(SVONr,M4Long,0,0);
     ArrayField(IVNr,M4Long,0,0);
