@@ -110,6 +110,11 @@ BEGIN
   			ivcash = blankval;
 				ivterm = blankval;
 				ivbank = blankval;
+				
+				ivcash = IVr.FastCash;
+				ivterm = IVr.FastTerm;
+				
+				/*
 				while (LoopKey("IVKey",IPrsr,2,TrHs)) begin
 					testf = true;
 					if(IPrsr.IVNr!=IVr.SerNr)then begin	TrHs = false; testf = false;	end;
@@ -172,36 +177,9 @@ BEGIN
 													end;
 												end; 
   										end;
-  							/*case 4:	CLOutr.SerNr = IPrsr.TransNr;
-  										if(readfirstmain(CLOutr,1,true))then begin
-  											mtrw = matrowcnt(CLOutr);
-  											For(i=0;i<mtrw;i=i+1) begin
-													matrowget(CLOutr,i,CLOutrw);
-													if(CLOutrw.TransNr==IVr.SerNr)then begin
-														switch(CLInr.PayMode)begin
-															case"03":cashsum = cashsum - CLOutrw.Sum;
-																				ivcash = ivcash - CLOutrw.Sum;
-															case"08":cashsum = cashsum - CLOutrw.Sum;
-																				ivcash = ivcash - CLOutrw.Sum;
-															case"11":cashsum = cashsum - CLOutrw.Sum;
-																				ivcash = ivcash - CLOutrw.Sum;
-															case"T1":termsum = termsum - CLOutrw.Sum;
-																				ivterm = ivterm - CLOutrw.Sum;
-															case"T2":termsum = termsum - CLOutrw.Sum;
-																				ivterm = ivterm - CLOutrw.Sum;
-															case"T3":termsum = termsum - CLOutrw.Sum;
-																				ivterm = ivterm - CLOutrw.Sum;
-															case"T4":termsum = termsum - CLOutrw.Sum;
-																				ivterm = ivterm - CLOutrw.Sum;
-															otherwise banksum = banksum - CLOutrw.Sum;
-																				ivbank = ivbank - CLOutrw.Sum;
-														end;
-													end;
-												end; 
-  										end;*/
   					end;
   				end;
-  			end;
+  			end;*/
   			
   			if(ivcash!=0 or ivterm!=0 or ivbank!=0)then begin
   				SVOCr.IVQty = SVOCr.IVQty + 1;

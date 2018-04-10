@@ -1472,6 +1472,10 @@ if (true) then begin
   EditField(h1,v+=vs,82,"Дата оплаты",Normal,PayDate,false,PasteCurDate);
   EditField(h1,v+=vs,82,"Дата операции",Normal,TransDate,false,PasteCurDate);
   EditField(h1,v+=vs,82,"Дата оказ. услуги",Normal,ServiceDelDate,false,PasteCurDate);  
+  
+  EditField(h1,v+=vs,60, "Готівка",Normal,FastCash,false,0);
+  EditField(h1,v+=vs,60, "Термін.",Normal,FastTerm,false,0); // Edit ************ Dima 8 February 2018, 15:45
+  
   EditField(h2,v=vm,135,"Ответственный",Normal,OurContact,false,0);
   EditField(h2,v+=vs,135,"Внимание",Normal,ClientContact,false,ContactSClass);
   EditField(h2,v+=vs,135,"Объекты",Normal,Objects,false,ObjSClass);
