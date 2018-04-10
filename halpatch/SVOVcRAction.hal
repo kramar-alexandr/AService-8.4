@@ -273,6 +273,9 @@ BEGIN
   SVOr.TransDate = CurrentDate;  
   SVOr.RegDate = blankd;
   SVOr.RegTime = blankt;
+  SVOr.OutTime = blankt;
+  SVOr.DoneTime = blankt;
+   
   if (SingleUserMode) then begin
     SVOr.SerNr = NextSerNr("SVOVc",SVOr.TransDate,GetUserSerNrSeries(-1),false,""); //Edit***************************Sasha2,16:51 18.05.2017
   end;
@@ -340,13 +343,20 @@ BEGIN
   
   SVOr.FastCash = blankval;
  	SVOr.FastTerm = blankval; 
+ 	SVOr.FastBank = blankval;
+ 	SVOr.FastPrepay = blankval;
  	SVOr.SerialNrTextSearch = "";
  	SVOr.OldPhone = "";
+ 	
+ 	SVOr.FastPrepayDate = blankd;
+  SVOr.FastPrepayTime = blankt;
  	
  	SVOr.DiagnosFinishUsr = "";
  	SVOr.RepairFinishUsr = "";
 	SVOr.GiveAwayUsr = "";
  	
+ 	
+ 	SVOr.FastPrepay = blankval;
  	
  	if(nonblank(SVOr.Kontinfo1))then begin
 		FindPhonePerson(Phoner,SVOr.Kontinfo1);
@@ -806,6 +816,12 @@ BEGIN
   end;
   if(nonblankdate(SVOr.PlanShipDate))then begin
   	SVOr.OrderStatus=2;// Edit ************************** Thursday, 10 September 2015 17:31:49
+  end;
+  
+  if(SVOr.FastPrepay>0 and blankdate(SVOr.FastPrepayDate))then begin
+  	SVOr.FastPrepayDate = currentdate;
+  	SVOr.FastPrepayTime = currenttime;
+  		
   end;
  
   

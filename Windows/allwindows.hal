@@ -453,6 +453,7 @@ begin
 		EditField(h2+240,v+=25,60, "Термін.",Normal,FastTerm,false,0); // Edit ************ Dima 8 February 2018, 15:45
 		EditField(h2+240,v+=20,60, "Готівка",Normal,FastCash,false,0);
 		EditField(h2+340,v,60,"Банк",Normal,FastBank,false,0);// Edit ************************** BPI Ukraine - KramarAlexandr - Monday, 2 April 2018 11:27:59
+		EditField(h2+500,v,60,"Предоплата",Normal,FastPrepay,false,0);
 		v = vx;
 		EditField(h2+85,v,80,"",Normal,CustomField7,false,UserSClass);// Edit ************************** Monday, 31 May 2010 9:22:11 AM
 		EditField(h2+85,v+=20,80,"",ViewOnly,DiagnosFinishUsr,false,0);

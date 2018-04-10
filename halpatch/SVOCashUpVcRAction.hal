@@ -94,6 +94,8 @@ BEGIN
   		end;
   	end;
   	
+  	resetloop(oldSVOCr);
+  	
   	IVr.InvDate = lastdate;
   	while(loopkey("InvDate",IVr,1,true))begin
   		testf = true;
