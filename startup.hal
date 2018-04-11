@@ -113,6 +113,7 @@ begin
 	Maintenance("Fix Actr SERV",MyVClass,FixACTSERVMn,modDBMain);  //Edit**********Dima, 28.01.2014
 	Maintenance("Link To MailBoxes",MyWebAttachVClass,AttachToMailWEBLink,modDBMain); // Edit ************************** BPI Ukraine - KramarAlexandr - Monday, 4 December 2017 12:27:35
 	Maintenance("Fill Phone Qty",MyVClass,FillPhone1Qty,modSVO);
+	Maintenance("Delete Phone Qty",MyVClass,DeletePhoneLightRegisterMn,modSVO);
 	
 	
 	Maintenance("Fix FB",MyVClass,FixFBVcMn,modDBMain);  //Edit**********Dima, 28.01.2014
