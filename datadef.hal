@@ -124,6 +124,9 @@ begin
     RecordField(FastPrepay,M4Val,0,0);
     RecordField(FastPrepayDate,M4Date,0,0);
     RecordField(FastPrepayTime,M4Time,0,0);
+    RecordField(FastTermPrepay,M4Val,0,0);
+    RecordField(FastTermPrepayDate,M4Date,0,0);
+    RecordField(FastTermPrepayTime,M4Time,0,0);
     SubsetKeyBegin2(RegDate);// Edit ************************** Wednesday, 15 February 2017 19:31:45
   StoreInBaseKey;
   AppendFieldToKeyName(SalesGroup);
