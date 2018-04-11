@@ -85,7 +85,8 @@ begin
   RlColKey(4,4,  "Номер",PhoneNum,false,PhoneNum);
   RlColKey(150,150,"Собственник",Vlastnik,false,Vlastnik);
   RlColKey(300,300,"Принято от",Priynato,false,Priynato);
-  RlCol(-70,-70,"Скидка",PersonalRebCode,false);
+  RlColKey(-140,-140,"Обращений",Qty,false,Qty);
+  RlColKey(-70,-70,"Скидка",PersonalRebCode,false,PersonalRebCode);
   
   SearchField("Поиск");
   EndWindow;
