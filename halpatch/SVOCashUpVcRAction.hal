@@ -66,110 +66,112 @@ BEGIN
 	oldSVOCr.SalesGroup = SVOCr.SalesGroup;
 	oldSVOCr.SerNr = 99999999;
 	if(readlastkey("SalesGroup",oldSVOCr,2,false))then begin
-  	lastdate = oldSVOCr.TransDate;
-  	lasttime = oldSVOCr.TransTime;
-  	SVOr.RegDate = lastdate;
-  	while(loopkey("RegDate",SVOr,1,true))begin
-  		testf = true;
-  		if(SVOr.RegDate==oldSVOCr.TransDate and SVOr.OutTime<lasttime)then begin testf = false; end;
-  		if(SVOr.RegDate<oldSVOCr.TransDate)then begin testf = false; end;
-  		if(SVOr.SalesGroup!=oldSVOCr.SalesGroup)then begin testf = false; end;
-  		
-  		if(testf)then begin
-  			if(SVOr.FastCash!=0 or SVOr.FastTerm!=0 or SVOr.FastBank!=0 or SVOr.WSCost!=0)then begin
-					cashsum = cashsum + SVOr.FastCash;
-					termsum = termsum + SVOr.FastTerm;
-					banksum = banksum + SVOr.FastBank;
-					ClearRow(SVOCr,SVOCrw,1);
-					SVOCrw.SVONr = SVOr.SerNr;
-					SVOCrw.CashSum = SVOr.FastCash;
-					SVOCrw.TermSum = SVOr.FastTerm;
-					SVOCrw.BankSum = SVOr.FastBank;
-					SVOCrw.RowDate = SVOr.RegDate;
-					SVOCrw.RowTime = SVOr.OutTime;
-					SVOCrw.Sign = SVOr.CustomField7;
-					matrowput(SVOCr,matrowcnt(SVOCr),SVOCrw);
-					SVOCr.SVOQty = SVOCr.SVOQty + 1;
-  			end;
-  		end;
-  	end;
-  	
-  	resetloop(oldSVOCr);
-  	SVOr.RegDate = lastdate;
-  	while(loopkey("TransDate",SVOr,1,true))begin
-  		testf = true;
-  		if(SVOr.TransDate==oldSVOCr.TransDate and SVOr.RegTime<lasttime)then begin testf = false; end;
-  		if(SVOr.TransDate<oldSVOCr.TransDate)then begin testf = false; end;
-  		if(SVOr.SalesGroup!=oldSVOCr.SalesGroup)then begin testf = false; end;
-  		
-  		if(testf)then begin
-  			if(SVOr.FastTermPrepay!=0 or SVOr.FastPrepay!=0)then begin
-  				
-  				if(SVOr.FastTermPrepay!=0)then begin 
-  					if(SVOr.FastTermPrepayDate<lastdate)then begin testf = false; end;
-  					if(SVOr.FastTermPrepayDate==lastdate and SVOr.FastTermPrepayTime<lasttime)then begin testf = false; end;
-  				end;
-  				if(SVOr.FastPrepay!=0)then begin 
-  					if(SVOr.FastPrepayDate<lastdate)then begin testf = false; end;
-  					if(SVOr.FastPrepayDate==lastdate and SVOr.FastPrepayTime<lasttime)then begin testf = false; end;
-  				end;
-  				
-  				if(testf)then begin
-						cashsum = cashsum + SVOr.FastPrepay;
-						termsum = termsum + SVOr.FastTermPrepay;
+		if(oldSVOCr.SalesGroup==SVOCr.SalesGroup)then begin
+			lastdate = oldSVOCr.TransDate;
+			lasttime = oldSVOCr.TransTime;
+			SVOr.RegDate = lastdate;
+			while(loopkey("RegDate",SVOr,1,true))begin
+				testf = true;
+				if(SVOr.RegDate==oldSVOCr.TransDate and SVOr.OutTime<lasttime)then begin testf = false; end;
+				if(SVOr.RegDate<oldSVOCr.TransDate)then begin testf = false; end;
+				if(SVOr.SalesGroup!=oldSVOCr.SalesGroup)then begin testf = false; end;
+			
+				if(testf)then begin
+					if(SVOr.FastCash!=0 or SVOr.FastTerm!=0 or SVOr.FastBank!=0 or SVOr.WSCost!=0)then begin
+						cashsum = cashsum + SVOr.FastCash;
+						termsum = termsum + SVOr.FastTerm;
+						banksum = banksum + SVOr.FastBank;
 						ClearRow(SVOCr,SVOCrw,1);
 						SVOCrw.SVONr = SVOr.SerNr;
-						SVOCrw.CashSum = SVOr.FastPrepay;
-						SVOCrw.TermSum = SVOr.FastTermPrepay;
+						SVOCrw.CashSum = SVOr.FastCash;
+						SVOCrw.TermSum = SVOr.FastTerm;
+						SVOCrw.BankSum = SVOr.FastBank;
 						SVOCrw.RowDate = SVOr.RegDate;
 						SVOCrw.RowTime = SVOr.OutTime;
 						SVOCrw.Sign = SVOr.CustomField7;
 						matrowput(SVOCr,matrowcnt(SVOCr),SVOCrw);
 						SVOCr.SVOQty = SVOCr.SVOQty + 1;
 					end;
-  			end;
-  		end;
-  	end;
-  	
-  	IVr.InvDate = lastdate;
-  	while(loopkey("InvDate",IVr,1,true))begin
-  		testf = true;
-  		if(IVr.InvDate==oldSVOCr.TransDate and IVr.TransTime<lasttime)then begin testf = false; end;
-  		if(IVr.OKFlag==0)then begin testf = false; end;
-  		if(IVr.Invalid==1)then begin testf = false; end;
-  		if(IVr.SalesGroup!=oldSVOCr.SalesGroup)then begin testf = false; end;
-  		if(IVr.SVONr>0)then begin testf = false; end;
-  		  		
-  		if(testf)then begin
-  			resetloop(IPrsr);
-  			IPrsr.IVNr = IVr.SerNr;
-  			TrHs = true;
-  			ivcash = blankval;
-				ivterm = blankval;
-				ivbank = blankval;
+				end;
+			end;
+		
+			resetloop(oldSVOCr);
+			SVOr.RegDate = lastdate;
+			while(loopkey("TransDate",SVOr,1,true))begin
+				testf = true;
+				if(SVOr.TransDate==oldSVOCr.TransDate and SVOr.RegTime<lasttime)then begin testf = false; end;
+				if(SVOr.TransDate<oldSVOCr.TransDate)then begin testf = false; end;
+				if(SVOr.SalesGroup!=oldSVOCr.SalesGroup)then begin testf = false; end;
+			
+				if(testf)then begin
+					if(SVOr.FastTermPrepay!=0 or SVOr.FastPrepay!=0)then begin
+					
+						if(SVOr.FastTermPrepay!=0)then begin 
+							if(SVOr.FastTermPrepayDate<lastdate)then begin testf = false; end;
+							if(SVOr.FastTermPrepayDate==lastdate and SVOr.FastTermPrepayTime<lasttime)then begin testf = false; end;
+						end;
+						if(SVOr.FastPrepay!=0)then begin 
+							if(SVOr.FastPrepayDate<lastdate)then begin testf = false; end;
+							if(SVOr.FastPrepayDate==lastdate and SVOr.FastPrepayTime<lasttime)then begin testf = false; end;
+						end;
+					
+						if(testf)then begin
+							cashsum = cashsum + SVOr.FastPrepay;
+							termsum = termsum + SVOr.FastTermPrepay;
+							ClearRow(SVOCr,SVOCrw,1);
+							SVOCrw.SVONr = SVOr.SerNr;
+							SVOCrw.CashSum = SVOr.FastPrepay;
+							SVOCrw.TermSum = SVOr.FastTermPrepay;
+							SVOCrw.RowDate = SVOr.RegDate;
+							SVOCrw.RowTime = SVOr.OutTime;
+							SVOCrw.Sign = SVOr.CustomField7;
+							matrowput(SVOCr,matrowcnt(SVOCr),SVOCrw);
+							SVOCr.SVOQty = SVOCr.SVOQty + 1;
+						end;
+					end;
+				end;
+			end;
+		
+			IVr.InvDate = lastdate;
+			while(loopkey("InvDate",IVr,1,true))begin
+				testf = true;
+				if(IVr.InvDate==oldSVOCr.TransDate and IVr.TransTime<lasttime)then begin testf = false; end;
+				if(IVr.OKFlag==0)then begin testf = false; end;
+				if(IVr.Invalid==1)then begin testf = false; end;
+				if(IVr.SalesGroup!=oldSVOCr.SalesGroup)then begin testf = false; end;
+				if(IVr.SVONr>0)then begin testf = false; end;
+						
+				if(testf)then begin
+					resetloop(IPrsr);
+					IPrsr.IVNr = IVr.SerNr;
+					TrHs = true;
+					ivcash = blankval;
+					ivterm = blankval;
+					ivbank = blankval;
 				
-				ivcash = IVr.FastCash;
-				ivterm = IVr.FastTerm;
-				  			
-  			if(ivcash!=0 or ivterm!=0 or ivbank!=0)then begin
-  				SVOCr.IVQty = SVOCr.IVQty + 1;
-					ClearRow(SVOCr,SVOCrw,1);
-					SVOCrw.IVNr = IVr.SerNr;
-					SVOCrw.CashSum = ivcash;
-					SVOCrw.TermSum = ivterm;
-					SVOCrw.BankSum = ivbank;
-					SVOCrw.RowDate = IVr.InvDate;
-					SVOCrw.RowTime = IVr.RegTime;
-					SVOCrw.Sign = IVr.SalesMan;
-					matrowput(SVOCr,matrowcnt(SVOCr),SVOCrw);
-  			end;
-  			
-  		end;
+					ivcash = IVr.FastCash;
+					ivterm = IVr.FastTerm;
+								
+					if(ivcash!=0 or ivterm!=0 or ivbank!=0)then begin
+						SVOCr.IVQty = SVOCr.IVQty + 1;
+						ClearRow(SVOCr,SVOCrw,1);
+						SVOCrw.IVNr = IVr.SerNr;
+						SVOCrw.CashSum = ivcash;
+						SVOCrw.TermSum = ivterm;
+						SVOCrw.BankSum = ivbank;
+						SVOCrw.RowDate = IVr.InvDate;
+						SVOCrw.RowTime = IVr.RegTime;
+						SVOCrw.Sign = IVr.SalesMan;
+						matrowput(SVOCr,matrowcnt(SVOCr),SVOCrw);
+					end;
+				
+				end;
+			end;
+		
+			SVOCr.CashSum = cashsum;
+			SVOCr.TermSum = termsum;
+			SVOCr.BankSum = banksum;
   	end;
-  	
-  	SVOCr.CashSum = cashsum;
-  	SVOCr.TermSum = termsum;
-  	SVOCr.BankSum = banksum;
   end;
   
   SVOCashUpVcRecordDefaults = res; 
