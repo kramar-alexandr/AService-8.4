@@ -350,6 +350,8 @@ BEGIN
  	
  	SVOr.FastPrepayDate = blankd;
   SVOr.FastPrepayTime = blankt;
+  SVOr.FastTermPrepayDate = blankd;
+  SVOr.FastTermPrepayTime = blankt;
  	
  	SVOr.DiagnosFinishUsr = "";
  	SVOr.RepairFinishUsr = "";
@@ -821,7 +823,10 @@ BEGIN
   if(SVOr.FastPrepay>0 and blankdate(SVOr.FastPrepayDate))then begin
   	SVOr.FastPrepayDate = currentdate;
   	SVOr.FastPrepayTime = currenttime;
-  		
+  end;
+  if(SVOr.FastTermPrepay>0 and blankdate(SVOr.FastTermPrepayDate))then begin
+  	SVOr.FastTermPrepayDate = currentdate;
+  	SVOr.FastTermPrepayTime = currenttime;
   end;
  
   
