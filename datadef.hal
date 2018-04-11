@@ -782,6 +782,7 @@ begin
     RecordField(RepairsSum,M4Val,0,0); //Edit***************************Sasha2,15:51 22.02.2017
     RecordField(PersonalRebate,M4Val,0,0); //Edit***************************Sasha2,15:51 22.02.2017
     RecordField(PersonalRebCode,M4Code,5,0); //Edit***************************Sasha2,16:34 28.02.2017
+    RecordField(Qty,M4Int,0,0);
     MainKeyBegin(PhoneNum,0);
     KeySegment(PhoneNum);
     KeyBegin(Vlastnik);
@@ -790,6 +791,16 @@ begin
     KeyBegin(Priynato);
     KeySegment(Priynato);
     KeySegment(PhoneNum);
+    KeyBegin(Qty);
+    KeySegment(Qty);
+    KeySegment(PhoneNum);
+    KeyBegin(PersonalRebate);
+    KeySegment(PersonalRebate);
+    KeySegment(PhoneNum);
+    KeyBegin(PersonalRebCode);
+    KeySegment(PersonalRebCode);
+    KeySegment(PhoneNum);
+    
   EndRecord;
   
   RecordBegin(SVOPrintDataVc,-,"");//Edit-------------------Vitalii 17:10 03.11.2016

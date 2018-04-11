@@ -2,6 +2,7 @@ external procedure NormPhoneNumber(string, var array string);
 
 updating procedure PhoneLightStoreRecord(record SVOVc SVOr, string phoneNumber) begin
     record PhoneLightVc PhoneLightr;
+    record Phone1Vc Ph1r;
     array string 255 phones;
     integer i;
     NormPhoneNumber(phoneNumber,phones);
@@ -9,6 +10,11 @@ updating procedure PhoneLightStoreRecord(record SVOVc SVOr, string phoneNumber) 
         PhoneLightr.PhoneNum = phones[i];
         PhoneLightr.SerNum = SVOr.SerNr;
         RecordStore(PhoneLightr,true);
+        Ph1r.PhoneNum = PhoneLightr.PhoneNum;
+        if(readfirstmain(Ph1r,1,true))then begin
+        	Ph1r.Qty = Ph1r.Qty + 1;
+        	recordstore(Ph1r,true);
+        end;
         LogText(0,"Added phone------------------------------->" & PhoneLightr.PhoneNum);
     end;
 end;
@@ -29,12 +35,18 @@ end;
 //мейнтейненс для удаления всех записей из PhoneLightVc
 global updating procedure DeletePhoneLightRegisterMn(record RcVc RepSpec) begin
     record PhoneLightVc PhoneLightr;
+    record Phone1Vc Ph1r;
     longint i;
     i=0;
     PhoneLightr.PhoneNum = "";
     while(LoopMain(PhoneLightr,1,true)) begin
         i=i+1;
         RecordDelete(PhoneLightr);
+        Ph1r.PhoneNum = PhoneLightr.PhoneNum;
+        if(readfirstmain(Ph1r,1,true))then begin
+        	Ph1r.Qty = Ph1r.Qty - 1;
+        	recordstore(Ph1r,true);
+        end;
         StepBack(PhoneLightr);
     end;
 end;
