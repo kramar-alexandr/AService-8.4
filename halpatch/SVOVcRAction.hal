@@ -777,6 +777,35 @@ begin
 return
 end; //Edit***************************Sasha2,16:57 18.05.2017 }
 
+
+global updating procedure FillPhone1Qty()
+begin
+	record Phone1Vc PH1r;
+	array longint sernr;
+	integer count;
+	record PhoneLightVc PhoneLightr;
+	boolean TrHs;
+	
+	
+	while(loopmain(PH1r,1,true))begin
+		count = 0;
+		TrHs = true;
+		PhoneLightr.PhoneNum = PH1r.PhoneNum;
+		while(LoopMain(PhoneLightr,1,TrHs))begin
+				if(PhoneLightr.PhoneNum==PH1r.PhoneNum) begin
+						count = count + 1;
+				end else begin
+						TrHs=false;
+				end;
+		end;
+		ResetLoop(PhoneLightr);
+		PH1r.Qty = count;
+		recordstore(PH1r,true);
+	end;
+
+return;
+end;
+
 global
 function LongInt SVOVcRecordCheck(var record SVOVc SVOr,record SVOVc SVO2r,LongInt stat,LongInt check)
 BEGIN
