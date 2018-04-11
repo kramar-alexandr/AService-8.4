@@ -429,7 +429,7 @@ begin
 			end;
 			
 			if(IVp.OrderNr<0 and IVp.SVONr<0)then begin// Edit ************************** BPI Ukraine - KramarAlexandr - Tuesday, 10 April 2018 15:00:38
-				if((IVp.FastCash + IVp.FastCash)<IVp.Sum4)then begin
+				if((IVp.FastCash + IVp.FastTerm)<IVp.Sum4)then begin
 					RecordCheckError(1058,"",-1,"FastCash");      
 					res = -1; 
 					goto L99;
