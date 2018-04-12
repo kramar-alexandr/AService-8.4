@@ -19,11 +19,11 @@ BEGIN
   	RecordCheckError(1058,"",-1,"SalesGroup");  
   	goto LSVOCashUpVcRecordCheck;
   end;
-  if(blank(SVOCr.RecieveMan) and SVOCr.OKFlag==1)then begin
+  /*if(blank(SVOCr.RecieveMan) and SVOCr.OKFlag==1)then begin
   	res = -1;
   	RecordCheckError(1058,"",-1,"RecieveMan");  
   	goto LSVOCashUpVcRecordCheck;
-  end;
+  end;*/
 	
   res = 0;
 LSVOCashUpVcRecordCheck:;  
