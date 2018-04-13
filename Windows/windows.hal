@@ -2250,6 +2250,34 @@ WindowBegin("Быстрая оплата",ManagerFastPaySVOWClass,CGother,RcType);
 end;
 
 
+window ManagerFastPrepaySVOWClass:1 //Edit-------------------Vitalii 15:51 04.11.2016
+ wtag("language","RUS"), wtag("product","*"), wtag("productcode","*"), wtag("device","computer")
+begin
+  real h,v,vs;
+WindowBegin("Быстрая предоплата",ManagerFastPrepaySVOWClass,CGother,RcType);
+  Modality(1);
+  UseView(RcVc);
+  SetWRect(80,200,400,350);
+  Sizeable(-1,-1,0,0);
+  h = 100; v = 20;
+  statictext(h,v,"Подтвердите предоплату",false);
+  EditField(h,v,80,"Сумма",Normal,vals0,false,0);
+  v=v+20;
+  ButtonFrame(h,v,123,2,"");
+  	RadioButton(h,v,0,0,"-",flags[0]);
+		RadioButton(h,v+=16,1,0,"Наличные",flags[0]);
+		RadioButton(h,v+=16,2,0,"Терминал",flags[0]);
+	EndFrame;
+
+  v = v + 30;
+  HalPushButton(h,v,h+80,v+25,"DblCancelDsm","Нет");
+  HalPushButton(h+=100,v,h+80,v+25,"DblConfirmPrePaymentManagerDsm","Оплатить");
+  
+  EndWindow;
+end;
+
+
+
 window UpdateTextFieldsForQuickSearchVClass:1
   wtag("language","RUS"), wtag("product","*"), wtag("productcode","*"), wtag("device","computer")
 begin
