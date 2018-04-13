@@ -159,6 +159,10 @@ begin
 				
 				//
 				//PrintAndSetRegDateInSVOExecute(SVOr);
+				SetExportCodePage("CP1251");
+				HandleSVOReceiptPrinting(SVOr,aFile);
+				AddAreaToArea(aFile,aFile);
+				PrintBixolonReceipt(aFile);
 				putwindowrecord(nwn,SVOr);
 				//setwindowstate(nwn,0);
 				//UpdateBrowses("SVOVc");
@@ -232,7 +236,7 @@ BEGIN
 				SetExportCodePage("CP1251");
 				HandleSVOReceiptPrinting(SVOr,aFile);
 				AddAreaToArea(aFile,aFile);
-				//PrintBixolonReceipt(aFile);
+				PrintBixolonReceipt(aFile);
 			end;
   	end;
   end else begin
