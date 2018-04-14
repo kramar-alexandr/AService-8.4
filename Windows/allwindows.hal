@@ -405,8 +405,8 @@ begin
 		v=40;
 		vm = (v + vs);
 		//HalPushButton(h-45,v,h+80,v+50,"ChangeSVOSalesGroup","Принять ремонт"); 
-		HalPushButton(h-45,v+30,h+80,v+80,"PrintAndSetRegDateInSVODsm","Видати");//Edit-------------------Vitalii 13:51 27.10.2016
-		HalPushButton(h-45,v+60,h+80,v+80,"PrepaymentInSVODsm","Передплата");
+		HalPushButton(h-45,v+25,h+80,v+75,"PrintAndSetRegDateInSVODsm","Видати");//Edit-------------------Vitalii 13:51 27.10.2016
+		HalPushButton(h-45,v+55,h+80,v+75,"PrepaymentInSVODsm","Передплата");
 
 		
 		h2=240;
