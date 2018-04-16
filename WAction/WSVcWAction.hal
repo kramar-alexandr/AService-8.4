@@ -673,6 +673,9 @@ BEGIN
   normalmode = 0;//Rs_normal
   if (WindowState(wn)==Rs_update) then begin
     res = false;
+    if(fieldname=="SerialNr" and WSr.OKFlag==0)then begin
+    	res = true;
+    end;
     GetPrevWindowRecord(wn,WSr);
     if (WSr.OKFlag==0 and WSr.PrintFlag==0) then begin
       res = true;
