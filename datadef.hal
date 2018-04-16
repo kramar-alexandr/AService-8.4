@@ -41,6 +41,10 @@ begin
     ArrayField(ORRow,M4Long,0,0);//Edit***************************Sasha2,13:35 01.09.2014
   EndRecordAdd; 
   
+	RecordAddBegin(WSVc,"WSVc_Custom");
+		RecordField(PrintFlag,M4Int,0,0);// Edit ************************** BPI Ukraine - KramarAlexandr - Monday, 16 April 2018 13:05:34
+	EndRecordAdd;
+  
   RecordAddBegin(ORVc,"ORVc_Custom");
     ChangeField(Reserved,M4Mark,0,0);
     RecordField(ReservToDate,M4Date,0,0);// Edit ************************** Tuesday, 23 September 2014 21:46:08

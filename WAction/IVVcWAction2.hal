@@ -2121,6 +2121,9 @@ begin
    		HandleWSReceiptPrinting(WSr,aFile);
    		AddAreaToArea(aFile,aFile);
      	PrintBixolonReceipt(aFile); 
+     	WSr.PrintFlag = 1;
+     	recordstore(WSr,true);
+     	putwindowrecord(wn,WSr);
 		end else begin
 		  MessageBox(1356,"");
 		end; 

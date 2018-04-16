@@ -754,6 +754,7 @@ begin
   EditField(75,v+=20,95,"Клиент",Normal,CustCode,false,CUSClass);
   EditField(h=240,v=vm,-40,"Наименов.",Normal,Addr0,false,0);
   v = v+vs;
+  CheckBox(h4=-200,v,0,"Напечатано",PrintFlag);
   CheckBox(h4=-100,v,0,"OK",OKFlag);
   tilenr = 1;
   TileButton(tilenr,"Дата"); tilenr = tilenr + 1; 

@@ -751,10 +751,17 @@ begin
     if (WSr.OKFlag!=0) then begin
       res = false;
     end;
+    GetPrevWindowRecord(wn,WSr);
+    if (WSr.PrintFlag!=0) then begin
+      res = false;
+    end;
   end;
   if (WindowState(wn)==normalmode) then begin
     GetWindowRecord(wn,WSr);
     if (WSr.OKFlag!=0) then begin
+      res = false;
+    end;
+    if (WSr.PrintFlag!=0) then begin// Edit ************************** BPI Ukraine - KramarAlexandr - Monday, 16 April 2018 16:32:48
       res = false;
     end;
   end;  
@@ -788,6 +795,17 @@ begin
     end;
   end;
   WSDClassOKFlagButtonAction = res;
+  return;
+end;
+
+global
+function Boolean WSDClassPrintFlagButtonAction(Integer wn,Integer value)// Edit ************************** BPI Ukraine - KramarAlexandr - Monday, 16 April 2018 13:09:17
+begin
+  Boolean res;
+ 
+  res = false;
+  
+  WSDClassPrintFlagButtonAction = res;
   return;
 end;
 
@@ -829,6 +847,7 @@ begin
   if (WindowState(wn)==updatemode) then begin
     GetPrevWindowRecord(wn,WSr);
     if (WSr.OKFlag!=0) then begin res = false; end;
+    if (WSr.PrintFlag!=0) then begin res = false; end;// Edit ************************** BPI Ukraine - KramarAlexandr - Monday, 16 April 2018 16:32:33
   end;
   WSDClassDeleteRowTest = res;
   return;
