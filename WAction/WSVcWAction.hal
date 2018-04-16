@@ -674,7 +674,7 @@ BEGIN
   if (WindowState(wn)==Rs_update) then begin
     res = false;
     GetPrevWindowRecord(wn,WSr);
-    if (WSr.OKFlag==0) then begin
+    if (WSr.OKFlag==0 and WSr.PrintFlag==0) then begin
       res = true;
       switch (fieldname) begin
         case "CostAcc": 
