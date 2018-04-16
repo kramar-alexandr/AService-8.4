@@ -949,6 +949,9 @@ begin
   if (WSr.OKFlag!=0) then begin
     res = 0;
   end;
+  if (WSr.PrintFlag!=0) then begin// Edit ************************** BPI Ukraine - KramarAlexandr - Monday, 16 April 2018 16:52:25
+    res = 0;
+  end;
 LWSVcRecordRemoveTest:;
   WSVcRecordRemoveTest = res; 
   return;
