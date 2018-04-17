@@ -378,6 +378,7 @@ begin
 	if(windowstate(wn)==0)then begin
 		getwindowrecord(wn,SVOCr);
 		if(SVOCr.OKFlag==1)then begin
+			ReportDefaults(RepSpec,"SVOCashUpRClass");
 			RepSpec.Media = mtScreen;
 			RepSpec.JobDf = 1;
 			RepSpec.long1 = SVOCr.SerNr;

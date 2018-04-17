@@ -347,6 +347,19 @@ begin
   EndWindow;
 end;
 
+window SVOCashUpRClass:1
+  wtag("language","RUS"), wtag("product","*"), wtag("productcode","*"), wtag("device","computer")
+begin
+  real h,h1,h2,h3,h4,t,v,vm,vs;
+  Integer tilenr,f,flipnr;
+	
+  WindowBegin("Выдача денег",SVOCashUpRClass,CGRcW,RcType);
+    SetWRect(20,120,350,300);
+    h=100;
+    EditField(h,40,150,"№",Normal,long1,false,0);
+  EndWindow;
+end;
+
 window SalesReportRClass:1
   wtag("language","RUS"), wtag("product","*"), wtag("productcode","*"), wtag("device","computer")
 begin
