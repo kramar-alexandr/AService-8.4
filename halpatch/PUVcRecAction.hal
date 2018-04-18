@@ -1088,6 +1088,13 @@ begin
       res = -1;
       goto L99PUVcRecordCheck;
     end;
+    
+    if(INr.ItemType!=1)then begin// Edit ************************** BPI Ukraine - KramarAlexandr - Wednesday, 18 April 2018 18:38:02
+    	RecordCheckError(1301," " & PUrw.ArtCode,i,"ArtCode");      
+      res = -1;
+      goto L99PUVcRecordCheck;
+    end;
+    
     if (PUrw.StockType==kStockTypeConsigment) then begin
       if (INr.SerNrf<1) then begin
         RecordCheckError(1953,"",i,"StockType");      
