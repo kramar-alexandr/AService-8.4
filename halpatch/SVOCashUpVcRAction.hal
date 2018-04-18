@@ -96,7 +96,7 @@ BEGIN
 			end;
 		
 			resetloop(oldSVOCr);
-			SVOr.RegDate = lastdate;
+			SVOr.RegDate = addday(lastdate,-30);
 			while(loopkey("TransDate",SVOr,1,true))begin
 				testf = true;
 				if(SVOr.TransDate==oldSVOCr.TransDate and SVOr.RegTime<lasttime)then begin testf = false; end;
