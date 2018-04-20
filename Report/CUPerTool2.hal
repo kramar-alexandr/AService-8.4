@@ -820,6 +820,21 @@ begin
    
   StartFormat(15); //Edit***************************Sasha2,14:34 09.09.2014 { Original code
   OutDate(0,0,d,false);
+  
+  if (RepSpec.flags[8]!=0) then begin
+    if (onaccf) then begin
+      tstr = USetStr(2497);
+    end else begin
+      tstr = USetStr(2486);
+    end;
+  end else begin
+    if (IPrsr.IVNr==-1) then begin
+      tstr = USetStr(2497);
+    end else begin
+      tstr = USetStr(2486);
+    end;
+  end;
+  
   OutString(pos1,0,tstr,false);
   tstr = IPr.SerNr;
 
@@ -1538,8 +1553,14 @@ LCUPer_PrintReceiptLoop:;
               end else begin
                 if (IPrw.InvCurncy==CUp.CurncyCode) or (IPrw.InvCurncy==bascur.BaseCur1) then begin
                   cuscurval = t;
+                  if(IPrw.InvCurncy==bascur.BaseCur1)then begin
+                  	basecurval = t;
+                  end;
                 end else begin
                   t = cuscurval;
+                  if(IPrw.InvCurncy==bascur.BaseCur1)then begin
+                  	basecurval = t;
+                  end;
 //if is was here, payments in base curncy didnt work,  FindAllPrepayLosses
                   if (IPrw.InvoiceNr!=-1) then begin  
                     if (IPrw.stp!=7) then begin                 
