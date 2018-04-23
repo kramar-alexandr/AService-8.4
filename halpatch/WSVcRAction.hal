@@ -492,22 +492,25 @@ begin
   // Edit Start ---------------------------------------------- Edit Start
 	//Monday, 25 November 2013 10:10:41
 	  
-  User.Code = CurrentUser;
-  if(readfirstmain(User,1,true))then begin
-  	if(nonblank(User.Location) and (WSp.Location!=User.Location))then begin
-  		if(usercanaction("DisallowOtherStockWSVc",true)==false)then begin
-  			RecordCheckError(31033,"",-1,"Location");      
-				res = -1;
-				goto LWSVcRecordCheck;
-  		end;
-  	end;
-		if(blank(User.Location))	then begin	
-			if (CheckUserLocation(WSp.Location)==false) then begin
-				RecordCheckError(31033,"",-1,"Location");
-				res = -1;
-				goto LWSVcRecordCheck;
+	  
+	if(transf)then begin
+		User.Code = CurrentUser;
+		if(readfirstmain(User,1,true))then begin
+			if(nonblank(User.Location) and (WSp.Location!=User.Location))then begin
+				if(usercanaction("DisallowOtherStockWSVc",true)==false)then begin
+					RecordCheckError(31033,"",-1,"Location");      
+					res = -1;
+					goto LWSVcRecordCheck;
+				end;
 			end;
-		end;  	
+			if(blank(User.Location))	then begin	
+				if (CheckUserLocation(WSp.Location)==false) then begin
+					RecordCheckError(31033,"",-1,"Location");
+					res = -1;
+					goto LWSVcRecordCheck;
+				end;
+			end;  	
+		end;
   end;
 
 	// Edit End ---------------------------------------------- Edit End
@@ -572,12 +575,14 @@ begin
   end;
   //Edit-------------------Vitalii 14:03 04.12.2015
 	//Чоработть// Edit ************************** Wednesday, 9 December 2015 13:08:05
-	User.Code = CurrentUser;
-	if ReadFirstMain(User,1,true) then begin
-		if (nonblank(User.Location) and User.Location!=WSp.Location) then begin
-			RecordCheckError(31033,"",-1,"Location");
-			res = -1;
-			goto LWSVcRecordCheck;
+	if(transf)then begin
+		User.Code = CurrentUser;
+		if ReadFirstMain(User,1,true) then begin
+			if (nonblank(User.Location) and User.Location!=WSp.Location) then begin
+				RecordCheckError(31033,"",-1,"Location");
+				res = -1;
+				goto LWSVcRecordCheck;
+			end;
 		end;
 	end;
   if (WSp.WONr>-1) then begin
