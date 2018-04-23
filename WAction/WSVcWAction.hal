@@ -807,6 +807,12 @@ begin
   Boolean res;
  
   res = false;
+  if(currentuser=="SA")then begin
+  	res = true;
+  end;
+  if(currentuser=="CHAYKOVSKA")then begin
+  	res = true;
+  end;
   
   WSDClassPrintFlagButtonAction = res;
   return;

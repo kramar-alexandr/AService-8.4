@@ -357,7 +357,9 @@ BEGIN
  	SVOr.RepairFinishUsr = "";
 	SVOr.GiveAwayUsr = "";
  	
- 	
+ 	SVOr.MoveSVOToSG = "";
+ 	SVOr.MoveSVOToSGStatus = "";
+ 
  	SVOr.FastPrepay = blankval;
  	
  	if(nonblank(SVOr.Kontinfo1))then begin
