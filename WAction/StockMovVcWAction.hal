@@ -938,7 +938,7 @@ begin
       res = false;
     end;
     if (UserCanAction("UnOKAll",false)) then begin
-      res = true;
+      //res = true;
     end;
   end;  
   if (WindowState(wn)==insertmode) then begin
