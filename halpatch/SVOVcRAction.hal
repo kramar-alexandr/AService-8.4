@@ -667,6 +667,14 @@ BEGIN
 	if(nonblankdate(SVOr.RegDate) and blankdate(SVO2r.RegDate))then begin
 		SendSMSText("8",SVOr.SerNr,SVOr.Kontinfo1,SVOr.Name);//prohodite escjo!
 	end;
+	
+	if(SVOr.OrderStatus!=SVO2r.OrderStatus and SVOr.OrderStatus!=5)then begin
+		CloseActivitiesFromSVO(SVOr,"DIAG");
+	end;
+	if(SVOr.OrderStatus!=SVO2r.OrderStatus and SVOr.OrderStatus!=4)then begin
+		CloseActivitiesFromSVO(SVOr,"CONF");
+	end;
+	
   SVOVcRecordUpdateAfter = res;
   RETURN;
 END;

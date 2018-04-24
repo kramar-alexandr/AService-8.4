@@ -161,6 +161,7 @@ begin
   Maintenance("Git HAL Files",MyVClass,GitHALFilesMn,modTC);
   
   Maintenance("FillSGToUserAndSVO",MyVClass,FillALSGMn,modTC);
+  Maintenance("CreateTaskForEnginer",MyVClass,CreateTaskForEnginer,modSVO);
 
   
 	Document("Форма для цінників 1" & USetStr(31034),LabelItem1RClass,ItemLabForm1,MyLabelItemFClass,modLabPrint); //Edit***************************Sasha2,12:08 23.10.2014

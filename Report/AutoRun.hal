@@ -1,5 +1,51 @@
 external updating procedure StockBalDiffMn(string); 
 external procedure ReportRegDateServAndInvEn(); // Edit Dima ************* 2018-03-02 02:19 PM
+external function LongInt DateDiff(Date,Date);
+external updating procedure CreateCustomActivityFromSVO(record SVOVc,string,string,date,string,string);// Edit ************************** BPI Ukraine - KramarAlexandr - Tuesday, 12 December 2017 11:56:41
+
+SetLangMode(LangRussian,"RUS",0);
+
+
+global updating procedure CreateTaskForEnginer()
+begin
+	record RcVc RepSpec;
+	boolean TrHs;
+	record SVOVc SVOr;
+	
+	SVOr.TransDate = currentdate;
+	TrHs = true;
+	while(loopbackkey("AllServTransDate",SVOr,1,TrHs))begin
+		if(DateDiff(currentdate,SVOr.TransDate)>360)then begin
+			TrHs = false;
+		end;
+		
+		if(TrHs)then begin
+			
+			if(nonblank(SVOr.ServiceManager))then begin
+				
+				if(SVOr.OrderStatus==5)then begin//diagnostika
+					if(DateDiff(currentdate,SVOr.TransDate)>4)then begin
+						CreateCustomActivityFromSVO(SVOr,"DIAG",SVOr.ServiceManager,currentdate,SVOr.SerNr & " Диагностика больше 4 дней!","");
+					end;
+				end;
+				if(SVOr.OrderStatus==4)then begin
+					if(nonblankdate(SVOr.EndDiagnDate))then begin//utverjdenie
+						if(DateDiff(currentdate,SVOr.EndDiagnDate)>5)then begin
+							CreateCustomActivityFromSVO(SVOr,"CONF",SVOr.ServiceManager,currentdate,SVOr.SerNr & " Утверждение больше 5 дней!","");
+						end;
+					end else begin
+						if(DateDiff(currentdate,SVOr.TransDate)>5)then begin
+							CreateCustomActivityFromSVO(SVOr,"CONF",SVOr.ServiceManager,currentdate,SVOr.SerNr & " Утверждение больше 5 дней!","");
+						end;
+					end;
+				end;
+			end;
+		end;
+	end;
+
+
+return;
+end;
 
 //------------------------------------------------------------------------------------------------------------------------------
 global updating procedure AutoRun()
