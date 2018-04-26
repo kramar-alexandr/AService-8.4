@@ -705,11 +705,17 @@ BEGIN
 		SendSMSText("8",SVOr.SerNr,SVOr.Kontinfo1,SVOr.Name);//prohodite escjo!
 	end;
 	
-	if(SVOr.OrderStatus!=SVO2r.OrderStatus and SVOr.OrderStatus!=5)then begin
+	if(SVOr.OrderStatus!=SVO2r.OrderStatus and SVO2r.OrderStatus==5)then begin
 		CloseActivitiesFromSVO(SVOr,"DIAG");
 	end;
-	if(SVOr.OrderStatus!=SVO2r.OrderStatus and SVOr.OrderStatus!=4)then begin
+	if(SVOr.OrderStatus!=SVO2r.OrderStatus and SVO2r.OrderStatus==4)then begin
 		CloseActivitiesFromSVO(SVOr,"CONF");
+	end;
+	if(SVOr.OrderStatus!=SVO2r.OrderStatus and SVO2r.OrderStatus==1)then begin
+		CloseActivitiesFromSVO(SVOr,"DIAD");
+	end;
+	if(SVOr.OrderStatus!=SVO2r.OrderStatus and SVO2r.OrderStatus==3)then begin
+		CloseActivitiesFromSVO(SVOr,"WAIT");
 	end;
 	
   SVOVcRecordUpdateAfter = res;

@@ -39,6 +39,28 @@ begin
 						end;
 					end;
 				end;
+				if(SVOr.OrderStatus==1)then begin
+					if(nonblankdate(SVOr.EndDiagnDate))then begin//utverjdenie
+						if(DateDiff(currentdate,SVOr.EndDiagnDate)>5)then begin
+							CreateCustomActivityFromSVO(SVOr,"DIAD",SVOr.ServiceManager,currentdate,SVOr.SerNr & " Утверждение больше 5 дней!","");
+						end;
+					end else begin
+						if(DateDiff(currentdate,SVOr.TransDate)>5)then begin
+							CreateCustomActivityFromSVO(SVOr,"DIAD",SVOr.ServiceManager,currentdate,SVOr.SerNr & " Утверждение больше 5 дней!","");
+						end;
+					end;
+				end;
+				if(SVOr.OrderStatus==3)then begin
+					if(nonblankdate(SVOr.EndDiagnDate))then begin//utverjdenie
+						if(DateDiff(currentdate,SVOr.EndDiagnDate)>5)then begin
+							CreateCustomActivityFromSVO(SVOr,"WAIT",SVOr.ServiceManager,currentdate,SVOr.SerNr & " Утверждение больше 5 дней!","");
+						end;
+					end else begin
+						if(DateDiff(currentdate,SVOr.TransDate)>5)then begin
+							CreateCustomActivityFromSVO(SVOr,"WAIT",SVOr.ServiceManager,currentdate,SVOr.SerNr & " Утверждение больше 5 дней!","");
+						end;
+					end;
+				end;
 			end;
 		end;
 	end;
