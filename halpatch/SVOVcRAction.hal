@@ -256,8 +256,8 @@ BEGIN
   RETURN;
 END;
 
-
-function LongInt SVOVcRecordDuplicateClient(var record SVOVc SVOr,record SVOVc SVO2r,LongInt stat,LongInt long4)// Edit ************************** BPI Ukraine - KramarAlexandr - Thursday, 26 April 2018 09:48:28
+global
+function LongInt SVOVcRecordDuplicateClient(LongInt wn,var record SVOVc SVOr,record SVOVc SVO2r,LongInt stat,LongInt long4)// Edit ************************** BPI Ukraine - KramarAlexandr - Thursday, 26 April 2018 09:48:28
 BEGIN
 	LongInt res;
   record LocalMachineBlock LMb;// Edit ************************** Wednesday, 19 October 2011 10:59:49
@@ -270,7 +270,7 @@ BEGIN
 	
 	Userr.Code = CurrentUser;
   if (ReadFirstMain(Userr,1,true)) then begin end;
-  
+    
 	if (blank(SVOr.CustCode)) then begin
     SVOr.CustCode = LMb.DefCustCode;
     if(Userr.SalesGroup=="9GR")then begin
