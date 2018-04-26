@@ -1373,7 +1373,9 @@ moved to client side
   			if(readfirstmain(USr,1,true))then begin
   				if(SVOr.SalesGroup!=USr.SalesGroup)then begin
 						SVOr.SalesGroup=USr.SalesGroup;
-						SVOr.ServiceManager = "";// Edit ************************** Friday, 23 October 2015 09:54:42
+						if(SVOr.OrderStatus==0 or SVOr.OrderStatus==5)then begin
+							SVOr.ServiceManager = "";// Edit ************************** Friday, 23 October 2015 09:54:42
+						end;
 						SGr.SGroupCode = SVOr.SalesGroup;
 						readfirstmain(SGr,1,true);
 						SVOr.MoveSVOToSGStatus = "Ремонт принят на " & SGr.SGroupName;
