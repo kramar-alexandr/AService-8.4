@@ -824,6 +824,139 @@ return;
 end;
 
 
+
+global 
+function boolean DetermCrtActFromSVOToEnginer (record SVOVc SVOr)
+begin
+	record ActVc Actr;
+	string 50 sernum;
+	boolean creaetf;
+	boolean TrHs;
+	boolean foundf;
+	foundf = false;
+	sernum = SVOr.SerNr;
+
+	if(SVOr.OrderStatus==0 and SVOr.DoneMark==0)then begin
+		resetloop(SVOr);
+		Actr.SVOSerNr = SVOr.SerNr;
+		TrHs = true;
+		while(loopkey("SVOSerNr",Actr,1,TrHs))begin
+			if(Actr.SVOSerNr!=SVOr.SerNr)then begin TrHs = false; Messagebox(0,"3"); end;
+			
+			if(TrHs and Actr.ActType=="SERV")then begin
+				foundf = true;
+			end;
+		end;
+		resetloop(Actr);
+	end;
+
+	DetermCrtActFromSVOToEnginer = foundf;
+	return;
+end;
+
+global updating procedure OKCreateActFromSVOToEnginer(record SVOVc SVOr)
+begin
+	record ActVc Actr,oldActr;
+	string 50 sernum;
+	boolean TrHs;
+	sernum = SVOr.SerNr;
+	
+	if(SVOr.OrderStatus>0 or SVOr.DoneMark>0)then begin
+		resetloop(SVOr);
+		Actr.SVOSerNr = SVOr.SerNr;
+		TrHs = true;
+		while(loopkey("SVOSerNr",Actr,1,TrHs))begin
+			if(Actr.SVOSerNr!=SVOr.SerNr)then begin TrHs = false; end;
+			
+			if(TrHs and Actr.ActType=="SERV")then begin
+				if(Actr.OKFlag==0)then begin
+					RecordCopy(oldActr,Actr);
+					Actr.OKFlag = 1;		
+					RecordUpdate(oldActr,Actr,true);
+				end;
+			end;
+		end;
+	end;
+	return;
+end;
+
+global 
+function boolean PointgroupMainPersonDet(record ActVc Actr, record INVc INr, record SVOVc SVOr, boolean DetermCrt)
+begin
+	time determtime;
+	integer point;
+	boolean needcreate;
+	
+	
+	point = StringToInt(left(SVOr.SerNr,1));
+	
+	
+	if(!DetermCrt)then begin
+		determtime = currenttime;
+	end else begin
+		determtime = Actr.StartTime;
+	end;
+	
+	if(point==1)then begin
+		switch(INr.Group)begin
+			case"APP1":Actr.MainPersons = "BATCHENKO,DIMA,KAYZER";
+								 Actr.Comment = addhours(determtime,2) & " " & Actr.Comment;
+								 needcreate = true;
+			case"APP2":Actr.MainPersons = "TRIKOPA,SAO,RABCHUN,KAYZER";//"TRIKOPA,SAO,RABCHUN,KAYZER";
+								 Actr.Comment = addhours(determtime,5) & " " & Actr.Comment;
+								 needcreate = true;
+			case"APP3":Actr.MainPersons = "TRIKOPA,SAO,RABCHUN,KAYZER";//TRIKOPA,SAO,RABCHUN,
+								 Actr.Comment = addhours(determtime,5) & " " & Actr.Comment;
+								 needcreate = true;
+		end;
+		switch(INr.Code)begin
+			case "IPAD":	Actr.MainPersons = "POGEDAEV,KAYZER";
+											 Actr.Comment = addhours(currenttime,5) & " " & Actr.Comment;
+											 needcreate = true;
+			case "IPHONE3":	Actr.MainPersons = "MOISEEV";
+											Actr.Comment = addhours(currenttime,5) & " " & Actr.Comment;
+											needcreate = true;
+			case "IPHONE2":	Actr.MainPersons = "MOISEEV";
+											Actr.Comment = addhours(currenttime,5) & " " & Actr.Comment;
+											needcreate = true;
+		end;
+	end;
+	
+	if(point==7)then begin
+		switch(INr.Code)begin
+			case "MACBOOK":	Actr.MainPersons = "TRIKOPA,SAO,RABCHUN,KAYZER";
+											Actr.Comment = addhours(currenttime,5) & " " & Actr.Comment;
+											needcreate = true;
+		end;
+	end;
+	
+	if(point==9)then begin
+		switch(INr.Code)begin
+			case "IMAC":	Actr.MainPersons = "TRIKOPA,SAO,RABCHUN,KAYZER";
+											Actr.Comment = addhours(currenttime,5) & " " & Actr.Comment;
+											needcreate = true;
+			case "MACBOOK":	Actr.MainPersons = "TRIKOPA,SAO,RABCHUN,KAYZER";
+											Actr.Comment = addhours(currenttime,5) & " " & Actr.Comment;
+											needcreate = true;
+			case "MACBOOK_PRO":	Actr.MainPersons = "TRIKOPA,SAO,RABCHUN,KAYZER";
+											Actr.Comment = addhours(currenttime,5) & " " & Actr.Comment;
+											needcreate = true;
+			case "MACBOOK_AIR":	Actr.MainPersons = "TRIKOPA,SAO,RABCHUN,KAYZER";
+											Actr.Comment = addhours(currenttime,5) & " " & Actr.Comment;
+											needcreate = true;
+			case "IPHONE":	Actr.MainPersons = "BATCHENKO,DIMA,KAYZER";
+											Actr.Comment = addhours(currenttime,5) & " " & Actr.Comment;
+											needcreate = true;
+			otherwise				Actr.MainPersons = "PAVOLOTSKY,LYASHENKO,VUKOLOV,NEDBAEV";
+											Actr.Comment = addhours(currenttime,5) & " " & Actr.Comment;
+											needcreate = true;
+		end;
+	end;
+	
+	PointgroupMainPersonDet = needcreate;
+	return;
+end;
+
 global updating procedure CreateActFromSVOToEnginer(record SVOVc SVOr)
 begin
 	record ActVc Actr,oldActr;
@@ -831,35 +964,22 @@ begin
 	row SVOVc SVOrw;
 	record INVc INr;
 	boolean creaetf;
-	boolean foundf,TrHs;
+	boolean TrHs;
 	boolean needcreate;
 	
-	
-	needcreate = false;
-	
-	sernum = SVOr.SerNr;
-	if(left(sernum,1)=="1" and SVOr.OrderStatus==0 and SVOr.DoneMark==0)then begin
-		foundf = false;
-		resetloop(SVOr);
-		Actr.SVOSerNr = SVOr.SerNr;
-		TrHs = true;
-		while(loopkey("SVOSerNr",Actr,1,TrHs))begin
-			if(Actr.SVOSerNr!=SVOr.SerNr)then begin TrHs = false; end;
-			
-			if(TrHs and Actr.ActType=="SERV")then begin
-				foundf = true;
-				creaetf = false;
-				goto lFoundSVO1;
-			end;
-		end;
-		
-lFoundSVO1:;
-		if(!foundf)then begin
+	if(SVOr.OrderStatus==0 and SVOr.DoneMark==0)then begin
+		needcreate = false;
+		if(DetermCrtActFromSVOToEnginer(SVOr))then begin 
+			creaetf = false;
+			Actr.ActType = "SERV";
+		end;		
+
+		if(!DetermCrtActFromSVOToEnginer(SVOr))then begin
 			creaetf = true;
 			recordnew(Actr);
 			Actr.Comment = SVOr.SerNr & " " & SVOr.Comment1;
 			//Actr.AlarmType = kAlarmTypeMessage; //Edit-------------------Vitalii 11:31 23.12.2016
-      Actr.AlarmType = kAlarmTypeNone;
+			Actr.AlarmType = kAlarmTypeNone;
 			Actr.SVOSerNr = SVOr.SerNr;
 			Actr.TodoFlag = kTodoFlagTodo;
 			Actr.ActType = "SERV";
@@ -870,29 +990,7 @@ lFoundSVO1:;
 				if(readfirstmain(INr,1,true))then begin
 					Actr.Comment = INr.Code & " " & Actr.Comment;
 					Actr.Phone = SVOrw.Spec;
-					switch(INr.Group)begin
-						case"APP1":Actr.MainPersons = "BATCHENKO,DIMA,KAYZER";
-											 Actr.Comment = addhours(currenttime,2) & " " & Actr.Comment;
-											 needcreate = true;
-						case"APP2":Actr.MainPersons = "TRIKOPA,SAO,RABCHUN,KAYZER";//"TRIKOPA,SAO,RABCHUN,KAYZER";
-											 Actr.Comment = addhours(currenttime,5) & " " & Actr.Comment;
-											 needcreate = true;
-						case"APP3":Actr.MainPersons = "TRIKOPA,SAO,RABCHUN,KAYZER";//TRIKOPA,SAO,RABCHUN,
-											 Actr.Comment = addhours(currenttime,5) & " " & Actr.Comment;
-											 needcreate = true;
-					end;
-					switch(INr.Code)begin
-						case "IPAD":	Actr.MainPersons = "POGEDAEV,KAYZER";
-												 Actr.Comment = addhours(currenttime,5) & " " & Actr.Comment;
-												 needcreate = true;
-						case "IPHONE3":	Actr.MainPersons = "MOISEEV";
-												 		Actr.Comment = addhours(currenttime,5) & " " & Actr.Comment;
-												 		needcreate = true;
-						case "IPHONE2":	Actr.MainPersons = "MOISEEV";
-												 		Actr.Comment = addhours(currenttime,5) & " " & Actr.Comment;
-												 		needcreate = true;
-					end;
-					
+					needcreate = PointgroupMainPersonDet(Actr,INr,SVOr,DetermCrtActFromSVOToEnginer(SVOr));
 				end;	
 			end;			
 		end else begin
@@ -906,168 +1004,14 @@ lFoundSVO1:;
 					if(readfirstmain(INr,1,true))then begin
 						Actr.Comment = INr.Code & " " & Actr.Comment;
 						Actr.Phone = SVOrw.Spec;
-						switch(INr.Group)begin
-							case"APP1":Actr.MainPersons = "BATCHENKO,DIMA,KAYZER";
-												 Actr.Comment = addhours(Actr.StartTime,2) & " " & Actr.Comment;
-												 needcreate = true;
-							case"APP2":Actr.MainPersons = "TRIKOPA,SAO,RABCHUN,KAYZER";//"TRIKOPA,SAO,RABCHUN,KAYZER";
-												 Actr.Comment = addhours(Actr.StartTime,5) & " " & Actr.Comment;
-												 needcreate = true;
-							case"APP3":Actr.MainPersons = "TRIKOPA,SAO,RABCHUN,KAYZER";//TRIKOPA,SAO,RABCHUN,
-												 Actr.Comment = addhours(Actr.StartTime,5) & " " & Actr.Comment;
-												 needcreate = true;
-						end;
-						switch(INr.Code)begin
-							case "IPAD":	Actr.MainPersons = "POGEDAEV,KAYZER";
-														Actr.Comment = addhours(currenttime,5) & " " & Actr.Comment;
-														needcreate = true;
-							case "IPHONE3":	Actr.MainPersons = "MOISEEV";
-															Actr.Comment = addhours(currenttime,5) & " " & Actr.Comment;
-															needcreate = true;
-							case "IPHONE2":	Actr.MainPersons = "MOISEEV";
-															Actr.Comment = addhours(currenttime,5) & " " & Actr.Comment;
-															needcreate = true;
-						end;
-					end;	
-				end;
-			
-				recordstore(Actr,true);
-			end;
-		end;
-	end;
-	if(left(sernum,1)=="1" and (SVOr.OrderStatus>0 or SVOr.DoneMark>0))then begin
-		resetloop(SVOr);
-		Actr.SVOSerNr = SVOr.SerNr;
-		TrHs = true;
-		while(loopkey("SVOSerNr",Actr,1,TrHs))begin
-			if(Actr.SVOSerNr!=SVOr.SerNr)then begin TrHs = false; end;
-			
-			if(TrHs and Actr.ActType=="SERV")then begin
-				if(Actr.OKFlag==0)then begin
-					RecordCopy(oldActr,Actr);
-					Actr.OKFlag = 1;		
-					RecordUpdate(oldActr,Actr,true);
-				end;
-			end;
-		end;
-	end;
-	
-	if(left(sernum,1)=="9" and SVOr.OrderStatus==0 and SVOr.DoneMark==0)then begin
-		
-		foundf = false;
-		resetloop(SVOr);
-		Actr.SVOSerNr = SVOr.SerNr;
-		TrHs = true;
-		while(loopkey("SVOSerNr",Actr,1,TrHs))begin
-			if(Actr.SVOSerNr!=SVOr.SerNr)then begin TrHs = false; end;
-			
-			if(TrHs and Actr.ActType=="SERV")then begin
-				foundf = true;
-				creaetf = false;
-				goto lFoundSVO9;
-			end;
-		end;
-		
-lFoundSVO9:;
-		if(!foundf)then begin
-			
-			recordnew(Actr);
-			Actr.Comment = SVOr.SerNr & " " & SVOr.Comment1;
-			//Actr.AlarmType = kAlarmTypeMessage; //Edit-------------------Vitalii 11:31 23.12.2016
-      Actr.AlarmType = kAlarmTypeNone;
-			Actr.SVOSerNr = SVOr.SerNr;
-			Actr.TodoFlag = kTodoFlagTodo;
-			Actr.ActType = "SERV";
-			Actr.SymbNr = 3;
-			if(matrowcnt(SVOr)>0)then begin
-				matrowget(SVOr,0,SVOrw);
-				INr.Code = SVOrw.ArtCode;
-				if(readfirstmain(INr,1,true))then begin
-					Actr.Comment = INr.Code & " " & Actr.Comment;
-					Actr.Phone = SVOrw.Spec;
-					switch(INr.Code)begin
-						case "IMAC":	Actr.MainPersons = "TRIKOPA,SAO,RABCHUN,KAYZER";
-												 	Actr.Comment = addhours(currenttime,5) & " " & Actr.Comment;
-												 	creaetf = true;
-												 	needcreate = true;
-						case "MACBOOK":	Actr.MainPersons = "TRIKOPA,SAO,RABCHUN,KAYZER";
-												 		Actr.Comment = addhours(currenttime,5) & " " & Actr.Comment;
-												 		creaetf = true;
-												 		needcreate = true;
-						case "MACBOOK_PRO":	Actr.MainPersons = "TRIKOPA,SAO,RABCHUN,KAYZER";
-												 		Actr.Comment = addhours(currenttime,5) & " " & Actr.Comment;
-												 		creaetf = true;
-												 		needcreate = true;
-						case "MACBOOK_AIR":	Actr.MainPersons = "TRIKOPA,SAO,RABCHUN,KAYZER";
-												 		Actr.Comment = addhours(currenttime,5) & " " & Actr.Comment;
-												 		creaetf = true;
-												 		needcreate = true;
-						case "IPHONE":	Actr.MainPersons = "BATCHENKO,DIMA,KAYZER";
-												 		Actr.Comment = addhours(currenttime,5) & " " & Actr.Comment;
-												 		creaetf = true;
-												 		needcreate = true;
-						otherwise				Actr.MainPersons = "PAVOLOTSKY,LYASHENKO,VUKOLOV,NEDBAEV";
-												 		Actr.Comment = addhours(currenttime,5) & " " & Actr.Comment;
-												 		creaetf = true;
-												 		needcreate = true;
-					end;
-					
-				end;	
-			end;			
-		end else begin
-			if(Actr.ActType=="SERV")then begin
-				Actr.Comment = SVOr.SerNr & " " & SVOr.Comment1;
-			
-				if(matrowcnt(SVOr)>0)then begin
-					matrowget(SVOr,0,SVOrw);
-					INr.Code = SVOrw.ArtCode;
-					if(readfirstmain(INr,1,true))then begin
-						Actr.Comment = INr.Code & " " & Actr.Comment;
-						Actr.Phone = SVOrw.Spec;
-						switch(INr.Code)begin
-							case "IMAC":	Actr.MainPersons = "TRIKOPA,SAO,RABCHUN,KAYZER";
-														Actr.Comment = addhours(currenttime,5) & " " & Actr.Comment;
-														needcreate = true;
-							case "MACBOOK":	Actr.MainPersons = "TRIKOPA,SAO,RABCHUN,KAYZER";
-															Actr.Comment = addhours(currenttime,5) & " " & Actr.Comment;
-															needcreate = true;
-							case "MACBOOK_PRO":	Actr.MainPersons = "TRIKOPA,SAO,RABCHUN,KAYZER";
-															Actr.Comment = addhours(currenttime,5) & " " & Actr.Comment;
-															needcreate = true;
-							case "MACBOOK_AIR":	Actr.MainPersons = "TRIKOPA,SAO,RABCHUN,KAYZER";
-															Actr.Comment = addhours(currenttime,5) & " " & Actr.Comment;
-															needcreate = true;
-							case "IPHONE":	Actr.MainPersons = "BATCHENKO,DIMA,KAYZER";
-															Actr.Comment = addhours(currenttime,5) & " " & Actr.Comment;
-															needcreate = true;
-							otherwise				Actr.MainPersons = "PAVOLOTSKY,LYASHENKO,VUKOLOV,NEDBAEV";
-															Actr.Comment = addhours(currenttime,5) & " " & Actr.Comment;
-															needcreate = true;
-						end;
+						needcreate = PointgroupMainPersonDet(Actr,INr,SVOr,DetermCrtActFromSVOToEnginer(SVOr));
 					end;	
 				end;
 				recordstore(Actr,true);
-				
 			end;
 		end;
 	end;
-	if(left(sernum,1)=="9" and (SVOr.OrderStatus>0 or SVOr.DoneMark>0))then begin
-		resetloop(SVOr);
-		Actr.SVOSerNr = SVOr.SerNr;
-		TrHs = true;
-		while(loopkey("SVOSerNr",Actr,1,TrHs))begin
-			if(Actr.SVOSerNr!=SVOr.SerNr)then begin TrHs = false; end;
-			
-			if(TrHs and Actr.ActType=="SERV")then begin
-				if(Actr.OKFlag==0)then begin
-					RecordCopy(oldActr,Actr);
-					Actr.OKFlag = 1;		
-					RecordUpdate(oldActr,Actr,true);
-				end;
-			end;
-		end;
-	end;
-	
+	OKCreateActFromSVOToEnginer(SVOr);
 	if(creaetf and needcreate)then begin	
 		Actr.SerNr = NextSerNr("ActVc",Actr.TransDate,-1,false,"");
 		if(recordstore(Actr,true))then begin
@@ -1078,6 +1022,7 @@ lFoundSVO9:;
 	
 return;
 end;
+
 
 
 global procedure UpdateToDoWclass()
