@@ -826,7 +826,7 @@ end;
 
 
 global 
-function boolean DetermCrtActFromSVOToEnginer (record SVOVc SVOr)
+function boolean DetermCrtActFromSVOToEnginer (record SVOVc SVOr)//Edit_-_-_-_-_-_-_-_-Anton 12:14 03.05.2018
 begin
 	record ActVc Actr;
 	string 50 sernum;
@@ -854,7 +854,7 @@ begin
 	return;
 end;
 
-global updating procedure OKCreateActFromSVOToEnginer(record SVOVc SVOr)
+global updating procedure OKCreateActFromSVOToEnginer(record SVOVc SVOr)//Edit_-_-_-_-_-_-_-_-Anton 12:14 03.05.2018
 begin
 	record ActVc Actr,oldActr;
 	string 50 sernum;
@@ -881,7 +881,7 @@ begin
 end;
 
 global 
-function boolean PointgroupMainPersonDet(record ActVc Actr, record INVc INr, record SVOVc SVOr, boolean DetermCrt)
+function boolean PointgroupMainPersonDet(record ActVc Actr, record INVc INr, record SVOVc SVOr, boolean DetermCrt)//Edit_-_-_-_-_-_-_-_-Anton 12:14 03.05.2018
 begin
 	time determtime;
 	integer point;
@@ -957,7 +957,7 @@ begin
 	return;
 end;
 
-global updating procedure CreateActFromSVOToEnginer(record SVOVc SVOr)
+global updating procedure CreateActFromSVOToEnginer(record SVOVc SVOr)//Edit_-_-_-_-_-_-_-_-Anton 12:14 03.05.2018
 begin
 	record ActVc Actr,oldActr;
 	string 50 sernum;
