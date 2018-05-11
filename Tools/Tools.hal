@@ -919,6 +919,9 @@ begin
 			case "IPHONE2":	Actr.MainPersons = "MOISEEV";
 											Actr.Comment = addhours(currenttime,5) & " " & Actr.Comment;
 											needcreate = true;
+			case "MACBOOK_PRO":	Actr.MainPersons = "TRIKOPA,SAO,RABCHUN,KAYZER";
+											Actr.Comment = addhours(currenttime,5) & " " & Actr.Comment;
+											needcreate = true;
 		end;
 	end;
 	
