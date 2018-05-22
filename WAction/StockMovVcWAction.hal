@@ -1054,7 +1054,7 @@ begin
   end;  
   if (StockMovr.OrdFlag!=0) then begin
     if (UserCanAction("StockMovOrdFlag",false)==false) then begin
-      res = false;
+      //res = false;
     end;   
   end;
   
