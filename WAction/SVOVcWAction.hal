@@ -44,6 +44,9 @@ external updating procedure CloseActivitiesFromSVO(var record SVOVc,string);
 	
 SetLangMode(LangRussian,"RUS",0);
 
+
+
+
 global //Edit-------------------Vitalii 13:52 27.10.2016
 updating procedure PrintAndSetRegDateInSVOExecute(var record SVOVc SVOr)
 BEGIN
@@ -1846,11 +1849,22 @@ end;
 global procedure SVOLClassOpenSVO3LClass()
 begin
 	record SVOVc SVOr;
-	
 	OpenWindow("SVO3LClass",0,0,"","",SVOr);
 	
 return;
 end;
+
+
+global procedure SetSubsetLClass()
+begin
+	record SVOVc SVOr;
+	integer wn;
+	wn = curwindow;
+	DeselectWindow(wn,true);
+	setwindowsubset(wn,GetWindowString(wn,"userchs"));
+return;
+end;
+
 
 Global 
 function Boolean SVO3LClassOnOpenWindow(integer wn)
