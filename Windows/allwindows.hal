@@ -705,6 +705,10 @@ begin
   SetWRect(20,80,960,298);
   Sizeable(-1,-1,0,0);
   UseView(SVOVc);
+  ToolBar; //Edit***************************Sasha2,17:21 10.05.2017 {
+		SoftEditField(340,8,200,"",Normal,"userchs",false,UserSClass,M4Str,255);
+		HalPushButton(220,8,320,16+10,"SetSubsetLClass","Найти");
+  EndToolBar;
   FormName(PrintSVOL);
   RecordList(4,17,-21,-39);
   RlColKey(4,4,"№",SerNr,false,AllServSerNr);
