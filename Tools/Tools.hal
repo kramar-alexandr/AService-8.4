@@ -841,7 +841,7 @@ begin
 		Actr.SVOSerNr = SVOr.SerNr;
 		TrHs = true;
 		while(loopkey("SVOSerNr",Actr,1,TrHs))begin
-			if(Actr.SVOSerNr!=SVOr.SerNr)then begin TrHs = false; Messagebox(0,"3"); end;
+			if(Actr.SVOSerNr!=SVOr.SerNr)then begin TrHs = false; end;
 			
 			if(TrHs and Actr.ActType=="SERV")then begin
 				foundf = true;

@@ -1117,7 +1117,6 @@ L11:;
     end;
   end;
   
-  messagebox(0,rvalp & "d " & sump);
   APPayHistr.VECode = VEp.Code;
   found = false;
   if (RepSpec.flags[29]==0) then begin
@@ -1451,9 +1450,7 @@ L11:;
     end;
   end;
   if (rvalp==0) then begin sump = 0; end;
-  
-  messagebox(0,rvalp & "f " & sump);
-  
+    
   return;
 end;
 
