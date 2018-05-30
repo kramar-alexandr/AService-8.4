@@ -1010,7 +1010,11 @@ begin
 						needcreate = PointgroupMainPersonDet(Actr,INr,SVOr,DetermCrtActFromSVOToEnginer(SVOr));
 					end;	
 				end;
-				recordstore(Actr,true);
+				if(nonblank(Actr.MainPersons))then begin
+					recordstore(Actr,true);
+				end else begin
+					creaetf = false;
+				end;
 			end;
 		end;
 	end;
