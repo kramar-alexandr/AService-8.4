@@ -826,7 +826,7 @@ end;
 
 
 global 
-function boolean DetermCrtActFromSVOToEnginer (record SVOVc SVOr)//Edit_-_-_-_-_-_-_-_-Anton 12:14 03.05.2018
+function boolean DetermCrtActFromSVOToEnginer (record SVOVc SVOr, var LongInt ActSerNr)//Edit_-_-_-_-_-_-_-_-Anton 12:14 03.05.2018
 begin
 	record ActVc Actr;
 	string 50 sernum;
@@ -835,7 +835,8 @@ begin
 	boolean foundf;
 	foundf = false;
 	sernum = SVOr.SerNr;
-
+	
+	ActSerNr = -1;
 	if(SVOr.OrderStatus==0 and SVOr.DoneMark==0)then begin
 		resetloop(SVOr);
 		Actr.SVOSerNr = SVOr.SerNr;
@@ -845,6 +846,7 @@ begin
 			
 			if(TrHs and Actr.ActType=="SERV")then begin
 				foundf = true;
+				ActSerNr = Actr.SerNr;
 			end;
 		end;
 		resetloop(Actr);
@@ -969,15 +971,11 @@ begin
 	boolean creaetf;
 	boolean TrHs;
 	boolean needcreate;
+	longInt ActSerNr;
 	
 	if(SVOr.OrderStatus==0 and SVOr.DoneMark==0)then begin
 		needcreate = false;
-		if(DetermCrtActFromSVOToEnginer(SVOr))then begin 
-			creaetf = false;
-			Actr.ActType = "SERV";
-		end;		
-
-		if(!DetermCrtActFromSVOToEnginer(SVOr))then begin
+		if(!DetermCrtActFromSVOToEnginer(SVOr,ActSerNr))then begin
 			creaetf = true;
 			recordnew(Actr);
 			Actr.Comment = SVOr.SerNr & " " & SVOr.Comment1;
@@ -993,22 +991,29 @@ begin
 				if(readfirstmain(INr,1,true))then begin
 					Actr.Comment = INr.Code & " " & Actr.Comment;
 					Actr.Phone = SVOrw.Spec;
-					needcreate = PointgroupMainPersonDet(Actr,INr,SVOr,DetermCrtActFromSVOToEnginer(SVOr));
+					needcreate = PointgroupMainPersonDet(Actr,INr,SVOr,true);
 				end;	
-			end;			
+			end;	
+			Actr.SerNr = NextSerNr("ActVc",Actr.TransDate,-1,false,"");
+			if(recordstore(Actr,true))then begin
+				CreateRecordLink(SVOr,CurrentCompany,Actr,CurrentCompany);  
+				CreateRecordLink(Actr,CurrentCompany,SVOr,CurrentCompany); 
+			end;
 		end else begin
-			if(Actr.ActType=="SERV")then begin
+			creaetf = false;
+			Actr.SerNr = ActSerNr;
+			if(readfirstmain(Actr,1,true))then begin
+				Actr.ActType = "SERV";
 				Actr.Comment = SVOr.SerNr & " " & SVOr.Comment1;
-			
-			
 				if(matrowcnt(SVOr)>0)then begin
 					matrowget(SVOr,0,SVOrw);
 					INr.Code = SVOrw.ArtCode;
 					if(readfirstmain(INr,1,true))then begin
 						Actr.Comment = INr.Code & " " & Actr.Comment;
 						Actr.Phone = SVOrw.Spec;
-						needcreate = PointgroupMainPersonDet(Actr,INr,SVOr,DetermCrtActFromSVOToEnginer(SVOr));
-					end;	
+						needcreate = PointgroupMainPersonDet(Actr,INr,SVOr,false);
+						messagebox(0,Actr.Comment);
+					end;
 				end;
 				if(nonblank(Actr.MainPersons))then begin
 					recordstore(Actr,true);
@@ -1019,13 +1024,6 @@ begin
 		end;
 	end;
 	OKCreateActFromSVOToEnginer(SVOr);
-	if(creaetf and needcreate)then begin	
-		Actr.SerNr = NextSerNr("ActVc",Actr.TransDate,-1,false,"");
-		if(recordstore(Actr,true))then begin
-			CreateRecordLink(SVOr,CurrentCompany,Actr,CurrentCompany);  
-			CreateRecordLink(Actr,CurrentCompany,SVOr,CurrentCompany); 
-		end;
-	end;
 	
 return;
 end;
