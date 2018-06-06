@@ -684,7 +684,6 @@ BEGIN
 	end;
 	
 	CreateActFromSVOToEnginer(SVOr);
-	logtext(0,SVOr.DoneMark & " <DM1 " & SVO2r.DoneMark & " <DM2 ");
 	if(SVOr.DoneMark!=SVO2r.DoneMark)then begin// Edit ************************** BPI Ukraine - KramarAlexandr - Tuesday, 6 February 2018 12:28:31
 		PhonesFromSVO(SVOr);
 		CloseActivitiesFromSVO(SVOr,"MOVE");
