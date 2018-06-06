@@ -737,7 +737,7 @@ begin
 	Actr.SerNr = 0;
 	while(loopmain(Actr,1,true))begin
 		testf = true;
-		if(nonblank(Actr.ActType))then begin testf = false; end;
+		//if(nonblank(Actr.ActType))then begin testf = false; end;
 		if(Actr.OKFlag!=0)then begin testf = false; end;
 		if(Actr.SVOSerNr==-1)then begin testf = false; end;
 		sernum = Actr.SVOSerNr;
