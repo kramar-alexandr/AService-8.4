@@ -890,6 +890,8 @@ begin
 	boolean needcreate;
 	
 	
+	needcreate = false;
+	
 	point = StringToInt(left(SVOr.SerNr,1));
 	
 	
@@ -995,9 +997,11 @@ begin
 				end;	
 			end;	
 			Actr.SerNr = NextSerNr("ActVc",Actr.TransDate,-1,false,"");
-			if(recordstore(Actr,true))then begin
-				CreateRecordLink(SVOr,CurrentCompany,Actr,CurrentCompany);  
-				CreateRecordLink(Actr,CurrentCompany,SVOr,CurrentCompany); 
+			if(needcreate)then begin
+				if(recordstore(Actr,true))then begin
+					CreateRecordLink(SVOr,CurrentCompany,Actr,CurrentCompany);  
+					CreateRecordLink(Actr,CurrentCompany,SVOr,CurrentCompany); 
+				end;
 			end;
 		end else begin
 			creaetf = false;
@@ -1012,13 +1016,14 @@ begin
 						Actr.Comment = INr.Code & " " & Actr.Comment;
 						Actr.Phone = SVOrw.Spec;
 						needcreate = PointgroupMainPersonDet(Actr,INr,SVOr,false);
-						messagebox(0,Actr.Comment);
 					end;
 				end;
-				if(nonblank(Actr.MainPersons))then begin
-					recordstore(Actr,true);
-				end else begin
-					creaetf = false;
+				if(needcreate)then begin
+					if(nonblank(Actr.MainPersons))then begin
+						recordstore(Actr,true);
+					end else begin
+						creaetf = false;
+					end;
 				end;
 			end;
 		end;
