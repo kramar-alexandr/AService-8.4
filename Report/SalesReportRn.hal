@@ -669,7 +669,7 @@ begin
 						retrwnt = matrowcnt(Retr);
 						For(reti=0;reti<retrwnt;reti=reti+1) begin
 	  					matrowget(Retr,reti,Retrw);
-
+							logtext(0,"RETURN " & Retr.SerNr);
 	  					if(IVrw.RetRow>=0 and IVrw.RetRow==reti)then begin
 							IHr.FileName = "RetVc";
 							IHr.TransNr = Retr.SerNr;
