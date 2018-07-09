@@ -955,6 +955,8 @@ begin
 												logtext(0,serial[ressize]);
 												logtext(0,cost[ressize]);
 												NewCalcCostAndPrice(IVr,IVrw,cost,curcost,qty,ressize,cred,realcostbase,realcostuah,realpricebase,realpriceuah,realsumbase,realsumuah,PUr,uahpurate,uahcurrate,com,comment,BCb,vecode);
+												logtext(0,serial[ressize]);
+												logtext(0,cost[ressize]);
 											end;
 											ressize = ressize + 1;
 										end;
