@@ -4,6 +4,7 @@ BEGIN
   Integer wn,mwn,nwn,thewn;
   record RcVc RepSpec;
   record NotepadVc Noter;
+  record UserVc USr;
   
   wn = CurWindow;
   GetWindowRecord(wn,RepSpec);
@@ -17,7 +18,9 @@ BEGIN
   nwn = OpenWindow("NotepadDClass",1,wn,"","",Noter);
   //millisleep(100);
   deselectwindow(nwn,false);
-  PutWindowString(nwn,"NotepadRLinkComment",CurrentDate & " " & currentuser); //Edit***************************Sasha2,12:03 03.06.2015
+  	USr.Code = currentuser;
+  	readfirstmain(USr,1,true)
+  PutWindowString(nwn,"NotepadRLinkComment",CurrentDate & " " & USr.Name); //Edit***************************Sasha2,12:03 03.06.2015
 	LNoteFromArchiveWsm:;
   RETURN;
 END;
