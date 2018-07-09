@@ -1913,6 +1913,7 @@ if (true) then begin
   end;
   //MatCol(t,-240,"ГТД",0,CustomsNr,false,0); //Edit***************************Sasha2,15:17 11.05.2017
   //MatCol(t,-100,"Страна",0,CountryOfOrg,false,CountrySClass); //Edit***************************Sasha2,15:17 11.05.2017
+  MatCol(t,-260,"RetRow",0,RetRow,false,0)
   MatCol(t,-230,"SHnr",0,SHNr,false,0);// Edit ************************** Wednesday, 18 February 2015 13:09:15
   MatCol(t,-140,"SHRow",0,SHRow,false,0);// Edit ************************** Wednesday, 10 June 2015 16:58:12
   MatCol(t,-70,"OrdRow",0,OrdRow,false,0);// Edit ************************** Wednesday, 18 February 2015 13:10:49
