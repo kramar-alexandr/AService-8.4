@@ -951,7 +951,7 @@ begin
 											end else begin
 												com = "RetNOPu ";
 												PUr.SerNr = -1;
-												PUr.CurncyCode = "";
+												PUr.CurncyCode = "UAH";
 												logtext(0,serial[ressize]);
 												logtext(0,cost[ressize]);
 												NewCalcCostAndPrice(IVr,IVrw,cost,curcost,qty,ressize,cred,realcostbase,realcostuah,realpricebase,realpriceuah,realsumbase,realsumuah,PUr,uahpurate,uahcurrate,com,comment,BCb,vecode);
