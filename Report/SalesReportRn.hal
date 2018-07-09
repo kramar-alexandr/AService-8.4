@@ -952,6 +952,8 @@ begin
 												com = "RetNOPu ";
 												PUr.SerNr = -1;
 												PUr.CurncyCode = "";
+												logtext(0,serial[ressize]);
+												logtext(0,cost[ressize]);
 												NewCalcCostAndPrice(IVr,IVrw,cost,curcost,qty,ressize,cred,realcostbase,realcostuah,realpricebase,realpriceuah,realsumbase,realsumuah,PUr,uahpurate,uahcurrate,com,comment,BCb,vecode);
 											end;
 											ressize = ressize + 1;
