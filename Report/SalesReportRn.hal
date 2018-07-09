@@ -926,11 +926,14 @@ begin
 										if(IHr.TransNr!=Retr.SerNr)then begin TrHs = false; testf = false; end;
 										if(IHr.Row!=reti)then begin TrHs = false; testf = false; end;
 										if(IHr.FileName!="RetVc")then begin TrHs = false; testf = false;  end;
-		
+										
 										if(testf)then begin
+										
+											findf = true;
 											cost[ressize] = AbsoluteVal(IHr.TotCostPrice / IHr.Qty*cred);
 											serial[ressize] = IHr.SerialNr;
 											qty[ressize] = IHr.Qty*cred; 
+											
 											if(IHr.InFileName=="PUVc" and nonblank(IHr.InFileName))then begin
 												PUr.SerNr = IHr.InSerNr;
 												if(readfirstmain(PUr,1,true))then begin
