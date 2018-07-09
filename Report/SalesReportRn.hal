@@ -661,7 +661,7 @@ begin
 				end;
 			end;
 			if(cred<0)then begin
-				
+				logtext(0,"CRED " & IVr.SerNr);
 				cnt = 1;
 				while(ReadRecordLink(IVr,cnt,Retr,RLr)) begin
 					cnt = cnt+1;
