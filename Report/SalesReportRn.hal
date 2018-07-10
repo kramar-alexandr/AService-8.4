@@ -906,7 +906,7 @@ begin
 						end;
 					end; //Edit***************************Sasha2,14:27 18.05.2015 }
 				end else begin
-					if(cred<0 and false)then begin
+					if(cred<0 and IVr.SerNr==48784)then begin
 						logtext(0,"CRED RET" & IVr.SerNr);
 						cnt = 1;
 						while(ReadRecordLink(IVr,cnt,Retr,RLr)) begin
