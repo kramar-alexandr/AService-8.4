@@ -349,7 +349,7 @@ L1:;
 LActPrintNote1:;
 		
 		if(SVOr.WSCost!=0)then begin
-		OUTFORMFIELD("MY_WSCOST",SVOr.WSCost & " грн.");
+			OUTFORMFIELD("MY_WSCOST",SVOr.WSCost & " грн.");
 		end;
 		OUTFORMFIELD("MY_Vlastnik",SVOr.Vlastnik);
 		OUTFORMFIELD("MY_Priynato",SVOr.Name & " " & SVOr.Priynato & " " & SVOr.MiddleName);
@@ -362,7 +362,7 @@ LActPrintNote1:;
 			if(SVOr.NoOpros==1)then begin
 				tstr = tstr & "/ На опрос согласен";
 			end else begin
-				tstr = tstr & "/ От опроса откаалзись";
+				tstr = tstr & "/ От опроса отказались";
 			end;
 			OUTFORMFIELD("MY_Kontinfo2",tstr);
 		end;

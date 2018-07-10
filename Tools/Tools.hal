@@ -720,7 +720,9 @@ Lfindnoter:;
         end;
         if (ReadRecordLink(SVOr,notenr-1,Noter,RLinkr)) then begin
           RLinkr.Comment = comment;
-          if (RecordStore(RLinkr,true)) then begin  end;
+          if(nonblank(RLinkr.Comment))then begin
+						if (RecordStore(RLinkr,true)) then begin  end;
+          end;
         end;
       end;
     end;
