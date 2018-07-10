@@ -349,7 +349,7 @@ L1:;
 LActPrintNote1:;
 		
 		if(SVOr.WSCost!=0)then begin
-		OUTF]ORMFIELD("MY_WSCOST",SVOr.WSCost & " грн.");
+		OUTFORMFIELD("MY_WSCOST",SVOr.WSCost & " грн.");
 		end;
 		OUTFORMFIELD("MY_Vlastnik",SVOr.Vlastnik);
 		OUTFORMFIELD("MY_Priynato",SVOr.Name & " " & SVOr.Priynato & " " & SVOr.MiddleName);
