@@ -308,6 +308,7 @@ record DocVc Docr;
 string 200 argument;
 integer length;
 record SVOPrintDataVc SVOPr;
+integer kk;
 
 if(nonblank(datacode))then begin
 	SVOPr.Code = datacode;
@@ -322,7 +323,19 @@ end;
 			cnt=1;
 			while(ReadRecordLink(SVOr,cnt,NPr,RLr)) begin
 				If(NPr.Classification=="1") then begin
-				enginer = RLr.Comment;
+				if(left(RLr.Comment,1)>"@")then begin
+					enginer = RLr.Comment;
+				end else begin
+					if(len(RLr.Comment)>0)then begin
+						For(kk=0;kk<len(RLr.Comment);kk=kk+1) begin
+							if(mid(RLr.Comment,kk,1)>"@")then begin
+								enginer = mid(RLr.Comment,kk,len(RLr.Comment)-kk);
+								kk = len(RLr.Comment);
+							end;
+						end; 
+					end;
+				end;
+				//enginer = RLr.Comment;
 					argument = "";
 					GetFieldArgument(Docr,F_STANDARDPROBLEMTEXT,argument);
 					if(nonblank(argument))then begin
