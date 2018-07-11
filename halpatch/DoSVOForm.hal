@@ -364,6 +364,7 @@ L1:;
 						end; 
 					end;
 				end;
+				logtext(0,"RLr.Comment " & RLr.Comment);
 				logtext(0,"MY_Enginer " & enginer);
 				OUTFORMFIELD("MY_Enginer",enginer);
 				goto LActPrintNote1;
