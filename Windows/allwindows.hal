@@ -8510,7 +8510,7 @@ begin
     v = 6; vs = 20; h = 100; h2 = 270; h3 = 420; h4 = 450; fs = 100;
     CommunicateButton;
     Tile(0,160,false,"",Comment);
-    EditField(h,vm=6,-40,"Текст",Normal,Comment,false,0);
+    EditField(h,v+=vs,-40,"Текст",Normal,Comment,false,0);
     EditField(h,v+=vs,-40,"Текст 1",Normal,Comment1,false,0);// Edit ************************** BPI Ukraine - KramarAlexandr - Monday, 27 November 2017 16:06:24
     EditField(h,v+=vs,80,"Тип",Normal,ActType,false,ActTypeSClass);//ActType2SClass
     EnterSkip(StartTime);
@@ -8519,7 +8519,7 @@ begin
     EditField(h,v+=vs,120,"Сер. №",Normal,SerialNr,false,SVOSerSClass);// Edit ************************** BPI Ukraine - KramarAlexandr - Thursday, 16 November 2017 14:33:10
     EditField(h,v+=vs, 80,"Замовл. на обсл.",Normal,SVOSerNr,false,SVOSClass);// Edit ************************** BPI Ukraine - KramarAlexandr - Friday, 17 November 2017 15:54:06
 		halpushbutton(h+90,v,h+90+80,v+vs,"OpenSVODsm","Відкр.");
-    vm=vm+vs;
+    vm=vm+vs+vs;
     EditField(h2,v=vm+vs,-40,"",Normal,ActTypeComment,false,0);
     EditField(h2,v+=vs,140,"Особи",Normal,MainPersons,false,UserSClass);
     EditField(h4,v,-40,"Копія",Normal,CCPersons,false,UserSClass);
