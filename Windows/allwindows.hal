@@ -8491,7 +8491,7 @@ begin
     BlockLoad(LMb);
     SetWRect(64,80,760,500);
     BrowseButtons(false);
-    Sizeable(-1,-1,0,0);
+    //Sizeable(-1,-1,0,0);
     UseView(ActVc);
     ActiveFieldOnNew("Comment");    
     FormName(ActDocForm);
