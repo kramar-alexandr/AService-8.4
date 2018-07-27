@@ -350,7 +350,7 @@ BEGIN
   SVOr.EndDiagnTime = blankt;
   SVOr.OrderStatus = 0;
   SVOr.DoneMark = 0;
-  SVOr.CustomField7 = "";
+  SVOr.CustomField7 = currentuser;
   SVOr.ServiceManager = "";
   SVOr.Comment1 = "";
   SVOr.Comment2 = "";
