@@ -2087,46 +2087,48 @@ begin
 	end;
   	
   //Edit----------------------Dima  04.05.2016
-	Userr.Code = CurrentUser;
-	if(ReadFirstMain(Userr,1,true))then begin
-		if ((SM2p.OKFlag==0) and (SMp.OKFlag!=0)) then begin
-			if (nonblank(Userr.Location) or nonblank(Userr.AdditionalLocations)) then begin
-				allUserLocations = Userr.Location & "," & Userr.AdditionalLocations;
-				if (SetInSet(SMp.ToLocation,allUserLocations)==false) then begin
-					RecordCheckError(31055,"",-1,"ToLocation");
-					res = -1;
-					goto LStockMovVcRecordCheck;
+  if(usercanaction("AllowStockMovAnySM",false)==false)then begin
+		Userr.Code = CurrentUser;
+		if(ReadFirstMain(Userr,1,true))then begin
+			if ((SM2p.OKFlag==0) and (SMp.OKFlag!=0)) then begin
+				if (nonblank(Userr.Location) or nonblank(Userr.AdditionalLocations)) then begin
+					allUserLocations = Userr.Location & "," & Userr.AdditionalLocations;
+					if (SetInSet(SMp.ToLocation,allUserLocations)==false) then begin
+						RecordCheckError(31055,"",-1,"ToLocation");
+						res = -1;
+						goto LStockMovVcRecordCheck;
+					end;
 				end;
-			end;
 			
-			if(blank(Userr.Location))	then begin	
-				if (CheckUserLocation(SMp.ToLocation)==false) then begin
-					RecordCheckError(31055,"",-1,"ToLocation");
-					res = -1;
-					goto LStockMovVcRecordCheck;
+				if(blank(Userr.Location))	then begin	
+					if (CheckUserLocation(SMp.ToLocation)==false) then begin
+						RecordCheckError(31055,"",-1,"ToLocation");
+						res = -1;
+						goto LStockMovVcRecordCheck;
+					end;
 				end;
 			end;
-		end;
 		
-		if ((SM2p.OrdFlag==0) and (SMp.OrdFlag!=0)) then begin		// Edit ************************** BPI Ukraine - KramarAlexandr - Friday, 23 March 2018 10:18:05	
-			if (nonblank(Userr.Location) or nonblank(Userr.AdditionalLocations)) then begin
-				allUserLocations = Userr.Location & "," & Userr.AdditionalLocations;
-				if (SetInSet(SMp.FrLocation,allUserLocations)==false) then begin
-					RecordCheckError(31054,"",-1,"FrLocation");
-					res = -1;
-					goto LStockMovVcRecordCheck;
-				end;
-			end;				
+			if ((SM2p.OrdFlag==0) and (SMp.OrdFlag!=0)) then begin		// Edit ************************** BPI Ukraine - KramarAlexandr - Friday, 23 March 2018 10:18:05	
+				if (nonblank(Userr.Location) or nonblank(Userr.AdditionalLocations)) then begin
+					allUserLocations = Userr.Location & "," & Userr.AdditionalLocations;
+					if (SetInSet(SMp.FrLocation,allUserLocations)==false) then begin
+						RecordCheckError(31054,"",-1,"FrLocation");
+						res = -1;
+						goto LStockMovVcRecordCheck;
+					end;
+				end;				
 			
-			if(blank(Userr.Location))	then begin	
-				if (CheckUserLocation(SMp.FrLocation)==false) then begin
-					RecordCheckError(31054,"",-1,"FrLocation");
-					res = -1;
-					goto LStockMovVcRecordCheck;
-				end;
-			end;		
-		end;			
-	end; //Edit------------------------------------------------------------Dima  04.05.2016
+				if(blank(Userr.Location))	then begin	
+					if (CheckUserLocation(SMp.FrLocation)==false) then begin
+						RecordCheckError(31054,"",-1,"FrLocation");
+						res = -1;
+						goto LStockMovVcRecordCheck;
+					end;
+				end;		
+			end;			
+		end; //Edit------------------------------------------------------------Dima  04.05.2016
+	end;
 	if (res != -1) then begin //Edit***************************Sasha2,15:23 18.05.2017 {
   	oldnr = SMp.SerNr;
     oldOfficialSerNr = SMp.OfficialSerNr;

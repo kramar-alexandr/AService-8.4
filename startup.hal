@@ -289,6 +289,7 @@ begin
   StrSetText(RoyaltyRepApproveWithDiscount,"Approve Royalty Sales records with Approved Discount"); //!!PRODTRANSLATE
   StrSetText(RoyaltyRepApproveAnyPercentage,"Approve Royalty Sales records with Custom Royalty %"); //!!PRODTRANSLATE
   StrSetText(AllowAmendLine,"Дозволяти редагування рядка в накладній (сенсорн. екран)");
+  StrSetText(AllowStockMovAnySM,"Принимать чужие перемещения");// Edit ************************** BPI Ukraine - KramarAlexandr - Friday, 27 July 2018 16:45:26
   StrSetText(RoyaltyRepApprove,"Approve Royalty Sales records");
   StrSetText(ATPUToATRes,"Оприбутковані ОЗ в мат. відповідальність");
   StrSetText(AuthExp,"Підписати авансовий звіт");
