@@ -962,6 +962,8 @@ begin
 		end;
 	end;
 	
+	Actr.Comment = Actr.Comment & " | " & SVOr.MoveSVOToSGStatus;
+	
 	PointgroupMainPersonDet = needcreate;
 	return;
 end;
