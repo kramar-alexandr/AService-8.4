@@ -575,14 +575,11 @@ begin
 	Actr.SVOSerNr = SVOr.SerNr;
 	while(loopkey("SVOSerNr",Actr,1,TrHs)) begin
 		testf = true;
-		if(Actr.SVOSerNr!=SVOr.SerNr)then begin
-				TrHs=false;
-				testf = false;
-		end;
+		if(Actr.SVOSerNr!=SVOr.SerNr)then begin TrHs=false; testf = false; end;
 		if(Actr.ActType!="SERV")then begin testf = false; end;
-		
+		messagebox(0,SVO2r.MoveSVOToSGStatus);
 		if(testf)then begin
-		//messagebox(0,SVO2r.MoveSVOToSGStatus);
+		messagebox(0,SVO2r.MoveSVOToSGStatus);
 		//messagebox(0,right(Actr.Comment,len(SVO2r.MoveSVOToSGStatus) + 3));
 			if(right(Actr.Comment,len(SVO2r.MoveSVOToSGStatus) + 3)==" | " & SVO2r.MoveSVOToSGStatus) then begin
 				//messagebox(0,"UpdateActrComment");
@@ -754,7 +751,6 @@ BEGIN
 	if(SVOr.OrderStatus!=SVO2r.OrderStatus and SVO2r.OrderStatus==3)then begin
 		CloseActivitiesFromSVO(SVOr,"WAIT");
 	end;
-	
 	UpdateActrComment(SVOr,SVO2r);// Edit ************************** BPI Ukraine - KramarAlexandr - Monday, 1 October 2018 10:41:59
 	
   SVOVcRecordUpdateAfter = res;
