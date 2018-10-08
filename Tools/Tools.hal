@@ -891,10 +891,11 @@ begin
 	integer point;
 	boolean needcreate;
 	
+	
 	needcreate = false;
 	
 	point = StringToInt(left(SVOr.SerNr,1));
-	messagebox(0,"asdadsw");444
+	
 	
 	if(!DetermCrt)then begin
 		determtime = currenttime;
@@ -960,6 +961,7 @@ begin
 											needcreate = true;
 		end;
 	end;
+	
 	Actr.Comment = Actr.Comment & " | " & SVOr.MoveSVOToSGStatus;
 	
 	PointgroupMainPersonDet = needcreate;
