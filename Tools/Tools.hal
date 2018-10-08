@@ -894,7 +894,6 @@ begin
 	needcreate = false;
 	
 	point = StringToInt(left(SVOr.SerNr,1));
-	messagebox(0,"asdadsw");444
 	
 	if(!DetermCrt)then begin
 		determtime = currenttime;
