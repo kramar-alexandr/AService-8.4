@@ -412,7 +412,7 @@ begin
 	longint worksheet,CredNo,svonr;
 	integer cred;
 	vector boolean usedinvno;
-
+  string 20 UtverjFinishUser; //Edit_________________ABR 17:43 16.10.18
 	blockload(BCb);
 
   startreportnoheaderjob("Bonus");
@@ -474,6 +474,7 @@ begin
     OutString(pos[16],0,"Inv.rate",false); //Edit***************************Sasha2,11:06 27.04.2015
     OutString(pos[17],0,"Inv.currency",false); //Edit***************************Sasha2,11:06 27.04.2015
     OutString(pos[18],0,"SalesMan",false);
+		OutString(pos[18],0,"FinishUser",false);
     OutString(pos[19],0,"Inv. SalesMan",false);
 		OutString(pos[20],0,"ServiceMan",false);
 		OutString(pos[21],0,"Service Order",false);
@@ -554,6 +555,7 @@ begin
 								notenr = 1;
 								while (ReadRecordLink(IVr,notenr,SVOr,RLr) and trhs2) begin
 									notenr1=1;
+									UtverjFinishUser=SVOr.UtverjFinishUsr; //Edit_________________ABR 17:43 16.10.18
 									while (ReadRecordLink(SVOr,notenr1,WOr,RLr) and trhs2) begin
 										notenr2=1;
 											while (ReadRecordLink(WOr,notenr2,WSr,RLr) and trhs2) begin
@@ -621,6 +623,7 @@ begin
                     notenr = 1;
                     while (ReadRecordLink(IVr,notenr,SVOr,RLr) and trhs2) begin
                       notenr1=1;
+											UtverjFinishUser=SVOr.UtverjFinishUsr; //Edit_________________ABR 17:43 16.10.18
                       while (ReadRecordLink(SVOr,notenr1,WOr,RLr) and trhs2) begin
                         notenr2=1;
                           while (ReadRecordLink(WOr,notenr2,WSr,RLr) and trhs2) begin
@@ -761,6 +764,7 @@ begin
                     If(NonBlank(CUr.Code)) then begin
                       OutString(pos[18,0,CUr.SalesMan,false);
                     end; 
+										OutString(pos[18,0,UtverjFinishUser,false);
                     OutString(pos[19],0,IVr.SalesMan,false);
                     svonr = IVr.SVONr;
                     if(blank(enginer) or CredNo>-1)then begin// Edit ************************** Wednesday, 1 February 2017 14:44:22
@@ -840,6 +844,7 @@ begin
                     If(NonBlank(CUr.Code)) then begin
                       OutString(pos[18],0,CUr.SalesMan,false);
                     end; 
+										OutString(pos[18,0,UtverjFinishUser,false);
                     OutString(pos[19],0,IVr.SalesMan,false);
                     
                     svonr = IVr.SVONr;
@@ -1157,6 +1162,7 @@ l1:;
                           If(NonBlank(CUr.Code)) then begin
                             OutString(pos[18],0,CUr.SalesMan,false);
                           end; 
+													OutString(pos[18,0,UtverjFinishUser,false);
                           OutString(pos[19],0,newIVr.SalesMan,false);
                           svonr = newIVr.SVONr;
 													if(blank(enginer) or CredNo>-1)then begin// Edit ************************** Wednesday, 1 February 2017 14:44:22
