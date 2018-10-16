@@ -435,7 +435,7 @@ begin
 						EditField(h3+130,v+3*vs,130, "Клієнт",Normal,CustCode,false,CUSClass);
 		
 		
-		EditField(h1,v+=vs,60,"Дата заверш.діагн.",mode,EndDiagnDate,false,PasteCurDate); //Edit***************************Sasha2,15:40 25.10.2016
+		EditField(h1,v+=vs,60,"Дата заверш.діаг.",mode,EndDiagnDate,false,PasteCurDate); //Edit***************************Sasha2,15:40 25.10.2016
 		EditField(h2,v,60,"Час",mode,EndDiagnTime,false,0); //Edit***************************Sasha2,15:40 25.10.2016
 		EditField(h1,v+=vs,60,"Дата узгодж.",mode,EndUtverjDate,false,PasteCurDate); //Edit***************************Sasha2,15:40 25.10.2016
 		EditField(h2,v,60,"Час",mode,EndUtverjTime,false,0); //Edit***************************Sasha2,15:40 25.10.2016
