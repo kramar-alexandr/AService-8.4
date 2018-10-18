@@ -962,7 +962,7 @@ begin
 		end;
 	end;
 	
-	Actr.Contact =  SVOr.MoveSVOToSGStatus;
+	Actr.CUName =  SVOr.MoveSVOToSGStatus;
 	
 	PointgroupMainPersonDet = needcreate;
 	return;
