@@ -584,14 +584,8 @@ begin
 		if(testf)then begin
 		//messagebox(0,SVO2r.MoveSVOToSGStatus);
 		//messagebox(0,right(Actr.Comment,len(SVO2r.MoveSVOToSGStatus) + 3));
-			if(right(Actr.Comment,len(SVO2r.MoveSVOToSGStatus) + 3)==" | " & SVO2r.MoveSVOToSGStatus) then begin
-				//messagebox(0,"UpdateActrComment");
-				Actr.Comment = left(Actr.Comment,len(Actr.Comment)-(len(SVO2r.MoveSVOToSGStatus) + 3));
-				if(nonblank(SVOr.MoveSVOToSGStatus))then begin
-					Actr.Comment = " | " & SVOr.MoveSVOToSGStatus;
-				end;
-				//recordstore(Actr,true);
-			end;
+		Actr.Contact = SVOr.MoveSVOToSGStatus;
+
 			
 		end;
 	end;
