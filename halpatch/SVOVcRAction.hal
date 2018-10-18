@@ -588,11 +588,7 @@ begin
 		if(Actr.ActType!="SERV")then begin testf = false; end;
 		
 		if(testf)then begin
-		//messagebox(0,SVO2r.MoveSVOToSGStatus);
-		//messagebox(0,right(Actr.Comment,len(SVO2r.MoveSVOToSGStatus) + 3));
-		Actr.Contact = SVOr.MoveSVOToSGStatus;
-
-			
+			Actr.Contact = SVOr.MoveSVOToSGStatus;			
 		end;
 	end;
 

@@ -962,7 +962,7 @@ begin
 		end;
 	end;
 	
-	Actr.Comment = Actr.Comment & " | " & SVOr.MoveSVOToSGStatus;
+	Actr.Contact =  SVOr.MoveSVOToSGStatus;
 	
 	PointgroupMainPersonDet = needcreate;
 	return;
