@@ -391,7 +391,7 @@ begin
   ActiveFieldOnNew("CustCode");  
   //FormName(SVOForm);
   vs = 20; h3 = 550;
-  Tile(0,130,false,"",CustCode);
+  //Tile(0,130,false,"",CustCode);
 		EditField(h=90,v=6, 82,"Номер",Normal,SerNr,false,TSerSClass);
 		EditField(240,v,80,"Гр.Пр.",ViewOnly,SalesGroup,false,0);
 		EditField(h+350,v,100,"Сервіс. майстер",Normal,ServiceManager,false,UserSClass);// Edit ************************** Monday, 31 May 2010 9:22:11 AM
@@ -423,21 +423,24 @@ begin
   	vm = 20;
   	
 		
-		
-		TileButton(1,"Дата");
-		TileButton(2,"Товари");
-  	Tile(1,85,false,"1",CustContact);
-		EditField(h1=110,v=vm-20,60,"Дата замовл.",mode,TransDate,false,PasteCurDate);
-
+		v = v + 45;
+		//TileButton(1,"Дата");
+		//TileButton(2,"Товари");
+  	//Tile(1,85,false,"1",CustContact);
+		EditField(h1=110,v+=vs,60,"Дата замовл.",mode,TransDate,false,PasteCurDate);
 		h2=h2-40;
 		EditField(h2,v,60,"Час",mode,RegTime,false,0);// Edit ************************** Friday, 17 December 2010 09:38:48
-		EditField(h3+130,v,130,"Конт. особа",Normal,CustContact,false,ContactSClass);
-		EditField(h3+130,v+vs,130,"Власник",ViewOnly,Addr0,false,0);
-		EditField(h3+130,v+2*vs,130, "Клієнт",Normal,CustCode,false,CUSClass);
+						EditField(h3+130,v+vs,130,"Конт. особа",Normal,CustContact,false,ContactSClass);
+						EditField(h3+130,v+2*vs,130,"Власник",ViewOnly,Addr0,false,0);
+						EditField(h3+130,v+3*vs,130, "Клієнт",Normal,CustCode,false,CUSClass);
 		
 		
-		EditField(h1,v+=vs,60,"Дата заверш.діагн.",mode,EndDiagnDate,false,PasteCurDate); //Edit***************************Sasha2,15:40 25.10.2016
+		EditField(h1,v+=vs,60,"Дата заверш.діаг.",mode,EndDiagnDate,false,PasteCurDate); //Edit***************************Sasha2,15:40 25.10.2016
 		EditField(h2,v,60,"Час",mode,EndDiagnTime,false,0); //Edit***************************Sasha2,15:40 25.10.2016
+		EditField(h1,v+=vs,60,"Дата узгодж.",mode,EndUtverjDate,false,PasteCurDate); //Edit***************************Sasha2,15:40 25.10.2016
+		EditField(h2,v,60,"Час",mode,EndUtverjTime,false,0); //Edit***************************Sasha2,15:40 25.10.2016
+
+		
 		EditField(h1,v+=vs,60,"Дата заверш. рем.",mode,PlanShipDate,false,PasteCurDate);
 		EditField(h2,v,60,"Час",mode,DoneTime,false,0);// Edit ************************** Monday, 24 October 2016 17:56:04
 		EditField(h1,v+=vs,60,"Дата видачі",mode,RegDate,false,PasteCurDate);
@@ -446,7 +449,8 @@ begin
 			//EditField(-200,v,-20,"OldPhone",ViewOnly,OldPhone,false,0);
 		end;
 	
-		v=vm-20;
+		//v=vm-20;
+		v = v - 3*vm;
 		vx = v;
 		v = v + 20;
 		halpushbutton(h2+200,v,h2+325,v+50,"FastPaySVODsm","Швидка оплата");// Edit ************************** Friday, 25 November 2016 11:32:03 
@@ -456,15 +460,17 @@ begin
 		EditField(h2+240,v+=20,60, "Готівка",Normal,FastCash,false,0);
 		EditField(h2+340,v,60,"Банк",Normal,FastBank,false,0);// Edit ************************** BPI Ukraine - KramarAlexandr - Monday, 2 April 2018 11:27:59
 		EditField(h2+500,v,60,"Предоплата",Normal,FastPrepay,false,0);
-		v = vx;
+		v = vx-vs;
 		EditField(h2+85,v,80,"",Normal,CustomField7,false,UserSClass);// Edit ************************** Monday, 31 May 2010 9:22:11 AM
 		EditField(h2+85,v+=20,80,"",ViewOnly,DiagnosFinishUsr,false,0);
+		EditField(h2+85,v+=20,80,"",ViewOnly,UtverjFinishUsr,false,0);// Edit ************************** BPI Ukraine - KramarAlexandr - Thursday, 11 October 2018 18:14:26
 		EditField(h2+85,v+=20,80,"",ViewOnly,RepairFinishUsr,false,0);
 		EditField(h2+85,v+=20,80,"",ViewOnly,GiveAwayUsr,false,0);
 	
 		EnterSkip(Math);
-  Tile(2,380,false,"2",Math);
-		v = 24;
+  //Tile(2,380,false,"2",Math);
+		//v = 24;
+		v = v + 3*vm;
 		MatrixBegin(3,v,-50,v+45,-,1);
 		MatTypedRow(stp);
 		Flip(0);
@@ -494,7 +500,7 @@ begin
 		v=v+vs;  VTab(-35,v,-16,v+vs,ToolFlip,2,"B");
 		v=v+vs;  VTab(-35,v,-16,v+vs,ToolFlip,3,"C");
 
-		v = v + 25;
+		v = v + 245;
 		checkbox(100,v-20,0,"VIP",VIPStatus);
 		checkbox(200,v-20,0,"Товар від партнера з поверненням",ItemFrPartner); //Edit***************************Sasha2,14:19 08.12.2015
 		EditField(h=100,v,200,"Власник",Normal,Vlastnik,false,0);EditField(h+300,v,-20,"SN Зареєст.",Normal,CustomField8,false,0);

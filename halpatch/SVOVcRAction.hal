@@ -348,6 +348,8 @@ BEGIN
   SVOr.OutTime = blankt;
   SVOr.EndDiagnDate = blankd;
   SVOr.EndDiagnTime = blankt;
+  SVOr.EndUtverjDate = blankd;
+  SVOr.EndUtverjTime = blankt;
   SVOr.OrderStatus = 0;
   SVOr.DoneMark = 0;
   SVOr.CustomField7 = currentuser;
@@ -391,6 +393,7 @@ BEGIN
   SVOr.FastTermPrepayTime = blankt;
  	
  	SVOr.DiagnosFinishUsr = "";
+ 	SVOr.UtverjFinishUsr = "";
  	SVOr.RepairFinishUsr = "";
 	SVOr.GiveAwayUsr = "";
  	
@@ -511,6 +514,9 @@ BEGIN
   SetSVOFlags(SVOr);
   if (blankdate(SVO2r.EndDiagnDate) and nonblankdate(SVOr.EndDiagnDate)) then begin
 	SVOr.DiagnosFinishUsr = currentuser;
+  end;
+  if (blankdate(SVO2r.EndUtverjDate) and nonblankdate(SVOr.EndUtverjDate)) then begin
+	SVOr.UtverjFinishUsr = currentuser;
   end;
   if (blankdate(SVO2r.PlanShipDate) and nonblankdate(SVOr.PlanShipDate)) then begin
 	SVOr.RepairFinishUsr = currentuser;
@@ -919,6 +925,10 @@ BEGIN
   if((SVOr.OrderStatus==1 or SVOr.OrderStatus==2 or SVOr.OrderStatus==3) and blankdate(SVOr.EndDiagnDate))then begin //Edit***************************Sasha2,17:32 25.10.2016
   	SVOr.EndDiagnDate = currentdate;
   	SVOr.EndDiagnTime = CurrentTime;
+  end;
+  if((SVOr.OrderStatus==4) and blankdate(SVOr.EndUtverjDate))then begin //Edit***************************Sasha2,17:32 25.10.2016
+  	SVOr.EndUtverjDate = currentdate;
+  	SVOr.EndUtverjTime = CurrentTime;
   end;
   if(SVOr.OrderStatus==2 and blankdate(SVOr.PlanShipDate))then begin
   	SVOr.PlanShipDate = currentdate;// Edit ************************** Thursday, 10 September 2015 17:31:49
