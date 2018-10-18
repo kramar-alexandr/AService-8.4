@@ -962,7 +962,7 @@ begin
 		end;
 	end;
 	
-	Actr.CUName =  SVOr.MoveSVOToSGStatus;
+	Actr.CUName =  right(SVOr.MoveSVOToSGStatus,16);
 	
 	PointgroupMainPersonDet = needcreate;
 	return;
