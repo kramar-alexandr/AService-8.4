@@ -312,59 +312,69 @@ begin
   SubsetKeyBegin2(AllServSerNr);
   StoreInBaseKey;
   AppendFieldToKeyName(ServiceManager);
+  AppendFieldToKeyName(UtverjFinishUsr);
   KeySegment(SerNr);
   
   SubsetKeyBegin2(AllServTransDate);
   StoreInBaseKey;
   AppendFieldToKeyName(ServiceManager);
+  AppendFieldToKeyName(UtverjFinishUsr);
   KeySegment(TransDate);
   KeySegment(SerNr);
   
   SubsetKeyBegin2(AllServItemName);
   StoreInBaseKey;
   AppendFieldToKeyName(ServiceManager);
+  AppendFieldToKeyName(UtverjFinishUsr);
   KeySegment(ItemName);
   KeySegment(SerNr);
   
   SubsetKeyBegin2(AllServGaranty);
   StoreInBaseKey;
   AppendFieldToKeyName(ServiceManager);
+  AppendFieldToKeyName(UtverjFinishUsr);
   KeySegment(Garanty);
   KeySegment(SerNr);
   
   SubsetKeyBegin2(AllServVIPStatus);
   StoreInBaseKey;
   AppendFieldToKeyName(ServiceManager);
+  AppendFieldToKeyName(UtverjFinishUsr);
   KeySegment(VIPStatus);
   KeySegment(SerNr);
   
   SubsetKeyBegin2(AllServOrderStatus);
   StoreInBaseKey;
   AppendFieldToKeyName(ServiceManager);
+  AppendFieldToKeyName(UtverjFinishUsr);
   KeySegment(OrderStatus);
   KeySegment(SerNr);
   
   SubsetKeyBegin2(AllServServiceManager);
   StoreInBaseKey;
   AppendFieldToKeyName(ServiceManager);
+  AppendFieldToKeyName(UtverjFinishUsr);
   KeySegment(ServiceManager);
   KeySegment(SerNr);
   
   SubsetKeyBegin2(AllServPhone2);// Edit ************************** Monday, 6 February 2017 14:16:52
   StoreInBaseKey;
   AppendFieldToKeyName(ServiceManager);
+  AppendFieldToKeyName(UtverjFinishUsr);
   KeySegment(Phone2);
   KeySegment(SerNr);
   
   SubsetKeyBegin2(AllServKontinfo1);// Edit ************************** Monday, 6 February 2017 14:16:52
   StoreInBaseKey;
   AppendFieldToKeyName(ServiceManager);
+  AppendFieldToKeyName(UtverjFinishUsr);
   KeySegment(Kontinfo1);
   KeySegment(SerNr);
   
   SubsetKeyBegin2(AllServSerialNrTextSearch);// Edit ************************** Monday, 6 February 2017 14:16:52
   StoreInBaseKey;
   AppendFieldToKeyName(ServiceManager);
+  AppendFieldToKeyName(UtverjFinishUsr);
   KeySegment(SerialNrTextSearch);
   KeySegment(SerNr);
     
