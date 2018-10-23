@@ -414,8 +414,8 @@ begin
 		ButtonFrame(h+500,vm+16,130,6,"");
 		RadioButton(h+500,vm+16,0,0,"В очікуванні",OrderStatus);
 		RadioButton(h+500,vm+16+16,5,0,"На діагностиці",OrderStatus);
-		RadioButton(h+500,vm+48+16,1,0,"Діаг. заверш.",OrderStatus);
-		RadioButton(h+500,vm+32+16,4,0,"На узгодженні",OrderStatus);
+		RadioButton(h+500,vm+32+16,1,0,"Діаг. заверш.",OrderStatus);
+		RadioButton(h+500,vm+48+16,4,0,"На узгодженні",OrderStatus);
 		RadioButton(h+500,vm+64+16,3,0,"Очікує запч.",OrderStatus);
 		RadioButton(h+500,vm+80+16,2,0,"Ремонт виконано",OrderStatus);
 		//vm = vm + 32;
