@@ -1536,6 +1536,7 @@ begin
 	getwindowrecord(wn,newAcrt);
 	
 	recordnew(Actr);
+	wn = OpenWindow("ActDClass",1,0,"","",Actr);
 	recordcopy(Actr,newAcrt);
 	Actr.SerNr = blankval;
 	Actr.OKFlag = 0;
@@ -1555,8 +1556,8 @@ begin
 			end;
 		end;
 		closewindow(wn);
-		wn = OpenWindow("ActDClass",1,0,"","",Actr);
-		SetWindowState(wn,Rs_insert);
+		putwindowrecord(wn,Actr);
+		//SetWindowState(wn,Rs_insert);
 	end;
 
 return;
