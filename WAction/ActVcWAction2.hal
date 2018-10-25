@@ -1527,33 +1527,30 @@ end;
 
 global procedure ActBackDsm()
 begin
-	record ActVc Actr,newAcrt;
+	record ActVc Actr;
 	integer wn;
 	string 50 from,to;
 	
 	wn = curwindow;
 	deselectwindow(wn,true);
-	getwindowrecord(wn,newAcrt);
-	closewindow(wn);
-	recordnew(Actr);
-	Actr.OKFlag = 0;
-	from = newAcrt.MainPersons;
-	to = newAcrt.Supervisor;
-	Actr.MainPersons = to;
-	Actr.Supervisor = from;
-	Actr.Comment = "RE:" & newAcrt.Comment;
-	Actr.TransDate = currentdate;
-	Actr.StartTime = addminutes(currenttime,2);
-	if(!setinset(newAcrt.Supervisor,newAcrt.CCPersons))then begin
-		if(blank(newAcrt.CCPersons))then begin
-			Actr.CCPersons = newAcrt.Supervisor;
-		end else begin
-			Actr.CCPersons = newAcrt.CCPersons & "," & newAcrt.Supervisor;
+	getwindowrecord(wn,Actr);
+	if(Actr.OKFlag==0)then begin
+		from = Actr.MainPersons;
+		to = Actr.Supervisor;
+		Actr.MainPersons = to;
+		Actr.Supervisor = from;
+		Actr.Comment = "RE:" & Actr.Comment;
+		Actr.TransDate = currentdate;
+		Actr.StartTime = addminutes(currenttime,2);
+		if(!setinset(Actr.Supervisor,Actr.CCPersons))then begin
+			if(blank(Actr.CCPersons))then begin
+				Actr.CCPersons = Actr.Supervisor;
+			end else begin
+				Actr.CCPersons = Actr.CCPersons & "," & Actr.Supervisor;
+			end;
 		end;
+		putwindowrecord(wn,Actr);
 	end;
-	wn = OpenWindow("ActDClass",1,0,"","",Actr);
-	putwindowrecord(wn,Actr);
-		//SetWindowState(wn,Rs_insert);
 
 return;
 end;
