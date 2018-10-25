@@ -1555,7 +1555,8 @@ begin
 			end;
 		end;
 		closewindow(wn);
-		OpenWindow("ActDClass",1,0,"","",Actr);
+		wn = OpenWindow("ActDClass",1,0,"","",Actr);
+		SetWindowState(wn,Rs_insert);
 	end;
 
 return;
