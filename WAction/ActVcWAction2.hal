@@ -1555,6 +1555,7 @@ begin
 			end;
 		end;
 		putwindowrecord(wn,Actr);
+		SetWindowState(wn,Rs_insert);
 	end;
 
 return;
