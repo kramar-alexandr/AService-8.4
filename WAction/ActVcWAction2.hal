@@ -1537,6 +1537,7 @@ begin
 	getwindowrecord(wn,oldActr);
 	closewindow(wn);
 	recordnew(Actr);
+	recordnew(old1Actr);
 	wn = OpenWindow("ActDClass",1,0,"","",Actr);
 	recordcopy(Actr,oldActr);
 	Actr.SerNr = -1;
