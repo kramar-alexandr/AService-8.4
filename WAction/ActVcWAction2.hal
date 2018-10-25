@@ -1538,7 +1538,7 @@ begin
 	closewindow(wn);
 	recordnew(Actr);
 	wn = OpenWindow("ActDClass",1,0,"","",Actr);
-	recordcopy(Actr,oldActr);
+	recordcopy(oldActr,Actr);
 	Actr.SerNr = -1;
 	if(Actr.OKFlag==0)then begin
 		from = Actr.MainPersons;
