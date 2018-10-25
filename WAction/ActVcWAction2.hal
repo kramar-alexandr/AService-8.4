@@ -1537,7 +1537,7 @@ begin
 	
 	recordnew(Actr);
 	recordcopy(Actr,newAcrt);
-	Actr.SerNr = -1;
+	Actr.SerNr = nextsernr();
 	Actr.OKFlag = 0;
 	if(Actr.OKFlag==0)then begin
 		from = Actr.MainPersons;
@@ -1554,8 +1554,8 @@ begin
 				Actr.CCPersons = Actr.CCPersons & "," & Actr.Supervisor;
 			end;
 		end;
-		putwindowrecord(wn,Actr);
-		SetWindowState(wn,Rs_insert);
+		closewindow(wn);
+		OpenWindow("ActDClass",1,0,"","",Actr);
 	end;
 
 return;
