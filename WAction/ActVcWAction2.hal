@@ -1538,7 +1538,7 @@ begin
 	closewindow(wn);
 	recordnew(Actr);
 	recordnew(old1Actr);
-	wn = OpenWindow("ActDClass",1,0,"","",Actr);
+	
 	recordcopy(Actr,oldActr);
 	Actr.SerNr = -1;
 	Actr.UUID = old1Actr.UUID;
@@ -1563,8 +1563,7 @@ begin
 		createrecordlink(SVOr,currentcompany,Actr,currentcompany);
 		createrecordlink(Actr,currentcompany,SVOr,currentcompany);
 	end;
-	deselectwindow(wn,true);
-	putwindowrecord(wn,Actr);
+	wn = OpenWindow("ActDClass",1,0,"","",Actr);
 
 return;
 end;
