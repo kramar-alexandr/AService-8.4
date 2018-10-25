@@ -1538,32 +1538,30 @@ begin
 	closewindow(wn);
 	recordnew(Actr);
 	wn = OpenWindow("ActDClass",1,0,"","",Actr);
-	recordcopy(oldActr,Actr);
+	recordcopy(Actr,oldActr);
 	Actr.SerNr = -1;
-	if(Actr.OKFlag==0)then begin
-		from = Actr.MainPersons;
-		to = Actr.Supervisor;
-		Actr.MainPersons = to;
-		Actr.Supervisor = from;
-		Actr.Comment = "RE:" & Actr.Comment;
-		Actr.TransDate = currentdate;
-		Actr.StartTime = addminutes(currenttime,2);
-		if(!setinset(Actr.Supervisor,Actr.CCPersons))then begin
-			if(blank(Actr.CCPersons))then begin
-				Actr.CCPersons = Actr.Supervisor;
-			end else begin
-				Actr.CCPersons = Actr.CCPersons & "," & Actr.Supervisor;
-			end;
+	from = Actr.MainPersons;
+	to = Actr.Supervisor;
+	Actr.MainPersons = to;
+	Actr.Supervisor = from;
+	Actr.Comment = "RE:" & Actr.Comment;
+	Actr.TransDate = currentdate;
+	Actr.StartTime = addminutes(currenttime,2);
+	if(!setinset(Actr.Supervisor,Actr.CCPersons))then begin
+		if(blank(Actr.CCPersons))then begin
+			Actr.CCPersons = Actr.Supervisor;
+		end else begin
+			Actr.CCPersons = Actr.CCPersons & "," & Actr.Supervisor;
 		end;
-		Actr.SerNr = NextSerNr("ActVc",currentdate,-1,false,"");
-		recordinsert(Actr,true);
-		SVOr.SerNr = Actr.SVOSerNr;
-		if(readfirstmain(SVOr,1,true))then begin
-			createrecordlink(SVOr,currentcompany,Actr,currentcompany);
-			createrecordlink(Actr,currentcompany,SVOr,currentcompany);
-		end;
-		putwindowrecord(wn,Actr);
 	end;
+	Actr.SerNr = NextSerNr("ActVc",currentdate,-1,false,"");
+	recordinsert(Actr,true);
+	SVOr.SerNr = Actr.SVOSerNr;
+	if(readfirstmain(SVOr,1,true))then begin
+		createrecordlink(SVOr,currentcompany,Actr,currentcompany);
+		createrecordlink(Actr,currentcompany,SVOr,currentcompany);
+	end;
+	putwindowrecord(wn,Actr);
 
 return;
 end;
