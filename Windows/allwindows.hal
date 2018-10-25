@@ -8516,6 +8516,7 @@ begin
     v = 6; vs = 20; h = 100; h2 = 270; h3 = 420; h4 = 450; fs = 100;
     CommunicateButton;
     Tile(0,160,false,"",Comment);
+    EditField(h,v,50,"#",ViewOnly,SerNr,false,0);
     EditField(h,v+=vs,-40,"Текст",Normal,Comment,false,0);
     EditField(h,v+=vs,-40,"Текст 1",Normal,Comment1,false,0);// Edit ************************** BPI Ukraine - KramarAlexandr - Monday, 27 November 2017 16:06:24
     EditField(h,v+=vs,80,"Тип",Normal,ActType,false,ActTypeSClass);//ActType2SClass
