@@ -1525,15 +1525,21 @@ begin
   return;
 end;
 
-global procedure ActBackDsm()
+global updating procedure ActBackDsm()
 begin
-	record ActVc Actr;
+	record ActVc Actr,oldActr;
 	integer wn;
 	string 50 from,to;
+	record SVOVc SVOr;
 	
 	wn = curwindow;
 	deselectwindow(wn,true);
-	getwindowrecord(wn,Actr);
+	getwindowrecord(wn,oldActr);
+	closewindow(wn);
+	recordnew(Actr);
+	wn = OpenWindow("ActDClass",1,0,"","",Actr);
+	recordcopy(Actr,oldActr);
+	Actr.SerNr = -1;
 	if(Actr.OKFlag==0)then begin
 		from = Actr.MainPersons;
 		to = Actr.Supervisor;
@@ -1548,6 +1554,13 @@ begin
 			end else begin
 				Actr.CCPersons = Actr.CCPersons & "," & Actr.Supervisor;
 			end;
+		end;
+		Actr.SerNr = NextSerNr("ActVc",currentdate,-1,false,"");
+		recordinsert(Actr,true);
+		SVOr.SerNr = Actr.SVOSerNr;
+		if(readfirstmain(SVOr,1,true))then begin
+			createrecordlink(SVOr,currentcompany,Actr,currentcompany);
+			createrecordlink(Actr,currentcompany,SVOr,currentcompany);
 		end;
 		putwindowrecord(wn,Actr);
 	end;
