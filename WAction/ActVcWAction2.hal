@@ -1537,8 +1537,8 @@ begin
 	getwindowrecord(wn,oldActr);
 	closewindow(wn);
 	recordnew(Actr);
-	recordnew(old1Actr);
-	
+	//recordnew(old1Actr);
+	old1Actr.UUID = Actr.UUID;
 	recordcopy(Actr,oldActr);
 	Actr.SerNr = -1;
 	Actr.UUID = old1Actr.UUID;
@@ -1556,7 +1556,7 @@ begin
 			Actr.CCPersons = Actr.CCPersons & "," & Actr.Supervisor;
 		end;
 	end;
-	Actr.SerNr = NextSerNr("ActVc",currentdate,-1,false,"");
+	//Actr.SerNr = NextSerNr("ActVc",currentdate,-1,false,"");
 	recordinsert(Actr,true);
 	SVOr.SerNr = Actr.SVOSerNr;
 	if(readfirstmain(SVOr,1,true))then begin
