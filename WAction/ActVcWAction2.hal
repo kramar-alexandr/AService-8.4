@@ -26,6 +26,7 @@ remote updating function LongInt MailFromActDsmRemote(record ActVc,var record Ma
 external procedure FindUserMailboxName(string,var string,var string);
 external function Boolean OpenContactRecord(string,string);
 external outer function Boolean OuterActDClassOpenFromSerNrRecord(record ActVc);
+remote updating procedure CreareActReply(var record ActVc,record ActVc);// Edit ************************** BPI Ukraine - KramarAlexandr - Thursday, 25 October 2018 14:13:42
 
 procedure DoNewActivity(Integer wn,string username,LongInt mother,Integer atodoflag)
 begin
@@ -1535,6 +1536,14 @@ begin
 	wn = curwindow;
 	deselectwindow(wn,true);
 	getwindowrecord(wn,oldActr);
+	CreareActReply(Actr,oldActr);
+	closewindow(wn);
+	OpenWindow("ActDClass",1,0,"","",Actr);
+	
+	/*
+	wn = curwindow;
+	deselectwindow(wn,true);
+	getwindowrecord(wn,oldActr);
 	closewindow(wn);
 	recordnew(Actr);
 	//recordnew(old1Actr);
@@ -1564,6 +1573,7 @@ begin
 		createrecordlink(Actr,currentcompany,SVOr,currentcompany);
 	end;
 	wn = OpenWindow("ActDClass",1,0,"","",Actr);
-
+	*/
+	
 return;
 end;
