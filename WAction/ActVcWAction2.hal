@@ -1534,7 +1534,7 @@ begin
 	wn = curwindow;
 	deselectwindow(wn,true);
 	getwindowrecord(wn,newAcrt);
-	
+	closewindow(wn);
 	recordnew(Actr);
 	wn = OpenWindow("ActDClass",1,0,"","",Actr);
 	recordcopy(Actr,newAcrt);
@@ -1555,7 +1555,7 @@ begin
 				Actr.CCPersons = Actr.CCPersons & "," & Actr.Supervisor;
 			end;
 		end;
-		closewindow(wn);
+		
 		putwindowrecord(wn,Actr);
 		//SetWindowState(wn,Rs_insert);
 	end;
