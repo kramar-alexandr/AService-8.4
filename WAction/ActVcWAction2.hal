@@ -1537,7 +1537,7 @@ begin
 	
 	recordnew(Actr);
 	recordcopy(Actr,newAcrt);
-	Actr.SerNr = nextsernr();
+	Actr.SerNr = blankval;
 	Actr.OKFlag = 0;
 	if(Actr.OKFlag==0)then begin
 		from = Actr.MainPersons;
