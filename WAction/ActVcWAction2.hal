@@ -1561,6 +1561,7 @@ begin
 		createrecordlink(SVOr,currentcompany,Actr,currentcompany);
 		createrecordlink(Actr,currentcompany,SVOr,currentcompany);
 	end;
+	deselectwindow(wn,true);
 	putwindowrecord(wn,Actr);
 
 return;
