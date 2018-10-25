@@ -1527,7 +1527,7 @@ end;
 
 global updating procedure ActBackDsm()
 begin
-	record ActVc Actr,oldActr;
+	record ActVc Actr,oldActr,old1Actr;
 	integer wn;
 	string 50 from,to;
 	record SVOVc SVOr;
@@ -1540,7 +1540,7 @@ begin
 	wn = OpenWindow("ActDClass",1,0,"","",Actr);
 	recordcopy(Actr,oldActr);
 	Actr.SerNr = -1;
-	Actr.UUID = "";
+	Actr.UUID = old1Actr.UUID;
 	from = Actr.MainPersons;
 	to = Actr.Supervisor;
 	Actr.MainPersons = to;
