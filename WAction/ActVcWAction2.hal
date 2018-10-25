@@ -1527,14 +1527,16 @@ end;
 
 global procedure ActBackDsm()
 begin
-	record ActVc Actr;
+	record ActVc Actr,newAcrt;
 	integer wn;
 	string 50 from,to;
 	
 	wn = curwindow;
 	deselectwindow(wn,true);
-	getwindowrecord(wn,Actr);
-	Actr.SerNr = -1;
+	getwindowrecord(wn,newAcrt);
+	
+	recordnew(Actr);
+	recordcopy(Actr,newAcrt);
 	Actr.OKFlag = 0;
 	if(Actr.OKFlag==0)then begin
 		from = Actr.MainPersons;
