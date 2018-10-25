@@ -1534,6 +1534,8 @@ begin
 	wn = curwindow;
 	deselectwindow(wn,true);
 	getwindowrecord(wn,Actr);
+	Actr.SerNr = -1;
+	Actr.OKFlag = 0;
 	if(Actr.OKFlag==0)then begin
 		from = Actr.MainPersons;
 		to = Actr.Supervisor;
