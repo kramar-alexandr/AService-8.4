@@ -1555,12 +1555,12 @@ begin
 		end;
 	end;
 	Actr.SerNr = NextSerNr("ActVc",currentdate,-1,false,"");
-	recordstore(Actr,true);
+	//recordstore(Actr,true);
 	SVOr.SerNr = Actr.SVOSerNr;
-	if(readfirstmain(SVOr,1,true))then begin
+	/*if(readfirstmain(SVOr,1,true))then begin
 		createrecordlink(SVOr,currentcompany,Actr,currentcompany);
 		createrecordlink(Actr,currentcompany,SVOr,currentcompany);
-	end;
+	end;*/
 	deselectwindow(wn,true);
 	putwindowrecord(wn,Actr);
 
