@@ -1536,29 +1536,24 @@ begin
 	getwindowrecord(wn,newAcrt);
 	closewindow(wn);
 	recordnew(Actr);
-	wn = OpenWindow("ActDClass",1,0,"","",Actr);
-	recordcopy(Actr,newAcrt);
-	Actr.SerNr = blankval;
 	Actr.OKFlag = 0;
-	if(Actr.OKFlag==0)then begin
-		from = Actr.MainPersons;
-		to = Actr.Supervisor;
-		Actr.MainPersons = to;
-		Actr.Supervisor = from;
-		Actr.Comment = "RE:" & Actr.Comment;
-		Actr.TransDate = currentdate;
-		Actr.StartTime = addminutes(currenttime,2);
-		if(!setinset(Actr.Supervisor,Actr.CCPersons))then begin
-			if(blank(Actr.CCPersons))then begin
-				Actr.CCPersons = Actr.Supervisor;
-			end else begin
-				Actr.CCPersons = Actr.CCPersons & "," & Actr.Supervisor;
-			end;
+	from = newAcrt.MainPersons;
+	to = newAcrt.Supervisor;
+	Actr.MainPersons = to;
+	Actr.Supervisor = from;
+	Actr.Comment = "RE:" & newAcrt.Comment;
+	Actr.TransDate = currentdate;
+	Actr.StartTime = addminutes(currenttime,2);
+	if(!setinset(newAcrt.Supervisor,newAcrt.CCPersons))then begin
+		if(blank(newAcrt.CCPersons))then begin
+			Actr.CCPersons = newAcrt.Supervisor;
+		end else begin
+			Actr.CCPersons = newAcrt.CCPersons & "," & newAcrt.Supervisor;
 		end;
-		
-		putwindowrecord(wn,Actr);
-		//SetWindowState(wn,Rs_insert);
 	end;
+	wn = OpenWindow("ActDClass",1,0,"","",Actr);
+	putwindowrecord(wn,Actr);
+		//SetWindowState(wn,Rs_insert);
 
 return;
 end;
