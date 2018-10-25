@@ -1540,6 +1540,7 @@ begin
 	wn = OpenWindow("ActDClass",1,0,"","",Actr);
 	recordcopy(Actr,oldActr);
 	Actr.SerNr = -1;
+	Actr.UUID = "";
 	from = Actr.MainPersons;
 	to = Actr.Supervisor;
 	Actr.MainPersons = to;
@@ -1555,12 +1556,12 @@ begin
 		end;
 	end;
 	Actr.SerNr = NextSerNr("ActVc",currentdate,-1,false,"");
-	//recordstore(Actr,true);
+	recordinsert(Actr,true);
 	SVOr.SerNr = Actr.SVOSerNr;
-	/*if(readfirstmain(SVOr,1,true))then begin
+	if(readfirstmain(SVOr,1,true))then begin
 		createrecordlink(SVOr,currentcompany,Actr,currentcompany);
 		createrecordlink(Actr,currentcompany,SVOr,currentcompany);
-	end;*/
+	end;
 	deselectwindow(wn,true);
 	putwindowrecord(wn,Actr);
 
