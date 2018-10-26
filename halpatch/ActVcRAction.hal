@@ -1624,8 +1624,8 @@ begin
 		
 		notenr = 1;
 		while (ReadRecordLink(oldActr,notenr,Noter,RLr)) begin
-			createrecordlink(SVOr,currentcompany,Actr,currentcompany);
-			createrecordlink(Actr,currentcompany,SVOr,currentcompany);
+			createrecordlink(Noter,currentcompany,Actr,currentcompany);
+			createrecordlink(Actr,currentcompany,Noter,currentcompany);
 			notenr = notenr + 1;
 		end;
 		
