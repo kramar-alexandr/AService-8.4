@@ -1592,6 +1592,9 @@ begin
 	string 50 from,to;
 	record SVOVc SVOr;
 	record ActVc uidAtr;
+	record NotepadVc Noter;
+	Integer notenr;
+	record RLinkVc RLr;
 	
 	recordnew(Actr);
 	recordnew(uidAtr);
@@ -1618,6 +1621,14 @@ begin
 			createrecordlink(SVOr,currentcompany,Actr,currentcompany);
 			createrecordlink(Actr,currentcompany,SVOr,currentcompany);
 		end;
+		
+		notenr = 1;
+		while (ReadRecordLink(oldActr,notenr,Noter,RLr)) begin
+			createrecordlink(SVOr,currentcompany,Actr,currentcompany);
+			createrecordlink(Actr,currentcompany,SVOr,currentcompany);
+			notenr = notenr + 1;
+		end;
+		
 	end;
 	
 return;
