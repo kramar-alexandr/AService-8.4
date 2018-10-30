@@ -533,7 +533,10 @@ BEGIN
   	SGr.SGroupCode = SVOr.MoveSVOToSG;
   	readfirstmain(SGr,1,true);
   	SVOr.MoveSVOToSGStatus = "Ремонт перемещается на " & SGr.SGroupName;
-  	SVOr.MoveSVOToSG = "";  	
+  	SVOr.MoveSVOToSG = "";
+  	CreateSVOSerNoterForMove(SVOr,currenttime & " " & currentdate & " " & currentuser & " " & SVOr.MoveSVOToSGStatus);
+  	CreateCustomActivityFromSVO(SVOr,"MOVE",SVOr.SalesMan,currentdate,SVOr.MoveSVOToSGStatus,SGr.SGroupCode);
+  	
   end;
   
 	// Edit End ---------------------------------------------- Edit End
@@ -679,13 +682,6 @@ BEGIN
         recordinsert(SVHistr,true);
       end;
     end;
-  
-   	
-  	if(SVOr.SalesGroup=="1GR")then begin
-			if(SVOr.OrderStatus==1 and SVO2r.OrderStatus!=1)then begin
-				CreateCustomActivityFromSVO(SVOr,"MES","SHILKIN,SA",currentdate,"Согласовать ремонт","");
-			end;
-  	end;
   
 	// Edit End ---------------------------------------------- Edit End
 	
