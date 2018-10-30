@@ -682,6 +682,13 @@ BEGIN
         recordinsert(SVHistr,true);
       end;
     end;
+    
+    if(SVOr.SalesGroup=="1GR")then begin
+			if(SVOr.OrderStatus==1 and SVO2r.OrderStatus!=1)then begin
+				CreateCustomActivityFromSVO(SVOr,"MES","SHILKIN",currentdate,"Согласовать ремонт","");
+			end;
+  	end;
+  
   
 	// Edit End ---------------------------------------------- Edit End
 	
