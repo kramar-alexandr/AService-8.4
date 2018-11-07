@@ -134,6 +134,7 @@ begin
     RecordField(UtverjFinishUsr,M4Str,20,0);// Edit ************************** BPI Ukraine - KramarAlexandr - Thursday, 11 October 2018 18:14:08
     RecordField(EndUtverjDate,M4Date,0,0);// Edit ************************** BPI Ukraine - KramarAlexandr - Thursday, 11 October 2018 18:14:41
     RecordField(EndUtverjTime,M4Time,0,0);// Edit ************************** BPI Ukraine - KramarAlexandr - Thursday, 11 October 2018 18:14:41
+		RecordField(InfoGet,M4Int,0,0); //Edit_________________ABR 07.11.2018 10:48
     SubsetKeyBegin2(RegDate);// Edit ************************** Wednesday, 15 February 2017 19:31:45
   StoreInBaseKey;
   AppendFieldToKeyName(SalesGroup);
