@@ -537,9 +537,9 @@ begin
 		EditField(h,v+=vs,300,"Інше:",Normal,Inshe,false,0);
 		ButtonFrame(h+600,v-2*vs,90,6,"Звідки дізналися");
 		RadioButton(h+600,v-2*vs,0,0,"-",InfoGet);
-		RadioButton(h+600,v-vs,1,1,"з інтернета",InfoGet);
-		RadioButton(h+600,v,2,2,"IStudio",InfoGet);
-		RadioButton(h+600,v+vs,3,3,"від друзів",InfoGet);
+		RadioButton(h+600,v-vs,1,1,"З інтернета",InfoGet);
+		RadioButton(h+600,v,2,2,"Магазин",InfoGet);
+		RadioButton(h+600,v+vs,3,3,"Від друзів",InfoGet);
 
 		//v=v+10;
 		EditField(h,v+=vs,50,"Виробник",Normal,Region,false,ITSClass);
