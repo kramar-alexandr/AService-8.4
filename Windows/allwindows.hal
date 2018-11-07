@@ -425,6 +425,7 @@ begin
 		RadioButton(h+620,vm+32+20,1,0,"З інтернета",InfoGet);
 		RadioButton(h+620,vm+48+20,2,0,"Магазин",InfoGet);
 		RadioButton(h+620,vm+64+20,3,0,"Від друзів",InfoGet);
+		RadioButton(h+620,vm+80+20,3,0,"Від друзів",InfoGet);
   	
   	vm = 20;
   	
