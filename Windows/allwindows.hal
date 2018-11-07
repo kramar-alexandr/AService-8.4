@@ -411,20 +411,20 @@ begin
 		
 		h2=240;
 		vm = 0;
-		ButtonFrame(h+450,vm+16,120,6,"");
-		RadioButton(h+450,vm+16,0,0,"В очікуванні",OrderStatus);
-		RadioButton(h+450,vm+16+16,5,0,"На діагностиці",OrderStatus);
-		RadioButton(h+450,vm+32+16,1,0,"Діаг. заверш.",OrderStatus);
-		RadioButton(h+450,vm+48+16,4,0,"На узгодженні",OrderStatus);
-		RadioButton(h+450,vm+64+16,3,0,"Очікує запч.",OrderStatus);
-		RadioButton(h+450,vm+80+16,2,0,"Ремонт виконано",OrderStatus);
+		ButtonFrame(h+460,vm+16,120,6,"");
+		RadioButton(h+460,vm+16,0,0,"В очікуванні",OrderStatus);
+		RadioButton(h+460,vm+16+16,5,0,"На діагностиці",OrderStatus);
+		RadioButton(h+460,vm+32+16,1,0,"Діаг. заверш.",OrderStatus);
+		RadioButton(h+460,vm+48+16,4,0,"На узгодженні",OrderStatus);
+		RadioButton(h+460,vm+64+16,3,0,"Очікує запч.",OrderStatus);
+		RadioButton(h+460,vm+80+16,2,0,"Ремонт виконано",OrderStatus);
 		//vm = vm + 32;
 		
-		ButtonFrame(h+600,vm+16+16,90,4,"Звідки дізналися");
-		RadioButton(h+600,vm+16+16,0,0,"-",InfoGet);
-		RadioButton(h+600,vm+32+16,1,0,"З інтернета",InfoGet);
-		RadioButton(h+600,vm+48+16,2,0,"Магазин",InfoGet);
-		RadioButton(h+600,vm+64+16,3,0,"Від друзів",InfoGet);
+		ButtonFrame(h+620,vm+16+20,90,4,"Звідки дізналися");
+		RadioButton(h+620,vm+16+20,0,0,"-",InfoGet);
+		RadioButton(h+620,vm+32+20,1,0,"З інтернета",InfoGet);
+		RadioButton(h+620,vm+48+20,2,0,"Магазин",InfoGet);
+		RadioButton(h+620,vm+64+20,3,0,"Від друзів",InfoGet);
   	
   	vm = 20;
   	
