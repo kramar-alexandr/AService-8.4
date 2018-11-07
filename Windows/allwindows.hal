@@ -529,17 +529,17 @@ begin
 		v=v+10;
 		EditField(h,v+=vs,600,"Наявні деф.",Normal,Comment3,false,0); // Edit Dima ************* 2018-02-26 12:24 PM
 		EditField(h,v+=vs,600,"",Normal,Comment4,false,0); // Edit Dima ************* 2018-02-26 12:26 PM
-		HalPushButton(h+630,v-3,h+690,v+155,"DefectsButtonDsm","Дефекти"); // Edit Dima ************* 2018-02-26 12:38 PM
+		HalPushButton(h+630,v-13,h+690,v+145,"DefectsButtonDsm","Дефекти"); // Edit Dima ************* 2018-02-26 12:38 PM
 		v=v+10;
 		StaticText(h,v+=vs,"Комплектність",true);
 		EditField(h,v+=vs-10,300,"Батарея:",Normal,Batary,false,0);
 		EditField(h,v+=vs,300,"Зар. пристрій:",Normal,Zaryadka,false,0);
 		EditField(h,v+=vs,300,"Інше:",Normal,Inshe,false,0);
-		ButtonFrame(h+600,v-2*vs,90,6,"Звідки дізналися");
-		RadioButton(h+600,v-2*vs,0,0,"-",InfoGet);
-		RadioButton(h+600,v-vs,1,1,"З інтернета",InfoGet);
-		RadioButton(h+600,v,2,2,"Магазин",InfoGet);
-		RadioButton(h+600,v+vs,3,3,"Від друзів",InfoGet);
+		ButtonFrame(h+600,v-2*16,90,4,"Звідки дізналися");
+		RadioButton(h+600,v-2*16,0,0,"-",InfoGet);
+		RadioButton(h+600,v-16,1,0,"З інтернета",InfoGet);
+		RadioButton(h+600,v,2,0,"Магазин",InfoGet);
+		RadioButton(h+600,v+16,3,0,"Від друзів",InfoGet);
 
 		//v=v+10;
 		EditField(h,v+=vs,50,"Виробник",Normal,Region,false,ITSClass);
