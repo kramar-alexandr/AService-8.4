@@ -420,12 +420,12 @@ begin
 		RadioButton(h+460,vm+80+16,2,0,"Ремонт виконано",OrderStatus);
 		//vm = vm + 32;
 		
-		ButtonFrame(h+620,vm+16+20,90,4,"Звідки дізналися");
+		ButtonFrame(h+620,vm+16+20,90,5,"Звідки дізналися");
 		RadioButton(h+620,vm+16+20,0,0,"-",InfoGet);
 		RadioButton(h+620,vm+32+20,1,0,"З інтернета",InfoGet);
 		RadioButton(h+620,vm+48+20,2,0,"Магазин",InfoGet);
 		RadioButton(h+620,vm+64+20,3,0,"Від друзів",InfoGet);
-		RadioButton(h+620,vm+80+20,3,0,"Від друзів",InfoGet);
+		RadioButton(h+620,vm+80+20,4,0,"Від друзів",InfoGet);
   	
   	vm = 20;
   	
