@@ -1931,6 +1931,24 @@ begin
 end;
 
 
+  
+global
+function Boolean SVODClassInfoGetButtonAfter(Integer wn,Boolean changedf)
+begin        
+  Boolean res;
+  record SVOVc SVOr;  
+
+	
+  DeselectWindow(wn,false);
+  if (WindowState(wn)==Rs_update) then begin 
+		GetPrevWindowRecord(wn,SVOr);
+		PutWindowRecord(wn,SVOr);
+	end;
+  SVODClassInfoGetButtonAfter = res;  
+  return;
+end;
+
+
 global updating procedure ChangeSVOSalesGroup()
 begin
 	record UserVc USr;
