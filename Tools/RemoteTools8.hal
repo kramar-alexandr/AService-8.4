@@ -309,6 +309,9 @@ begin
   row ObjectsAccBlock OArw; //Edit***************************Sasha2,15:00 20.06.2014
   integer j, mtrw; //Edit***************************Sasha2,15:00 20.06.2014
   record PDVc PDr;// Edit ************************** Thursday, 25 May 2017 13:38:03
+  string 100 oldcode;
+  
+  oldcode = SVOp.InvoiceToCode;
   
   RecordCopy(oldSVOr,SVOp);
   res = false;
@@ -330,6 +333,8 @@ begin
     if (TrHs==false) then begin testf = false; end;
     if (testf) then begin
     if ((WSIVr.Type==1) and (WSIVr.InvNr==-1)) then begin//Inoicable
+    		
+    		
        SVOr.SerNr = WSIVr.SVONr;
        if (ReadFirstMain(SVOr,1,true)) then begin end;
        RecordCopy(oldWSIVr,WSIVr);
@@ -343,6 +348,10 @@ begin
          case 0:
            WSr.SerNr = WSIVr.SerNr;
            if (ReadFirstMain(WSr,1,true)) then begin
+							if(WSr.ASBISFlag==1)then begin
+								IVp.CustCode = "ASBIS";// Edit ************************** BPI Ukraine - KramarAlexandr - Thursday, 15 November 2018 14:35:13
+							end;
+
 						 IVp.TransDate = WSr.TransDate;// Edit ************************** Monday, 7 September 2015 10:33:04
 						 IVp.InvDate = WSr.TransDate;// Edit ************************** Monday, 7 September 2015 10:33:05
              blockload(OAb); //Edit***************************Sasha2,15:01 20.06.2014
@@ -521,6 +530,9 @@ begin
     
 //  IVp.OfficialSerNr = FindNextLegalSerNr(IVp,CUr.Classification); //POSN
 LPasteSVOInInv:;
+	
+	oldcode = SVOp.InvoiceToCode;// Edit ************************** BPI Ukraine - KramarAlexandr - Thursday, 15 November 2018 14:34:52
+
   PasteSVOInInv = res;
   return;
 end;
@@ -2160,6 +2172,7 @@ begin
     testf = true;
     if (IVr.SVONr!=SVONr) then begin testf = false; TrHs = false; end;
     if (IVr.OKFlag==0) then begin testf = false; end;
+    if (IVr.CustCode=="ASBIS") then begin testf = false; end;// Edit ************************** BPI Ukraine - KramarAlexandr - Thursday, 15 November 2018 14:42:31
     if (testf) then begin
     	
     	

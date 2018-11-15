@@ -774,6 +774,7 @@ begin
   v = v+vs;
   CheckBox(h4=-200,v,0,"Напечатано",PrintFlag);
   CheckBox(h4=-100,v,0,"OK",OKFlag);
+  CheckBox(h4=-100,v+vs,0,"ASBIS гарантия",ASBISFlag);
   tilenr = 1;
   TileButton(tilenr,"Дата"); tilenr = tilenr + 1; 
   TileButton(tilenr,"Товары"); tilenr = tilenr + 1; 
