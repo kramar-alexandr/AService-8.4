@@ -42,6 +42,7 @@ begin
     testf = true;
     if(WSr.SVONr!=SVOr.SerNr)then begin testf = false; TrHs = false; end;
     if(WSr.OKFlag==0)then begin testf = false; end;
+    if(WSr.ASBISFlag==1)then begin testf = false; end;// Edit ************************** BPI Ukraine - KramarAlexandr - Thursday, 15 November 2018 14:48:14
     
     if(testf)then begin
       mtrw = matrowcnt(WSr);
