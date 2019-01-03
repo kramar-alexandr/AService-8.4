@@ -683,7 +683,7 @@ BEGIN
       end;
     end;
     
-    if(SVOr.SalesGroup=="1GR" or SVOr.SalesGroup=="3GR")then begin
+    if(SVOr.SalesGroup=="1GR" or SVOr.SalesGroup=="3GR" or SVOr.SalesGroup=="5GR")then begin
 			if(SVOr.OrderStatus==1 and SVO2r.OrderStatus!=1)then begin
 				CreateCustomActivityFromSVO(SVOr,"MES","SHILKIN",currentdate,"Согласовать ремонт","");
 			end;
