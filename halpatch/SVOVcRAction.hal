@@ -192,6 +192,9 @@ BEGIN
     if(Userr.SalesGroup=="3GR")then begin
     	SVOr.CustCode = "A-SRV_LUK";
     end;
+    if(Userr.SalesGroup=="5GR")then begin
+    	SVOr.CustCode = "A-SRV_OL";
+    end;
     if(Userr.SalesGroup=="7GR")then begin
     	SVOr.CustCode = "ISTUDIO";
     end;
@@ -278,6 +281,9 @@ BEGIN
     end;
     if(Userr.SalesGroup=="3GR")then begin
     	SVOr.CustCode = "A-SRV_LUK";
+    end;
+    if(Userr.SalesGroup=="5GR")then begin
+    	SVOr.CustCode = "A-SRV_OL";
     end;
     if(Userr.SalesGroup=="7GR")then begin
     	SVOr.CustCode = "ISTUDIO";

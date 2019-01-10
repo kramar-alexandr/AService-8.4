@@ -42,6 +42,9 @@ begin
 			if(Userr.SalesGroup=="3GR")then begin
 				IVr.CustCode = "A-SRV_LUK";
 			end;
+			if(Userr.SalesGroup=="5GR")then begin
+				IVr.CustCode = "A-SRV_OL";
+			end;
 			if(Userr.SalesGroup=="7GR")then begin
 				IVr.CustCode = "ISTUDIO";
 			end;
