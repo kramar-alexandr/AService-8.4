@@ -395,7 +395,16 @@ begin
     SetWRect(20,120,350,300);
     PeriodField(h,20,"Період");
     EditField(h,40,150,"Сервис",Normal,f1,false,SalesGroupSCLass);
-  EndWindow;
+  EndWindow;   
     
+	WindowBegin("Звіт по продажам прийомки",SalesReportAccRClass,CGRcW,RcType);
+    SetWRect(20,120,350,300);
+    PeriodField(h,20,"Період");
+    EditField(h,40,150,"Клієнт",Normal,f1,false,SalesGroupSCLass);
+		EditField(h,60,150,"Група продаж",Normal,f2,false,SalesGroupSCLass);
+		EditField(h,80,150,"Продавець",Normal,f3,false,SalesGroupSCLass);
+  EndWindow;   	
+		
+		
   return;
   end;
