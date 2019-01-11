@@ -767,7 +767,8 @@ begin
 	integer keys,mtrw,i;
 	record UserVc Userr;
 	array integer tab;
-	
+	val TOTAL;
+	TOTAL = 0;
 	tab[1] = 0;
 	tab[2] = 45;
 	tab[3] = 90;
@@ -825,10 +826,11 @@ begin
 		if(IVr.SVONr!=-1)then begin testf = false; end;
 		if(IVr.InvType==3)then begin testf = false; end;
 		if(testf)then begin
+			TOTAL = TOTAL + IVr.Sum4;
 			Userr.Code = IVr.SalesMan;
 			if(ReadFirstMain(Userr,1,true))then begin end;
 			StartFormat(15);
-				outstring(tab[1],0,IVr.SerNr,false);			
+				outstring(tab[1],"DblIVVc",IVr.SerNr,false);			
 				outstring(tab[2],0,IVr.TransDate,false);
 				outstring(tab[3],0,IVr.CustCode,false);
 				outstring(tab[4],0,IVr.Addr0,false);
@@ -838,54 +840,70 @@ begin
 				outstring(tab[8],0,IVr.Sum4,false);
 				outstring(tab[9],0,IVr.Location,false);
 			endformat;
-			mtrw = matrowcnt(IVr);
-			if(RepSpec.Media!=mtExcel)then begin
-				StartFormat(15);
-					Gray_Divider(0,1);
-				endformat;
-				StartFormat(15);
-					outstring(0,0,"",false);			
-					outstring(0,0,"",false);			
-					outstring(0,0,"",false);			
-					outstring(tab[4],0,"Код товара",false);
-					outstring(tab[5],0,"Назва товара",false);
-					outstring(tab[11],0,"Сер. номер",false);
-					outstring(tab[12],0,"К-сть",false);
-					outstring(tab[13],0,"Ціна",false);
-					outstring(tab[14],0,"Зн.",false);
-					outstring(tab[15],0,"Сума",false);
-				endformat;
-			end;
-			for(i=0;i<mtrw;i=i+1)begin
-				matrowget(IVr,i,IVrw);
-				if(IVrw.stp==1)then begin
+			if(RepSpec.flags[1]==1)then begin
+				mtrw = matrowcnt(IVr);
+				if(RepSpec.Media!=mtExcel)then begin
+					StartFormat(15);
+						Gray_Divider(0,1);
+					endformat;
 					StartFormat(15);
 						outstring(0,0,"",false);			
 						outstring(0,0,"",false);			
 						outstring(0,0,"",false);			
-						outstring(0,0,"",false);			
-						outstring(0,0,"",false);			
-						outstring(0,0,"",false);		
-						outstring(0,0,"",false);			
-						outstring(0,0,"",false);			
-						outstring(0,0,"",false);							
-						outstring(tab[4],0,IVrw.ArtCode,false);
-						outstring(tab[5],0,IVrw.Spec,false);
-						outstring(tab[11],0,IVrw.SerialNr,false);
-						outstring(tab[12],0,IVrw.Quant,false);
-						outstring(tab[13],0,IVrw.Price,false);
-						outstring(tab[14],0,IVrw.vRebate,false);
-						outstring(tab[15],0,IVrw.Sum,false);
+						outstring(tab[4],0,"Код товара",false);
+						outstring(tab[5],0,"Назва товара",false);
+						outstring(tab[11],0,"Сер. номер",false);
+						outstring(tab[12],0,"К-сть",false);
+						outstring(tab[13],0,"Ціна",false);
+						outstring(tab[14],0,"Зн.",false);
+						outstring(tab[15],0,"Сума",false);
+					endformat;
+				end;
+				for(i=0;i<mtrw;i=i+1)begin
+					matrowget(IVr,i,IVrw);
+					if(IVrw.stp==1)then begin
+						StartFormat(15);
+							outstring(0,0,"",false);			
+							outstring(0,0,"",false);			
+							outstring(0,0,"",false);			
+							outstring(0,0,"",false);			
+							outstring(0,0,"",false);			
+							outstring(0,0,"",false);		
+							outstring(0,0,"",false);			
+							outstring(0,0,"",false);			
+							outstring(0,0,"",false);							
+							outstring(tab[4],0,IVrw.ArtCode,false);
+							outstring(tab[5],0,IVrw.Spec,false);
+							outstring(tab[11],0,IVrw.SerialNr,false);
+							outstring(tab[12],0,IVrw.Quant,false);
+							outstring(tab[13],0,IVrw.Price,false);
+							outstring(tab[14],0,IVrw.vRebate,false);
+							outstring(tab[15],0,IVrw.Sum,false);
+						endformat;
+					end;
+				end;
+				if(RepSpec.Media!=mtExcel)then begin
+					StartFormat(15);
+						Black_Divider(0,1);
 					endformat;
 				end;
 			end;
-			if(RepSpec.Media!=mtExcel)then begin
-				StartFormat(15);
-					Black_Divider(0,1);
-				endformat;
-			end;
 		end;
 	end;
+	StartFormat(15);
+		outstring(0,0,"",false);
+		outstring(0,0,"",false);			
+		outstring(0,0,"",false);			
+		outstring(0,0,"",false);			
+		outstring(0,0,"",false);						
+		outstring(0,0,"",false);				
+		outstring(tab[5],0,"Всього за період з " & RepSpec.sStartDate & " по " & RepSpec.sStartDate,false);
+		outstring(tab[8],0,TOTAL,false);
+		outstring(tab[9],0,"UAH",false);
+	endformat;
+	StartFormat(15);
+		Black_Divider(0,1);
+	endformat;
 	endjob;
 return;
 end;

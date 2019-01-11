@@ -403,6 +403,7 @@ begin
     EditField(h,40,150,"Клієнт",Normal,f1,false,SalesGroupSCLass);
 		EditField(h,60,150,"Група продаж",Normal,f2,false,SalesGroupSCLass);
 		EditField(h,80,150,"Продавець",Normal,f3,false,SalesGroupSCLass);
+		CheckBox(h-200,100,0,"Детально",flags[1]);
   EndWindow;   	
 		
 		
