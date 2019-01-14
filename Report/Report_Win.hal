@@ -404,6 +404,11 @@ begin
 		EditField(h,60,150,"Група продаж",Normal,f2,false,SalesGroupSCLass);
 		EditField(h,80,150,"Продавець",Normal,f3,false,UserSCLass);
 		CheckBox(h-200,100,0,"Детально",flags[1]);
+		h = 40;
+		ButtonFrame(h,120,100,4,"Отчет за:");
+    RadioButton(h,120,0,0,"Сегодня",flags[2]);
+    RadioButton(h,135,1,0,"Вчера",flags[2]);
+    RadioButton(h,150,2,0,"Период",flags[2]);
   EndWindow;   	
 		
 		

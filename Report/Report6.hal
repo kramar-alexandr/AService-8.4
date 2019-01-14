@@ -811,7 +811,14 @@ begin
 			Black_Divider(0,1);
 		endformat;
 	end;
-	
+	if(RepSpec.flags[2]==0)then begin
+		RepSpec.sStartDate = CurrentDate;
+		RepSpec.sEndDate = CurrentDate;
+	end;
+	if(RepSpec.flags[2]==1)then begin
+		RepSpec.sStartDate = addday(CurrentDate,-1);
+		RepSpec.sEndDate = addday(CurrentDate,-1);
+	end;
 	IVr.TransDate = RepSpec.sStartDate;
 	TrHs = true;
 	while (loopkey("TransDate",IVr,1,TrHs))begin
