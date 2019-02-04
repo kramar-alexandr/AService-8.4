@@ -320,7 +320,7 @@ string 50 location;
 			case "INV#1_KRS":host = "109.95.53.85";
 											location = "/hansa/call.php";
 											port = 2501;
-			case "INV#1_LUK":host = "82.144.202.163";
+			case "INV#1_LUK":host = "82.144.202.15";
 											location = "/hansa/call.php";
 											port = 2501;
 		end;
