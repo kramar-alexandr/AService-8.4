@@ -699,6 +699,7 @@ begin
     HalPushButton(h+150,36,350,66,"ZebraLogo","Загрузить лого");
     RadioButton(h,v,0,0,"ZEBRA",flags[3]);
     RadioButton(h,v+=16,1,0,"ZEBRA BIG",flags[3]);
+	RadioButton(h,v+=16,2,0,"ценник",flags[3]);
     v=v+32;
     ButtonFrame(h,v,80,2,"Печть");
     RadioButton(h,v,0,0,"Все наклейки",flags[0]);
