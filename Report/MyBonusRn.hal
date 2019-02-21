@@ -1922,7 +1922,7 @@ l1:;
 		//OutVal(pos[11],0,totSum,M4Val,false);
 		//OutVal(pos[12],0,totCost,M4Val,false);
 		OutVal(pos[13],0,totGP,M4Val,false);
-		OutString(pos[21],0,USetStr(32632) & n,false);//***************************************************************************** edit dima-f 12.09.17
+		//OutString(pos[21],0,USetStr(32632) & n,false);//***************************************************************************** edit dima-f 12.09.17
 		endformat;
 	end;
 	RepSpec.vals3=n;//***************************************************************************** edit dima-f 12.09.17
