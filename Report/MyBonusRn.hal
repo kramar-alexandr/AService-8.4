@@ -1312,17 +1312,17 @@ begin
   pos[23] = 440;
   
   StartFormat(15);
-   // OutString(pos[4],0,"Paym. date",false);//
-  	//OutString(pos[6],0,"ArtCode",false);//
-   // OutString(pos[7],0,"Name",false);//
-   // OutString(pos[11],0,"Sum UAH",false);//
-   // OutString(pos[12],0,"SumCost UAH",false);//
+    OutString(pos[4],0,"Paym. date",false);//
+    OutString(pos[6],0,"ArtCode",false);//
+    OutString(pos[7],0,"Name",false);//
+    OutString(pos[11],0,"Sum UAH",false);//
+    OutString(pos[12],0,"SumCost UAH",false);//
     OutString(pos[13],0,"GP UAH.",false);//
-   // OutString(pos[13],0,"GP %",false);
-   // OutString(pos[21],0,"Service Order",false);
-   // OutString(pos[23],0,"Work sheet",false);
-   // OutString(pos[23],0,"Phone",false);
-   // OutString(pos[23],0,"Item",false);
+    OutString(pos[13],0,"GP %",false);
+    OutString(pos[21],0,"Service Order",false);
+    OutString(pos[23],0,"Work sheet",false);
+    OutString(pos[23],0,"Phone",false);
+    OutString(pos[23],0,"Item",false);
   EndFormat;
   
   while (LoopKey("TransDate",IPrsr,1,TrHs)) begin
@@ -1480,6 +1480,9 @@ begin
                         notenr1=notenr1+1;
                       end;
                     end;
+                    
+                   
+
                   end;
                 end;
                 
@@ -1505,26 +1508,26 @@ begin
 
                   StartFormat(15);
                     if (blankdate(enddate)) then begin
-                      //OutDate(pos[4],0,IVr.PayDate,false);
+                      OutDate(pos[4],0,IVr.PayDate,false);
                     end else begin
-                      //OutDate(pos[4],0,enddate,false);
+                      OutDate(pos[4],0,enddate,false);
                     end;
-                    //OutString(pos[6],0,IVrw.ArtCode,false);
-                    //OutString(pos[7],0,Left(IVrw.Spec,30),false);
+                    OutString(pos[6],0,IVrw.ArtCode,false);
+                    OutString(pos[7],0,Left(IVrw.Spec,30),false);
                     quant = qty[j]; //Edit***************************Sasha2,11:39 24.04.2015
                     costorig = realcostuah[j];
                     sumcostorig = costorig*quant;
                     salessum = realsumbase[j];
                     sumorig = realsumuah[j]; //Edit***************************Sasha2,11:48 24.04.2015 }
-                    //OutVal(pos[11],0,sumorig,M4Val,false);
-                    //OutVal(pos[12],0,sumcostorig,M4Val,false);
+                    OutVal(pos[11],0,sumorig,M4Val,false);
+                    OutVal(pos[12],0,sumcostorig,M4Val,false);
                     gporig = sumorig - sumcostorig;
                     OutVal(pos[13],0,gporig,M4Val,false);
-                    //OutString(pos[13],0,ValToMyString((sumorig - sumcostorig)/sumorig*100*cred,3),false);
-                    //OutString(pos[21],0,svonr,false);
-                    //OutStringID(pos[23],"DblBonusRn",worksheet,false,worksheet);
-                    //OutString(pos[23],0,FindSVOPhone(svonr,IVr),false);
-                    //OutString(pos[23],0,FindSVOItem(svonr),false);
+                    OutString(pos[13],0,ValToMyString((sumorig - sumcostorig)/sumorig*100*cred,3),false);
+                    OutString(pos[21],0,svonr,false);
+                    OutStringID(pos[23],"DblBonusRn",worksheet,false,worksheet);
+                    OutString(pos[23],0,FindSVOPhone(svonr,IVr),false);
+                    OutString(pos[23],0,FindSVOItem(svonr),false);
                     //***************************************************************************** edit dima-f 12.09.17
                     if(nonblank(svonr and quant>0)) begin
                         if(vec[svonr]==false) begin
@@ -1556,13 +1559,13 @@ begin
     							sumusd = CalcSumForSales(IVrw.Sum,IVrw.Quant,0,invfr,invto1,1,foundqty,true);
 						      startformat(15);
                     if (blankdate(enddate)) then begin
-                      //OutDate(pos[4],0,IVr.PayDate,false);
+                      OutDate(pos[4],0,IVr.PayDate,false);
                     end else begin
-                      //OutDate(pos[4],0,enddate,false);
+                      OutDate(pos[4],0,enddate,false);
                     end;
 
-                    //OutString(pos[6],0,IVrw.ArtCode,false);
-                    //OutString(pos[7],0,Left(IVrw.Spec,30),false);
+                    OutString(pos[6],0,IVrw.ArtCode,false);
+                    OutString(pos[7],0,Left(IVrw.Spec,30),false);
                     quant = IVrw.Quant - foundqty; //Edit***************************Sasha2,11:39 24.04.2015
                     curorig = round(IVr.FrRate/IVr.ToRateB1,defaultcurroundoff);
                     if(curorig==0)then begin
@@ -1572,15 +1575,15 @@ begin
                     sumcostorig = costorig * quant;
                     salessum = sumusd;
                     sumorig = sumcur; //Edit***************************Sasha2,11:48 24.04.2015 }
-                    //OutVal(pos[11],0,sumorig,M4Val,false);
-                    //OutVal(pos[12],0,sumcostorig,M4Val,false);
+                    OutVal(pos[11],0,sumorig,M4Val,false);
+                    OutVal(pos[12],0,sumcostorig,M4Val,false);
                     gporig = sumorig - sumcostorig;
                     OutVal(pos[13],0,gporig,M4Val,false);
-                    //OutString(pos[13],0,ValToMyString((sumorig - sumcostorig)/sumorig*100*cred,3),false);
-                    //OutString(pos[21],0,svonr,false);
-                    //OutStringID(pos[23],"DblBonusRn",worksheet,false,worksheet);
-                    //OutString(pos[23],0,FindSVOPhone(svonr,IVr),false);
-                    //OutString(pos[23],0,FindSVOItem(svonr),false);
+                    OutString(pos[13],0,ValToMyString((sumorig - sumcostorig)/sumorig*100*cred,3),false);
+                    OutString(pos[21],0,svonr,false);
+                    OutStringID(pos[23],"DblBonusRn",worksheet,false,worksheet);
+                    OutString(pos[23],0,FindSVOPhone(svonr,IVr),false);
+                    OutString(pos[23],0,FindSVOItem(svonr),false);
                     //***************************************************************************** edit dima-f 12.09.17
                     if(nonblank(svonr and quant>0)) begin
                         if(vec[svonr]==false) begin
@@ -1865,13 +1868,13 @@ l1:;
 													end;
 													StartFormat(15);
 														if (blankdate(enddate)) then begin
-															//OutDate(pos[4],0,newIVr.PayDate,false);
+															OutDate(pos[4],0,newIVr.PayDate,false);
 														end else begin
-															//OutDate(pos[4],0,enddate,false);
+															OutDate(pos[4],0,enddate,false);
 														end;
 
-														//OutString(pos[6],0,newIVrw.ArtCode,false);
-														//OutString(pos[7],0,Left(newIVrw.Spec,30),false);
+														OutString(pos[6],0,newIVrw.ArtCode,false);
+														OutString(pos[7],0,Left(newIVrw.Spec,30),false);
 														quant = qty[j]; //Edit***************************Sasha2,11:39 24.04.2015
 														MyCost = realcostbase[j];
 														curorig = round(newIVr.FrRate/newIVr.ToRateB1,defaultcurroundoff);
@@ -1881,16 +1884,16 @@ l1:;
 														costorig = realcostuah[j];;
 														salessum = realsumbase[j];
 														sumorig = realsumbase[j];
-														//OutVal(pos[11],0,sumorig,M4Val,false);
+														OutVal(pos[11],0,sumorig,M4Val,false);
 														sumcostorig = realcostuah[j]*quant;
-														//OutVal(pos[12],0,sumcostorig,M4Val,false);
+														OutVal(pos[12],0,sumcostorig,M4Val,false);
 														gporig = sumorig - sumcostorig;
 														OutVal(pos[13],0,gporig,M4Val,false);
-														//OutString(pos[13],0,ValToMyString((sumorig - sumcostorig)/sumorig*100*cred,3),false);
-														//OutString(pos[21],0,svonr,false);
-														//OutStringID(pos[23],"DblBonusRn",worksheet,false,worksheet);
-														//OutString(pos[23],0,FindSVOPhone(svonr,newIVr),false);
-														//OutString(pos[23],0,FindSVOItem(svonr),false);
+														OutString(pos[13],0,ValToMyString((sumorig - sumcostorig)/sumorig*100*cred,3),false);
+														OutString(pos[21],0,svonr,false);
+														OutStringID(pos[23],"DblBonusRn",worksheet,false,worksheet);
+														OutString(pos[23],0,FindSVOPhone(svonr,newIVr),false);
+														OutString(pos[23],0,FindSVOItem(svonr),false);
 														//***************************************************************************** edit dima-f 12.09.17
                                                         if(nonblank(svonr) and quant>0) begin
                                                             if(vec[svonr]==false) begin
@@ -1919,10 +1922,10 @@ l1:;
 		startformat(15);
 		endformat;
 		Black_Divider(0,1);
-		//OutVal(pos[11],0,totSum,M4Val,false);
-		//OutVal(pos[12],0,totCost,M4Val,false);
+		OutVal(pos[11],0,totSum,M4Val,false);
+		OutVal(pos[12],0,totCost,M4Val,false);
 		OutVal(pos[13],0,totGP,M4Val,false);
-		//OutString(pos[21],0,USetStr(32632) & n,false);//***************************************************************************** edit dima-f 12.09.17
+		OutString(pos[21],0,USetStr(32632) & n,false);//***************************************************************************** edit dima-f 12.09.17
 		endformat;
 	end;
 	RepSpec.vals3=n;//***************************************************************************** edit dima-f 12.09.17
