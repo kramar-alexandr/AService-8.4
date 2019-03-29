@@ -830,8 +830,7 @@ begin
       //MySendWebRequest(host,443,-1,true,"POST",page,"application/json","",false,req,reply,10);
       WriteAreaToFile(reply,"Binotel_reply.txt",0);
       //MySendRawWebRequest(host,"443",true,"POST","","application/json","",false,req,reply,10);
-			//MySendAsyncWebRequest(host,443,-1,true,"POST",page,"application/json","",req,"WebCalReqCallBack",5);
-			SendAsyncWebRequest(host,443,-1,true,"POST",page,"application/json","",req,"WebCalReqCallBack",5);
+			MySendAsyncWebRequest(host,443,-1,true,"POST",page,"application/json","",req,"WebCalReqCallBack",5);
 
     end;
     
