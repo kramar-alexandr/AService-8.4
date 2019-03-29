@@ -1,11 +1,10 @@
 external function string 255 StrReplace(string,string,string);
 external procedure UTCTimeToDate(LongInt,var Date,var Time);
 external function boolean MySendWebRequest(string,integer,longint,boolean,string,string,string,string,boolean,area,var area,integer);
-external procedure MySendAsyncWebRequest(string,integer,longint,boolean,string,string,string,string,area,string,integer);
+remote procedure MySendAsyncWebRequest(string,integer,longint,boolean,string,string,string,string,area,string,integer);
 external procedure FindUserMailboxName(string,var string,var string);
 external procedure AlarmMessage(record ActVc,integer,string);
 external procedure MySendWebRequest(string,integer,longint, boolean,string,string,string,string,boolean,area,area,integer);
-remote procedure MakeBinotelCallFromExtNumToPhone(string,string); //Edit***************************Sasha2,14:51 01.06.2017
 
 global webpublic updating procedure WebBinotelAPICallEnd()
 begin
@@ -828,10 +827,9 @@ begin
       WriteAreaToFile(req,"Binotel.txt",0);
       //SendRawWebRequest(host,"433",false,"POST","","application/json","",false,req,reply,10);
       //MySendWebRequest(host,443,-1,true,"POST",page,"application/json","",false,req,reply,10);
-      WriteAreaToFile(reply,"Binotel_reply.txt",0);
       //MySendRawWebRequest(host,"443",true,"POST","","application/json","",false,req,reply,10);
 			MySendAsyncWebRequest(host,443,-1,true,"POST",page,"application/json","",req,"WebCalReqCallBack",5);
-
+			logtext(0,fromExtNumber & "CallTo " & toPhoneNumber);
     end;
     
   return;
