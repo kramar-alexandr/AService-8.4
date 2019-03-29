@@ -1,5 +1,6 @@
 remote function Boolean Getformcode(Integer,Integer,string,string,string,LongInt,LongInt,string,string,Integer,string,var string);
 external function Boolean MySendWebRequest(string,longint,longint,boolean,string,string,string,string,boolean,area,var area,integer);
+remote procedure MakeBinotelCallFromExtNumToPhone(string,string); //Edit***************************Sasha2,14:51 01.06.2017
 
 SetLangMode(LangUkrainian,"UKR",0);
 
