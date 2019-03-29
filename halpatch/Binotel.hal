@@ -24,6 +24,8 @@ begin
 	boolean foundch;
 	string 1 c;
 	
+	setcompany(8,false)
+	
 	webgetpostdata(encodearea);
 	addtexttoarea(chr(13) & chr(10) & "*********" & currenttime & "************" & chr(13) & chr(10),delim);
 	writeareatofile(delim,"WebBinotelAPICallEnd.txt",1);
@@ -579,6 +581,8 @@ begin
 	date datestamp;
 	string 255 str,recidstr;
 	
+	setcompany(8,false)
+	
 	webgetpostdata(encodearea);
 	writeareatofile(encodearea,"WebBinotelAPICallPush.txt",0);
 	logtext(0,"WebBinotelAPICallPush");
@@ -719,43 +723,12 @@ begin
 	string 255 str,inphone,name;
 	record CUVc CUr;
 	
+	setcompany(8,false)
+	
 	webgetpostdata(encodearea);
 	writeareatofile(encodearea,"WebBinotelAPICallSet.txt",0);
 	logtext(0,"WebBinotelAPICallSet");
-	tstr = "";
-	lenth = getarealength(encodearea);
-	For(i=0;i<lenth;i=i+1) begin
-		if(getstringfromarea(arequest,i,1)=="=" or i==lenth-1)then begin
-			tstr = urldecode(getstringfromarea(encodearea,lasti,i-lasti));
-			tstr = StrReplace(tstr,"+&gt;+", " > ");
-			addtexttoarea(tstr,arequest);
-		end;
-	end;
-	
-	lenth = getarealength(arequest);
-	tstr = "";
-	lasti = 0;
-	addtexttoarea("{\"",newarea);
-	For(i=0;i<lenth;i=i+1) begin
-	  if(getstringfromarea(arequest,i,1)=="&" or i==lenth-1)then begin
-	  	tstr = urldecode(getstringfromarea(arequest,lasti,i-lasti));
-	  	tstr = StrReplace(tstr,"=", "\":\"");
-	  	tstr = StrReplace(tstr,"[", "(");
-	  	tstr = StrReplace(tstr,"]", ")");
-	  	tstr = StrReplace(tstr,"&","\"");
-	  	if(getstringfromarea(arequest,i,1)=="&")then begin
-	  		tstr = tstr & "\",";
-	  	end else begin
-	  		tstr = tstr & "\"";
-	  	end;
-	  	logtext(0,tstr);
-	  	addtexttoarea(tstr,newarea);
-	  	lasti = i;
-	  	tstr = "";
-	  end;
-	end; 
-	addtexttoarea("}",newarea);
-	
+		
 	jobj = parsejsonarea(newarea);
 	
 	node = "requestType";
@@ -881,7 +854,9 @@ end;
 global webpublic updating procedure BinotelGetCallInfoCallBack()
 begin
 	area a_reply;
-
+	
+	setcompany(8,false)
+	
 	webgetpostdata(a_reply);
 	WriteAreaToFile(a_reply,"BinotelGetCallInfoCallBack.txt",0);
 	
@@ -892,6 +867,8 @@ end;
 global webpublic updating procedure WebCalReqCallBack()
 begin
 	area a_reply;
+	
+	setcompany(8,false)
 	
 	logtext(0,"WebCalReqCallBack");
 	webgetpostdata(a_reply);
