@@ -892,6 +892,7 @@ end;
 
 global webpublic updating procedure WebCalReqCallBack()
 begin
+	area a_reply;
 	
 	webgetpostdata(a_reply);
 	WriteAreaToFile(a_reply,"WebCalReqCallBackCallBack.txt",0);
