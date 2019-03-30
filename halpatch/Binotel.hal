@@ -767,6 +767,7 @@ begin
 	  end;
 	end; 
 	addtexttoarea("}",newarea);
+	writeareatofile(newarea,"WebBinotelAPICallSetnewarea.txt",0);
 	
 	jobj = parsejsonarea(newarea);
 	
