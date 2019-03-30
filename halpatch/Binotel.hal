@@ -780,7 +780,7 @@ begin
 		logtext(0,"--->" & JSONGet(jobj,JSONGetChildName(jobj,"",j)));
 	end;
 	
-	logtext(0,"JSONGet " & JSONGet(jobj,"requestType"));
+	logtext(0,"JSONGet " & JSONGet(jobj,"requestType")); 
 	
 	if(JSONNodeExists(jobj,"requestType"))then begin
 		if(JSONGet(jobj,"requestType")=="gettingCallSettings")then begin
