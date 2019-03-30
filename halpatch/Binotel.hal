@@ -721,11 +721,12 @@ begin
 	string 255 node;
 	time timestamp;
 	date datestamp;
-	string 255 str,phone,name,res,num,resnum;
+	string 255 str,phone,name,res,num,resnum,recphone;
 	record CUVc CUr;
 	record SVOVc SVOr;
 	record Phone1Vc Phoner;
 	integer pos,j;
+	boolean rectype;
 
 	
 	setcompany(8,false)
@@ -777,16 +778,24 @@ begin
 	logtext(0,"-->" & JSONCountChildren(jobj,""));
 	for(j=0;j<JSONCountChildren(jobj,"");j=j+1)begin
 		logtext(0,"-->" & JSONGetChildName(jobj,"",j));
+		
 		logtext(0,"--->" & JSONGet(jobj,JSONGetChildName(jobj,"",j)));
+		if(JSONGet(jobj,JSONGetChildName(jobj,"",j))=="gettingCallSettings" and JSONGetChildName(jobj,"",j)=="requestType")then begin
+			rectype = true;
+		end;
+		if(JSONGetChildName(jobj,"",j)=="externalNumber")then begin
+			recphone = JSONGet(jobj,JSONGetChildName(jobj,"",j));
+		end;
+		
 	end;
 	
 	logtext(0,"JSONGet " & JSONGet(jobj,"requestType")); 
 	
-	if(JSONNodeExists(jobj,"requestType"))then begin
-		if(JSONGet(jobj,"requestType")=="gettingCallSettings")then begin
+	if(rectype)then begin
+		if(rectype)then begin
 			logtext(0,"gettingCallSettings");
-			if(JSONNodeExists(jobj,"externalNumber"))then begin
-				phone = JSONGet(jobj,"externalNumber");
+			if(nonblank(recphone))then begin
+				phone = recphone;
 				
 				if(left(phone,1)<"0" or left(phone,1)>"9")then begin
 					phone = "+" & right(phone,len(phone)-1);
