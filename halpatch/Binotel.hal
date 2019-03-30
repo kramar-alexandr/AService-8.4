@@ -721,7 +721,7 @@ begin
 	string 255 node;
 	time timestamp;
 	date datestamp;
-	string 255 str,phone,name,res,num,resnum,recphone;
+	string 255 str,phone,name,res,num,resnum,recphone,keystr;
 	record CUVc CUr;
 	record SVOVc SVOr;
 	record Phone1Vc Phoner;
@@ -778,12 +778,11 @@ begin
 	logtext(0,"-->" & JSONCountChildren(jobj,""));
 	for(j=0;j<JSONCountChildren(jobj,"");j=j+1)begin
 		logtext(0,"-->" & JSONGetChildName(jobj,"",j));
+		keystr = JSONGet(jobj,JSONGetChildName(jobj,"",j));
 		
 		logtext(0,"--->" & JSONGet(jobj,JSONGetChildName(jobj,"",j)));
-		logtext(0,"---==>" & JSONGet(jobj,JSONGetChildName(jobj,"",j))=="gettingCallSettings");
-		logtext(0,"---==>" & JSONGet(jobj,JSONGetChildName(jobj,"",j))=="gettingCallSettings");
-		logtext(0,"---==>" & (JSONGet(jobj,JSONGetChildName(jobj,"",j))=="gettingCallSettings"));
-		logtext(0,"---==>" & JSONGet(jobj,JSONGetChildName(jobj,"",j))=="gettingCallSettings");
+		LogText(0,"keystr " & keystr & "|");
+		LogText(0,"keystr== " & keystr=="gettingCallSettings" & "|");
 		if(JSONGet(jobj,JSONGetChildName(jobj,"",j))=="gettingCallSettings" and JSONGetChildName(jobj,"",j)=="requestType")then begin
 			rectype = true;
 			logtext(0,"rectype == true");
