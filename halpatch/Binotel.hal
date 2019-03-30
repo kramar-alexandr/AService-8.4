@@ -739,6 +739,7 @@ begin
 	node = "requestType";
 	if(JSONNodeExists(jobj,node))then begin
 		if(JSONGet(jobj,node)=="gettingCallSettings")then begin
+			logtext(0,"gettingCallSettings");
 			if(JSONNodeExists(jobj,"externalNumber"))then begin
 				phone = JSONGet(jobj,"externalNumber");
 				
