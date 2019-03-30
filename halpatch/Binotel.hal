@@ -776,7 +776,7 @@ begin
 	logtext(0,"-->" & JSONGet(jobj,node));
 	logtext(0,"-->" & JSONCountChildren(jobj,""));
 	for(j=0;j<JSONCountChildren(jobj,"");j=j+1)begin
-		JSONGetChildName(jobj,"",i);
+		logtext(0,"-->" & JSONGetChildName(jobj,"",j));
 	end;
 	
 	if(JSONNodeExists(jobj,node))then begin
