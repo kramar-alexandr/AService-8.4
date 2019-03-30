@@ -725,7 +725,7 @@ begin
 	record CUVc CUr;
 	record SVOVc SVOr;
 	record Phone1Vc Phoner;
-	integer pos;
+	integer pos,j;
 
 	
 	setcompany(8,false)
@@ -775,6 +775,9 @@ begin
 	logtext(0,"-->" & JSONNodeExists(jobj,node));
 	logtext(0,"-->" & JSONGet(jobj,node));
 	logtext(0,"-->" & JSONCountChildren(jobj,""));
+	for(j=0;j<JSONCountChildren(jobj,"");j=j+1)begin
+		JSONGetChildName(jobj,"",i);
+	end;
 	
 	if(JSONNodeExists(jobj,node))then begin
 		if(JSONGet(jobj,node)=="gettingCallSettings")then begin
