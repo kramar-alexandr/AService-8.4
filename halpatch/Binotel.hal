@@ -774,6 +774,7 @@ begin
 	
 	logtext(0,"-->" & JSONNodeExists(jobj,node));
 	logtext(0,"-->" & JSONGet(jobj,node));
+	logtext(0,"-->" & JSONCountChildren(jobj,""));
 	
 	if(JSONNodeExists(jobj,node))then begin
 		if(JSONGet(jobj,node)=="gettingCallSettings")then begin
