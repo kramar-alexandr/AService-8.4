@@ -760,7 +760,6 @@ begin
 	  	end else begin
 	  		tstr = tstr & "\"";
 	  	end;
-	  	logtext(0,tstr);
 	  	addtexttoarea(tstr,newarea);
 	  	lasti = i;
 	  	tstr = "";
@@ -772,6 +771,9 @@ begin
 	jobj = parsejsonarea(newarea);
 	
 	node = "requestType";
+	
+	logtext(0,"-->" & JSONNodeExists(jobj,node));
+	
 	if(JSONNodeExists(jobj,node))then begin
 		if(JSONGet(jobj,node)=="gettingCallSettings")then begin
 			logtext(0,"gettingCallSettings");
