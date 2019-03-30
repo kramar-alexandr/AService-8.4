@@ -5,6 +5,7 @@ external function Boolean MySendAsyncWebRequest(string,longint,boolean,string,st
 external procedure FindUserMailboxName(string,var string,var string);
 external procedure AlarmMessage(record ActVc,integer,string);
 external procedure MySendWebRequest(string,integer,longint, boolean,string,string,string,string,boolean,area,area,integer);
+external procedure ExtractObj(string,var Integer,var string);
 
 global webpublic updating procedure WebBinotelAPICallEnd()
 begin
@@ -720,8 +721,12 @@ begin
 	string 255 node;
 	time timestamp;
 	date datestamp;
-	string 255 str,inphone,name;
+	string 255 str,phone,name,res,num,resnum;
 	record CUVc CUr;
+	record SVOVc SVOr;
+	record Phone1Vc Phoner;
+	integer pos;
+
 	
 	setcompany(8,false)
 	
@@ -735,29 +740,80 @@ begin
 	if(JSONNodeExists(jobj,node))then begin
 		if(JSONGet(jobj,node)=="gettingCallSettings")then begin
 			if(JSONNodeExists(jobj,"externalNumber"))then begin
-				inphone = JSONGet(jobj,"externalNumber");
-				CUr.Code = inphone;
-				if(Readfirstmain(CUr,1,true))then begin
-					name = CUr.Name;
+				phone = JSONGet(jobj,"externalNumber");
+				
+				if(left(phone,1)<"0" or left(phone,1)>"9")then begin
+					phone = "+" & right(phone,len(phone)-1);
+				end;
+				
+				Phoner.PhoneNum = phone;
+				if(readfirstmain(Phoner,1,true))then begin
+					res = Phoner.Priynato;
+					if(nonblank(Phoner.FirstName))then begin
+						res = Phoner.FirstName & " " & Phoner.LastName & " " & Phoner.MiddleName;
+					end;
+					num = Phoner.SVONrs;
 				end else begin
-					CUr.Phone = inphone;
-					if(readfirstkey("Phone",CUr,1,true))then begin
-						name = CUr.Name;
+					Phoner.PhoneNum = "044" & phone;
+					if(readfirstmain(Phoner,1,true))then begin
+						res = Phoner.Priynato;
+						if(nonblank(Phoner.FirstName))then begin
+							res = Phoner.FirstName & " " & Phoner.LastName & " " & Phoner.MiddleName;
+						end;
+						num = Phoner.SVONrs;
 					end else begin
-						CUr.AltPhone = inphone;
-						if(readfirstkey("AltPhone",CUr,1,true))then begin
-							name = CUr.Name;
+						Phoner.PhoneNum = "+38044" & phone;
+						if(readfirstmain(Phoner,1,true))then begin
+							res = Phoner.Priynato;
+							if(nonblank(Phoner.FirstName))then begin
+								res = Phoner.FirstName & " " & Phoner.LastName & " " & Phoner.MiddleName;
+							end;
+							num = Phoner.SVONrs;
 						end else begin
-							CUr.Mobile = inphone;
-							if(readfirstkey("Mobile",CUr,1,true))then begin
-								name = CUr.Name;
+							Phoner.PhoneNum = "+38" & phone;
+							if(readfirstmain(Phoner,1,true))then begin
+								res = Phoner.Priynato;
+								if(nonblank(Phoner.FirstName))then begin
+									res = Phoner.FirstName & " " & Phoner.LastName & " " & Phoner.MiddleName;
+								end;
+								num = Phoner.SVONrs;
 							end;
 						end;
 					end;
 				end;
+	
+				if(nonblank(res))then begin
+					if(nonblank(num))then begin
+						pos = 0;
+						 ExtractObj(num,pos,tstr);
+						 while (nonblank(tstr)) begin
+							 if(nonblank(tstr)) then begin
+								 SVOr.SerNr = stringtolongint(tstr);
+								 if(readfirstmain(SVOr,1,true))then begin
+									if(SVOr.DoneMark==0)then begin
+										resnum = SVOr.SerNr;
+									end;
+								 end;
+							 end;
+							 ExtractObj(num,pos,tstr);
+						 end;
+					end;
+		
+					if(nonblank(resnum))then begin
+						res = resnum & " " & res;
+					end;
+		
+				end;
+	
+				if(nonblank(res))then begin
+					name = res;
+				end else begin
+					name = phone;
+				end;
+				
 			end;
 			if(blank(CUr.Name))then begin
-				name = inphone;
+				name = phone;
 			end;
 		
 			str = "{\"customerData\":{\"name\":\"" & name & "\",\"description\":\"programer\"}}";
