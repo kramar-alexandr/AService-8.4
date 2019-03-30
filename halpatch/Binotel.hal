@@ -773,6 +773,7 @@ begin
 	node = "requestType";
 	
 	logtext(0,"-->" & JSONNodeExists(jobj,node));
+	logtext(0,"-->" & JSONGet(jobj,node));
 	
 	if(JSONNodeExists(jobj,node))then begin
 		if(JSONGet(jobj,node)=="gettingCallSettings")then begin
