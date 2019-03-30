@@ -781,6 +781,9 @@ begin
 		
 		logtext(0,"--->" & JSONGet(jobj,JSONGetChildName(jobj,"",j)));
 		logtext(0,"---==>" & JSONGet(jobj,JSONGetChildName(jobj,"",j))=="gettingCallSettings");
+		logtext(0,"---==>" & JSONGet(jobj,JSONGetChildName(jobj,"",j))=="gettingCallSettings");
+		logtext(0,"---==>" & (JSONGet(jobj,JSONGetChildName(jobj,"",j))=="gettingCallSettings"));
+		logtext(0,"---==>" & JSONGet(jobj,JSONGetChildName(jobj,"",j))=="gettingCallSettings");
 		if(JSONGet(jobj,JSONGetChildName(jobj,"",j))=="gettingCallSettings" and JSONGetChildName(jobj,"",j)=="requestType")then begin
 			rectype = true;
 			logtext(0,"rectype == true");
