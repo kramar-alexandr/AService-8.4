@@ -6,7 +6,7 @@ external procedure RemoteUserFunction(string,string,string,string);
 
 SetLangMode(LangRussian,"RUS",0);
 
-
+/*
 global
 updating function LongInt BinotelCallEndVcRecordSaveAfter(var record BinotelCallEndVc BCEr,record BinotelCallEndVc BCE2r,LongInt stat,LongInt long4)
 BEGIN
@@ -312,16 +312,6 @@ BEGIN
 			
 				logtext(0,"RemoteUserFunction " & users & " OpenNewCUInfo");
 				AllClientsRemoteAsync.RemoteUserFunction(users,"OpenNewCUInfo",Actr.Phone,"");
-				/*pos = 0;
-				
-				ExtractObj(users,pos,muser);
-				while (nonblank(muser)) begin
-					if(nonblank(muser))then begin
-						AllClientsRemoteAsync.OpenNewCUInfo(Actr,muser);
-					end;
-					ExtractObj(users,pos,muser);
-				end;*/
-		
 			end;
 		end;
 		
@@ -329,4 +319,4 @@ BEGIN
  	
   BinotelCallPushVcRecordSaveAfter = res;
   RETURN;
-END;
+END;*/
