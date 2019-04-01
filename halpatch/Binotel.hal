@@ -774,7 +774,6 @@ begin
 	node = "requestType";
 	
 	for(j=0;j<JSONCountChildren(jobj,"");j=j+1)begin
-		logtext(0,"-->" & JSONGetChildName(jobj,"",j));
 		keystr = JSONGet(jobj,JSONGetChildName(jobj,"",j));
 		if(JSONGet(jobj,JSONGetChildName(jobj,"",j))=="gettingCallSettings" and JSONGetChildName(jobj,"",j)=="requestType")then begin
 			rectype = true;
@@ -865,6 +864,7 @@ begin
 			end;
 		
 			str = "{\"customerData\":{\"name\":\"" & name & "\",\"description\":\"programer\"}}";
+			logtext(0,str);
 			weboutstring(str);
 		end;
 	end;
