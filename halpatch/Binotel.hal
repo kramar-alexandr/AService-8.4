@@ -783,6 +783,8 @@ begin
 		logtext(0,"--->" & JSONGet(jobj,JSONGetChildName(jobj,"",j)));
 		LogText(0,"keystr " & keystr & "|");
 		LogText(0,"keystr== " & uppercase(keystr)==uppercase("gettingCallSettings") & "|");
+		LogText(0,"keystr== " & keystr==USetStr(31099) & "|");
+		LogText(0,"keystr== " & keystr==USetStr(31100) & "|");
 		logtext(0,keystr);
 		logtext(0,"gettingCallSettings");
 		if(JSONGet(jobj,JSONGetChildName(jobj,"",j))=="gettingCallSettings" and JSONGetChildName(jobj,"",j)=="requestType")then begin
