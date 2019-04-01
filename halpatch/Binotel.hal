@@ -772,33 +772,17 @@ begin
 	jobj = parsejsonarea(newarea);
 	
 	node = "requestType";
-	
-	logtext(0,"-->" & JSONNodeExists(jobj,node));
-	logtext(0,"-->" & JSONGet(jobj,node));
-	logtext(0,"-->" & JSONCountChildren(jobj,""));
-	for(j=0;j<JSONCountChildren(jobj,"");j=j+1)begin
-		logtext(0,"-->" & JSONGetChildName(jobj,"",j));
+
+	/*for(j=0;j<JSONCountChildren(jobj,"");j=j+1)begin
 		keystr = JSONGet(jobj,JSONGetChildName(jobj,"",j));
-		
-		logtext(0,"--->" & JSONGet(jobj,JSONGetChildName(jobj,"",j)));
-		LogText(0,"keystr " & keystr & "|");
-		LogText(0,"keystr== " & uppercase(keystr)==uppercase("gettingCallSettings") & "|");
-		LogText(0,"keystr== " & keystr==USetStr(31099) & "|");
-		LogText(0,"keystr== " & keystr==USetStr(31100) & "|");
-		logtext(0,keystr);
-		logtext(0,"gettingCallSettings");
 		if(JSONGet(jobj,JSONGetChildName(jobj,"",j))=="gettingCallSettings" and JSONGetChildName(jobj,"",j)=="requestType")then begin
 			rectype = true;
-			logtext(0,"rectype == true");
 		end;
 		if(JSONGetChildName(jobj,"",j)=="externalNumber")then begin
 			recphone = JSONGet(jobj,JSONGetChildName(jobj,"",j));
 		end;
+	end;*/
 		
-	end;
-	
-	logtext(0,"JSONGet " & JSONGet(jobj,"requestType")); 
-	
 	if(rectype)then begin
 		if(rectype)then begin
 			logtext(0,"gettingCallSettings");
@@ -880,6 +864,7 @@ begin
 			end;
 		
 			str = "{\"customerData\":{\"name\":\"" & name & "\",\"description\":\"programer\"}}";
+			logtext(0,str);
 			weboutstring(str);
 		end;
 	end;
