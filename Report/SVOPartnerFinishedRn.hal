@@ -402,7 +402,7 @@ string 50 location;
 			//messagebox(0,host & ":" & port & page);
 			//MySendWebRequest(host,port,-1,false,"GET",page,"text/plain","",false,mainRequest,replyarea,10);
 			//logtext(0,getstringfromarea(replyarea.));
-			MakeBinotelCallFromExtNumToPhone(USr.Phone2,NormalPhone(SVOr.Kontinfo1));
+			MakeBinotelCallFromExtNumToPhone(USr.Phone2,NormalPhone(SVOr.Phone2));
 
 		end;
 	end;
