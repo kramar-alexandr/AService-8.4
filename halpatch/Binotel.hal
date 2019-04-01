@@ -772,8 +772,9 @@ begin
 	jobj = parsejsonarea(newarea);
 	
 	node = "requestType";
-
-	/*for(j=0;j<JSONCountChildren(jobj,"");j=j+1)begin
+	
+	for(j=0;j<JSONCountChildren(jobj,"");j=j+1)begin
+		logtext(0,"-->" & JSONGetChildName(jobj,"",j));
 		keystr = JSONGet(jobj,JSONGetChildName(jobj,"",j));
 		if(JSONGet(jobj,JSONGetChildName(jobj,"",j))=="gettingCallSettings" and JSONGetChildName(jobj,"",j)=="requestType")then begin
 			rectype = true;
@@ -781,7 +782,7 @@ begin
 		if(JSONGetChildName(jobj,"",j)=="externalNumber")then begin
 			recphone = JSONGet(jobj,JSONGetChildName(jobj,"",j));
 		end;
-	end;*/
+	end;
 		
 	if(rectype)then begin
 		if(rectype)then begin
@@ -864,7 +865,6 @@ begin
 			end;
 		
 			str = "{\"customerData\":{\"name\":\"" & name & "\",\"description\":\"programer\"}}";
-			logtext(0,str);
 			weboutstring(str);
 		end;
 	end;
