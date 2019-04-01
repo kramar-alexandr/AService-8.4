@@ -859,9 +859,6 @@ begin
 				end;
 				
 			end;
-			if(blank(CUr.Name))then begin
-				name = phone;
-			end;
 		
 			str = "{\"customerData\":{\"name\":\"" & name & "\",\"description\":\"programer\"}}";
 			logtext(0,str);
