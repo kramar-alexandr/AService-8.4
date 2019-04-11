@@ -1680,6 +1680,54 @@ begin
 return;
 end;
 
+
+
+global updating procedure DblConfirmSelectSVOPointDsm()// Edit ************************** BPI Ukraine - KramarAlexandr - Thursday, 11 April 2019 10:48:41
+begin
+	integer wn;
+	record RcVc RepSpec;
+	record UserVc USr,oldUSr;
+	record SalesGroupVc SGr;
+	record SVOPointVc SVRPr;
+	
+	wn = curwindow;
+	deselectwindow(wn,true);
+	getwindowrecord(wn,RepSpec);
+	if(nonblank(RepSpec.f1))then begin 
+		SGr.SGroupCode = RepSpec.f1;
+		if(readfirstmain(SGr,1,true))then begin
+			SVRPr.Code = SGr.SGroupCode;
+			if(readfirstmain(SVRPr,1,true))then begin
+				USr.Code = currentuser;
+				if(readfirstmain(USr,1,true))then begin
+					if(USr.SalesGroup!=SVRPr.Code)then begin
+						recordcopy(oldUSr,USr);
+						USr.SalesGroup = SVRPr.Code;
+						USr.Location = SVRPr.Location;
+						recordupdate(oldUSr,USr,true);
+						closewindow(wn);
+					end else begin
+						closewindow(wn);
+					end;
+				end else begin
+					messagebox(0,4);
+				end;
+			end else begin
+				messagebox(0,3);
+			end;
+		end else begin
+			messagebox(0,2);
+		end;
+	end else begin
+		messagebox(0,1);
+	end;
+	
+	
+	
+
+return;
+end;
+
 global updating procedure DblConfirmPaymentDsm()
 begin
 	integer wn;
