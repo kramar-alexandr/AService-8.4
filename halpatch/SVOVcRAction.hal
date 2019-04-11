@@ -1702,10 +1702,15 @@ begin
 			if(readfirstmain(SVRPr,1,true))then begin
 				USr.Code = currentuser;
 				if(readfirstmain(USr,1,true))then begin
-					if(USr.SalesGroup!=SVRPr.Code)then begin
+					if(USr.SalesGroup!=SVRPr.Code or stringtoint(USr.Phone2)!=RepSpec.flags[1])then begin
 						recordcopy(oldUSr,USr);
 						USr.SalesGroup = SVRPr.Code;
 						USr.Location = SVRPr.Location;
+						if(RepSpec.flags[1]>900 and RepSpec.flags[1]<931)then begin
+							USr.Phone2 = RepSpec.flags[1];
+						end else begin
+							messagebox(0,"Error phone");
+						end;
 						recordupdate(oldUSr,USr,true);
 						closewindow(wn);
 					end else begin

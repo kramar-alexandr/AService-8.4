@@ -83,6 +83,7 @@ BEGIN
 	if(readfirstmain(USr,1,true))then begin
 		if(USr.IsSalesMan==1)then begin
 			RepSpec.f1 = USr.SalesGroup;
+			RepSpec.flags[1] = stringtoint(USr.Phone2);
 			OpenWindow("SelectSVOPointWClass",0,0,"","",RepSpec);
 		end;
 	end;
