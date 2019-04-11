@@ -404,6 +404,7 @@ BEGIN
 	SVOr.GiveAwayUsr = "";
  	
  	SVOr.MoveSVOToSG = "";
+ 	SVOr.MoveSVOToSGmov = "";
  	SVOr.MoveSVOToSGStatus = "";
  
  	SVOr.FastPrepay = blankval;
@@ -538,6 +539,7 @@ BEGIN
   	
   	SGr.SGroupCode = SVOr.MoveSVOToSG;
   	readfirstmain(SGr,1,true);
+  	SVOr.MoveSVOToSGmov = SVOr.MoveSVOToSG;// Edit ************************** BPI Ukraine - KramarAlexandr - Thursday, 11 April 2019 11:11:09
   	SVOr.MoveSVOToSGStatus = "Ремонт перемещается на " & SGr.SGroupName;
   	SVOr.MoveSVOToSG = "";
   	CreateSVOSerNoterForMove(SVOr,currenttime & " " & currentdate & " " & currentuser & " " & SVOr.MoveSVOToSGStatus);

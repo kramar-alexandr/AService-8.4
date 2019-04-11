@@ -1371,8 +1371,9 @@ moved to client side
   		if(readfirstmain(SVOr,1,true))then begin
   			USr.Code = currentuser;
   			if(readfirstmain(USr,1,true))then begin
-  				if(SVOr.SalesGroup!=USr.SalesGroup)then begin
-						SVOr.SalesGroup=USr.SalesGroup;
+  				if(blank(SVOr.MoveSVOToSGmov))then begin SVOr.MoveSVOToSGmov = USr.SalesGroup; end;
+  				if(SVOr.SalesGroup!=SVOr.MoveSVOToSGmov)then begin
+						SVOr.SalesGroup = SVOr.MoveSVOToSGmov;
 						if(SVOr.OrderStatus==0 or SVOr.OrderStatus==5)then begin
 							SVOr.ServiceManager = "";// Edit ************************** Friday, 23 October 2015 09:54:42
 						end;
@@ -1381,9 +1382,9 @@ moved to client side
 						SVOr.MoveSVOToSGStatus = "Ремонт принят на " & SGr.SGroupName;
 						CreateSVOSerNoterForMove(SVOr,currenttime & " " & currentdate & " " & currentuser & " " & SVOr.MoveSVOToSGStatus);
 						Actr.ActResult = "OK";
+						SVOr.MoveSVOToSGmov = "";
 						recordstore(SVOr,true);
 					end;
-  				
   			end;
   		end;
   	end;

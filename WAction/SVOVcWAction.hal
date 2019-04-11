@@ -1966,14 +1966,16 @@ begin
 		if(readfirstmain(USr,1,true))then begin
 			if(nonblank(USr.SalesGroup))then begin
 				getwindowrecord(wn,SVOr);
-				if(SVOr.SalesGroup!=USr.SalesGroup)then begin
-					SVOr.SalesGroup=USr.SalesGroup;
+				if(blank(SVOr.MoveSVOToSGmov))then begin SVOr.MoveSVOToSGmov = USr.SalesGroup; end;
+				if(SVOr.SalesGroup!=SVOr.MoveSVOToSGmov)then begin
+					SVOr.SalesGroup = SVOr.MoveSVOToSGmov;
 					SVOr.ServiceManager = "";// Edit ************************** Friday, 23 October 2015 09:54:42
 					SGr.SGroupCode = SVOr.SalesGroup;
 					readfirstmain(SGr,1,true);
 					SVOr.MoveSVOToSGStatus = "Ремонт принят на " & SGr.SGroupName;
 					CreateSVOSerNoterForMove(SVOr,currenttime & " " & currentdate & " " & currentuser & " " & SVOr.MoveSVOToSGStatus);
 					CloseActivitiesFromSVO(SVOr,"MOVE");
+					SVOr.MoveSVOToSGmov = "";
 					putwindowrecord(wn,SVOr);
 					WindowDoOK(wn,0);
 					//recordstore(SVOr,true);
