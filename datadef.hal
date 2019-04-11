@@ -460,7 +460,8 @@ begin
     RecordField(AdditionalLocations,M4Str,200,0);	//Edit----------------------Dima  10.12.2015
     RecordField(ServDays,M4Int,0,0);//Edit-------------------Vitalii 12:21 26.08.2016
    	RecordField(MonthStat,M4Int,0,0);// Edit ************************** Thursday, 5 October 2017 17:58:02
-	RecordField(CallGroup,M4Code,100,0);//-------------------------------- dima-f 23.10.17
+		RecordField(CallGroup,M4Code,100,0);//-------------------------------- dima-f 23.10.17
+		RecordField(IsSalesMan,M4Int,0,0);// Edit ************************** BPI Ukraine - KramarAlexandr - Thursday, 11 April 2019 10:05:46
   EndRecordAdd;
   
   RecordAddBegin(IVVc,"IVVc_Custom");
@@ -1232,5 +1233,17 @@ begin
 		RecordField(ApiKey,M4Str,100,0);
 		RecordField(ApiSecret,M4Str,100,0);
 	EndBlock;
+	
+	
+	RecordBegin(SVOPointVc,-,"");// Edit ************************** BPI Ukraine - KramarAlexandr - Thursday, 11 April 2019 10:05:16
+		RecordField(Code,M4Code,20,0);
+		RecordField(Name,M4Str,200,0);
+		RecordField(SalesGroup,M4Code,20,0);
+		RecordField(Location,M4Code,20,0);
+		
+		MainKeyBegin(Code,0);
+		KeySegment(Code);
+	EndRecord;
+	
 	return;
 end;
