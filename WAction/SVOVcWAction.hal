@@ -1964,7 +1964,7 @@ begin
 		USr.Code = currentuser;
 	
 		if(readfirstmain(USr,1,true))then begin
-			if(nonblank(USr.SalesGroup))then begin
+			if(nonblank(USr.SalesGroup) or nonblank(SVOr.MoveSVOToSGmov))then begin
 				getwindowrecord(wn,SVOr);
 				if(blank(SVOr.MoveSVOToSGmov))then begin SVOr.MoveSVOToSGmov = USr.SalesGroup; end;
 				if(SVOr.SalesGroup!=SVOr.MoveSVOToSGmov)then begin
