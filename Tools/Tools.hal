@@ -525,6 +525,8 @@ record IVVc IVr;
 	array string 100 keys;
 	area request,reply;
 	
+	setfileonserver(true);
+	
 	i = 0;
 	RepSpec.sStartDate = currentdate;
 	IVr.TransDate = RepSpec.sStartDate;
