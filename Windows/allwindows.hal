@@ -4085,7 +4085,9 @@ begin
   EditField(h,v+=vs,-40,"",Normal,ToAddr4,false,0);
   SpecialMenu("Стоимость в старой цене за единицу",'=',0,"StockMovFillFIFODsm");
   SpecialMenu("Поиск товара",'f',1,"ItemSearchDsm");
-  SpecialMenu("Удалить документ",'f',1,"DeleteDsm");
+  if(CurrentUser=="SA") then begin
+	SpecialMenu("Удалить документ",' ',1,"DeleteDsm");
+  end;
   if (HasIntegratedNL) then begin
     SpecialMenu("Открыть запись операции отправки",' ',2,"OpenTRFromStockMovSent");
     SpecialMenu("Открыть запись операции получения",'t',3,"OpenTRFromStockMov");
