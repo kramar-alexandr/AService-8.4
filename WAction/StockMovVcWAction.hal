@@ -663,6 +663,18 @@ BEGIN
 end;
 
 global
+updating procedure DeleteDsm()
+BEGIN
+  Integer wn;
+  record StockMovVc StockMovr;
+
+  wn = CurWindow;
+  GetWindowRecord(wn,StockMovr);
+  RecordDelete(StockMovr);
+  return;
+end;
+
+global
 procedure ItemStatusStockMovDsm()
 BEGIN
   Integer wn,nwn;
