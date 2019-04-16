@@ -1,5 +1,7 @@
 external updating procedure AddTextToNote(var record NotepadVc,string);
 external procedure UpdateMasterWClassOnKPIs(string);// Edit ************************** Monday, 17 October 2016 19:05:28
+external procedure SalesReportAccRn(record RcVc);
+external function boolean MySendWebRequest(string,integer,longint,boolean,string,string,string,string,boolean,area,var area,integer);
 
 global
 updating procedure CleaningMn()
@@ -508,7 +510,68 @@ string 100 tag;
   RETURN;
 END;
 
+global procedure GenRnForMail()
+begin
+record RcVc RepSpec;
+record IVVc IVr;
+	row IVVc IVrw;
+	boolean TrHs,testf;
+	val sum;
+	integer mtrw,i,j;
+	record UserVc Userr;
+	array integer tab;
+	val TOTAL;
+	vector string 100 salesgroup;
+	array string 100 keys;
+	area request,reply;
+	
+	i = 0;
+	RepSpec.sStartDate = currentdate;
+	IVr.TransDate = RepSpec.sStartDate;
+	TrHs = true;
+	while (loopkey("TransDate",IVr,1,TrHs))begin
+		testf = true;
+		if(nonblankdate(RepSpec.sStartDate) and IVr.TransDate<RepSpec.sStartDate)then begin testf = false; end;
+		if(IVr.OKFlag!=1)then begin testf = false; end;
+		if(testf) then begin
+			if(nonblank(IVr.SalesGroup)) then begin
+				if(blank(salesgroup[IVr.SalesGroup])) then begin
+					salesgroup[IVr.SalesGroup] = IVr.SalesGroup;
+					keys[i] = IVr.SalesGroup;
+					i=i+1;
+				end;	
+			end;	
+		end;
+	end;	
+	for(j=0;j<keys.length;j=j+1) begin
+		if (OpenExportFile("Stock/SalesGroup" & keys[j] & ".txt", false)) then begin
+			RepSpec.flags[2]=0;
+			RepSpec.Media=mtFile;
+			RepSpec.f2 = keys[j];
+			SalesReportAccRn(RepSpec);
+			CloseFile;
+							
+			setareazerosize(request);
+			addtexttoarea("{",request);
+			addtexttoarea("\"host\":\"smtp.gmail.com\",",request);
+			addtexttoarea("\"port\":465,",request);
+			addtexttoarea("\"secure\":true,",request);
+			addtexttoarea("\"user\":\"aservice.report@gmail.com\",",request);
+			addtexttoarea("\"pass\":\"arPassword123QWE@\",",request);
+			addtexttoarea("\"from\":\"kramar.alexandr@gmail.com\",",request);
+			addtexttoarea("\"to\":\"" & "antonheardstone@gmail.com" & "\",",request);
+			addtexttoarea("\"subject\":\"Report: Выполненые ремонты" & "\",",request);
+			addtexttoarea("\"message\":\"\",",request);
+							
+			addtexttoarea("\"filename\":\"SalesGroup" & keys[j] & ".txt"& "\",",request);
+			addtexttoarea("\"path\":/usr/local/bin/StandardERPServer/Stock/" & "SalesGroup" & keys[j] & ".txt" & "\"",request);
+			addtexttoarea("}",request);
 
+	MySendWebRequest("127.0.0.1",1080,1080,false,"POST","/sendMail","application/json","",false,request,reply,5);
+		end;
+	end;	
+return;
+end;
 
 global
 updating procedure ImportOfRegisterRewriting(record RcVc RepSpec)
