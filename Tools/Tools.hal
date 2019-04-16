@@ -545,7 +545,7 @@ record IVVc IVr;
 	end;	
 	for(j=0;j<keys.length;j=j+1) begin
 		logtext(0,keys[j]);
-		createfile("Stock/SalesGroup" & keys[j] & ".txt");
+		createfile("SalesGroup" & keys[j] & ".txt");
 		logtext(0,"Stock/SalesGroup" & keys[j] & ".txt");
 		if (OpenExportFile("Stock/SalesGroup" & keys[j] & ".txt", false)) then begin
 			RepSpec.flags[2]=0;
