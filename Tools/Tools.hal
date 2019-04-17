@@ -545,10 +545,11 @@ record IVVc IVr;
 			end;	
 		end;
 	end;	
-	setexportcodepage("Windows1251");
+	//setexportcodepage("Windows1251");
 	for(j=0;j<keys.length;j=j+1) begin
 		logtext(0,"Stock/SalesGroup" & keys[j] & ".txt");
-		if (OpenExportFile("Stock/SalesGroup" & keys[j] & ".txt", false)) then begin
+		
+		if (OpenExportFile("Stock/SalesGroup" & keys[j] & ".txt", true)) then begin
 			RepSpec.flags[2]=0;
 			RepSpec.Media=mtFile;
 			RepSpec.f2 = keys[j];
