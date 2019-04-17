@@ -7,14 +7,14 @@ external function Boolean MySendAsyncWebRequest(string,longint,boolean,string,st
 SetLangMode(LangRussian,"RUS",0);
 
 
-global
+/*global
 updating procedure SMSCallBack(Area a_reply,Area a_replyheader,boolean timeout)
 begin
 
 	logtext(0,"SMS reply - " & GetStringFromArea(a_reply,0,GetAreaLength(a_reply)));
 
   return;
-end;
+end;*/
 
 global procedure SendSMSText(string text,longint from,string to,string name)
 begin
