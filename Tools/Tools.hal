@@ -573,6 +573,8 @@ record IVVc IVr;
 			MySendWebRequest("127.0.0.1",1070,1070,false,"POST","/sendMail","application/json","",false,request,reply,5);
 		end;
 	end;	
+	
+	setfileonserver(false);
 return;
 end;
 
