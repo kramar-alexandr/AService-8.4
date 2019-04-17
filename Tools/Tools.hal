@@ -2,7 +2,9 @@ external updating procedure AddTextToNote(var record NotepadVc,string);
 external procedure UpdateMasterWClassOnKPIs(string);// Edit ************************** Monday, 17 October 2016 19:05:28
 external procedure SalesReportAccRn(record RcVc);
 external function boolean MySendWebRequest(string,integer,longint,boolean,string,string,string,string,boolean,area,var area,integer);
-external procedure DayTools1Rn(record RcVc);
+external procedure 	DayTools1Rn(record RcVc);
+external procedure 	DayToolsRn();
+external procedure	GenRnForMail();
 global
 updating procedure CleaningMn()
 BEGIN
@@ -1216,9 +1218,20 @@ end;
 
 
 
-global procedure UpdateToDoWclass()
+global updating procedure UpdateToDoWclass()
 	begin
+	record DateRnBlock DRB;
+	
+	BlockLoad(DRB);
+	
     AllClientsRemoteAsync.UpdateMasterWClassOnKPIs("");
+	if(left(CurrentTime,2)=="16" and DRB.DateRn!=CurrentDate) then begin
+		logtext(0,CurrentTime);
+		DayToolsRn;
+		GenRnForMail;
+		DRB.DateRn = CurrentDate;
+		BlockStore(DRB);
+	end;
 end;
 
 
