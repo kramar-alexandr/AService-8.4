@@ -562,11 +562,11 @@ record IVVc IVr;
 			addtexttoarea("\"user\":\"aservice.report@gmail.com\",",request);
 			addtexttoarea("\"pass\":\"arPassword123QWE@\",",request);
 			addtexttoarea("\"from\":\"kramar.alexandr@gmail.com\",",request);
-			addtexttoarea("\"to\":\"" & "antonheardstone@gmail.com" & "\",",request);
+			addtexttoarea("\"to\":\"" & "kramar.alexandr@gmail.com" & "\",",request);
 			addtexttoarea("\"subject\":\"Report: Выполненые ремонты" & "\",",request);
 			addtexttoarea("\"message\":\"\",",request);
 							
-			addtexttoarea("\"filename\":\"SalesGroup" & keys[j] & ".txt"& "\",",request);
+			//addtexttoarea("\"filename\":\"SalesGroup" & keys[j] & ".txt"& "\",",request);
 			addtexttoarea("\"path\":\"/usr/local/bin/StandardERPServer/Stock/" & "SalesGroup" & keys[j] & ".txt" & "\"",request);
 			addtexttoarea("}",request);
 
