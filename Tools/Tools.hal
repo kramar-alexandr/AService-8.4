@@ -554,6 +554,7 @@ record IVVc IVr;
 			RepSpec.flags[2]=0;
 			RepSpec.Media=mtFile;
 			RepSpec.f2 = keys[j];
+			RepSpec.ArtMode = 1;
 			SalesReportAccRn(RepSpec);
 			CloseFile;
 							
