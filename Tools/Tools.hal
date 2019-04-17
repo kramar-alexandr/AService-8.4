@@ -565,7 +565,7 @@ record IVVc IVr;
 			addtexttoarea("\"from\":\"kramar.alexandr@gmail.com\",",request);
 			addtexttoarea("\"to\":\"" & "kramar.alexandr@gmail.com" & "\",",request);
 			addtexttoarea("\"subject\":\"Report: Выполненые ремонты" & "\",",request);
-			addtexttoarea("\"message\":\"\",",request);
+			addtexttoarea("\"plaintext\":\"\",",request);
 							
 			//addtexttoarea("\"filename\":\"SalesGroup" & keys[j] & ".txt"& "\",",request);
 			addtexttoarea("\"path\":\"/usr/local/bin/StandardERPServer/Stock/" & "SalesGroup" & keys[j] & ".txt" & "\"",request);
