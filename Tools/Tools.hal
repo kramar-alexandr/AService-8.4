@@ -553,7 +553,7 @@ record SVOVc SVOr;
 		if (OpenExportFile("Stock/SalesOrdSalesGroup" & keys[j] & ".txt", true)) then begin
 			RepSpec.flags[2]=0;
 			RepSpec.Media=mtFile;
-			RepSpec.f2 = keys[j];
+			RepSpec.f1 = keys[j];
 			RepSpec.ArtMode = 1;
 			DayTools1Rn(RepSpec);
 			CloseFile;
