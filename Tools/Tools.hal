@@ -549,17 +549,18 @@ record SVOVc SVOr;
 		end;
 	end;	
 	//setexportcodepage("Windows1251");
-	for(j=0;j<keys.length;j=j+1) begin
-		logtext(0,"Stock/SalesOrdSalesGroup" & keys[j] & ".txt");
-		Delete_File("Stock/SalesOrdSalesGroup" & keys[j] & ".txt");
-		if (OpenExportFile("Stock/SalesOrdSalesGroup" & keys[j] & ".txt", true)) then begin
-			RepSpec.flags[2]=0;
-			RepSpec.Media=mtFile;
-			RepSpec.f1 = keys[j];
-			RepSpec.ArtMode = 1;
-			DayTools1Rn(RepSpec);
-			CloseFile;
-							
+	Delete_File("Stock/ServiceOrdSalesGroup.txt");
+	if (OpenExportFile("Stock/ServiceOrdSalesGroup.txt", true)) then begin
+		for(j=0;j<keys.length;j=j+1) begin
+	
+				RepSpec.flags[2]=0;
+				RepSpec.Media=mtFile;
+				RepSpec.f1 = keys[j];
+				RepSpec.ArtMode = 1;
+				DayTools1Rn(RepSpec);
+		end;
+	end;	
+	CloseFile;
 			setareazerosize(request);
 			addtexttoarea("{",request);
 			addtexttoarea("\"host\":\"smtp.gmail.com\",",request);
@@ -569,18 +570,14 @@ record SVOVc SVOr;
 			addtexttoarea("\"pass\":\"arPassword123QWE@\",",request);
 			addtexttoarea("\"from\":\"kramar.alexandr@gmail.com\",",request);
 			addtexttoarea("\"to\":\"" & "dv@a-service.in.ua,sg@a-service.in.ua,kramar.alexandr@gmail.com" & "\",",request);
-			SGr.SGroupCode = keys[j];
-			readfirstmain(SGr,1,true);
-			addtexttoarea("\"subject\":\"" & USetStr(31102) & " " & SGr.SGroupName & "\",",request);
+			addtexttoarea("\"subject\":\"" & USetStr(31102) & " " & CurrentDate & "\",",request);
 			addtexttoarea("\"plaintext\":\"notblank\",",request);
 							
 			//addtexttoarea("\"filename\":\"SalesGroup" & keys[j] & ".txt"& "\",",request);
-			addtexttoarea("\"path\":\"/usr/local/bin/StandardERPServer/Stock/" & "SalesOrdSalesGroup" & keys[j] & ".txt" & "\"",request);
+			addtexttoarea("\"path\":\"/usr/local/bin/StandardERPServer/Stock/" & "ServiceOrdSalesGroup.txt" & "\"",request);
 			addtexttoarea("}",request);
 
 			MySendWebRequest("127.0.0.1",1070,1070,false,"POST","/sendMail","application/json","",false,request,reply,5);
-		end;
-	end;	
 	
 	setfileonserver(false);
 return;
@@ -626,16 +623,23 @@ record IVVc IVr;
 		end;
 	end;	
 	//setexportcodepage("Windows1251");
-	for(j=0;j<keys.length;j=j+1) begin
-		logtext(0,"Stock/SalesGroup" & keys[j] & ".txt");
-		Delete_File("Stock/SalesGroup" & keys[j] & ".txt");
-		if (OpenExportFile("Stock/SalesGroup" & keys[j] & ".txt", true)) then begin
+	Delete_File("Stock/SalesGroup.txt");
+	if (OpenExportFile("Stock/SalesGroup.txt", true)) then begin
+		for(j=0;j<keys.length;j=j+1) begin
+			logtext(0,"Stock/SalesGroup" & keys[j]);
 			RepSpec.flags[2]=0;
 			RepSpec.Media=mtFile;
 			RepSpec.f2 = keys[j];
-			RepSpec.ArtMode = 1;
+			RepSpec.ArtMode = 1;startformat(15);
+			OutString(0,0,"Sales group -",false);
+			OutString(0,0,keys[j],false);
+			endformat;
+			startformat(15);
+			endformat;
 			SalesReportAccRn(RepSpec);
-			CloseFile;
+		end;		
+	end;			
+	CloseFile;
 							
 			setareazerosize(request);
 			addtexttoarea("{",request);
@@ -646,18 +650,15 @@ record IVVc IVr;
 			addtexttoarea("\"pass\":\"arPassword123QWE@\",",request);
 			addtexttoarea("\"from\":\"kramar.alexandr@gmail.com\",",request);
 			addtexttoarea("\"to\":\"" & "dv@a-service.in.ua,sg@a-service.in.ua,kramar.alexandr@gmail.com" & "\",",request);
-			SGr.SGroupCode = keys[j];
-			readfirstmain(SGr,1,true);
-			addtexttoarea("\"subject\":\"" & USetStr(31101) & " " & SGr.SGroupName & "\",",request);
+			addtexttoarea("\"subject\":\"" & USetStr(31101) & " " & CurrentDate & "\",",request);
 			addtexttoarea("\"plaintext\":\"notblank\",",request);
 							
 			//addtexttoarea("\"filename\":\"SalesGroup" & keys[j] & ".txt"& "\",",request);
-			addtexttoarea("\"path\":\"/usr/local/bin/StandardERPServer/Stock/" & "SalesGroup" & keys[j] & ".txt" & "\"",request);
+			addtexttoarea("\"path\":\"/usr/local/bin/StandardERPServer/Stock/" & "SalesGroup.txt" & "\"",request);
 			addtexttoarea("}",request);
 
 			MySendWebRequest("127.0.0.1",1070,1070,false,"POST","/sendMail","application/json","",false,request,reply,5);
-		end;
-	end;	
+
 	
 	setfileonserver(false);
 return;

@@ -847,6 +847,12 @@ integer i;
 
 	StartReportnoheaderJob("Прийом товарів за день");
 	i=0;
+	startformat(15);
+	OutString(0,0,"Sales group -",false);
+	OutString(0,0,RepSpec.f1,false);
+	endformat;
+	startformat(15);
+	endformat;
 	SVOr.TransDate = CurrentDate;
 	TrHs = true;
 	while(LoopKey("TransDate",SVOr,1,TrHs)) begin

@@ -1532,12 +1532,15 @@ L22AddIVCostRow:;
                 if ((FIFOPerSerialNr(INr,CAb)!=0) and ((INr.SerNrf==1) or (INr.SerNrf==2))) then begin
                   if (nonblank(IVrw.SerialNr)) then begin
                     lbaserate2 = FindPUBaseRate2forSerialNr(IVrw.ArtCode,IVrw.SerialNr);
+					logtext(0,"currrate - " & lbaserate2);
                   end;
                 end;
                 if (lbaserate2==0) then begin 
                   lbaserate2 = baserate2; 
+				  logtext(0,"lastrate - " & lbaserate2);
                 end else begin
                   lbaserate2 = lbaserate2*baserate1;
+				  logtext(0,"lastrate - " & lbaserate2);
                 end;
               end;
               if (costaccf) then begin
