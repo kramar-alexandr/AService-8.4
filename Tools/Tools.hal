@@ -525,6 +525,7 @@ record SVOVc SVOr;
 	val TOTAL;
 	vector string 100 salesgroup;
 	array string 100 keys;
+	array string 100 names;
 	area request,reply;
 	record SalesGroupVc SGr;
 	
@@ -536,13 +537,17 @@ record SVOVc SVOr;
 	TrHs = true;
 	while (loopkey("TransDate",SVOr,1,TrHs))begin
 		testf = true;
-		if(nonblankdate(RepSpec.sStartDate) and SVOr.TransDate<RepSpec.sStartDate)then begin testf = false; end;
+		if(nonblankdate(RepSpec.sStartDate) and SVOr.TransDate<>RepSpec.sStartDate)then begin testf = false; end;
 		
 		if(testf) then begin
 			if(nonblank(SVOr.SalesGroup)) then begin
 				if(blank(salesgroup[SVOr.SalesGroup])) then begin
 					salesgroup[SVOr.SalesGroup] = SVOr.SalesGroup;
 					keys[i] = SVOr.SalesGroup;
+					SGr.SGroupCode = keys[i];
+					if(readfirstmain(SGr,1,true)) then begin
+						names[keys[i]] = SGr.SGroupName;
+					end;
 					i=i+1;
 				end;	
 			end;	
@@ -550,17 +555,17 @@ record SVOVc SVOr;
 	end;	
 	//setexportcodepage("Windows1251");
 	Delete_File("Stock/ServiceOrdSalesGroup.txt");
-	if (OpenExportFile("Stock/ServiceOrdSalesGroup.txt", true)) then begin
 		for(j=0;j<keys.length;j=j+1) begin
-	
+			if (OpenExportFile("Stock/ServiceOrdSalesGroup.txt", true)) then begin
 				RepSpec.flags[2]=0;
 				RepSpec.Media=mtFile;
 				RepSpec.f1 = keys[j];
+				RepSpec.f2 = names[keys[j]];
 				RepSpec.ArtMode = 1;
 				DayTools1Rn(RepSpec);
-		end;
-	end;	
-	CloseFile;
+			end;
+		end;	
+		CloseFile;
 			setareazerosize(request);
 			addtexttoarea("{",request);
 			addtexttoarea("\"host\":\"smtp.gmail.com\",",request);
@@ -595,6 +600,7 @@ record IVVc IVr;
 	val TOTAL;
 	vector string 100 salesgroup;
 	array string 100 keys;
+	array string 100 names;
 	area request,reply;
 	record SalesGroupVc SGr;
 	
@@ -615,8 +621,12 @@ record IVVc IVr;
 		if(testf) then begin
 			if(nonblank(IVr.SalesGroup)) then begin
 				if(blank(salesgroup[IVr.SalesGroup])) then begin
-					salesgroup[IVr.SalesGroup] = IVr.SalesGroup;
+					salesgroup[IVr.SalesGroup] = IVr.SalesGroup;					
 					keys[i] = IVr.SalesGroup;
+					SGr.SGroupCode = keys[i];
+					if(readfirstmain(SGr,1,true)) then begin
+						names[keys[i]] = SGr.SGroupName;
+					end;
 					i=i+1;
 				end;	
 			end;	
@@ -624,22 +634,26 @@ record IVVc IVr;
 	end;	
 	//setexportcodepage("Windows1251");
 	Delete_File("Stock/SalesGroup.txt");
-	if (OpenExportFile("Stock/SalesGroup.txt", true)) then begin
 		for(j=0;j<keys.length;j=j+1) begin
-			logtext(0,"Stock/SalesGroup" & keys[j]);
-			RepSpec.flags[2]=0;
-			RepSpec.Media=mtFile;
-			RepSpec.f2 = keys[j];
-			RepSpec.ArtMode = 1;startformat(15);
-			OutString(0,0,"Sales group -",false);
-			OutString(0,0,keys[j],false);
-			endformat;
-			startformat(15);
-			endformat;
-			SalesReportAccRn(RepSpec);
-		end;		
-	end;			
-	CloseFile;
+			if (OpenExportFile("Stock/SalesGroup.txt", true)) then begin
+				logtext(0,"Stock/SalesGroup" & keys[j]);
+				RepSpec.flags[2]=0;
+				RepSpec.Media=mtFile;
+				RepSpec.f2 = keys[j];
+				RepSpec.ArtMode = 1;
+				startformat(15);
+				OutString(0,0,"------------------------",false);
+				endformat;
+				startformat(15);
+				OutString(0,0,names[keys[j]],false);
+				OutString(0,0,keys[j],false);
+				endformat;
+				startformat(15);
+				endformat;
+				SalesReportAccRn(RepSpec);
+			end;		
+		end;			
+		CloseFile;
 							
 			setareazerosize(request);
 			addtexttoarea("{",request);

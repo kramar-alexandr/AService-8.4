@@ -845,43 +845,48 @@ vector integer qty;
 array string 100 code;
 integer i;
 
-	StartReportnoheaderJob("Прийом товарів за день");
-	i=0;
-	startformat(15);
-	OutString(0,0,"Sales group -",false);
-	OutString(0,0,RepSpec.f1,false);
-	endformat;
-	startformat(15);
-	endformat;
-	SVOr.TransDate = CurrentDate;
-	TrHs = true;
-	while(LoopKey("TransDate",SVOr,1,TrHs)) begin
-		testf = true;
-		if(SVOr.TransDate!=CurrentDate) then begin TrHs = false; testf = false; end;
-		if(nonblank(RepSpec.f1) and SVOr.SalesGroup!=RepSpec.f1)then begin testf = false; end; 
-		if(testf) then begin
-				matrowget(SVOr,0,SVOrw)
-				if(blank(SVOrw.ArtCode)) then begin SVOrw.ArtCode = "other"; end;
-				if(qty[SVOrw.ArtCode]==0) then begin
-					code[i] = SVOrw.ArtCode;				
-					i=i+1;
-					qty[SVOrw.ArtCode] = qty[SVOrw.ArtCode] + SVOrw.Quant;
-				end else begin
-					qty[SVOrw.ArtCode] = qty[SVOrw.ArtCode] + SVOrw.Quant;
-				end;	
-		end;
-	end;
-	startformat(15);
-		outstring(0,0,"Код",false);
-		outstring(300,0,"Кол-во",false);
-	endformat;
-	for(i=0;i<code.length;i=i+1) begin
+		StartReportnoheaderJob("Прийом товарів за день");
+		i=0;
 		startformat(15);
-		outstring(0,0,code[i],false);
-		outstring(300,0,qty[code[i]],false);
+		OutString(0,0,"--------------------------------",false);
 		endformat;
-	end;
-	endjob;
+		startformat(15);
+		OutString(0,0,RepSpec.f1,false);
+		OutString(0,0,RepSpec.f2,false);
+		endformat;
+		startformat(15);
+		endformat;
+		SVOr.TransDate = RepSpec.sStartDate;
+		TrHs = true;
+		while(LoopKey("TransDate",SVOr,1,TrHs)) begin
+			testf = true;
+			if(SVOr.TransDate!=RepSpec.sStartDate) then begin TrHs = false; testf = false; end;
+			if(nonblank(RepSpec.f1) and SVOr.SalesGroup!=RepSpec.f1)then begin testf = false; end; 
+			if(testf) then begin
+					matrowget(SVOr,0,SVOrw)
+					if(blank(SVOrw.ArtCode)) then begin SVOrw.ArtCode = "other"; end;
+					if(qty[SVOrw.ArtCode]==0) then begin
+						code[i] = SVOrw.ArtCode;				
+						i=i+1;
+						qty[SVOrw.ArtCode] = qty[SVOrw.ArtCode] + SVOrw.Quant;
+					end else begin
+						qty[SVOrw.ArtCode] = qty[SVOrw.ArtCode] + SVOrw.Quant;
+					end;	
+			end;
+		end;
+		startformat(15);
+			outstring(0,0,"Код",false);
+			outstring(300,0,"Кол-во",false);
+		endformat;
+		for(i=0;i<code.length;i=i+1) begin
+			startformat(15);
+			outstring(0,0,code[i],false);
+			outstring(300,0,qty[code[i]],false);
+			endformat;
+		end;
+		endjob;
+
+
 	
 return;
 end;
