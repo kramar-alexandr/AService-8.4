@@ -934,7 +934,8 @@ begin
   		Actr.TodoFlag = kTodoFlagTodo;
   		Actr.SymbNr = 3;
   		Actr.ActType = acttype;
-  	  Actr.StartTime = StringToTime("00:00:00");//--------------------------------- dima-f 22.09.17
+  	  //Actr.StartTime = StringToTime("00:00:00");//--------------------------------- dima-f 22.09.17
+  	  Actr.StartTime = currenttime;
   	  Actr.TransDate = transdate;
   	  Actr.EndDate = blankd;
   		Actr.Phone = curPhone;
