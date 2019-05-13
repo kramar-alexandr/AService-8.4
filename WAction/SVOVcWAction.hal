@@ -165,8 +165,10 @@ begin
 				//PrintAndSetRegDateInSVOExecute(SVOr);
 				SetExportCodePage("CP1251");
 				HandleSVOReceiptPrintingPrepay(SVOr,aFile);
-				AddAreaToArea(aFile,aFile);
-				PrintBixolonReceipt(aFile);
+				if(RepSpec.flags[0]==1)then begin
+					AddAreaToArea(aFile,aFile);
+					PrintBixolonReceipt(aFile);
+				end;
 				putwindowrecord(nwn,SVOr);
 				//setwindowstate(nwn,0);
 				//UpdateBrowses("SVOVc");
