@@ -442,7 +442,7 @@ begin
 //Cut receipt  
   addtexttoarea(chr(29) & chr(86) & "1",aFile);
   
-  if(SVOr.FastPrepay==0)then begin
+  if(SVOr.FastPrepay==0 and SVOr.FastCash==0)then begin
   	setareazerosize(aFile);
   end;
   
