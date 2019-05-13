@@ -2095,15 +2095,13 @@ begin
     blockload(RPb);
     filename = "Bixolon.txt";
     WriteAreaToFile(aFile,filename,0);
-    if(getarealength(aFile)>100)then begin
-			millisleep(100);
-			if (WindowsMode==1) then begin
-					RunProgram("c:\\windows\\system32\\cmd.exe","/C \"" & "copy " & filename & " \\\\" & RPb.CompNameWin & "\\" & RPb.PrinterNameWin & "\"");
-			end; 
-			if (WindowsMode==0) then begin
-					RunProgram("/usr/bin/lp","-d " & RPb.PrinterNameMac & " -o raw " & filename);
-			end;     
-    end;
+    millisleep(100);
+    if (WindowsMode==1) then begin
+  			RunProgram("c:\\windows\\system32\\cmd.exe","/C \"" & "copy " & filename & " \\\\" & RPb.CompNameWin & "\\" & RPb.PrinterNameWin & "\"");
+    end; 
+    if (WindowsMode==0) then begin
+		    RunProgram("/usr/bin/lp","-d " & RPb.PrinterNameMac & " -o raw " & filename);
+    end;     
 end;
 
 
