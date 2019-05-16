@@ -59,8 +59,10 @@ BEGIN
 	if ((SVOr.WSCost!=blankval) and (SVOr.WSCost!=0)) then begin
 		SetExportCodePage("CP1251");
 		HandleSVOReceiptPrinting(SVOr,aFile);
-		AddAreaToArea(aFile,aFile);
-		PrintBixolonReceipt(aFile);
+		if(SVOr.FastBank==0)then begin
+			AddAreaToArea(aFile,aFile);
+			PrintBixolonReceipt(aFile);
+		end;
 	end;
 	if (BlankDate(SVOr.RegDate)) then begin
 		testf = true;
