@@ -232,6 +232,27 @@ begin
   return;
 end;
 
+global
+function Boolean ManagerFastPaySVOWClassAccSpecButtonAction(Integer wn,Integer value)
+begin
+  Boolean res;
+  record RcVc RepSpec;
+		
+  res = true;
+  deselectwindow(wn,true);
+  GetWindowRecord(wn,RepSpec);
+  
+  if(value==2)then begin
+  	RepSpec.vals1 = round((RepSpec.vals0 * 1.05),defaultcurroundoff);
+  end else begin
+  	RepSpec.vals1 = blankval;
+  end;
+  putwindowrecord(wn,RepSpec);
+  selectwindow(wn);
+  ManagerFastPaySVOWClassAccSpecButtonAction = res;
+  return;
+end;
+
 global procedure SVOCashUpRn(record RcVc RepSpec)
 begin
 	record SVOCashUpVc SVOCr;
