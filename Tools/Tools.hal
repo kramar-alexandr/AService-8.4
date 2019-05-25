@@ -1240,7 +1240,7 @@ global updating procedure UpdateToDoWclass()
 	BlockLoad(DRB);
 	
     AllClientsRemoteAsync.UpdateMasterWClassOnKPIs("");
-	if(left(CurrentTime,2)=="22" and DRB.DateRn!=CurrentDate) then begin
+	if(left(CurrentTime,2)=="20" and DRB.DateRn!=CurrentDate) then begin
 		logtext(0,CurrentTime);
 		DayToolsRn;
 		GenRnForMail;
