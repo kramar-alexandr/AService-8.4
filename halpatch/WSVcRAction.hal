@@ -832,20 +832,20 @@ begin
 								end else begin
 									instock = 0;
 								end;
-							end;
-							if (instock<prev) then begin
-                RecordCheckError(31103,"",i,"Quant");      
-                res = -1;
-                goto LWSVcRecordCheck;
+							
+								if (instock<prev) then begin
+									RecordCheckError(31103,"",i,"Quant");      
+									res = -1;
+									goto LWSVcRecordCheck;
+								end;
+							
+								if (IsEnoughRemQtyInHist(WSrw.ArtCode,location,WSp.TransDate,prev,WSrw.SerialNr)==false) then begin //Edit***************************Sasha2,10:45 04.03.2016 {
+									RecordCheckError(31063,": " & WSrw.ArtCode,i,"ArtCode");      
+									res = -1;
+									goto LWSVcRecordCheck;
+								end; //Edit***************************Sasha2,10:45 04.03.2016 }
+              
               end;
-              
-              if (IsEnoughRemQtyInHist(WSrw.ArtCode,location,WSp.TransDate,prev,WSrw.SerialNr)==false) then begin //Edit***************************Sasha2,10:45 04.03.2016 {
-                RecordCheckError(31063,": " & WSrw.ArtCode,i,"ArtCode");      
-                res = -1;
-                goto LWSVcRecordCheck;
-              end; //Edit***************************Sasha2,10:45 04.03.2016 }
-              
-              
               
               
             // Edit Start ---------------------------------------------- Edit Start
