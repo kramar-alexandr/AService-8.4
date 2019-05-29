@@ -41,12 +41,11 @@ BEGIN
     case "IVVc":
       IVr.SerNr = transnr;
       if (ReadFirstMain(IVr,1,true)) then begin
-        OutStringID(colpos,"DblCUVc",Left(IVr.Addr0,l),false,IVr.CustCode);				
+        OutStringID(colpos,"DblCUVc",Left(IVr.Addr0,l),false,IVr.CustCode);  
       end;
     case "SHVc":
       SHr.SerNr = transnr;
       if (ReadFirstMain(SHr,1,true)) then begin
-				OutString(colpos,"DblCUVc",SHr.CustCode,false);  
         OutStringID(colpos,"DblCUVc",Left(SHr.Addr0,l),false,SHr.CustCode);  
       end;
     case "PUVc":
@@ -120,7 +119,7 @@ LLPrintItemHistHeaderExcel:;
           end else begin
             if (HasMultiLocations) then begin
               OutString(300,0,USetStr(5010),false);
-			  			OutString(350,0,USetStr(4998),false);//Edit_________________ABR//Edit_________________ABR
+              OutString(350,0,USetStr(4998),false); //Edit***************************Sasha2,13:26 22.05.2017
             end;
           end;
           if (RepSpec.flags[12]==1) then begin OutStringAdjustBiDi(375,0,USetStr(7593),true,M4Val,420); end;    
@@ -143,8 +142,8 @@ LLPrintItemHistHeaderExcel:;
             OutString(185,0,USetStr(9660)&"/"&USetStr(10476),false);           
           end;
           if (HasMultiLocations) then begin
-            OutString(250,0,USetStr(5010),false);    //Edit_________________ABR//Edit_________________ABR 
-						OutString(290,0,USetStr(4998),false);//Edit_________________ABR//Edit_________________ABR
+            OutString(260,0,USetStr(5010),false); 
+            OutString(290,0,USetStr(4998),false); //Edit***************************Sasha2,13:27 22.05.2017     
           end;
           OutStringAdjustBiDi(340,0,USetStr(5009),true,M4Val,350);        
           if (UserCanAction("ViewCostPrice",true)) then begin
@@ -181,8 +180,8 @@ begin
             OutString(0,0,USetStr(5007),false);
             OutString(60,0,USetStr(5006),false);          
             OutString(115,0,USetStr(3080),false);          
-            OutString(215,0,USetStr(9660)&"/"&USetStr(10476),false);
-						OutString(300,0,USetStr(4998),false);//Edit_________________ABR//Edit_________________ABR
+            OutString(215,0,USetStr(9660)&"/"&USetStr(10476),false);               
+            OutString(300,0,USetStr(4998),false); //Edit***************************Sasha2,13:29 22.05.2017
             OutString(480,0,USetStr(5009),true);
             EndFormat;
           case 1:
@@ -190,8 +189,8 @@ begin
             OutString(0,0,USetStr(5007),false);
             OutString(60,0,USetStr(5006),false);           
             OutString(140,0,USetStr(3080),false);          
-            OutString(190,0,USetStr(9660)&"/"&USetStr(10476),false);    //Edit_________________ABR//Edit_________________ABR          
-						OutString(250,0,USetStr(4998),false);//Edit_________________ABR//Edit_________________ABR
+            OutString(200,0,USetStr(9660)&"/"&USetStr(10476),false);              
+            OutString(250,0,USetStr(4998),false); //Edit***************************Sasha2,13:30 22.05.2017
             OutString(300,0,USetStr(5009),true);
             OutString(380,0,USetStr(5013),true);
             OutString(480,0,USetStr(5015),true);
@@ -280,11 +279,11 @@ BEGIN
     rw = rw + 1;
   end;
   if (nonblank(RepSpec.f11)) then begin		//Edit----------------------Dima  27.01.2016
-    tstr = USetStr(4998);//Edit_________________ABR//Edit_________________ABR
-    tstr = tstr & ": " & RepSpec.f11;//Edit_________________ABR//Edit_________________ABR
-    Header(rw,tstr,1);//Edit_________________ABR//Edit_________________ABR
-    rw = rw + 1;//Edit_________________ABR//Edit_________________ABR
-  end;  //Edit_________________ABR//Edit_________________ABR
+    tstr = USetStr(4998);
+    tstr = tstr & ": " & RepSpec.f11;
+    Header(rw,tstr,1);
+    rw = rw + 1;
+  end;  
   if (RepSpec.flags[14]!=0) then begin
     Header(rw,USetStr(11692),1);
     rw = rw + 1;
@@ -458,7 +457,6 @@ begin
   record PIVc PIr;
   string 255 transnr;
   record IVVc IVr;
-  record UserVc USr;
 
   printf = true;
   transnr = IHr.TransNr;
@@ -564,13 +562,7 @@ begin
         end else begin
           strid = 5038; 
         end;
-		USr.Code = currentuser;
-		ReadFirstMain(USr,1,true);
-		if(SetInSet(POr.SalesGroup,USr.SalesGroup)) then begin
-			dblstr = "DblPOVc";
-		end else begin
-			dblstr = 0;
-		end;	
+        dblstr = "DblPOVc";
         if (POr.Closed!=0) then begin
           printf = false;
         end;
@@ -584,10 +576,9 @@ begin
           printf = false;
         end;
         strid = 5035; 
-		
         dblstr = "DblORVc";
       end;
-		case "StockTakeVc": strid = 5060; dblstr = "DblStockTakeVc"; //Edit-------------------Vitalii 14:51 12.01.2016
+    case "StockTakeVc": strid = 5060; dblstr = "DblStockTakeVc"; //Edit-------------------Vitalii 14:51 12.01.2016
   end;
 
   if (printf==false) then begin
@@ -619,19 +610,19 @@ LPrintItemHistExcel:;
           OutString(300,0,INr.Unittext,false);
           OutDate(0,0,IHr.TransDate,false);
           OutString(60,0,USetStr(strid),false);       
-          OutString(115,dblstr,transnr,false);   
-          OutString(135,0,USetStr(131134) & (IHr.Row + 1),false); //Edit-------------------Vitalii 14:51 12.01.2016
-					if(left(currentuser,2)=="SA")then begin//Edit_________________ABR//Edit_________________ABR
-						OutString(155,"DblItemHistVc",IHr.SerNr,false); //Edit-------------------Vitalii 14:51 12.01.2016
-						OutString(200,"DblItemHistVc",IHr.Source,false);//Edit_________________ABR//Edit_________________ABR
-					end;//Edit_________________ABR//Edit_________________ABR
- 
+          OutString(115,dblstr,transnr,false);
+          OutString(135,0,USetStr(31134) & (IHr.Row + 1),false); //Edit-------------------Vitalii 14:51 12.01.2016
+		  
+    		  if(currentuser=="SA")then begin
+    				OutString(155,"DblItemHistVc",IHr.SerNr,false); //Edit-------------------Vitalii 14:51 12.01.2016
+    		  end; 
+    		     
           if (RepSpec.flags[21]==1) then begin  
             PrintCustName(IHr.FileName,IHr.TransNr,210);   
           end;
           if (HasMultiLocations) then begin
             OutString(300,0,IHr.Location,false);
-						OutString(350,0,IHr.Position,false);//Edit_________________ABR//Edit_________________ABR
+            OutString(350,0,IHr.Position,false); //Edit***************************Sasha2,13:49 22.05.2017
           end;
           switch (RepSpec.flags[12]) begin
             case 1: OutVal(375,0,IHr.Qty2,M4UVal,true);
@@ -670,17 +661,16 @@ LPrintItemHistExcel:;
           OutDate(0,0,IHr.TransDate,false);
           OutString(60,0,USetStr(strid),false);                        
           OutStringOvst(115,dblstr,transnr,false,IHr.Invalid); 
-          OutString(135,0,USetStr(131134) & (IHr.Row + 1),false); //Edit-------------------Vitalii 14:51 12.01.2016
-					if(left(currentuser,2)=="SA")then begin//Edit_________________ABR//Edit_________________ABR
-						OutString(155,"DblItemHistVc",IHr.SerNr,false); //Edit-------------------Vitalii 14:51 12.01.2016
-						OutString(200,"DblItemHistVc",IHr.Source,false);//Edit_________________ABR//Edit_________________ABR
-					end;//Edit_________________ABR//Edit_________________ABR
+          OutString(135,0,USetStr(31134) & (IHr.Row + 1),false); //Edit-------------------Vitalii 14:51 12.01.2016
+    		  if(currentuser=="SA")then begin
+    				OutString(155,"DblItemHistVc",IHr.SerNr,false); //Edit-------------------Vitalii 14:51 12.01.2016
+    		  end;   
           if (RepSpec.flags[21]==1) then begin
             PrintCustName(IHr.FileName,IHr.TransNr,185);                   
           end;
           if (HasMultiLocations) then begin
-            OutString(250,0,IHr.Location,false);   //Edit_________________ABR//Edit_________________ABR                      
-						OutString(290,0,IHr.Position,false);//Edit_________________ABR//Edit_________________ABR
+            OutString(260,0,IHr.Location,false); 
+            OutString(290,0,IHr.Position,false); //Edit***************************Sasha2,13:51 22.05.2017                        
           end;
           OutVal(340,0,IHr.Qty,M4UVal,true);                           
           if (outf) then begin
@@ -713,12 +703,11 @@ LPrintItemHistExcel:;
           OutString(300,0,INr.Unittext,false);
           OutDate(0,0,IHr.TransDate,false);
           OutString(60,0,USetStr(strid),false);                       
-          OutString(115,dblstr,transnr,false); 
-					OutString(135,0,USetStr(131134) & (IHr.Row + 1),false); //Edit-------------------Vitalii 14:51 12.01.2016
-					if(left(currentuser,2)=="SA")then begin//Edit_________________ABR//Edit_________________ABR
-						OutString(155,"DblItemHistVc",IHr.SerNr,false); //Edit-------------------Vitalii 14:51 12.01.2016
-						OutString(200,"DblItemHistVc",IHr.Source,false);//Edit_________________ABR//Edit_________________ABR
-					end;//Edit_________________ABR//Edit_________________ABR
+          OutString(115,dblstr,transnr,false);    
+          OutString(135,0,USetStr(31134) & (IHr.Row + 1),false); //Edit-------------------Vitalii 14:51 12.01.2016
+    		  if(currentuser=="SA")then begin
+    				OutString(155,"DblItemHistVc",IHr.SerNr,false); //Edit-------------------Vitalii 14:51 12.01.2016
+    		  end;                
           if (RepSpec.flags[21]==1) then begin  
             PrintCustName(IHr.FileName,IHr.TransNr,210);                    
           end;
@@ -759,11 +748,10 @@ LPrintItemHistExcel:;
           OutDate(0,0,IHr.TransDate,false);
           OutString(60,0,USetStr(strid),false);
           OutString(115,dblstr,transnr,false);
-					OutString(135,0,USetStr(131134) & (IHr.Row + 1),false); //Edit-------------------Vitalii 14:51 12.01.2016
-					if(left(currentuser,2)=="SA")then begin//Edit_________________ABR//Edit_________________ABR
-						OutString(155,"DblItemHistVc",IHr.SerNr,false); //Edit-------------------Vitalii 14:51 12.01.2016
-						OutString(200,"DblItemHistVc",IHr.Source,false);//Edit_________________ABR//Edit_________________ABR
-					end;//Edit_________________ABR//Edit_________________ABR
+          OutString(135,0,USetStr(31134) & (IHr.Row + 1),false); //Edit-------------------Vitalii 14:51 12.01.2016
+    		  if(currentuser=="SA")then begin
+    				OutString(155,"DblItemHistVc",IHr.SerNr,false); //Edit-------------------Vitalii 14:51 12.01.2016
+    		  end;
           if (RepSpec.flags[22]!=0) then begin
             PrintDispatchNumber(IHr.FileName,IHr.TransNr,IHr.Row,170);   
           end;
@@ -772,7 +760,7 @@ LPrintItemHistExcel:;
           end;
           if (HasMultiLocations) then begin
             OutString(300,0,IHr.Location,false);
-						OutString(350,0,IHr.Position,false);//Edit_________________ABR//Edit_________________ABR
+            OutString(350,0,IHr.Position,false); //Edit***************************Sasha2,13:55 22.05.2017
           end;
           switch (RepSpec.flags[12]) begin
             case 1: OutValBiDi(375,0,IHr.Qty2,M4UVal,true,420);
@@ -791,28 +779,25 @@ LPrintItemHistExcel:;
           OutDate(0,0,IHr.TransDate,false);
           OutString(60,0,USetStr(strid),false);                        
           if (RepSpec.flags[22]!=0) then begin
-            OutStringOvst(115,dblstr,transnr,false,IHr.Invalid);    
-            OutString(135,0,USetStr(131134) & (IHr.Row + 1),false); //Edit-------------------Vitalii 14:51 12.01.2016
-						if(left(currentuser,2)=="SA")then begin//Edit_________________ABR//Edit_________________ABR
-							OutString(155,"DblItemHistVc",IHr.SerNr,false); //Edit-------------------Vitalii 14:51 12.01.2016
-							OutString(200,"DblItemHistVc",IHr.Source,false);//Edit_________________ABR//Edit_________________ABR
-						end;//Edit_________________ABR//Edit_________________ABR
-
+            OutStringOvst(115,dblstr,transnr,false,IHr.Invalid);  
+            OutString(135,0,USetStr(31134) & (IHr.Row + 1),false); //Edit-------------------Vitalii 14:51 12.01.2016
+      			if(currentuser=="SA")then begin
+      				OutString(155,"DblItemHistVc",IHr.SerNr,false); //Edit-------------------Vitalii 14:51 12.01.2016
+      		  end;  
             PrintDispatchNumber(IHr.FileName,IHr.TransNr,IHr.Row,150);   
           end else begin
-            OutStringOvst(135,dblstr,transnr,false,IHr.Invalid);  
-            OutString(155,0,USetStr(131134) & (IHr.Row + 1),false); //Edit-------------------Vitalii 14:51 12.01.2016
-						if(left(currentuser,2)=="SA")then begin//Edit_________________ABR//Edit_________________ABR
-							OutString(155,"DblItemHistVc",IHr.SerNr,false); //Edit-------------------Vitalii 14:51 12.01.2016
-							OutString(200,"DblItemHistVc",IHr.Source,false);//Edit_________________ABR//Edit_________________ABR
-						end;//Edit_________________ABR//Edit_________________ABR
+            OutStringOvst(135,dblstr,transnr,false,IHr.Invalid); 
+            OutString(155,0,USetStr(31134) & (IHr.Row + 1),false); //Edit-------------------Vitalii 14:51 12.01.2016
+      			if(currentuser=="SA")then begin
+      				OutString(155,"DblItemHistVc",IHr.SerNr,false); //Edit-------------------Vitalii 14:51 12.01.2016
+      		  end;   
           end;
           if (RepSpec.flags[21]==1) then begin
             PrintCustName(IHr.FileName,IHr.TransNr,185);                   
           end;
           if (HasMultiLocations) then begin
-            OutString(250,0,IHr.Location,false);//Edit_________________ABR//Edit_________________ABR                         
-						OutString(290,0,IHr.Position,false);//Edit_________________ABR//Edit_________________ABR
+            OutString(260,0,IHr.Location,false);
+            OutString(290,0,IHr.Position,false);                         
           end;
           OutValBiDi(340,0,IHr.Qty,M45Val,true,340);                 
           if (UserCanAction("ViewCostPrice",true)) then begin
@@ -828,12 +813,11 @@ LPrintItemHistExcel:;
           StartFormat(15);
           OutDate(0,0,IHr.TransDate,false);
           OutString(60,0,USetStr(strid),false);                       
-          OutString(115,dblstr,transnr,false);        
-					OutString(135,0,USetStr(131134) & (IHr.Row + 1),false); //Edit-------------------Vitalii 14:51 12.01.2016
-					if(left(currentuser,2)=="SA")then begin//Edit_________________ABR//Edit_________________ABR
-						OutString(155,"DblItemHistVc",IHr.SerNr,false); //Edit-------------------Vitalii 14:51 12.01.2016
-						OutString(200,"DblItemHistVc",IHr.Source,false);//Edit_________________ABR//Edit_________________ABR
-					end;//Edit_________________ABR//Edit_________________ABR
+          OutString(115,dblstr,transnr,false); 
+          OutString(135,0,USetStr(31134) & (IHr.Row + 1),false); //Edit-------------------Vitalii 14:51 12.01.2016
+    		  if(currentuser=="SA")then begin
+    				OutString(155,"DblItemHistVc",IHr.SerNr,false); //Edit-------------------Vitalii 14:51 12.01.2016
+    		  end;                   
           if (RepSpec.flags[21]==1) then begin
             PrintCustName(IHr.FileName,IHr.TransNr,210);                    
           end;
@@ -892,5 +876,3 @@ LPrintItemHistExcel:;
 LPrintItemHist:;
   return;
 end;
-
-
