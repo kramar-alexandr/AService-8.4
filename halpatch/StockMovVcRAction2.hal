@@ -440,9 +440,9 @@ LMakeTransFromStockMov:;
 END;
 
 global
-function Integer CheckStockMovRowFromPosition(record StockMovVc SMp,row StockMovVc StockMovrw,record LocationVc LocFrRec,record INVc INr,
-                                              Integer rownr,Boolean sentquantf,var LongInt error,var string errorstr,var integer errorrownr,
-                                              var string fieldstr,boolean UnOKedCheckSerialf)
+function Integer CheckStockMovRowFromPosition(record StockMovVc SMp,record StockMovVc SM2p,row StockMovVc StockMovrw,record LocationVc LocFrRec,record INVc INr,
+                                              Integer rownr,Boolean sentquantf,var LongInt error,var string errorstr,var integer errorrownr,var string fieldstr,boolean UnOKedCheckSerialf)
+																							
 BEGIN
   Integer res;
   string 20 frpos;
@@ -460,19 +460,23 @@ BEGIN
   end;
   if (LocFrRec.RequirePos!=0) then begin
     if (blank(frpos)) then begin
-      error = 1854;
-      errorstr = frpos;
-      errorrownr = -1;
-      fieldstr = "FrPos";                 
-      res = 1854; 
-      goto LCheckStockMovRowFromPosition;
+			if (SM2p.OrdFlag==0) or (SM2p.SentOKFlag==0) then begin//Edit_________________ABR//Edit_________________ABR																																																			 
+				error = 1854;
+				errorstr = frpos;
+				errorrownr = -1;
+				fieldstr = "FrPos";                 
+				res = 1854; 
+				goto LCheckStockMovRowFromPosition;
+			end;//Edit_________________ABR//Edit_________________ABR																											
     end;      
     if (INr.ItemType==1) then begin
       if (frpos==LocFrRec.WHMDefPUPosCode) or (frpos==LocFrRec.WHMDefProdPosCode) then begin
+      
       end else begin
         if (nonblank(SMp.ThrouLocation)) then begin
 //missing funcionality        
         end else begin
+        	messagebox(0,quant);
           FindStockValueAtPosition(StockMovrw.ArtCode,LocFrRec.Code,frpos,PISr);
           if (quant>PISr.Instock) and (quant!=0) then begin
             error = 1397;

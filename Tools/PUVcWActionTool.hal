@@ -1453,7 +1453,7 @@ LPUVc_PasteQuantAGAIN:;
       if (defposhight==0) then begin
         defposhight = INr.PalletHeight + 3; 
       end;
-      PUrw.ToPosCode = FindFreePositionInLocArea_ExcludePositionFromArray(LocRec.Code,INr.LocArea,defposhight,INr,LocRec.WHMHighestPosCodeFirst,askippos,acnt);
+      //PUrw.ToPosCode = FindFreePositionInLocArea_ExcludePositionFromArray(LocRec.Code,INr.LocArea,defposhight,INr,LocRec.WHMHighestPosCodeFirst,askippos,acnt);// Edit ************************** BPI Ukraine - KramarAlexandr - 01, 27 05 2019 y. at 1:39:43 PM
     end;
   end;
   MatRowPut(PUr,lrownr,PUrw);    

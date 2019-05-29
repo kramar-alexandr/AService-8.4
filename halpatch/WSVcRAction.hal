@@ -409,7 +409,7 @@ begin
   string 255 location;
   string 255 tstr,objstr,accstr,errstr;
   record TRVc gTRp;
-  val prev;
+  val prev,instock;// Edit ************************** BPI Ukraine - KramarAlexandr - 02, 28 05 2019 y. at 11:36:57 AM
   Boolean unokf;
   transaction string 255 gRuniningMaint;
   Array string 255 otcheckaccs;
@@ -420,7 +420,9 @@ begin
   record LocationVc Locationr;
   record CUVc CUr;// Edit ************************** Thursday, 15 December 2011 09:33:37
   record UserVc User;// Edit ************************** Monday, 25 November 2013 10:01:27 
-    
+  record PosVc Posr;// Edit ************************** BPI Ukraine - KramarAlexandr - 02, 28 05 2019 y. at 11:33:18 AM
+  record PISVc PISr;
+  
   res = 0;
   BlockLoad(MainStockRec);
   insertmode = 1;//Rs_insert
@@ -782,6 +784,22 @@ begin
       if (MainStockRec.dontAllowOvership==1) then begin
         if ((INr.ItemType==1) or (nonblank(WSrw.Recepy))) then begin
           if (WSp.UpdStockFlag!=0) then begin
+          
+          	if(Locationr.RequirePos!=0)then begin
+          		if(blank(WSrw.PosCode))then begin// Edit ************************** BPI Ukraine - KramarAlexandr - 02, 28 05 2019 y. at 11:29:32 AM
+          			RecordCheckError(1748,"",i,"PosCode");      
+                res = -1;
+                goto LWSVcRecordCheck;
+          		end else begin
+          			Posr.Code = WSrw.PosCode;
+								Posr.Location = Locationr.Code;
+								if (ReadFirstKey("Location",Posr,2,true)==false) then begin
+									RecordCheckError(1748,"",i,"PosCode");      
+									res = -1;
+									goto LWSVcRecordCheck;
+								end;
+          		end;
+          	end;
             if (nonblank(WSrw.Recepy)) then begin
               if (CheckStructureItemsLevel(WSrw.ArtCode,WSrw.Recepy,location,WSrw.Quant)==false) then begin
                 RecordCheckError(1247,"",i,"Quant");      
@@ -803,11 +821,32 @@ begin
                 res = -1;
                 goto LWSVcRecordCheck;
               end;
+              
+              
+              if(Locationr.RequirePos!=0)then begin
+								PISr.ArtCode = WSrw.ArtCode;
+								PISr.Position = WSrw.PosCode;
+								PISr.Location = location;
+								if (ReadFirstMain(PISr,3,true)) then begin 
+									instock = PISr.Instock;
+								end else begin
+									instock = 0;
+								end;
+							end;
+							if (instock<prev) then begin
+                RecordCheckError(31103,"",i,"Quant");      
+                res = -1;
+                goto LWSVcRecordCheck;
+              end;
+              
               if (IsEnoughRemQtyInHist(WSrw.ArtCode,location,WSp.TransDate,prev,WSrw.SerialNr)==false) then begin //Edit***************************Sasha2,10:45 04.03.2016 {
                 RecordCheckError(31063,": " & WSrw.ArtCode,i,"ArtCode");      
                 res = -1;
                 goto LWSVcRecordCheck;
               end; //Edit***************************Sasha2,10:45 04.03.2016 }
+              
+              
+              
               
             // Edit Start ---------------------------------------------- Edit Start
 	//Tuesday, 25 October 2011 11:56:21

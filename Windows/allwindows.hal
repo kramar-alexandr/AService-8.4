@@ -850,7 +850,8 @@ begin
   MatCol(t,-225,"Сер.№",0,SerialNr,false,SerialNrSClass);
   end;
   if (HasModProd) then begin
-  MatCol(t,-90,"Структура",0,Recepy,false,RecSClass);
+  MatCol(t,-145,"Место",0,PosCode,true,PosSClass);// Edit ************************** BPI Ukraine - KramarAlexandr - 02, 28 05 2019 y. at 10:36:34 AM
+  //MatCol(t,-90,"Структура",0,Recepy,false,RecSClass);// Edit ************************** BPI Ukraine - KramarAlexandr - 02, 28 05 2019 y. at 11:27:15 AM
   end;
   Flip(flipnr); flipnr = flipnr + 1;
   MatCol(t=1,144,"Наимен.",0,Spec,false,0);
@@ -1186,14 +1187,14 @@ begin
   MatCol(t,-315,"Накладная",0,ShipNote,false,0);
   MatCol(t,-210,"Склад",0,Location,false,LocationSClass);
   if (StandardHansa==false) then begin
-    MatCol(t,-145,"Место",0,Position,true,UsedPosSClass);
+    MatCol(t,-145,"Место",0,Position,true,PosSClass);// Edit ************************** BPI Ukraine - KramarAlexandr - 02, 28 05 2019 y. at 10:36:34 AM
   end;
   MatCol(t,-90,"Источник",0,Source,true,SourceSClass);
   MatCol(t=kInvoiceRowTypeStructuredItemComponent,144,"Описание",0,Spec,false,0);
   MatCol(t,-315,"Накладная",0,ShipNote,false,0);
   MatCol(t,-210,"Склад",0,Location,false,LocationSClass);
   if (StandardHansa==false) then begin
-    MatCol(t,-145,"Место",0,Position,true,UsedPosSClass);
+    MatCol(t,-145,"Место",0,Position,true,PosSClass);// Edit ************************** BPI Ukraine - KramarAlexandr - 02, 28 05 2019 y. at 10:36:39 AM
   end;
   MatCol(t,-90,"Источник",0,Source,true,SourceSClass);
   if (StandardHansa==false) then begin
@@ -1760,7 +1761,7 @@ if (true) then begin
     MatCol(t,-310,"Буд.пер",0,PeriodCode,false,AutSimPerSClass);
   end;
   MatCol(t,-255,"Склад",0,Location,false,LocationSClass);
-  MatCol(t,-180,"Место",0,PosCode,false,UsedPosSClass);
+  MatCol(t,-180,"Место",0,PosCode,false,PosSClass);// Edit ************************** BPI Ukraine - KramarAlexandr - 02, 28 05 2019 y. at 10:36:47 AM
   if (UseTaxTemplatesforTaxCalc) then begin
     MatCol(t,-144,"Объекты",0,Objects,false,ObjSClass);
     MatCol(t,-70,"НДС",0,TaxTemplateCode,false,TaxTemplateSClass);
@@ -1780,7 +1781,7 @@ if (true) then begin
   end;
   MatCol(t,-255,"Склад",0,Location,false,LocationSClass);
   if (StandardHansa==false) then begin
-    MatCol(t,-180,"Место",0,PosCode,false,UsedPosSClass);
+    MatCol(t,-180,"Место",0,PosCode,false,PosSClass);
   end;
   if (UseTaxTemplatesforTaxCalc) then begin
     MatCol(t,-144,"Объекты",0,Objects,false,ObjSClass);
@@ -2710,7 +2711,7 @@ begin
       MatCol(1,-340,"Дата ГТД",0,CustomsDate,false,PasteCurDate);
       MatCol(1,-240,"Страна",0,CountryOfOrg,false,CountrySClass);
       MatCol(1,-140,"С места",0,PosCode,false,PosSClass);
-      MatCol(1,-70,"На место",0,ToPosCode,false,FreePosSClass);
+      MatCol(1,-70,"На место",0,ToPosCode,false,PosSClass);
     end;
     Flip(flipnr); flipnr = flipnr + 1;
     MatCol(1,144,"Наим.",0,Spec,false,0);
@@ -3066,7 +3067,7 @@ begin
     MatCol(1,-160,"Местопол.",0,Location,false,LocationSClass);
   end;
   if (HasPositions) then begin
-    MatCol(1,-100,"Позиция",0,PosCode,false,UsedPosSClass);
+    MatCol(1,-100,"Позиция",0,PosCode,false,PosSClass);
   end;
   if (IsEnterprise) then begin
     MatCol(1,-40,"Коэф.",0,Coefficient,false,0);
@@ -3424,14 +3425,14 @@ begin
     MatCol(1,-250,"Срок годности",0,BestBefore,false,0);
     MatCol(1,-150,"Склад",0,Location,false,LocationSClass);
     if (HasPositions) then begin
-      MatCol(1,-50,"Место",0,PosCode,false,UsedPosSClass);
+      MatCol(1,-50,"Место",0,PosCode,false,PosSClass);
     end;
     MatCol(t=kInvoiceRowTypeStructuredItemComponent,-350,"Серийный номер",0,SerialNr,false,SerialNrSClass);
     EnterSkip(SerialNr); //Edit***************************Sasha2,15:45 19.09.2014
     MatCol(t,-250,"Срок годности",0,BestBefore,false,0);
     MatCol(t,-150,"Склад",0,Location,false,LocationSClass);
     if (HasPositions) then begin
-      MatCol(t,-50,"Место",0,PosCode,false,UsedPosSClass);
+      MatCol(t,-50,"Место",0,PosCode,false,PosSClass);
     end;
     Flip(flipnr); flipnr = flipnr + 1;
     if (UserCanAction("ViewCostPrice",true)) then begin //Edit***************************Sasha2,10:20 18.08.2014 {
@@ -3846,8 +3847,8 @@ begin
     Tile(tilenr,60,false,tilenr,FrPos); tilenr = tilenr + 1;
     v = 6;
     if (HasPositions) then begin
-      EditField(h,v,80, "С места",Normal,FrPos,false,UsedPosSClass);
-      EditField(h2,v,80,"на место",Normal,ToPos,false,FreePosSClass);
+      EditField(h,v,80, "С места",Normal,FrPos,false,PosSClass);
+      EditField(h2,v,80,"на место",Normal,ToPos,false,PosSClass);
     end;
     if (HasModProd) then begin
       EditField(h3,v,80,"Для производства",Normal,ProdSerNr,false,ProdSClass); v = v + vs;
@@ -3959,8 +3960,8 @@ begin
   if (HasPositions) then begin
     Flip(flipnr); flipnr = flipnr + 1;
     MatCol(1,86,"Наименование",0,Spec,false,0);
-    MatCol(1,-180,"С места",0,FrPosCode,false,UsedPosSClass);
-    MatCol(1,-90,"На место",0,ToPosCode,false,FreePosSClass);
+    MatCol(1,-180,"С места",0,FrPosCode,false,PosSClass);
+    MatCol(1,-90,"На место",0,ToPosCode,false,PosSClass);
     //MatColTL(1,-90,"ORRow",0,M4Long,Normal,0,ORRow,false,0); //Edit***************************Sasha2,17:52 03.11.2014
   end;
   DeleteRowTest;
@@ -4199,7 +4200,7 @@ begin
     MatCol(1,-380,"Стоим. обратной закупки",0,BBCostPrice,false,0);
   end;
   if (HasPositions) then begin
-    MatCol(1,-300,"Место",0,PosCode,false,FreePosSClass);
+    MatCol(1,-300,"Место",0,PosCode,false,PosSClass);
   end;
     if (IsEnterprise) then begin
   MatColTL(1,-240,"Структура",0,M4Ustr,ViewOnly,0,Recepy,false,0);
