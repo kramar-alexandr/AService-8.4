@@ -600,7 +600,7 @@ boolean TrHs,first;
  StartFormat(15);
 		OutString(40,0,UsetStr(17183),false);
 		OutString(80,0,UsetStr(16343),false);
-		OutString(120,0,UsetStr(17233),false);
+		OutString(80,0,UsetStr(17233),false);
 		OutString(200,0,UsetStr(16234),false);
 		OutString(260,0,UsetStr(16714),false);
 		OutString(350,0,UsetStr(17229),false);
@@ -627,7 +627,7 @@ while(LoopMain(INr,1,true)) begin
 				end;		
 				Gray_Divider(150,1);
 				StartFormat(15);
-					OutString(120,0,IHr.SerialNr,false);
+					OutString(80,0,IHr.SerialNr,false);
 					OutString(200,0,IHr.Location,false);
 					OutString(260,0,IHr.Position,false);
 					OutString(350,0,IHr.TotCostPrice,false);
