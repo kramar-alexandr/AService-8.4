@@ -587,6 +587,61 @@ record SVOVc SVOr;
 	setfileonserver(false);
 return;
 end;
+
+global 
+procedure FindItemsRn(record RcVc RepSpec)
+begin
+record LetVc Letr;
+record INVc INr;
+record ItemHistVc IHr;
+boolean TrHs,first;
+
+ StartReportNoHeaderJob(UsetStr(16321));
+ StartFormat(15);
+		OutString(40,0,UsetStr(17183),false);
+		OutString(80,0,UsetStr(16343),false);
+		OutString(80,0,UsetStr(17233),false);
+		OutString(200,0,UsetStr(16234),false);
+		OutString(260,0,UsetStr(16714),false);
+		OutString(350,0,UsetStr(17229),false);
+	endFormat;	
+INr.Code = "";
+while(LoopMain(INr,1,true)) begin
+	RecordNew(Letr);
+	AddToText(INr.Code,Letr);
+	AddToText(INr.Name,Letr);
+	TrHs = true;
+	if(StringInText(RepSpec.f1,Letr)) then begin 
+		IHr.ArtCode = INr.Code;
+		first = true;
+		While(LoopKey("ActiveQty",IHr,1,TrHs)) begin	
+			if(IHr.ArtCode!=INr.Code) then begin TrHs = false; end;
+			if(TrHs) then begin
+				if(first) then begin
+					Black_Divider(0,1);
+					StartFormat(15);
+						OutString(40,"DblINVc",INr.Code,false);
+						OutString(80,0,INr.Name,false);
+					endFormat;
+					first = false;
+				end;		
+				Gray_Divider(150,1);
+				StartFormat(15);
+					OutString(80,0,IHr.SerialNr,false);
+					OutString(200,0,IHr.Location,false);
+					OutString(260,0,IHr.Position,false);
+					OutString(350,0,IHr.TotCostPrice,false);
+				endFormat;	
+			end;
+		end;
+		ResetLoop(IHr);
+	end;
+end;
+endjob;
+
+return;
+end;
+
 global procedure GenRnForMail()
 begin
 record RcVc RepSpec;
