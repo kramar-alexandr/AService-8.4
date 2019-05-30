@@ -376,6 +376,7 @@ BEGIN
 							newPUrw.SerialNr = PUrw.SerialNr;
 							newPUrw.Spec = PUrw.Spec;
 							newPUrw.RetailPrice = PUrw.RetailPrice;
+							newPUrw.ToPosCode = PUrw.ToPosCode;
 							matrowput(newPUr,k,newPUrw);
 							k=k+1;
 						end else begin
@@ -383,6 +384,7 @@ BEGIN
 							newPUrw1.SerialNr = PUrw.SerialNr;
 							newPUrw1.Spec = PUrw.Spec;
 							newPUrw1.RetailPrice = PUrw.RetailPrice;
+							newPUrw.ToPosCode = PUrw.ToPosCode;
 							matrowput(newPUr1,j,newPUrw1);
 							j=j+1;
 						end;
