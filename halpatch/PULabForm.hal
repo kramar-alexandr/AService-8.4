@@ -86,6 +86,8 @@ BEGIN
   OUTFORMFIELD("F_SERIENRBC39",tstr);  
   OUTFORMFIELD("F_ARTNR",PUrw.ArtCode);
   OUTFORMFIELD("F_ARTNR2",PUrw.ArtCode);
+  OUTFORMFIELD("FF_TOPOSCODE",PUrw.ToPosCode);
+  
   PrintValue("F_ANTAL",PUrw.Quant,M4UVal,LangNrr,SysFormatRec,false);
   //PrintValue("F_PRIS",PUrw.CostPrice,M4Val,LangNrr,SysFormatRec,false);// Edit ************************** Tuesday, 26 January 2016 11:14:11
   
