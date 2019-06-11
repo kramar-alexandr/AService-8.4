@@ -290,6 +290,8 @@ BEGIN
 	record LocationVc Locr;// Edit ************************** Thursday, July 3, 2014 at 17:25:12    
   row ObjectsAccBlock OAbrw;
   integer mtrw,j;	
+  record CUVc CUr;
+  record CCatVc CCatr;
 
   BlockLoad(CAb);
   BlockLoad(ARb);
@@ -368,6 +370,20 @@ BEGIN
         salesacc = OAbrw.SaleAccCode;                                // Edit ************************** Friday, 8 April 2011 12:19:19
       end;
     end;
+    
+    CUr.Code = WSr.CustCode;// Edit ************************** BPI Ukraine - KramarAlexandr - 02, 11 06 2019 y. at 1:32:50 PM
+		readfirstmain(CUr,1,true);
+		if(nonblank(CUr.CustCat))then begin
+			CCatr.Code = CUr.CustCat;
+			readfirstmain(CCatr,1,true);
+			if(nonblank(CCatr.CostAcc))then begin
+				costsacc = CCatr.CostAcc;
+			end;
+			if(nonblank(CCatr.SaleAcc))then begin
+				salesacc = CCatr.SaleAcc;
+			end;
+		end;// Edit ************************** BPI Ukraine - KramarAlexandr - 02, 11 06 2019 y. at 1:32:52 PM
+		
     
     WSrw.CostAcc = costsacc;
     WSrw.SalesAcc = salesacc; //Edit***************************Sasha2,12:49 17.07.2015

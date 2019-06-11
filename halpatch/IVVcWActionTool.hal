@@ -289,7 +289,10 @@ BEGIN
   record LocalMachineAccBlock LAccB; //Edit***************************Sasha2,14:01 22.04.2015
   row LocalMachineAccBlock LAccBw; //Edit***************************Sasha2,14:01 22.04.2015
   integer acccnt,i; //Edit***************************Sasha2,14:02 22.04.2015
-
+	record CUVc CUr;// Edit ************************** BPI Ukraine - KramarAlexandr - 02, 11 06 2019 y. at 1:51:44 PM
+	record CCatVc CCatr;// Edit ************************** BPI Ukraine - KramarAlexandr - 02, 11 06 2019 y. at 1:51:42 PM
+	
+	
   BlockLoad(SNrb);
   MatRowGet(IVr,rownr,IVrw);
   location = IVrw.Location;
@@ -322,6 +325,17 @@ BEGIN
         i = acccnt;
       end;
     end; //Edit***************************Sasha2,14:18 22.04.2015 }
+    
+    CUr.Code = IVr.CustCode;// Edit ************************** BPI Ukraine - KramarAlexandr - 02, 11 06 2019 y. at 1:32:50 PM
+		readfirstmain(CUr,1,true);
+		if(nonblank(CUr.CustCat))then begin
+			CCatr.Code = CUr.CustCat;
+			readfirstmain(CCatr,1,true);
+			if(nonblank(CCatr.RetSaleAcc))then begin
+				IVrw.SalesAcc = CCatr.RetSaleAcc;
+			end;
+		end;// Edit ************************** BPI Ukraine - KramarAlexandr - 02, 11 06 2019 y. at 1:32:52 PM   
+    
     if (nonblank(IVrw.ArtCode)) and (INr.SerNrf==1) then begin
       if (BulkSerialNos_CalculateQuantityAndSerialNr(SNrb,false,IVrw.ArtCode,IVrw.SerialNr,IVrw.Quant)) then begin
         MatRowPut(IVr,rownr,IVrw);
@@ -1526,6 +1540,8 @@ BEGIN
   string 255 salesacc;
   row WHTaxBlock WHTaxrw;
   Boolean testf;
+  record CUVc CUr;// Edit ************************** BPI Ukraine - KramarAlexandr - 02, 11 06 2019 y. at 1:56:06 PM
+  record CCatVc CCatr;// Edit ************************** BPI Ukraine - KramarAlexandr - 02, 11 06 2019 y. at 1:56:08 PM
         
   BlockLoad(PDSb);
   pd = IVp.PayDeal;
@@ -1642,6 +1658,18 @@ LkInvoiceTypeCredit:;
                 IVrw.SalesAcc = PDr.pdSalesAcc;
                 MatRowPut(IVp,i,IVrw);
             end;
+          
+						CUr.Code = IVp.CustCode;// Edit ************************** BPI Ukraine - KramarAlexandr - 02, 11 06 2019 y. at 1:32:50 PM
+						readfirstmain(CUr,1,true);
+						if(nonblank(CUr.CustCat))then begin
+							CCatr.Code = CUr.CustCat;
+							readfirstmain(CCatr,1,true);
+							if(nonblank(CCatr.RetSaleAcc))then begin
+								IVrw.SalesAcc = CCatr.RetSaleAcc;
+								MatRowPut(IVp,i,IVrw);
+							end;
+						end;
+          
         end;
       end;
     end;

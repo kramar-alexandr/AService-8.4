@@ -5840,6 +5840,9 @@ begin
     EditField(h,v+=vs ,55,"Счёт авансов кредиторов",Normal,OnAccAccAP,false,AccSClass);
     EditField(h,v+=vs ,55,"Счёт удержания",Normal,RetainAcc,false,AccSClass);
     EditField(h,v+=vs,55,"Счет стоимости",Normal,CostAcc,false,AccSClass); //Edit***************************Sasha2,15:56 22.01.2015
+    EditField(h,v+=vs,55,"Счет стоимости возврата",Normal,RetCostAcc,false,AccSClass);
+    EditField(h,v+=vs,55,"Счет продаж",Normal,SaleAcc,false,AccSClass);// Edit ************************** BPI Ukraine - KramarAlexandr - 02, 11 06 2019 y. at 1:26:18 PM
+    EditField(h,v+=vs,55,"Счет возврата",Normal,RetSaleAcc,false,AccSClass);// Edit ************************** BPI Ukraine - KramarAlexandr - 02, 11 06 2019 y. at 1:26:21 PM
     if (StandardHansa==false) then begin
       Tile(3,50,false,"3",WebDisplays);
       v = 6;

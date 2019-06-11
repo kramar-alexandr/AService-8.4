@@ -440,6 +440,8 @@ begin
   RecordAddBegin(CCatVc,"CCatVc_Custom");
     RecordField(CostAcc,M4Code,10,AccVc); //Edit***************************Sasha2,15:53 22.01.2015
     RecordField(RetCostAcc,M4Code,10,AccVc); //Edit***************************Sasha2,15:53 22.01.2015
+    RecordField(SaleAcc,M4Code,10,AccVc);// Edit ************************** BPI Ukraine - KramarAlexandr - 02, 11 06 2019 y. at 1:26:42 PM
+		RecordField(RetSaleAcc,M4Code,10,AccVc);// Edit ************************** BPI Ukraine - KramarAlexandr - 02, 11 06 2019 y. at 1:26:44 PM
   EndRecordAdd;
   
   RecordAddBegin(SalesGroupVc,"SalesGroupVc_Custom");
