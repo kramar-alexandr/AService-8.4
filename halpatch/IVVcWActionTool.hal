@@ -332,7 +332,11 @@ BEGIN
 			CCatr.Code = CUr.CustCat;
 			readfirstmain(CCatr,1,true);
 			if(nonblank(CCatr.RetSaleAcc))then begin
-				IVrw.SalesAcc = CCatr.RetSaleAcc;
+				if (IVrw.Quant>=0) then begin
+          IVrw.SalesAcc = CCatr.SaleAcc;
+        end else begin
+          IVrw.SalesAcc = CCatr.RetSaleAcc;
+        end;
 			end;
 		end;// Edit ************************** BPI Ukraine - KramarAlexandr - 02, 11 06 2019 y. at 1:32:52 PM   
     
