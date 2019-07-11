@@ -638,8 +638,12 @@ BEGIN		//Edit----------------------Dima  18.06.2015
   record LocationVc Locr;
   val serqty;
   val instock;
-  string 255 serialnr,errofield;
+  string 255 serialnr,errofield,frpos;// Edit ************************** BPI Ukraine - KramarAlexandr - 04, 11 07 2019 y. at 2:33:49 PM
   
+  frpos = SMp.FrPos;
+  if(nonblank(StockMovrw.FrPosCode))then begin
+  	frpos = StockMovrw.FrPosCode;
+  end;
 
   quant = StockMovrw.OrdQuant;
   if (quant<0) then begin
@@ -681,7 +685,7 @@ BEGIN		//Edit----------------------Dima  18.06.2015
           
           if (Locr.RequirePos!=0) then begin		//Edit----------------------Dima  22.01.2016
           	PISr.ArtCode = StockMovrw.ArtCode;
-          	PISr.Position = SMp.FrPos;
+          	PISr.Position = frpos;
           	PISr.Location = Locr.Code;
           	if (ReadFirstMain(PISr,3,true)) then begin 
           		instock = PISr.Instock;
@@ -1888,7 +1892,7 @@ begin
       if (StockMovrw.SentQuant>0) then begin
         error = 1058;
         errorstr = "";
-        rownr = i;
+        rownr = -1;
         fieldstr = "ThrouLocation";            
         res = 1058;
         goto LCheckStockMovRecord;
