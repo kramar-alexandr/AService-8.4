@@ -691,9 +691,9 @@ BEGIN
       end;
     end;
     
-		if(SVOr.OrderStatus==1 and SVO2r.OrderStatus!=1)then begin
-			CreateCustomActivityFromSVO(SVOr,"MES","SHILKIN",currentdate,"Согласовать ремонт","");
-		end;
+		//if(SVOr.OrderStatus==1 and SVO2r.OrderStatus!=1)then begin// Edit ************************** BPI Ukraine - KramarAlexandr - 04, 01 08 2019 y. at 12:44:55 PM
+		//		CreateCustomActivityFromSVO(SVOr,"MES","SHILKIN",currentdate,"Согласовать ремонт","");
+		//end;
   
   
 	// Edit End ---------------------------------------------- Edit End
