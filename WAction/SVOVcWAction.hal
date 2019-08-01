@@ -2169,7 +2169,7 @@ integer wn;
 	deselectwindow(wn,true);
 	getwindowrecord(wn,Actr);
 	
-	Actr.Comment = "Cогласовать ремонт";
+	Actr.Comment = "Cогласовать ремонт " & Actr.SVOSerNr;
 	Actr.MainPersons = "SHILKIN";
 	putwindowrecord(wn,Actr);
 	windowdook(wn,0);
