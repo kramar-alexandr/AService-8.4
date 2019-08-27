@@ -639,6 +639,7 @@ string 100 inputphone,name,svonr,status,innerphone,serviceman;
 							status = SVOr.OrderStatus;
 							USr.Code = SVOr.ServiceManager;
 							serviceman = SVOr.ServiceManager;
+							logtext(0,"serviceman " & serviceman);
 							if(readfirstmain(USr,1,true))then begin
 								innerphone = USr.Phone2;
 							end;
