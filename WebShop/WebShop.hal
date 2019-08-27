@@ -635,27 +635,23 @@ string 100 inputphone,name,svonr,status,innerphone;
 				while(nonblank(tstr))begin
 					if(nonblank(tstr))then begin
 						svonr = tstr;
+						if(nonblank(svonr))then begin
+						SVOr.SerNr = stringtolongint(svonr);
+						if(readfirstmain(SVOr,1,true) and blankdate(SVOr.RegDate))then begin
+							status = SVOr.OrderStatus;
+							USr.Code = SVOr.ServiceManager;
+							if(readfirstmain(USr,1,true))then begin
+								innerphone = USr.Phone2;
+							end;
+						end else begin
+							svonr = "";
+						end;
 					end;
 					ExtractObj(Phoner.SVONrs,pos,tstr);
 				end;
 			end;
 			
-			if(nonblank(svonr))then begin
-				SVOr.SerNr = stringtolongint(svonr);
-				if(readfirstmain(SVOr,1,true))then begin
-						status = SVOr.OrderStatus;
-					USr.Code = SVOr.ServiceManager;
-					if(readfirstmain(USr,1,true))then begin
-						innerphone = USr.Phone2;
-					end;
-					
-					if(SVOr.DoneMark==1 and SVOr.OrderStatus==2 and nonblankdate(SVOr.RegDate))then begin
-						status = "";
-						svonr = "";
-					end;
-				end else begin
-					svonr = "";
-				end;
+			
 			end;
 		end;
 		
