@@ -654,7 +654,7 @@ string 100 inputphone,name,svonr,status,innerphone,serviceman;
 			end;
 		end;
 		
-		weboutstring(svonr & "," & name & "," & innerphone & "," & status & "," & serviceman & "," & status);
+		weboutstring(svonr & "," & name & "," & innerphone & "," & status & "," & serviceman);
 		ResetCompany(1);
 	end;
 return;
