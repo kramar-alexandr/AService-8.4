@@ -610,6 +610,7 @@ string 100 inputphone,name,svonr,status,innerphone;
 	phone = inputphone;
 	logtext(0,"WebGetStatusByPhone by phone " & phone);
 	if(setcompany(8,false))then begin
+		logtext(0,"WebGetStatusByPhone by phone " & phone);
 		Phoner.PhoneNum = phone;
 		if(readfirstmain(Phoner,1,true))then begin
 			logtext(0,"WebGetStatusByPhone readfirstmain Phoner");
