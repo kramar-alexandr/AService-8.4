@@ -632,7 +632,7 @@ string 100 inputphone,name,svonr,status,innerphone,serviceman;
 				ExtractObj(Phoner.SVONrs,pos,tstr);
 				while(nonblank(tstr))begin
 					if(nonblank(tstr))then begin
-						if(nonblank(svonr) and stringtolongint(tstr)>0)then begin
+						if(stringtolongint(tstr)>0)then begin
 							SVOr.SerNr = stringtolongint(tstr);
 							if(readfirstmain(SVOr,1,true) and blankdate(SVOr.RegDate))then begin
 								status = SVOr.OrderStatus;
