@@ -941,6 +941,11 @@ begin
   		Actr.Phone = curPhone;
 			Actr.MainPersons = mainpersons;
 			
+			if(Actr.ActType=="€’‘")then begin
+				Actr.CCPersons = "€’‘";
+				Actr.Supervisor = "€’‘";
+			end;
+			
 			if(nonblank(group))then begin	
 				
 				pos = 0;
