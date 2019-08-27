@@ -587,3 +587,72 @@ record SVOVc SVOr;
 return;
 end;
 
+
+
+global webpublic procedure WebGetStatusByPhone()
+begin
+string 50 phone;
+integer i,k;
+array string 50 ph;
+string 200 res,num,resnum;
+record Phone1Vc Phoner;
+integer pos;
+string 200 tstr;
+record SVOVc SVOr;
+area adata;	
+record UserVc USr;
+string 100 inputphone,name,svonr,status,innerphone;
+	
+	webgetpostdata(adata);
+	
+	res = ",,,,";
+	inputphone = getstringfromarea(adata,0,getarealength(adata));
+	phone = inputphone;
+	if(setcompany(8,false))then begin
+		name = "";
+		Phoner.PhoneNum = phone;
+		if(readfirstmain(Phoner,1,true))then begin
+			name = Phoner.FirstName;
+			if(blank(name))then begin
+				name = Phoner.Vlastnik;
+			end;
+			if(blank(name))then begin
+				name = Phoner.Priynato;
+			end;
+			
+			if(nonblank(Phoner.SVONrs))then begin
+				pos = 0;
+				tstr = "";
+				ExtractObj(Phoner.SVONrs,pos,tstr);
+				while(nonblank(tstr))begin
+					if(nonblank(tstr))then begin
+						svonr = tstr;
+					end;
+					ExtractObj(Phoner.SVONrs,pos,tstr);
+				end;
+			end;
+			
+			if(nonblank(svonr))then begin
+				SVOr.SerNr = stringtolongint(svonr);
+				if(readfirstmain(SVOr,1,true))then begin
+						status = SVOr.OrderStatus;
+					USr.Code = SVOr.ServiceManager;
+					if(readfirstmain(USr,1,true))then begin
+						innerphone = USr.Phone2;
+					end;
+					
+					if(SVOr.DoneMark==1 and SVOr.OrderStatus==2 and nonblankdate(SVOr.RegDate))then begin
+						status = "";
+						svonr = "";
+					end;
+				end else begin
+					svonr = "";
+				end;
+			end;
+		end;
+		
+		weboutstring(svonr & "," & name & "," & innerphone & "," & status);
+		ResetCompany(1);
+	end;
+return;
+end;

@@ -4,7 +4,7 @@ external procedure SalesReportAccRn(record RcVc);
 external function boolean MySendWebRequest(string,integer,longint,boolean,string,string,string,string,boolean,area,var area,integer);
 external procedure 	DayTools1Rn(record RcVc);
 external procedure 	DayToolsRn();
-external procedure	GenRnForMail();
+
 global
 updating procedure CleaningMn()
 BEGIN
