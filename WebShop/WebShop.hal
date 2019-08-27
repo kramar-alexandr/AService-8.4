@@ -601,7 +601,7 @@ string 200 tstr;
 record SVOVc SVOr;
 area adata;	
 record UserVc USr;
-string 100 inputphone,name,svonr,status,innerphone;
+string 100 inputphone,name,svonr,status,innerphone,serviceman;
 	
 	webgetpostdata(adata);
 	
@@ -640,6 +640,7 @@ string 100 inputphone,name,svonr,status,innerphone;
 						if(readfirstmain(SVOr,1,true) and blankdate(SVOr.RegDate))then begin
 							status = SVOr.OrderStatus;
 							USr.Code = SVOr.ServiceManager;
+							serviceman = SVOr.ServiceManager;
 							if(readfirstmain(USr,1,true))then begin
 								innerphone = USr.Phone2;
 							end;
@@ -655,7 +656,7 @@ string 100 inputphone,name,svonr,status,innerphone;
 			end;
 		end;
 		
-		weboutstring(svonr & "," & name & "," & innerphone & "," & status);
+		weboutstring(svonr & "," & name & "," & innerphone & "," & status & "," & serviceman);
 		ResetCompany(1);
 	end;
 return;
