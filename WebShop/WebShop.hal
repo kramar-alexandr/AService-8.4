@@ -701,8 +701,6 @@ json jobj;
 		end else begin
 			weboutstring(0);
 		end;
-		
-		weboutstring(svonr & "," & name & "," & innerphone & "," & status & "," & serviceman);
 		ResetCompany(1);
 	end;
 return;
