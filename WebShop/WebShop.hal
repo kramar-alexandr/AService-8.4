@@ -608,6 +608,9 @@ string 100 inputphone,name,svonr,status,innerphone;
 	res = ",,,,";
 	inputphone = getstringfromarea(adata,0,13);
 	phone = inputphone;
+	if(blank(phone))then begin
+		phone = webgetarg("Phone");
+	end;
 	logtext(0,"WebGetStatusByPhone by phone " & phone);
 	if(setcompany(8,false))then begin
 		logtext(0,"WebGetStatusByPhone by phone " & phone);
