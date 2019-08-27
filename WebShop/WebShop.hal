@@ -635,6 +635,7 @@ string 100 inputphone,name,svonr,status,innerphone,serviceman;
 						if(stringtolongint(tstr)>0)then begin
 							SVOr.SerNr = stringtolongint(tstr);
 							if(readfirstmain(SVOr,1,true) and blankdate(SVOr.RegDate))then begin
+								svonr = SVOr.SerNr;
 								status = SVOr.OrderStatus;
 								USr.Code = SVOr.ServiceManager;
 								serviceman = SVOr.ServiceManager;
