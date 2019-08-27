@@ -1,5 +1,6 @@
 external function roundmode SetRoundModeD(Integer);
 external procedure ExtractObj(string,var Integer,var string);
+external updating procedure CreateCustomActivityFromSVO(record SVOVc,string,string,date,string,string);// Edit ************************** BPI Ukraine - KramarAlexandr - Tuesday, 12 December 2017 11:56:41
 
 SetLangMode(LangRussian,"RUS",0);
 
@@ -653,6 +654,52 @@ string 100 inputphone,name,svonr,status,innerphone,serviceman;
 			
 			
 			end;
+		end;
+		
+		weboutstring(svonr & "," & name & "," & innerphone & "," & status & "," & serviceman);
+		ResetCompany(1);
+	end;
+return;
+end;
+
+
+global webpublic updating procedure WebCreateTaskForUser()
+begin
+string 50 phone;
+integer i,k;
+array string 50 ph;
+string 200 res,num,resnum;
+record Phone1Vc Phoner;
+integer pos;
+string 200 tstr;
+record SVOVc SVOr;
+area adata;	
+record UserVc USr;
+string 100 inputphone,name,svonr,status,innerphone,serviceman,title;
+record ActVc Actr;
+json jobj;
+
+	webgetpostdata(adata);
+	
+
+	logtext(0,"WebCreateTaskForUser");
+	if(setcompany(8,false))then begin
+		jobj = parsejsonarea(adata);
+		
+		serviceman = JSONGet(jobj,"user");
+		svonr = JSONGet(jobj,"svonr");
+		title = JSONGet(jobj,"title");
+		
+		if(nonblank(serviceman) and nonblank(svonr) and nonblank(title))then begin
+			SVOr.SerNr = stringtolongint(svonr);
+			if(readfirstmain(SVOr,1,true))then begin
+				CreateCustomActivityFromSVO(SVOr,"€’‘",serviceman,currentdate,title,"");
+				weboutstring(1);
+			end else begin
+				weboutstring(0);
+			end;
+		end else begin
+			weboutstring(0);
 		end;
 		
 		weboutstring(svonr & "," & name & "," & innerphone & "," & status & "," & serviceman);
