@@ -632,26 +632,23 @@ string 100 inputphone,name,svonr,status,innerphone,serviceman;
 				ExtractObj(Phoner.SVONrs,pos,tstr);
 				while(nonblank(tstr))begin
 					if(nonblank(tstr))then begin
-						svonr = tstr;
 						if(nonblank(svonr))then begin
-						SVOr.SerNr = stringtolongint(svonr);
-						if(readfirstmain(SVOr,1,true) and blankdate(SVOr.RegDate))then begin
-							status = SVOr.OrderStatus;
-							USr.Code = SVOr.ServiceManager;
-							serviceman = SVOr.ServiceManager;
-							logtext(0,"serviceman " & serviceman);
-							if(readfirstmain(USr,1,true))then begin
-								innerphone = USr.Phone2;
+							SVOr.SerNr = stringtolongint(tstr);
+							if(readfirstmain(SVOr,1,true) and blankdate(SVOr.RegDate))then begin
+								status = SVOr.OrderStatus;
+								USr.Code = SVOr.ServiceManager;
+								serviceman = SVOr.ServiceManager;
+								logtext(0,"serviceman " & serviceman);
+								if(readfirstmain(USr,1,true))then begin
+									innerphone = USr.Phone2;
+								end;
+							end else begin
+					
 							end;
-						end else begin
-							svonr = "";
-							serviceman = "";
-							status = "";
 						end;
+						ExtractObj(Phoner.SVONrs,pos,tstr);
 					end;
-					ExtractObj(Phoner.SVONrs,pos,tstr);
 				end;
-			end;
 			
 			
 			end;
