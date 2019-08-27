@@ -606,13 +606,13 @@ string 100 inputphone,name,svonr,status,innerphone;
 	webgetpostdata(adata);
 	
 	res = ",,,,";
-	inputphone = getstringfromarea(adata,0,getarealength(adata));
+	inputphone = getstringfromarea(adata,0,13);
 	phone = inputphone;
 	logtext(0,"WebGetStatusByPhone by phone " & phone);
 	if(setcompany(8,false))then begin
 		logtext(0,"WebGetStatusByPhone by phone " & phone);
 		Phoner.PhoneNum = phone;
-		if(readfirstmain(Phoner,1,false))then begin
+		if(readfirstmain(Phoner,1,true))then begin
 			logtext(0,"WebGetStatusByPhone readfirstmain Phoner");
 			name = Phoner.FirstName;
 			if(blank(name))then begin
