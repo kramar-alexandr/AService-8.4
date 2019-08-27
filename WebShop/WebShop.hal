@@ -610,9 +610,9 @@ string 100 inputphone,name,svonr,status,innerphone;
 	phone = inputphone;
 	logtext(0,"WebGetStatusByPhone by phone " & phone);
 	if(setcompany(8,false))then begin
-		name = "";
 		Phoner.PhoneNum = phone;
 		if(readfirstmain(Phoner,1,true))then begin
+			logtext(0,"WebGetStatusByPhone readfirstmain Phoner");
 			name = Phoner.FirstName;
 			if(blank(name))then begin
 				name = Phoner.Vlastnik;
