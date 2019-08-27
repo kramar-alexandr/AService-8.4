@@ -646,6 +646,8 @@ string 100 inputphone,name,svonr,status,innerphone,serviceman;
 							end;
 						end else begin
 							svonr = "";
+							serviceman = "";
+							status = "";
 						end;
 					end;
 					ExtractObj(Phoner.SVONrs,pos,tstr);
