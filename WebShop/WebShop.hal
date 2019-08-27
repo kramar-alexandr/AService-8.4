@@ -608,6 +608,7 @@ string 100 inputphone,name,svonr,status,innerphone;
 	res = ",,,,";
 	inputphone = getstringfromarea(adata,0,getarealength(adata));
 	phone = inputphone;
+	logtext(0,"WebGetStatusByPhone by phone " & phone);
 	if(setcompany(8,false))then begin
 		name = "";
 		Phoner.PhoneNum = phone;
