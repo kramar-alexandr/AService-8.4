@@ -616,10 +616,8 @@ string 100 inputphone,name,svonr,status,innerphone,serviceman;
 	end;
 	logtext(0,"WebGetStatusByPhone by phone " & phone);
 	if(setcompany(8,false))then begin
-		logtext(0,"WebGetStatusByPhone by phone " & phone);
 		Phoner.PhoneNum = phone;
 		if(readfirstmain(Phoner,1,true))then begin
-			logtext(0,"WebGetStatusByPhone readfirstmain Phoner");
 			name = Phoner.FirstName;
 			if(blank(name))then begin
 				name = Phoner.Vlastnik;
@@ -658,7 +656,7 @@ string 100 inputphone,name,svonr,status,innerphone,serviceman;
 			end;
 		end;
 		
-		weboutstring(svonr & "," & name & "," & innerphone & "," & status & "," & serviceman);
+		weboutstring(svonr & "," & name & "," & innerphone & "," & status & "," & serviceman & "," & status);
 		ResetCompany(1);
 	end;
 return;
