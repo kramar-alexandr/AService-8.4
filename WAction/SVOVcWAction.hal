@@ -2176,3 +2176,22 @@ integer wn;
 	
 return;
 end;
+
+global
+updating procedure ChangeToLEKHOLETOVDsm()
+begin
+
+record ActVc Actr;
+integer wn;	
+	
+	wn = curwindow;
+	deselectwindow(wn,true);
+	getwindowrecord(wn,Actr);
+	
+	Actr.Comment = "Cогласовать ремонт " & Actr.SVOSerNr;
+	Actr.MainPersons = "LEKHOLETOV";
+	putwindowrecord(wn,Actr);
+	windowdook(wn,0);
+	
+return;
+end;
