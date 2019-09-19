@@ -841,7 +841,11 @@ begin
 		if(nonblank(RepSpec.f3) and RepSpec.f3!=IVr.SalesMan)then begin testf = false; end;
 		if(IVr.OKFlag!=1)then begin testf = false; end;
 		if(IVr.OrderNr!=-1)then begin testf = false; end;
-		if(IVr.SVONr!=-1)then begin testf = false; end;
+		if(IVr.SVONr!=-1)then begin 
+			if(testf and IVr.SalesFlag==0)then begin// Edit ************************** BPI Ukraine - KramarAlexandr - 04, 19 09 2019 y. at 3:45:45 PM
+				testf = false;
+			end; 
+		end;
 		if(IVr.InvType==3)then begin testf = false; end;
 		if(testf)then begin
 			TOTAL = TOTAL + IVr.Sum4;

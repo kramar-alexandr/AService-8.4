@@ -386,7 +386,8 @@ begin
   UseView(SVOVc);
   ToolBar;
   HalPushButton(250,5,350,25,"WorkSheetSVODsm","План робіт");
-	HalPushButton(370,5,430,25,"PrintDoSVOFormButton","Друк");	//Edit----------------------Dima  09.02.2015
+  HalPushButton(370,5,480,25,"WorkSheetSVOSalesDsm","Роботи пройомки");
+	HalPushButton(500,5,600,25,"PrintDoSVOFormButton","Друк");	//Edit----------------------Dima  09.02.2015
   EndToolBar;
   ActiveFieldOnNew("CustCode");  
   //FormName(SVOForm);
@@ -772,9 +773,11 @@ begin
   EditField(75,v+=20,95,"Клиент",Normal,CustCode,false,CUSClass);
   EditField(h=240,v=vm,-40,"Наименов.",Normal,Addr0,false,0);
   v = v+vs;
-  CheckBox(h4=-200,v,0,"Напечатано",PrintFlag);
+  CheckBox(h4=-230,v,0,"Напечатано",PrintFlag);
+  CheckBox(h4=-230,v+vs,0,"Работы приемки",SalesFlag);
   CheckBox(h4=-100,v,0,"OK",OKFlag);
   CheckBox(h4=-100,v+vs,0,"ASBIS гарантия",ASBISFlag);
+  
   tilenr = 1;
   TileButton(tilenr,"Дата"); tilenr = tilenr + 1; 
   TileButton(tilenr,"Товары"); tilenr = tilenr + 1; 
@@ -1528,6 +1531,7 @@ if (true) then begin
     EditField(h3,v+=vs,-20,"К пл/рсч док-ту",Normal,ReceiptInfo,false,0);
   end;
   CheckBox(h3,v+=vs,0,"Принять по нулевой FIFO",IgnoreBlankFIFO);	//Edit----------------------Dima  09.02.2016
+  CheckBox(h3,v+=vs,0,"Работы приемки",SalesFlag);// Edit ************************** BPI Ukraine - KramarAlexandr - 04, 19 09 2019 y. at 3:37:12 PM
   CheckBox(-80,v=6,0,"Спорные",DisputedFlag);
   CheckBox(h4,v+=vs,0,"Bixolon напечат.",PrintedFlag); //Edit***************************Sasha2,12:28 11.01.2016
   if (StandardHansa) then begin
