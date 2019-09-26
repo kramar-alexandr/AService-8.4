@@ -1253,5 +1253,68 @@ begin
 	BlockBegin(DateRnBlock,-,"");
 		RecordField(DateRn,M4Date,0,0);
 	EndBlock;
+	
+	
+	RecordBegin(ServBonusOutVc,-,"");// Edit ************************** BPI Ukraine - KramarAlexandr - 04, 26 09 2019 y. at 10:39:12 AM
+		RecordField(SerNr,M4Long,0,0);
+		RecordField(SalesMan,M4Code,20,UserVc)
+		FieldIsUser(SalesMan);
+		RecordField(TransDate,M4Date,0,0);
+		RecordField(TransTime,M4Time,0,0);
+		RecordField(OKFlag,M4Int,0,0);
+		RecordField(CashSum,M4Val,0,0);
+		RecordField(TermSum,M4Val,0,0);
+		RecordField(BankSum,M4Val,0,0);
+		RecordField(RecieveMan,M4Code,20,0);
+		RecordField(IVQty,M4Int,0,0);
+		RecordField(Hidden,M4Int,0,0);
+		RecordField(FullSum,M4Val,0,0);
+		RecordField(TotPaySum,M4Val,0,0);
+		RecordField(TotDifSum,M4Val,0,0);
+		RecordField(BonusSum,M4Val,0,0);
+		RecordField(Percent,M4Val,0,0);
+		RecordField(Printed,M4Int,0,0);
+		RecordField(PrintedDate,M4Date,0,0);
+		RecordField(PrintedTime,M4Time,0,0);
+		
+		RecordField(Math,M4Matrix,0,0);
+		ArrayBegin(Math,-,1);
+    ArrayField(IVNr,M4Long,0,0);
+    ArrayField(InvSum,M4Val,0,0);
+    ArrayField(CashSum,M4Val,0,0);
+    ArrayField(TermSum,M4Val,0,0);
+    ArrayField(BankSum,M4Val,0,0);
+    ArrayField(RowDate,M4Date,0,0);
+    ArrayField(RowTime,M4Time,0,0);
+    ArrayField(DifSum,M4Val,0,0);
+    ArrayField(Bonus,M4Val,0,0);
+		EndArray;
+		
+		MainKeyBegin(SerNr,1);
+		StoreInBaseKey;
+	  AppendFieldToKeyName(SalesMan);
+		KeySegment(SerNr);
+		
+		SubsetKeyBegin2(SalesMan);
+		StoreInBaseKey;
+		AppendFieldToKeyName(SalesMan);
+		KeySegment(SalesMan);
+		KeySegment(TransDate);
+		KeySegment(SerNr);
+		
+		SubsetKeyBegin2(ActSalesMan);
+		StoreInBaseKey;
+		AppendFieldToKeyName(SalesMan);
+		KeySegment(SalesMan);
+		KeySegment(TransDate);
+		KeySegment(SerNr);
+		
+		SubsetKeyBegin2(ActSerNr);
+		StoreInBaseKey;
+		AppendFieldToKeyName(SalesMan);
+		KeySegment(SerNr);
+		
+	EndRecord;
+	
 	return;
 end;
