@@ -543,7 +543,7 @@ BEGIN
   	SVOr.MoveSVOToSGStatus = "Ремонт перемещается на " & SGr.SGroupName;
   	SVOr.MoveSVOToSG = "";
   	CreateSVOSerNoterForMove(SVOr,currenttime & " " & currentdate & " " & currentuser & " " & SVOr.MoveSVOToSGStatus);
-  	CreateCustomActivityFromSVO(SVOr,"MOVE","SEREGA",currentdate,SVOr.MoveSVOToSGStatus,"");
+  	//CreateCustomActivityFromSVO(SVOr,"MOVE","SEREGA",currentdate,SVOr.MoveSVOToSGStatus,"");
   	
   end;
   
