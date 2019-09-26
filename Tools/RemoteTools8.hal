@@ -226,6 +226,9 @@ L20MakeInvHeader:;
   IVp.BaseRate1 = SVOp.BaseRate1;
   IVp.BaseRate2 = SVOp.BaseRate2;
   IVp.SalesMan = SVOp.SalesMan;
+  if(nonblank(WSr.Salesman))then begin
+  	IVp.SalesMan = WSr.Salesman;// Edit ************************** BPI Ukraine - KramarAlexandr - 04, 26 09 2019 y. at 11:02:50 AM
+  end;
   IVVc_PasteSalesMan(IVp,"");
   if (IVp.SerNr<=0) then begin
     BlockLoad(SRRec);
