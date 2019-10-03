@@ -1,4 +1,4 @@
-SetLangMode(LangUkrainian,"UKR",0);
+SetLangMode(LangUkrainian,"RUS",0);
 
 external function boolean MySendRawWebRequest(string, string, boolean, string, string, string, string, boolean, area, var area, integer);
 
@@ -36,7 +36,7 @@ begin
   i = iterQty;
   testf = true;
   while (testf) begin
-    MySendRawWebRequest(host,"80",false,"POST",page,"text" & Chr(47) & "xml; charset=utf-8","",false,mainRequest,replyarea,5);
+    SendRawWebRequest(host,"80",false,"POST",page,"text" & Chr(47) & "xml; charset=utf-8","",false,mainRequest,replyarea,5);
     if GetAreaLength(replyarea)==0  then begin MilliSleep(500); logtext(0,"replyarea=0"); end;
     i = i - 1;
     if i<=0                   then begin testf = false; end;

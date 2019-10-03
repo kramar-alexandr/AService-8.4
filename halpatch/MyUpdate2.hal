@@ -3,6 +3,7 @@ external function Boolean SetInSet2(string,string);
 external function Boolean MySendWebRequest(string,longint,longint,boolean,string,string,string,string,boolean,area,var area,integer);
 external function Boolean FindStringInString(string, string);
 external function Boolean MySendAsyncWebRequest(string,longint,boolean,string,string,string,string,area,string,integer);
+external updating function boolean EasySendTurboSMS(string, string);
 
 SetLangMode(LangRussian,"RUS",0);
 
@@ -170,7 +171,7 @@ begin
 return;
 end;
 
-global procedure SENDFIRSTSMS(record SVOVc SVOr)
+global updating procedure SENDFIRSTSMS(record SVOVc SVOr)
 begin
 	string 255 subject,body,subphone;
 	array string 100 phone,normphone;
@@ -179,6 +180,10 @@ begin
   string 100 host,page;
   area mainRequest,replyarea;
   longint port;
+  string 250 smstext;
+  record SMSConfigBlock SMSConfigb;
+  
+  blockload(SMSConfigb);
 
 	if (SVOr.NoSMS==0) then begin
     if(currentcompany==8)then begin
@@ -215,15 +220,20 @@ begin
         addtexttoarea(subject,a_subject);
         writeareatofile(a_subject,"SMS/sms_subj.txt",0);
         if(SVOr.SerNr>=9000000)then begin
-          body = "[SENDER]AServis[/SENDER][SMS]Ваш ремонт №" & SVOr.SerNr & " принят, тел.044-4515451.[/SMS]";
+        	smstext = "Ваш ремонт №" & SVOr.SerNr & " принят, тел.044-4515451.";
+          body = "[SENDER]AServis[/SENDER][SMS]" & smstext & "[/SMS]";
+          
         end else begin
           if(SVOr.SerNr>=8000000)then begin
-            body = "[SENDER]AServis[/SENDER][SMS]Ваш ремонт №" & SVOr.SerNr & " принят, тел.044-2229293.[/SMS]";
+          	smstext = "Ваш ремонт №" & SVOr.SerNr & " принят, тел.044-2229293.";
+            body = "[SENDER]AServis[/SENDER][SMS]" & smstext & "[/SMS]";
           end else begin
             if(SVOr.SerNr>=7000000)then begin
-							body = "[SENDER]AServis[/SENDER][SMS]Ваш ремонт №" & SVOr.SerNr & " принят, тел.098-1010132.[/SMS]";
+            	smstext = "Ваш ремонт №" & SVOr.SerNr & " принят, тел.098-1010132.";
+							body = "[SENDER]AServis[/SENDER][SMS]" & smstext & "[/SMS]";
 						end else begin
-							body = "[SENDER]AServis[/SENDER][SMS]Ваш ремонт №" & SVOr.SerNr & " принят, тел.044-2227709.[/SMS]";
+							smstext = "Ваш ремонт №" & SVOr.SerNr & " принят, тел.044-2227709.";
+							body = "[SENDER]AServis[/SENDER][SMS]" & smstext & "[/SMS]";
 						end;
           end;
         end;
@@ -249,7 +259,12 @@ begin
         SetAreaZeroSize(replyarea);
         AddTextToArea("passwd=hj87Hjwofb07QVeg62k&id=" & SVOr.SerNr & "&num=" & right(normphone[0],len(normphone[0])-2) & "&status=1&name=" & SVOr.Name,mainRequest);
         //MySendWebRequest(host,port,-1,false,"POST",page,"application/x-www-form-urlencoded","",false,mainRequest,replyarea,10);// Edit ************************** BPI Ukraine - KramarAlexandr - Tuesday, 9 January 2018 17:39:50
-        MySendAsyncWebRequest(host,port,false,"POST",page,"application/x-www-form-urlencoded","",mainRequest,"SMSCallBack",0);
+        
+        if(SMSConfigb.Balance>0)then begin
+        	EasySendTurboSMS(right(normphone[0],len(normphone[0])-2),smstext);
+        end else begin
+          MySendAsyncWebRequest(host,port,false,"POST",page,"application/x-www-form-urlencoded","",mainRequest,"SMSCallBack",0);
+        end;
         logtext(0,"GetAreaLength(replyarea) " & GetAreaLength(replyarea));
         logtext(0,host & page & "SENDFIRSTSMS request - " & GetStringFromArea(mainRequest,0,GetAreaLength(mainRequest)) & " reply - " & GetStringFromArea(replyarea,0,GetAreaLength(replyarea)));
         logtext(0,"SEND SMS");
