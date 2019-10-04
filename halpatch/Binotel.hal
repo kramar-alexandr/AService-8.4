@@ -874,8 +874,9 @@ begin
 			if(blank(targetphone))then begin
 				str = "{\"customerData\":{\"name\":\"" & name & "\",\"description\":\"programer\"}}";
 			end else begin
-				str = "{\"customerData\":{\"name\":\"" & name & "\",\"description\":\"programer\",\"assignedToEmployeeNumber\":\"" & targetphone & "\"}}";
+				str = "{\"customerData\":{\"name\":\"" & name & "\",\"description\":\"programer\",\"assignedToEmployeeNumber\":" & targetphone & "}}";
 			end;
+			
 			logtext(0,str);
 			weboutstring(str);
 		end;
