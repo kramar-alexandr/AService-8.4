@@ -1398,15 +1398,7 @@ if(nonblank(RepSpec.f1) and RepSpec.vals1>0 and RepSpec.vals0>0) then begin
 				PLr.ArtCode = INr.Code;
 				if(ReadFirstMain(PLr,2,true)) then begin
 					PLr.ExVatPrice = (PLr.ExVatPrice/RepSpec.vals0)*RepSpec.vals1;
-					pos = 0;
-					ExtractObj(ValToString(PLr.ExVatPrice,M4Val,"",",",1),pos,tot);
-					if(Right(tot,1)>"5") then begin totnew = left(tot,len(tot)-1) & "9";
-					end else begin 
-						pos = 0;
-						ExtractObj(ValToString(PLr.ExVatPrice-10,M4Val,"",",",1),pos,tot);
-						totnew = left(tot,len(tot)-1) & "9";
-					end;	
-					PLr.ExVatPrice = stringtoval(totnew,M4Val);
+					PLr.ExVatPrice = Round(PLr.ExVatPrice,SetRoundModeD(0)) - 1;
 					RecordStore(PLr,true);
 				end;
 			end;
@@ -1418,15 +1410,7 @@ if(nonblank(RepSpec.f1) and RepSpec.vals1>0 and RepSpec.vals0>0) then begin
 			if(PLr.PLCode!=RepSpec.f1) then begin TrHs = false; end;
 			if(TrHs) then begin
 				PLr.ExVatPrice = (PLr.ExVatPrice/RepSpec.vals0)*RepSpec.vals1;
-				pos = 0;
-				ExtractObj(ValToString(PLr.ExVatPrice,M4Val,"",",",1),pos,tot);
-				if(Right(tot,1)>"5") then begin totnew = left(tot,len(tot)-1) & "9";
-				end else begin 
-					pos = 0;
-					ExtractObj(ValToString(PLr.ExVatPrice-10,M4Val,"",",",1),pos,tot);
-					totnew = left(tot,len(tot)-1) & "9";
-				end;	
-				PLr.ExVatPrice = stringtoval(totnew,M4Val);
+				PLr.ExVatPrice = Round(PLr.ExVatPrice,SetRoundModeD(0)) - 1;
 				RecordStore(PLr,true);
 			end;
 		end;
