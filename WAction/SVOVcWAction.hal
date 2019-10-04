@@ -1147,6 +1147,39 @@ BEGIN
 END;
 
 global
+updating procedure WorkSheetSVOSalesDsm()
+BEGIN
+  record SVOVc SVOr;
+  record WSVc WSr;
+  LongInt r;
+  Integer wn,nwn;
+  
+  wn = CurWindow;
+  if (WindowState(wn)==0) then begin//Rs_normal
+    if (UserCanAction("DisallowWSFromSVO",false)==false) then begin
+      GetWindowRecord(wn,SVOr);
+      if (SVOr.DoneMark==0) then begin
+        r = RecordAction_raPasteSVOInWS(SVOr,WSr);
+        WSr.SalesFlag = 1;
+        recordstore(WSr,true);
+        switch (r) begin
+          case -1: Beep;
+          case -2: MessageBox(1281,"");
+          otherwise
+            nwn = OpenWindow("WSDClass",1,0,"","",WSr);
+        end;
+        UpdateBrowses("SVOVc");
+      end;
+    end else begin
+      MessageBox(1274,StringFromStringSet(3,"DisallowWSFromSVO"));
+    end;
+  end else begin
+    Beep;
+  end;
+  RETURN;
+END;
+
+global
 procedure WorkOrderSVOLsm()
 BEGIN
   record SVOVc SVOr;
@@ -2171,6 +2204,25 @@ integer wn;
 	
 	Actr.Comment = "Cогласовать ремонт " & Actr.SVOSerNr;
 	Actr.MainPersons = "SHILKIN";
+	putwindowrecord(wn,Actr);
+	windowdook(wn,0);
+	
+return;
+end;
+
+global
+updating procedure ChangeToLEKHOLETOVDsm()
+begin
+
+record ActVc Actr;
+integer wn;	
+	
+	wn = curwindow;
+	deselectwindow(wn,true);
+	getwindowrecord(wn,Actr);
+	
+	Actr.Comment = "Cогласовать ремонт " & Actr.SVOSerNr;
+	Actr.MainPersons = "LEKHOLETOV";
 	putwindowrecord(wn,Actr);
 	windowdook(wn,0);
 	

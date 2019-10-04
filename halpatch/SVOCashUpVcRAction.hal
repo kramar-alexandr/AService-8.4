@@ -189,7 +189,7 @@ BEGIN
   res = 1;
   
   if(SVOCr.OKFlag==1)then begin
-  	//res = 0;
+  	res = 0;
   end;
   
   
@@ -214,6 +214,30 @@ begin
   SVOCashUpDClassActiveEditField = res;
   return;
 end;
+
+
+
+global 
+function Boolean SVOCashUpDClassDeleteRowTest(Integer wn,Integer rownr)
+begin
+  record SVOCashUpVc SVOCr;
+  integer updatemode;
+  boolean res;
+
+  res = true;
+  updatemode = 2;
+  if (WindowState(wn)==updatemode) then begin
+    GetPrevWindowRecord(wn,SVOCr);
+  end else begin
+    GetWindowRecord(wn,SVOCr);
+  end;
+  if (SVOCr.OKFlag==1) then begin
+    res = false;
+  end;
+  SVOCashUpDClassDeleteRowTest = res;
+  return;
+end;
+
 
 global
 function Boolean SVOCashUpDClassOKFlagButtonAction(Integer wn,Integer value)

@@ -1370,6 +1370,71 @@ record WebSyncRegVc WSRr;
 return;
 end;
 
+global 
+updating procedure PriceRecalcMn(record RcVc RepSpec)
+begin
+record INVc INr;
+record PLVc PLr;
+boolean TrHs;
+record PriceChangeVc PCB;
+string 255 tot,totnew;
+integer pos;
+
+if(nonblank(RepSpec.f1) and RepSpec.vals1>0 and RepSpec.vals0>0) then begin
+	PCB.SerNr = NextSerNr("PriceChangeVc",CurrentDate,-1,false,"");
+	PCB.Date = CurrentDate;
+	PCB.PLCode = RepSpec.f1;
+	PCB.Group = RepSpec.f2;
+	PCB.ChangeB = RepSpec.vals0;
+	PCB.ChangeA = RepSpec.vals1;
+	RecordStore(PCB,true);
+	if(nonblank(RepSpec.f2)) then begin
+		TrHs = true;
+		INr.Group = RepSpec.f2;
+		while(LoopKey("Group",INr,1,TrHs)) begin
+			if(INr.Group!=RepSpec.f2) then begin TrHs = false; end;
+			if(TrHs) then begin
+				PLr.PLCode = RepSpec.f1;
+				PLr.ArtCode = INr.Code;
+				if(ReadFirstMain(PLr,2,true)) then begin
+					PLr.ExVatPrice = (PLr.ExVatPrice/RepSpec.vals0)*RepSpec.vals1;
+					pos = 0;
+					ExtractObj(ValToString(PLr.ExVatPrice,M4Val,"",",",1),pos,tot);
+					if(Right(tot,1)>"5") then begin totnew = left(tot,len(tot)-1) & "9";
+					end else begin 
+						pos = 0;
+						ExtractObj(ValToString(PLr.ExVatPrice-10,M4Val,"",",",1),pos,tot);
+						totnew = left(tot,len(tot)-1) & "9";
+					end;	
+					PLr.ExVatPrice = stringtoval(totnew,M4Val);
+					RecordStore(PLr,true);
+				end;
+			end;
+		end;	
+	end else begin
+		TrHs = true;
+		PLr.PLCode = RepSpec.f1;
+		while(LoopMain(PLr,1,TrHs)) begin
+			if(PLr.PLCode!=RepSpec.f1) then begin TrHs = false; end;
+			if(TrHs) then begin
+				PLr.ExVatPrice = (PLr.ExVatPrice/RepSpec.vals0)*RepSpec.vals1;
+				pos = 0;
+				ExtractObj(ValToString(PLr.ExVatPrice,M4Val,"",",",1),pos,tot);
+				if(Right(tot,1)>"5") then begin totnew = left(tot,len(tot)-1) & "9";
+				end else begin 
+					pos = 0;
+					ExtractObj(ValToString(PLr.ExVatPrice-10,M4Val,"",",",1),pos,tot);
+					totnew = left(tot,len(tot)-1) & "9";
+				end;	
+				PLr.ExVatPrice = stringtoval(totnew,M4Val);
+				RecordStore(PLr,true);
+			end;
+		end;
+	end; 
+end;
+return;
+end;
+
 
 global updating procedure SyncWebRegUpdateFromIS(record ItemStatusVc ISr)
 begin

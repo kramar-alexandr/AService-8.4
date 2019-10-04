@@ -1,0 +1,377 @@
+external function roundmode SetRoundModeD(Integer);
+remote updating procedure HandleServBonusOutReceiptPrinting(record ServBonusOutVc,var area); // Edit ************************** BPI Ukraine - KramarAlexandr - 04, 26 09 2019 y. at 2:07:08 PM
+external procedure PrintBixolonReceipt(area);
+
+SetLangMode(LangRussian,"RUS",0);
+
+global
+function LongInt ServBonusOutVcRecordInIndex(record ServBonusOutVc SVOCr,string indexname)
+begin
+  LongInt res;
+  
+  res = 1;
+  if ((SVOCr.Hidden==1)) then begin 
+    if (indexname=="ActSalesMan")  then begin res = 0; end;
+    if (indexname=="ActSerNr")  then begin res = 0; end;
+  end;
+  
+  ServBonusOutVcRecordInIndex = res;
+  return;
+end;
+
+global
+function LongInt ServBonusOutVcRecordCheck(var record ServBonusOutVc SVOCr,record ServBonusOutVc SVOC2r,LongInt stat,LongInt long4)
+BEGIN
+  LongInt res;
+	
+	res = 0;
+	
+	if (SVOCr.SerNr==-1) then begin
+    SVOCr.SerNr = NextSerNr("ServBonusOutVc",currentdate,-1,false,"");
+  end;
+  if(blank(SVOCr.SalesMan))then begin
+  	res = -1;
+  	RecordCheckError(1058,"",-1,"SalesMan");  
+  	goto LServBonusOutVcRecordCheck;
+  end;
+	
+	if(stat==Rs_Update)then begin
+		if(SVOCr.OKFlag==1 and SVOC2r.OKFlag==0)then begin
+			SVOCr.RecieveMan = currentuser;
+		end;
+	end;
+
+  if(blank(SVOCr.RecieveMan) and SVOCr.OKFlag==1)then begin
+  	res = -1;
+  	RecordCheckError(1058,"",-1,"RecieveMan");  
+  	goto LServBonusOutVcRecordCheck;
+  end;
+	
+  
+
+LServBonusOutVcRecordCheck:;  
+
+  ServBonusOutVcRecordCheck = res;
+  RETURN;
+END;
+
+global
+function LongInt ServBonusOutVcRecordDefaults(var record ServBonusOutVc SVOCr,record ServBonusOutVc SVOC2r,LongInt stat,LongInt long4)
+BEGIN
+  LongInt res;
+	record ServBonusOutVc oldSVOCr;
+	row ServBonusOutVc SVOCrw;
+	record UserVc USr;
+	date lastdate;
+	time lasttime;
+	record SVOVc SVOr;
+	boolean testf,TrHs;
+	val cashsum,termsum,banksum;
+	record IVVc IVr;
+	record IPrsVc IPrsr;
+	record IPVc IPr;
+	row IPVc IPrw;
+	record CLInVc CLInr;
+	row CLInVc CLInrw;
+	record CLOutVc CLOutr;
+	row CLOutVc CLOUtrw;
+	integer i,mtrw;
+	val ivcash,ivterm,ivbank;
+	record APVc APr;
+	
+	SVOCr.Percent = 20;
+	
+	SVOCr.SalesMan = CurrentUser;
+	USr.Code = currentuser;
+	readfirstmain(USr,1,true);
+  SVOCr.TransDate = currentdate;
+  SVOCr.TransTime = currenttime;
+	
+	oldSVOCr.SalesMan = SVOCr.SalesMan;
+	oldSVOCr.SerNr = 99999999;
+	if(readlastkey("SalesMan",oldSVOCr,2,false))then begin
+		if(oldSVOCr.SalesMan!=SVOCr.SalesMan)then begin
+			oldSVOCr.TransDate = currentdate;
+			oldSVOCr.TransTime = stringtotime("00:00");
+			oldSVOCr.SalesMan = currentuser;
+		end;
+	end else begin
+		oldSVOCr.TransDate = currentdate;
+		oldSVOCr.TransTime = stringtotime("00:00");
+		oldSVOCr.SalesMan = currentuser;
+	end;
+		logtext(0,"oldSVOCr " & oldSVOCr.SerNr);
+		if(oldSVOCr.SalesMan==SVOCr.SalesMan)then begin
+			lastdate = oldSVOCr.TransDate;
+			lasttime = oldSVOCr.TransTime;
+			
+			resetloop(oldSVOCr);
+		
+			IVr.InvDate = lastdate;
+			while(loopkey("InvDate",IVr,1,true))begin
+				logtext(0,"IVr " & IVr.SerNr);
+				testf = true;
+				if(IVr.InvDate==oldSVOCr.TransDate and IVr.TransTime<lasttime)then begin testf = false; end;
+				if(IVr.OKFlag==0)then begin testf = false; end;
+				if(IVr.Invalid==1)then begin testf = false; end;
+				if(IVr.SalesMan!=oldSVOCr.SalesMan)then begin testf = false; end;
+				if(testf and IVr.SalesFlag==0)then begin
+					if(IVr.SVONr>0)then begin 
+						testf = false; 
+					end;
+				end;
+						
+				if(testf)then begin
+					logtext(0,"IVr proceed " & IVr.SerNr);
+					resetloop(IPrsr);
+					IPrsr.IVNr = IVr.SerNr;
+					TrHs = true;
+					ivcash = blankval;
+					ivterm = blankval;
+					ivbank = blankval;
+				
+					ivcash = IVr.FastCash;
+					ivterm = IVr.FastTerm;
+								
+					if(true)then begin
+						SVOCr.IVQty = SVOCr.IVQty + 1;
+						ClearRow(SVOCr,SVOCrw,1);
+						SVOCrw.IVNr = IVr.SerNr;
+						SVOCrw.CashSum = ivcash;
+						SVOCrw.TermSum = ivterm;
+						SVOCrw.BankSum = ivbank;
+						SVOCrw.RowDate = IVr.InvDate;
+						SVOCrw.RowTime = IVr.RegTime;
+						SVOCrw.InvSum = IVr.Sum4;
+						SVOCrw.DifSum = IVr.Sum4 - SVOCrw.CashSum - SVOCrw.TermSum - SVOCrw.BankSum;
+						SVOCrw.Bonus = round(SVOCrw.InvSum * (SVOCr.Percent/100),SetRoundModeD(0));
+						
+						SVOCr.BonusSum = SVOCr.BonusSum + SVOCrw.Bonus;
+						SVOCr.FullSum = SVOCr.FullSum + SVOCrw.InvSum;
+						SVOCr.TotPaySum = SVOCr.TotPaySum + SVOCrw.CashSum + SVOCrw.TermSum + SVOCrw.BankSum;
+						SVOCr.TotDifSum = SVOCr.TotDifSum + (SVOCrw.InvSum - (SVOCrw.CashSum + SVOCrw.TermSum + SVOCrw.BankSum));
+						
+						matrowput(SVOCr,matrowcnt(SVOCr),SVOCrw);
+					end;
+				
+				end;
+			end;
+		
+			SVOCr.CashSum = cashsum;
+			SVOCr.TermSum = termsum;
+			SVOCr.BankSum = banksum;
+  	end;
+  
+  ServBonusOutVcRecordDefaults = res; 
+  RETURN;
+END;
+
+
+global
+function LongInt ServBonusOutVcRecordRemoveTest(var record ServBonusOutVc SVOCr,record ServBonusOutVc SVOC2r,LongInt stat,LongInt long4)
+BEGIN
+  LongInt res;
+  record DBLockBlock DBLb;
+
+  res = 1;
+  
+  if(SVOCr.OKFlag==1)then begin
+  	res = 0;
+  end;
+  
+  
+LServBonusOutVcRecordRemoveTest:;
+  ServBonusOutVcRecordRemoveTest = res;
+  RETURN;
+END;
+
+
+global
+function Boolean ServBonusOutDClassActiveEditField(Integer wn,string fieldname,Integer fn,Integer wnst,Integer rownr,Integer changed)
+begin
+  Boolean res;
+  record ServBonusOutVc SVOCr;
+  
+  res = true;
+
+  getwindowrecord(wn,SVOCr);
+  if(SVOCr.OKFlag==1)then begin
+  	res = false;
+  end;
+  
+  if(rownr>-1)then begin
+  	res = false;
+  end;
+
+  ServBonusOutDClassActiveEditField = res;
+  return;
+end;
+
+
+global 
+function Boolean ServBonusOutDClassDeleteRowTest(Integer wn,Integer rownr)
+begin
+  record ServBonusOutVc SVOCr;
+  integer updatemode;
+  boolean res;
+
+  res = true;
+  updatemode = 2;
+  if (WindowState(wn)==updatemode) then begin
+    GetPrevWindowRecord(wn,SVOCr);
+  end else begin
+    GetWindowRecord(wn,SVOCr);
+  end;
+  if (SVOCr.OKFlag==1) then begin
+    res = false;
+  end;
+  ServBonusOutDClassDeleteRowTest = res;
+  return;
+end;
+
+global
+function Boolean ServBonusOutDClassOKFlagButtonAction(Integer wn,Integer value)
+begin
+  Boolean res;
+  record ServBonusOutVc SVOCr;
+	
+  res = true;
+  GetWindowRecord(wn,SVOCr);
+  
+  if(usercanaction("AllowOKServBonusOut",false)==false)then begin
+  	res = false;
+  	messagebox(0,"У Вас нет прав выполнить это действие");
+  end;
+  if(SVOCr.OKFlag==1)then begin
+  	res = false;
+  end;
+  
+  ServBonusOutDClassOKFlagButtonAction = res;
+  return;
+end;
+
+global
+function Boolean ServBonusOutDClassPrintedButtonAction(Integer wn,Integer value)
+begin
+  Boolean res;
+  record ServBonusOutVc SVOCr;
+	
+ 
+  res = false;
+  
+  ServBonusOutDClassPrintedButtonAction = res;
+  return;
+end;
+
+
+
+global
+function Boolean ManagerFastPaySVOWClassAccSpecButtonAction(Integer wn,Integer value)
+begin
+  Boolean res;
+  record RcVc RepSpec;
+		
+  res = true;
+  deselectwindow(wn,true);
+  GetWindowRecord(wn,RepSpec);
+  
+  if(value==2)then begin
+  	RepSpec.vals1 = round((RepSpec.vals0 * 1.05),defaultcurroundoff);
+  end else begin
+  	RepSpec.vals1 = blankval;
+  end;
+  putwindowrecord(wn,RepSpec);
+  selectwindow(wn);
+  ManagerFastPaySVOWClassAccSpecButtonAction = res;
+  return;
+end;
+
+
+Global procedure DblServBonusSign()
+begin
+	integer wn;
+	record ServBonusOutVc SVOCr;
+	record RcVc RepSpec;
+	
+	wn = curwindow;
+	if(windowstate(wn)==0)then begin
+		getwindowrecord(wn,SVOCr);
+		if(SVOCr.OKFlag==0)then begin
+			SVOCr.SalesMan = CurrentUser;
+			PutWindowRecord(wn,SVOCr);
+		end else begin
+			messagebox(0,"Запись должна быть не заокеена");
+		end;
+	end else begin
+		messagebox(0,"Сохраните изменения в окне");
+	end;
+
+return;
+end;
+
+Global procedure DblServBonusSignRec()
+begin
+	integer wn;
+	record ServBonusOutVc SVOCr;
+	record RcVc RepSpec;
+	
+	wn = curwindow;
+	if(windowstate(wn)==0)then begin
+		getwindowrecord(wn,SVOCr);
+		if(SVOCr.OKFlag==0)then begin
+			SVOCr.RecieveMan = CurrentUser;
+			PutWindowRecord(wn,SVOCr);
+		end else begin
+			messagebox(0,"Запись должна быть не заокеена");
+		end;
+	end else begin
+		messagebox(0,"Сохраните изменения в окне");
+	end;
+
+return;
+end;
+
+global updating procedure DblServBonusOutDbl()
+begin
+	integer wn;
+	record ServBonusOutVc SVOCr;
+	record RcVc RepSpec;
+	area aFile;
+	
+	wn = curwindow;
+	deselectwindow(wn,false);
+	if(windowstate(wn)==0)then begin
+		getwindowrecord(wn,SVOCr);
+		if(SVOCr.OKFlag==0)then begin
+			SVOCr.Printed = 1;
+			SVOCr.PrintedDate = currentdate;
+			SVOCr.PrintedTime = currenttime;
+			
+			SetExportCodePage("CP1251");
+   		HandleServBonusOutReceiptPrinting(SVOCr,aFile);
+   		AddAreaToArea(aFile,aFile);
+     	PrintBixolonReceipt(aFile); 
+     			
+			recordstore(SVOCr,true);
+			putwindowrecord(wn,SVOCr);
+		end else begin
+			messagebox(0,"Запись НЕ должна быть заокеена");
+		end;
+	end else begin
+		messagebox(0,"Сохраните изменения в окне");
+	end;
+	
+return;
+end;
+
+global
+function Boolean ServBonusOutLClassOnOpenWindow(Integer wn)
+begin
+	
+	if(usercanaction("ViewAllServBonusOut",false)==false)then begin
+		SetWindowSubset(wn,currentuser);
+	end;
+	
+  ServBonusOutLClassOnOpenWindow = false;
+end;
+

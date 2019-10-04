@@ -386,7 +386,8 @@ begin
   UseView(SVOVc);
   ToolBar;
   HalPushButton(250,5,350,25,"WorkSheetSVODsm","План робіт");
-	HalPushButton(370,5,430,25,"PrintDoSVOFormButton","Друк");	//Edit----------------------Dima  09.02.2015
+  HalPushButton(370,5,480,25,"WorkSheetSVOSalesDsm","Роботи пройомки");
+	HalPushButton(500,5,600,25,"PrintDoSVOFormButton","Друк");	//Edit----------------------Dima  09.02.2015
   EndToolBar;
   ActiveFieldOnNew("CustCode");  
   //FormName(SVOForm);
@@ -772,9 +773,11 @@ begin
   EditField(75,v+=20,95,"Клиент",Normal,CustCode,false,CUSClass);
   EditField(h=240,v=vm,-40,"Наименов.",Normal,Addr0,false,0);
   v = v+vs;
-  CheckBox(h4=-200,v,0,"Напечатано",PrintFlag);
+  CheckBox(h4=-230,v,0,"Напечатано",PrintFlag);
+  CheckBox(h4=-230,v+vs,0,"Работы приемки",SalesFlag);
   CheckBox(h4=-100,v,0,"OK",OKFlag);
   CheckBox(h4=-100,v+vs,0,"ASBIS гарантия",ASBISFlag);
+  
   tilenr = 1;
   TileButton(tilenr,"Дата"); tilenr = tilenr + 1; 
   TileButton(tilenr,"Товары"); tilenr = tilenr + 1; 
@@ -1528,6 +1531,7 @@ if (true) then begin
     EditField(h3,v+=vs,-20,"К пл/рсч док-ту",Normal,ReceiptInfo,false,0);
   end;
   CheckBox(h3,v+=vs,0,"Принять по нулевой FIFO",IgnoreBlankFIFO);	//Edit----------------------Dima  09.02.2016
+  CheckBox(h3,v+=vs,0,"Работы приемки",SalesFlag);// Edit ************************** BPI Ukraine - KramarAlexandr - 04, 19 09 2019 y. at 3:37:12 PM
   CheckBox(-80,v=6,0,"Спорные",DisputedFlag);
   CheckBox(h4,v+=vs,0,"Bixolon напечат.",PrintedFlag); //Edit***************************Sasha2,12:28 11.01.2016
   if (StandardHansa) then begin
@@ -8512,7 +8516,7 @@ begin
   
   WindowBegin("Діяльність",ActDClass,CGview,ActView);
     BlockLoad(LMb);
-    SetWRect(64,80,760,500);
+    SetWRect(64,80,760,600);
     BrowseButtons(false);
     //Sizeable(-1,-1,0,0);
     UseView(ActVc);
@@ -8533,8 +8537,9 @@ begin
     v = 6; vs = 20; h = 100; h2 = 270; h3 = 420; h4 = 450; fs = 100;
     CommunicateButton;
     Tile(0,160,false,"",Comment);
-    EditField(h,v,50,"#",ViewOnly,SerNr,false,0);  HalPushButton(h+100,v,h+350,v+20,"ChangeToShilkinDsm","Задача на Шилкина");// Edit ************************** BPI Ukraine - KramarAlexandr - 04, 01 08 2019 y. at 12:06:59 PM
-    EditField(h,v+=vs,-40,"Текст",Normal,Comment,false,0);
+    EditField(h,v,50,"#",ViewOnly,SerNr,false,0);  HalPushButton(h+100,v,h+250,v+20,"ChangeToShilkinDsm","Задача на Шилкина");// Edit ************************** BPI Ukraine - KramarAlexandr - 04, 01 08 2019 y. at 12:06:59 PM
+    																							 HalPushButton(h+300,v,h+450,v+20,"ChangeToLEKHOLETOVDsm","Задача на Лехолетова");
+    EditField(h,v+=vs+5,-40,"Текст",Normal,Comment,false,0);
     EditField(h,v+=vs,-40,"Текст 1",Normal,Comment1,false,0);// Edit ************************** BPI Ukraine - KramarAlexandr - Monday, 27 November 2017 16:06:24
     EditField(h,v+=vs,80,"Тип",Normal,ActType,false,ActTypeSClass);//ActType2SClass
     EnterSkip(StartTime);
@@ -8543,13 +8548,13 @@ begin
     EditField(h,v+=vs,120,"Сер. №",Normal,SerialNr,false,SVOSerSClass);// Edit ************************** BPI Ukraine - KramarAlexandr - Thursday, 16 November 2017 14:33:10
     EditField(h,v+=vs, 80,"Замовл. на обсл.",Normal,SVOSerNr,false,SVOSClass);// Edit ************************** BPI Ukraine - KramarAlexandr - Friday, 17 November 2017 15:54:06
 		halpushbutton(h+90,v,h+90+80,v+vs,"OpenSVODsm","Відкр.");
-    vm=vm+vs+vs;
+    vm=vm+vs+vs+10;
     EditField(h2,v=vm+vs,-40,"",Normal,ActTypeComment,false,0);
     EditField(h2,v+=vs,140,"Особи",Normal,MainPersons,false,UserSClass);
     EditField(h4,v,-40,"Копія",Normal,CCPersons,false,UserSClass);
-    EditField(h2+100,v+=vs,80,"Керівник",Normal,Supervisor,false,UserSClass);
+    EditField(h2+200,v+=vs,80,"Керівник",Normal,Supervisor,false,UserSClass);
 		
-		halpushbutton(h2,v+=vs,h2+100,v+vs,"ActBackDsm","Відповісти");
+		halpushbutton(h2+10,v,h2+110,v+vs,"ActBackDsm","Відповісти");
 		
     //EditField(h4,v,-40,"Перенапр.затв.",Normal,ApprovalFwdPersons,false,UserSClass);
     //EditField(h4,v+=vs,60,"Результат",Normal,ActResult,false,ActTypeSClass);
@@ -8570,7 +8575,7 @@ begin
     //CheckBox(-170,v,0,"Приватне",PrivateFlag); //##cc
     CheckBox(-100,v,0,"Виконано",OKFlag); //##cc
     tilenr = 1;
-    if (showapprovaltile) then begin
+   /* if (showapprovaltile) then begin
       Tile(tilenr,130,false,"",-); tilenr = tilenr + 1;
       ButtonFrame(h=100,v=18,440,2,"Затвердження");
       HalPushButton(h+=5,v+=5,h+100,v+20,"ActDClassApproveActivity","Затверджено");
@@ -8579,7 +8584,7 @@ begin
       HalPushButton(h+=110,v,h+100,v+20,"ActDClassSendFYI","Відправити для інф.");
       HalPushButton(h=105,v+=40,h+100,v+20,"ActDClassOpenApprovalRecord","Відкрити запист");
       HalPushButton(h+=110,v,h+120,v+20,"ActDClassOpenApprovalAttach","Відкрити вкладені файли");
-    end;
+    end;*/
     Tile(tilenr,90,false,"1",StartTime); tilenr = tilenr + 1;
     h = 100; h2 = 270;
     EditField(h,v=6,60,"Час початку",Normal,StartTime,false,PasteCurTime);

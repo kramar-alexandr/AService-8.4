@@ -721,12 +721,13 @@ begin
 	string 255 node;
 	time timestamp;
 	date datestamp;
-	string 255 str,phone,name,res,num,resnum,recphone,keystr;
+	string 255 str,phone,name,res,num,resnum,recphone,keystr,targetphone;
 	record CUVc CUr;
 	record SVOVc SVOr;
 	record Phone1Vc Phoner;
 	integer pos,j;
 	boolean rectype;
+	record UserVc USr;
 
 	
 	setcompany(8,false)
@@ -839,6 +840,9 @@ begin
 								 if(readfirstmain(SVOr,1,true))then begin
 									if(SVOr.DoneMark==0)then begin
 										resnum = SVOr.SerNr;
+										if(nonblank(SVOr.UtverjFinishUsr))then begin
+											USr.Code = SVOr.UtverjFinishUsr;
+										end;
 									end;
 								 end;
 							 end;
@@ -859,8 +863,20 @@ begin
 				end;
 				
 			end;
-		
-			str = "{\"customerData\":{\"name\":\"" & name & "\",\"description\":\"programer\"}}";
+			
+			if(nonblank(USr.Code))then begin// Edit ************************** BPI Ukraine - KramarAlexandr - 04, 03 10 2019 y. at 3:09:37 PM
+				readfirstmain(USr,1,true);
+				if(nonblank(USr.Phone2) and len(USr.Phone2)==3)then begin
+					targetphone = USr.Phone2;
+				end;
+			end;
+			
+			if(blank(targetphone))then begin
+				str = "{\"customerData\":{\"name\":\"" & name & "\",\"description\":\"programer\"}}";
+			end else begin
+				str = "{\"customerData\":{\"name\":\"" & name & "\",\"description\":\"programer\",\"assignedToEmployeeNumber\":\"" & targetphone & "\"}}";
+			end;
+			
 			logtext(0,str);
 			weboutstring(str);
 		end;
