@@ -971,6 +971,7 @@ begin
       AddTextToArea("}",req);
       
       WriteAreaToFile(req,"Binotel_ListOfRoutes.txt",0);
+      weboutarea(req);
 			MySendAsyncWebRequest(host,443,true,"POST",page,"application/json","",req,"WEbGetBinotelSettingsCallBack",5);
 
 return;
