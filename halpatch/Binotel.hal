@@ -958,7 +958,7 @@ begin
       
       keyNode = "\"key\":" & "\"" & key & "\"";
       
-      secret = secret & "{" & "}";
+      secret = secret & "{[" & "]}";
       signatureNode = "\"signature\":" & "\"" & LowerCase(MD5String(secret)) & "\"";
       
       AddTextToArea("{",req);
