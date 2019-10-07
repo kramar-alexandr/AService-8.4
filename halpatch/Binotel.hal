@@ -954,25 +954,23 @@ begin
 	blockload(BSb);
 	
 	key = BSb.ApiKey;//"bc327a-61c63b1";
-      secret = BSb.ApiSecret;//"1546c2-8c393b-fcf888-acbaba-3ec826a2";
-      host = "api.binotel.com";
-      page = "/api/2.0/settings/list-of-routes";
-      
-      keyNode = "\"key\":" & "\"" & key & "\"";
-      
-      secret = secret & "{[" & "]}";
-      signatureNode = "\"signature\":" & "\"" & LowerCase(MD5String(secret)) & "\"";
-      
-      AddTextToArea("{",req);
-      AddTextToArea(extNumNode & ",",req);
-      AddTextToArea(phoneNode & ",",req);
-      AddTextToArea(signatureNode & ",",req);
-      AddTextToArea(keyNode,req);
-      AddTextToArea("}",req);
-      
-      WriteAreaToFile(req,"Binotel_ListOfRoutes.txt",0);
-      weboutarea(req);
-			MySendAsyncWebRequest(host,443,true,"POST",page,"application/json","",req,"WEbGetBinotelSettingsCallBack",5);
+	secret = BSb.ApiSecret;//"1546c2-8c393b-fcf888-acbaba-3ec826a2";
+	host = "api.binotel.com";
+	page = "/api/2.0/settings/list-of-routes";
+	
+	keyNode = "\"key\":" & "\"" & key & "\"";
+	
+	secret = secret & "{" & "}";
+	signatureNode = "\"signature\":" & "\"" & LowerCase(MD5String(secret)) & "\"";
+	
+	AddTextToArea("{",req);
+	AddTextToArea(signatureNode & ",",req);
+	AddTextToArea(keyNode,req);
+	AddTextToArea("}",req);
+	
+	WriteAreaToFile(req,"Binotel_ListOfRoutes.txt",0);
+	weboutarea(req);
+	MySendAsyncWebRequest(host,443,true,"POST",page,"application/json","",req,"WEbGetBinotelSettingsCallBack",5);
 
 return;
 end;
