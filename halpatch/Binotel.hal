@@ -874,7 +874,7 @@ begin
 			if(blank(targetphone))then begin
 				str = "{\"customerData\":{\"name\":\"" & name & "\",\"description\":\"programer\"}}";
 			end else begin
-				str = "{\"customerData\":{\"name\":\"" & name & "\",\"description\":\"programer\",\"assignedToEmployeeNumber\":\"" & targetphone & "\"}}";
+				str = "{\"customerData\":{\"name\":\"" & name & "\",\"description\":\"programer\",\"assignedToEmployeeNumber\":\"" & targetphone & "\"},\"routeData\":{\"type:\":\"route\",\"id\":"101415"}}";
 			end;
 			
 			logtext(0,str);
@@ -959,7 +959,9 @@ begin
 	page = "/api/2.0/settings/list-of-routes";
 	
 	keyNode = "\"key\":" & "\"" & key & "\"";
-	
+	//d4be4b-ca62bb-aaac01-814c2f-d03db4c0[]
+	//curl -d '{"signature":"e24c4b82e0a1a33c485ceed5cde53e1c","key":"6a962f-2502568"}' -H "Content-Type: application/json" -X POST https://api.binotel.com/api/2.0/customers/list
+
 	secret = secret;
 	signatureNode = "\"signature\":" & "\"" & LowerCase(MD5String(secret)) & "\"";
 	
