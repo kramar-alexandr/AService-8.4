@@ -874,7 +874,7 @@ begin
 			if(blank(targetphone))then begin
 				str = "{\"customerData\":{\"name\":\"" & name & "\",\"description\":\"programer\"}}";
 			end else begin
-				str = "{\"customerData\":{\"name\":\"" & name & "\",\"description\":\"programer\",\"assignedToEmployeeNumber\":\"" & targetphone & "\"},\"routeData\":{\"type:\":\"route\",\"id\":\"101416\"}}";
+				str = "{\"customerData\":{\"name\":\"" & name & "\",\"description\":\"programer\",\"assignedToEmployeeNumber\":" & targetphone & "},\"routeData\":{\"type:\":\"route\",\"id\":101416}}";
 			end;
 			
 			logtext(0,str);
