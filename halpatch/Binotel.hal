@@ -963,7 +963,7 @@ begin
 	secret = secret & "{" & "}";
 	signatureNode = "\"signature\":" & "\"" & LowerCase(MD5String(secret)) & "\"";
 	
-	AddTextToArea("{",req);
+	AddTextToArea("{[],",req);
 	AddTextToArea(signatureNode & ",",req);
 	AddTextToArea(keyNode,req);
 	AddTextToArea("}",req);
