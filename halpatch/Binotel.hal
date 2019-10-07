@@ -931,7 +931,7 @@ global webpublic procedure WEbGetBinotelSettingsCallBack()
 begin
 	area a_reply;
 	
-	setcompany(8,false)
+	setcompany(8,false);
 	
 	logtext(0,"WEbGetBinotelSettingsCallBack");
 	webgetpostdata(a_reply);
@@ -946,6 +946,8 @@ begin
 	record BinotelSettingsBlock BSb;
 	string 255 key,secret,host,keyNode,signatureNode,extNumNode,phoneNode,page;
   Area req,reply;
+	
+	setcompany(8,false);
 	
 	logtext(0,"WEbGetBinotelSettings");
 	
