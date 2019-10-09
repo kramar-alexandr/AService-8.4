@@ -47,7 +47,7 @@ begin
   end else begin
     res = false;
   end;
-  
+  writeareatofile(replyarea,"turbo.log",1);
   SendWebRequestTurbo = res;
   return;
 end;
@@ -182,7 +182,7 @@ begin
 end;
 
 global 
-updating function boolean SendSMSTurboSMS(string cookie, string reciever, string text)
+updating function boolean SendSMSTurboSMS(string cookie,var string reciever, string text)
 begin
   area mainRequest,replyarea;
   boolean res;
@@ -191,6 +191,9 @@ begin
   longint pos1,pos2;
   string 255 response;
   
+  if(len(reciever)==10)then begin
+  	reciever = "+38" & reciever;
+  end;
   BlockLoad(SMSb);
   SetAreaZeroSize(mainRequest);
   SetAreaZeroSize(replyarea);
