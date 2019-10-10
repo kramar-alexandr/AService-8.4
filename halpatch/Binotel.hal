@@ -876,7 +876,7 @@ begin
 			if(blank(targetphone))then begin
 				str = "{\"customerData\":{\"name\":\"" & name & "\",\"description\":\"programer\"}}";
 			end else begin
-				if(name=="5001494 Крамар Александр")then begin
+				if(name=="3008052 Александр Крамар ")then begin
 					targetphone = "901";
 				end;
 //				str = "{\"customerData\":{\"name\":\"" & name & "\",\"description\":\"programer\",\"assignedToEmployeeNumber\":" & targetphone & "},\"routeData\":{\"type:\":\"route\",\"id\":101416}}";
