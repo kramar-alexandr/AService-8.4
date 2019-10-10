@@ -1338,5 +1338,18 @@ begin
     RecordField(Sign,M4Str,255,0);
 	EndBlock;
 	
+	
+	
+	RecordBegin(BinotelActCallsVc,-,"");// Edit ************************** BPI Ukraine - KramarAlexandr - 04, 26 09 2019 y. at 10:39:12 AM
+		RecordField(CallID,M4Code,20,0);
+		RecordField(UserNum,M4Code,20,0);
+		RecordField(SVONr,M4Long,0,0);
+		RecordField(CallResult,M4Str,100,0);
+		
+		MainKeyBegin(CallID,0);
+		KeySegment(CallID);
+		
+	EndRecord;
+	
 	return;
 end;

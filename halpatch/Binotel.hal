@@ -6,6 +6,7 @@ external procedure FindUserMailboxName(string,var string,var string);
 external procedure AlarmMessage(record ActVc,integer,string);
 external procedure MySendWebRequest(string,integer,longint, boolean,string,string,string,string,boolean,area,area,integer);
 external procedure ExtractObj(string,var Integer,var string);
+external updating procedure CreateCustomActivityFromSVO(record SVOVc,string,string,date,string,string);// Edit ************************** BPI Ukraine - KramarAlexandr - Tuesday, 12 December 2017 11:56:41
 
 SetLangMode(LangRussian,"RUS",0);
 
@@ -26,6 +27,10 @@ begin
 	integer lev1k,lev2k;
 	boolean foundch;
 	string 1 c;
+	record BinotelActCallsVc BActr;
+	record ActVc Actr;
+	boolean createact;
+	record SVOVc SVOr;
 	
 	setcompany(8,false)
 	
@@ -566,6 +571,27 @@ node = "callDetails(getCallData)(domain)";
 			BECr.gCDdomain = JSONGet(jobj,node);
 		end;
 		
+		BActr.CallID = BECr.callID;
+		if(readfirstmain(BActr,1,true))then begin
+			
+			
+			if(BECr.disposition!="ANSWER")then begin
+				createact = true;
+			end;
+			if(BECr.internalNumber!=BActr.UserNum)then begin
+				createact = true;
+			end;
+			
+			
+			if(createact)then begin
+				SVOr.SerNr = BActr.SVONr;
+				if(readfirstmain(SVOr,1,true))then begin
+				
+				end;
+				CreateCustomActivityFromSVO(SVOr,"MISS","SA",currentdate,"Пропузенный звонок от " & BECr.externalNumber,"");
+				recorddelete(BActr);
+			end;
+		end;
 		
 	recordstore(BECr,true);
 	
@@ -737,6 +763,8 @@ begin
 	integer pos,j;
 	boolean rectype;
 	record UserVc USr;
+	record BinotelActCallsVc BActr;
+	string 100 generalcallID;
 
 	
 	setcompany(8,false)
@@ -791,7 +819,16 @@ begin
 		if(JSONGetChildName(jobj,"",j)=="externalNumber")then begin
 			recphone = JSONGet(jobj,JSONGetChildName(jobj,"",j));
 		end;
+		if(JSONGetChildName(jobj,"",j)=="generalCallID")then begin
+			generalcallID = JSONGet(jobj,JSONGetChildName(jobj,"",j));
+		end;
 	end;
+	
+	BActr.CallID = generalcallID;
+	if(readfirstmain(BActr,1,true)==false)then begin
+		BActr.CallID = generalcallID;
+	end;
+
 		
 	if(rectype)then begin
 		if(rectype)then begin
@@ -893,9 +930,12 @@ begin
 				end else begin
 					targetphone = targetphone & "@a-service.ua";
 				end;
+				
 //				str = "{\"customerData\":{\"name\":\"" & name & "\",\"description\":\"programer\",\"assignedToEmployeeNumber\":" & targetphone & "},\"routeData\":{\"type:\":\"route\",\"id\":101416}}";
 				str = "{\"customerData\":{\"name\":\"" & name & "\",\"description\":\"programer\",\"assignedToEmployeeEmail\":\"" & targetphone & "\"" & "}}";
-
+				BActr.UserNum = USr.Phone2;
+				BActr.SVONr = SVOr.SerNr;
+				recordstore(BActr,true);
 //				str = "{\"routeData\":{\"type:\":\"route\",\"id\":101417}}";
 			end;
 			
