@@ -182,6 +182,7 @@ begin
   longint port;
   string 250 smstext;
   record SMSConfigBlock SMSConfigb;
+  boolean turbo;
   
   blockload(SMSConfigb);
 
@@ -232,7 +233,8 @@ begin
             	smstext = "Ваш ремонт №" & SVOr.SerNr & " принят, тел.098-1010132.";
 							body = "[SENDER]AServis[/SENDER][SMS]" & smstext & "[/SMS]";
 						end else begin
-							smstext = "Ваш ремонт №" & SVOr.SerNr & " принят, тел.044-2227709.";
+							turbo = true;
+							smstext = "Ваш ремонт №" & SVOr.SerNr & " принят, тел.044-5857701.";
 							body = "[SENDER]AServis[/SENDER][SMS]" & smstext & "[/SMS]";
 						end;
           end;
@@ -260,7 +262,7 @@ begin
         AddTextToArea("passwd=hj87Hjwofb07QVeg62k&id=" & SVOr.SerNr & "&num=" & right(normphone[0],len(normphone[0])-2) & "&status=1&name=" & SVOr.Name,mainRequest);
         //MySendWebRequest(host,port,-1,false,"POST",page,"application/x-www-form-urlencoded","",false,mainRequest,replyarea,10);// Edit ************************** BPI Ukraine - KramarAlexandr - Tuesday, 9 January 2018 17:39:50
         
-        if(SMSConfigb.Balance>0)then begin
+        if(SMSConfigb.Balance>0 and turbo)then begin
         	EasySendTurboSMS(right(normphone[0],len(normphone[0])-2),smstext);
         end else begin
           MySendAsyncWebRequest(host,port,false,"POST",page,"application/x-www-form-urlencoded","",mainRequest,"SMSCallBack",0);
