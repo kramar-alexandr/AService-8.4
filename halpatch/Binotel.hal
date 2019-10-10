@@ -822,6 +822,7 @@ begin
 		if(JSONGetChildName(jobj,"",j)=="externalNumber")then begin
 			recphone = JSONGet(jobj,JSONGetChildName(jobj,"",j));
 		end;
+		logtext(0,JSONGetChildName(jobj,"",j));
 		if(JSONGetChildName(jobj,"",j)=="generalCallID")then begin
 			generalcallID = JSONGet(jobj,JSONGetChildName(jobj,"",j));
 		end;
