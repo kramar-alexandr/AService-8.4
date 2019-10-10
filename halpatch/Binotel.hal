@@ -587,7 +587,7 @@ begin
 	setcompany(8,false)
 	
 	webgetpostdata(encodearea);
-	writeareatofile(encodearea,"WebBinotelAPICallPush.txt",0);
+	writeareatofile(encodearea,"WebBinotelAPICallPush.txt",1);
 	
 	tstr = "";
 	lenth = getarealength(encodearea);
