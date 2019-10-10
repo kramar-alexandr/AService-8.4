@@ -710,10 +710,6 @@ begin
 		end;	
 		
 		logtext(0,"WebBinotelAPICallPush -> " & BECr.internalNumber & " with result -> " & BECr.disposition);
-		if()then begin
-		
-		
-		end;
 			
 	recordstore(BECr,true);
 
@@ -884,8 +880,8 @@ begin
 				str = "{\"customerData\":{\"name\":\"" & name & "\",\"description\":\"programer\"}}";
 			end else begin
 				
-				if(name=="5001494 Александр Крамар ")then begin
-					targetphone = "902";
+				if(name=="3008052 Александр Крамар ")then begin
+					targetphone = "911";
 				end;
 				
 				if(targetphone=="906")then begin
