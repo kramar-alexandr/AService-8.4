@@ -876,11 +876,18 @@ begin
 			if(blank(targetphone))then begin
 				str = "{\"customerData\":{\"name\":\"" & name & "\",\"description\":\"programer\"}}";
 			end else begin
+				
 				if(name=="3008052 Александр Крамар ")then begin
 					targetphone = "901";
 				end;
+				
+				if(targetphone=="906")then begin
+					targetphone = "sg@a-service.in.ua";
+				end else begin
+					targetphone = targetphone & "@a-service.ua";
+				end;
 //				str = "{\"customerData\":{\"name\":\"" & name & "\",\"description\":\"programer\",\"assignedToEmployeeNumber\":" & targetphone & "},\"routeData\":{\"type:\":\"route\",\"id\":101416}}";
-				str = "{\"customerData\":{\"name\":\"" & name & "\",\"description\":\"programer\",\"assignedToEmployeeEmail\":\"" & targetphone & "@a-service.ua\"" & "}}";
+				str = "{\"customerData\":{\"name\":\"" & name & "\",\"description\":\"programer\",\"assignedToEmployeeEmail\":\"" & targetphone & "\"" & "}}";
 
 //				str = "{\"routeData\":{\"type:\":\"route\",\"id\":101417}}";
 			end;
