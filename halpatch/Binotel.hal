@@ -583,12 +583,15 @@ begin
 	time timestamp;
 	date datestamp;
 	string 255 str,recidstr;
+	area temp;
 	
 	setcompany(8,false)
 	
 	webgetpostdata(encodearea);
 	writeareatofile(encodearea,"WebBinotelAPICallPush.txt",1);
 	
+	addtexttoarea(chr(10) & chr(13),temp);
+	writeareatofile(temp,"WebBinotelAPICallPush.txt",1);
 	tstr = "";
 	lenth = getarealength(encodearea);
 	For(i=0;i<lenth;i=i+1) begin
