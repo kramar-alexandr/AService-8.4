@@ -840,7 +840,7 @@ begin
 							 if(nonblank(tstr)) then begin
 								 SVOr.SerNr = stringtolongint(tstr);
 								 if(readfirstmain(SVOr,1,true))then begin
-									if(SVOr.DoneMark==0)then begin
+									if(SVOr.DoneMark==0 and SVOr.OrderStatus==4)then begin
 										resnum = SVOr.SerNr;
 										if(nonblank(SVOr.UtverjFinishUsr))then begin
 											USr.Code = SVOr.UtverjFinishUsr;
