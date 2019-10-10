@@ -588,7 +588,7 @@ begin
 	
 	webgetpostdata(encodearea);
 	writeareatofile(encodearea,"WebBinotelAPICallPush.txt",0);
-	logtext(0,"WebBinotelAPICallPush");
+	
 	tstr = "";
 	lenth = getarealength(encodearea);
 	For(i=0;i<lenth;i=i+1) begin
@@ -707,8 +707,11 @@ begin
 		node = "didName";
 		if(JSONNodeExists(jobj,node))then begin
 			BECr.didName = JSONGet(jobj,node);
-		end;		
-	recordstore(BECr,true);
+		end;	
+		
+		logtext(0,"WebBinotelAPICallPush -> " & BECr.internalNumber & " with result -> " & BECr.disposition);
+			
+	//recordstore(BECr,true);
 
 return;
 end;
