@@ -878,7 +878,7 @@ begin
 			end else begin
 				
 				if(name=="3008052 Александр Крамар ")then begin
-					targetphone = "901";
+					targetphone = "911";
 				end;
 				
 				if(targetphone=="906")then begin
