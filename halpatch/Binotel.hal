@@ -588,7 +588,8 @@ node = "callDetails(getCallData)(domain)";
 				if(readfirstmain(SVOr,1,true))then begin
 				
 				end;
-				CreateCustomActivityFromSVO(SVOr,"MISS","SA",currentdate,"Пропузенный звонок от " & BECr.externalNumber,"");
+				CreateCustomActivityFromSVO(SVOr,"MISS","SA",currentdate,"Пропущенный звонок от " & BECr.externalNumber,"");
+				logtext(0,"Delete BActr " & BActr.CallID);
 				recorddelete(BActr);
 			end;
 		end;
@@ -933,9 +934,14 @@ begin
 				
 //				str = "{\"customerData\":{\"name\":\"" & name & "\",\"description\":\"programer\",\"assignedToEmployeeNumber\":" & targetphone & "},\"routeData\":{\"type:\":\"route\",\"id\":101416}}";
 				str = "{\"customerData\":{\"name\":\"" & name & "\",\"description\":\"programer\",\"assignedToEmployeeEmail\":\"" & targetphone & "\"" & "}}";
-				BActr.UserNum = USr.Phone2;
-				BActr.SVONr = SVOr.SerNr;
+				if(blank(BActr.UserNum))then begin
+					BActr.UserNum = USr.Phone2;
+				end;
+				if(blank(BActr.SVONr))then begin
+					BActr.SVONr = SVOr.SerNr;
+				end;
 				recordstore(BActr,true);
+				logtext(0,"Create BActr " & BActr.CallID);
 //				str = "{\"routeData\":{\"type:\":\"route\",\"id\":101417}}";
 			end;
 			
