@@ -879,7 +879,9 @@ begin
 				if(name=="5001494 Крамар Александр")then begin
 					targetphone = "901";
 				end;
-				str = "{\"customerData\":{\"name\":\"" & name & "\",\"description\":\"programer\",\"assignedToEmployeeNumber\":" & targetphone & "},\"routeData\":{\"type:\":\"route\",\"id\":101416}}";
+//				str = "{\"customerData\":{\"name\":\"" & name & "\",\"description\":\"programer\",\"assignedToEmployeeNumber\":" & targetphone & "},\"routeData\":{\"type:\":\"route\",\"id\":101416}}";
+				str = "{\"customerData\":{\"name\":\"" & name & "\",\"description\":\"programer\",\"assignedToEmployeeEmail\":" & targetphone & "@a-service.ua" & "}}";
+
 //				str = "{\"routeData\":{\"type:\":\"route\",\"id\":101417}}";
 			end;
 			
