@@ -38,7 +38,7 @@ begin
 	addtexttoarea(chr(13) & chr(10) & "*********" & currenttime & "************" & chr(13) & chr(10),delim);
 	writeareatofile(delim,"WebBinotelAPICallEnd.txt",1);
 	writeareatofile(encodearea,"WebBinotelAPICallEnd.txt",1);
-	logtext(0,"WebBinotelAPICallEnd1");
+	
 	tstr = "";
 	lenth = getarealength(encodearea);
 	
@@ -571,6 +571,8 @@ node = "callDetails(getCallData)(domain)";
 			BECr.gCDdomain = JSONGet(jobj,node);
 		end;
 		
+		logtext(0,"WebBinotelAPICallEnd1 " & BECr.callID);
+		
 		BActr.CallID = BECr.callID;
 		if(readfirstmain(BActr,1,true))then begin
 			
@@ -772,7 +774,7 @@ begin
 	
 	webgetpostdata(encodearea);
 	writeareatofile(encodearea,"WebBinotelAPICallSet.txt",0);
-	logtext(0,"WebBinotelAPICallSet");
+	
 	
 	tstr = "";
 	lenth = getarealength(encodearea);
@@ -825,6 +827,7 @@ begin
 		end;
 	end;
 	
+	logtext(0,"WebBinotelAPICallSet " & generalcallID);
 	BActr.CallID = generalcallID;
 	if(readfirstmain(BActr,1,true)==false)then begin
 		BActr.CallID = generalcallID;
