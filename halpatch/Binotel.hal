@@ -584,23 +584,24 @@ node = "callDetails(getCallData)(domain)";
 			if(nonblank(USr.Phone2) and len(USr.Phone2)==3)then begin
 				targetphone = USr.Phone2;
 			end;
-		end;
 			
-		if(BECr.disposition!="ANSWER")then begin
-			createact = true;
-		end;
-		if(BECr.internalNumber!=targetphone)then begin
-			createact = true;
-		end;
-		
-		
-		if(createact)then begin
-			SVOr.SerNr = resnum;
-			if(readfirstmain(SVOr,1,true))then begin
-			
+			if(BECr.disposition!="ANSWER")then begin
+				createact = true;
 			end;
-			CreateCustomActivityFromSVO(SVOr,"MISS","SA," & USr.Code,currentdate,"Пропущенный звонок от " & BECr.externalNumber,"");
+			if(BECr.internalNumber!=targetphone)then begin
+				createact = true;
+			end;
+		
+		
+			if(createact)then begin
+				SVOr.SerNr = resnum;
+				if(readfirstmain(SVOr,1,true))then begin
+			
+				end;
+				CreateCustomActivityFromSVO(SVOr,"MISS","SA," & USr.Code,currentdate,"Пропущенный звонок от " & BECr.externalNumber,"");
+			end;
 		end;
+		
 		
 	recordstore(BECr,true);
 	
