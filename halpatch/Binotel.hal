@@ -599,8 +599,7 @@ node = "callDetails(getCallData)(domain)";
 			if(readfirstmain(SVOr,1,true))then begin
 			
 			end;
-			CreateCustomActivityFromSVO(SVOr,"MISS","SA",currentdate,"Пропущенный звонок от " & BECr.externalNumber,"");
-			logtext(0,"Delete BActr " & BActr.CallID);
+			CreateCustomActivityFromSVO(SVOr,"MISS","SA," & USr.Code,currentdate,"Пропущенный звонок от " & BECr.externalNumber,"");
 		end;
 		
 	recordstore(BECr,true);
