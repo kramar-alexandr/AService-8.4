@@ -18,12 +18,12 @@ begin
 	json jobj;
 	record BinotelCallEndVc BECr;
 	row BinotelCallEndVc BECrw;
-	string 255 node;
+	string 255 node,phone,targetphone;
 	time timestamp;
 	date datestamp;
 	area delim,tmpar,tmpar1;
 	boolean foundf;
-	array string 255 lev1,lev2p1,lev2p2;
+	array string 255 lev1,lev2p1,lev2p2,res;
 	integer lev1k,lev2k;
 	boolean foundch;
 	string 1 c;
@@ -31,6 +31,10 @@ begin
 	record ActVc Actr;
 	boolean createact;
 	record SVOVc SVOr;
+	record Phone1Vc Phoner;
+	longint num,resnum;
+	record UserVc USr;
+	
 	
 	setcompany(8,false)
 	
@@ -221,45 +225,6 @@ begin
 		end;
 	end;
 	addtexttoarea("}," & chr(13) & chr(10) ,newarea);
-
-	
-	/*For(i=0;i<lenth;i=i+1) begin
-		if(getstringfromarea(encodearea,i,1)=="=" or i==lenth-1)then begin
-			tstr = urldecode(getstringfromarea(encodearea,lasti,i-lasti));
-			tstr = StrReplace(tstr,"+&gt;+", " > ");
-			tstr = StrReplace(tstr,"+", " ");
-			tstr = StrReplace(tstr,chr(0), "");
-			tstr = StrReplace(tstr,"&apos;", "'");
-			addtexttoarea(tstr,arequest);
-			lasti = i;
-		end;
-	end;
-	
-	tstr = "";
-	lasti = 0;
-	addtexttoarea("{\"",newarea);
-	For(i=0;i<lenth;i=i+1) begin
-	  if(getstringfromarea(arequest,i,1)=="&" or i==lenth-1)then begin
-	  	//logtext(0,"do " & getstringfromarea(arequest,lasti,i-lasti));
-	  	tstr = urldecode(getstringfromarea(arequest,lasti,i-lasti+1));
-	  	//logtext(0,"po " & tstr);
-	  	tstr = StrReplace(tstr,"=", "\":\"");
-	  	tstr = StrReplace(tstr,"[", "(");
-	  	tstr = StrReplace(tstr,"]", ")");
-	  	tstr = StrReplace(tstr,"&","");
-	  	if(getstringfromarea(arequest,i,1)=="&")then begin
-	  		tstr = tstr & "\"," & chr(13) & chr(10) & "\"";
-	  	end else begin
-	  		tstr = tstr & "\"" & chr(13) & chr(10);
-	  	end;
-	  	addtexttoarea(tstr,newarea);
-	  	lasti = i+1;
-	  	tstr = "";
-	  end;
-	end; 
-	addtexttoarea("}",newarea);
-	*/
-	
 	
 	writeareatofile(delim,"WebBinotelAPICallEnd_nrm.txt",1);
 	writeareatofile(newarea,"WebBinotelAPICallEnd_nrm.txt",1);
@@ -573,27 +538,69 @@ node = "callDetails(getCallData)(domain)";
 		
 		logtext(0,"WebBinotelAPICallEnd1 " & BECr.callID);
 		
-		BActr.CallID = BECr.callID;
-		if(readfirstmain(BActr,1,true))then begin
-			
-			
-			if(BECr.disposition!="ANSWER")then begin
-				createact = true;
-			end;
-			if(BECr.internalNumber!=BActr.UserNum)then begin
-				createact = true;
-			end;
-			
-			
-			if(createact)then begin
-				SVOr.SerNr = BActr.SVONr;
-				if(readfirstmain(SVOr,1,true))then begin
+		
+		phone = BECr.externalNumber;
 				
+		if(left(phone,1)<"0" or left(phone,1)>"9")then begin
+			phone = "+" & right(phone,len(phone)-1);
+		end;
+		
+		Phoner.PhoneNum = phone;
+		if(readfirstmain(Phoner,1,true))then begin
+			num = Phoner.LastSVONr;
+		end else begin
+			Phoner.PhoneNum = "044" & phone;
+			if(readfirstmain(Phoner,1,true))then begin
+				num = Phoner.LastSVONr;
+			end else begin
+				Phoner.PhoneNum = "+38044" & phone;
+				if(readfirstmain(Phoner,1,true))then begin
+					num = Phoner.LastSVONr;
+				end else begin
+					Phoner.PhoneNum = "+38" & phone;
+					if(readfirstmain(Phoner,1,true))then begin
+						num = Phoner.LastSVONr;
+					end;
 				end;
-				CreateCustomActivityFromSVO(SVOr,"MISS","SA",currentdate,"Пропущенный звонок от " & BECr.externalNumber,"");
-				logtext(0,"Delete BActr " & BActr.CallID);
-				recorddelete(BActr);
 			end;
+		end;
+
+		SVOr.SerNr = num;
+		if(readfirstmain(SVOr,1,true))then begin
+			if(SVOr.DoneMark==0 and SVOr.OrderStatus==4)then begin
+				resnum = SVOr.SerNr;
+				if(nonblank(SVOr.UtverjFinishUsr))then begin
+					USr.Code = SVOr.UtverjFinishUsr;
+				end;
+			end;
+		end;
+
+
+
+		
+	
+		if(nonblank(USr.Code))then begin// Edit ************************** BPI Ukraine - KramarAlexandr - 04, 03 10 2019 y. at 3:09:37 PM
+			readfirstmain(USr,1,true);
+			if(nonblank(USr.Phone2) and len(USr.Phone2)==3)then begin
+				targetphone = USr.Phone2;
+			end;
+		end;
+			
+		if(BECr.disposition!="ANSWER")then begin
+			createact = true;
+		end;
+		if(BECr.internalNumber!=targetphone)then begin
+			createact = true;
+		end;
+		
+		
+		if(createact)then begin
+			SVOr.SerNr = resnum;
+			if(readfirstmain(SVOr,1,true))then begin
+			
+			end;
+			CreateCustomActivityFromSVO(SVOr,"MISS","SA",currentdate,"Пропущенный звонок от " & BECr.externalNumber,"");
+			logtext(0,"Delete BActr " & BActr.CallID);
 		end;
 		
 	recordstore(BECr,true);
@@ -891,6 +898,7 @@ begin
 									if(SVOr.DoneMark==0 and SVOr.OrderStatus==4)then begin
 										resnum = SVOr.SerNr;
 										if(nonblank(SVOr.UtverjFinishUsr))then begin
+											Phoner.LastSVONr = SVOr.SerNr;
 											USr.Code = SVOr.UtverjFinishUsr;
 										end;
 									end;
@@ -934,7 +942,7 @@ begin
 				end else begin
 					targetphone = targetphone & "@a-service.ua";
 				end;
-				
+				recordstore(Phoner,true);
 //				str = "{\"customerData\":{\"name\":\"" & name & "\",\"description\":\"programer\",\"assignedToEmployeeNumber\":" & targetphone & "},\"routeData\":{\"type:\":\"route\",\"id\":101416}}";
 				str = "{\"customerData\":{\"name\":\"" & name & "\",\"description\":\"programer\",\"assignedToEmployeeEmail\":\"" & targetphone & "\"" & "}}";
 				if(blank(BActr.UserNum))then begin
