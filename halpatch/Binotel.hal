@@ -532,9 +532,9 @@ node = "callDetails(getCallData)(geoipOrg)";
 			BECr.gCDgeoipOrg = JSONGet(jobj,node);
 		end;
 node = "callDetails(getCallData)(domain)";
-		if(JSONNodeExists(jobj,node))then begin
-			BECr.gCDdomain = JSONGet(jobj,node);
-		end;
+	if(JSONNodeExists(jobj,node))then begin
+		BECr.gCDdomain = JSONGet(jobj,node);
+	end;
 		
 		logtext(0,"WebBinotelAPICallEnd1 " & BECr.callID);
 		
@@ -580,33 +580,37 @@ node = "callDetails(getCallData)(domain)";
 		end;
 
 	
-	logtext(0,"targetphone " & targetphone);
-	logtext(0,"BECr.externalNumber " & BECr.externalNumber);
-	logtext(0,"for User " & USr.Code);
-	logtext(0,"BECr.disposition " & BECr.disposition);
 	
+	
+	if(BECr.callType=="0")then begin
+		logtext(0,"targetphone " & targetphone);
+		logtext(0,"BECr.externalNumber " & BECr.externalNumber);
+		logtext(0,"for User " & USr.Code);
+		logtext(0,"BECr.disposition " & BECr.disposition);
+		
 		if(nonblank(USr.Code))then begin// Edit ************************** BPI Ukraine - KramarAlexandr - 04, 03 10 2019 y. at 3:09:37 PM
 			readfirstmain(USr,1,true);
 			if(nonblank(USr.Phone2) and len(USr.Phone2)==3)then begin
 				targetphone = USr.Phone2;
 			end;
-			
+		
 			if(BECr.disposition!="ANSWER")then begin
 				createact = true;
 			end;
 			if(BECr.internalNumber!=targetphone)then begin
 				createact = true;
 			end;
-		
-		
+	
+	
 			if(createact)then begin
 				SVOr.SerNr = resnum;
 				if(readfirstmain(SVOr,1,true))then begin
-			
+		
 				end;
 				CreateCustomActivityFromSVO(SVOr,"MISS","SA," & USr.Code,currentdate,"Пропущенный звонок от " & BECr.externalNumber,"");
 			end;
 		end;
+	end;
 		
 		
 	recordstore(BECr,true);
