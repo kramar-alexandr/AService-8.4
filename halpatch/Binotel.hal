@@ -545,6 +545,8 @@ node = "callDetails(getCallData)(domain)";
 			phone = "+" & right(phone,len(phone)-1);
 		end;
 		
+		logtext(0,"WebBinotelAPICallEnd");
+		
 		Phoner.PhoneNum = phone;
 		if(readfirstmain(Phoner,1,true))then begin
 			num = Phoner.LastSVONr;
@@ -564,7 +566,9 @@ node = "callDetails(getCallData)(domain)";
 				end;
 			end;
 		end;
-
+		
+		
+		logtext(0,"SVONUM " & num);
 		SVOr.SerNr = num;
 		if(readfirstmain(SVOr,1,true))then begin
 			if(SVOr.DoneMark==0 and SVOr.OrderStatus==4)then begin
@@ -575,7 +579,7 @@ node = "callDetails(getCallData)(domain)";
 			end;
 		end;
 
-	logtext(0,"WebBinotelAPICallEnd");
+	
 	logtext(0,"targetphone " & targetphone);
 	logtext(0,"BECr.externalNumber " & BECr.externalNumber);
 	logtext(0,"for User " & USr.Code);
