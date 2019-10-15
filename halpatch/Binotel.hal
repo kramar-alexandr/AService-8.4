@@ -607,6 +607,7 @@ node = "callDetails(getCallData)(domain)";
 				if(readfirstmain(SVOr,1,true))then begin
 		
 				end;
+				logtext(0,"************************************************** ACT CREATED ");
 				CreateCustomActivityFromSVO(SVOr,"MISS","SA," & USr.Code,currentdate,currenttime & " Пропущенный звонок от " & BECr.externalNumber & " " & Phoner.LastName & " " & Phoner.FirstName & " " & Phoner.MiddleName,"");
 			end;
 		end;
