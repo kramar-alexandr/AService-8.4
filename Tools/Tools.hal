@@ -5,6 +5,8 @@ external function boolean MySendWebRequest(string,integer,longint,boolean,string
 external procedure 	DayTools1Rn(record RcVc);
 external procedure 	DayToolsRn();
 
+SetLangMode(LangRussian,"RUS",0);
+
 global
 updating procedure CleaningMn()
 BEGIN
@@ -585,6 +587,64 @@ record SVOVc SVOr;
 			MySendWebRequest("127.0.0.1",1070,1070,false,"POST","/sendMail","application/json","",false,request,reply,5);
 	
 	setfileonserver(false);
+return;
+end;
+
+global 
+procedure PhoneClientsRn(record RcVc RepSpec)
+begin
+record SVOVc SVOr;
+vector integer SVOCount;
+vector string 255 phone1,phone2,lName,fName,mName;
+array string 100 vectorKeys;
+integer i;
+ StartReportNoHeaderJob("Список телефонов");
+ StartFormat(15);
+		OutString(40,0,"Телефон1",false);
+		OutString(80,0,"Телефон2",false);
+		OutString(120,0,"Фамилия",false);
+		OutString(200,0,"Отчество",false);
+		OutString(260,0,"Имя",false);
+		OutString(320,0,"Кол-во заказов",false);
+	endFormat;	
+SVOr.SerNr = "";
+while(LoopMain(SVOr,1,true)) begin
+	if(SVOCount[SVOr.Kontinfo1]==0) then begin
+		SVOCount[SVOr.Kontinfo1]= SVOCount[SVOr.Kontinfo1] + 1;
+		switch (len(SVOr.Kontinfo1)) begin
+			case 13 : phone1[SVOr.Kontinfo1] = SVOr.Kontinfo1;
+			case 12 : phone1[SVOr.Kontinfo1] = "+" & SVOr.Kontinfo1;
+			case 11 : phone1[SVOr.Kontinfo1] = "+3" & SVOr.Kontinfo1;
+			case 10 : phone1[SVOr.Kontinfo1] = "+38" & SVOr.Kontinfo1;
+			case 9 : phone1[SVOr.Kontinfo1] = "+380" & SVOr.Kontinfo1;
+		end;	
+		switch (len(SVOr.Kontinfo2)) begin
+			case 13 : phone2[SVOr.Kontinfo1] = SVOr.Kontinfo2;
+			case 12 : phone2[SVOr.Kontinfo1] = "+" & SVOr.Kontinfo2;
+			case 11 : phone2[SVOr.Kontinfo1] = "+3" & SVOr.Kontinfo2;
+			case 10 : phone2[SVOr.Kontinfo1] = "+38" & SVOr.Kontinfo2;
+			case 9 : phone2[SVOr.Kontinfo1] = "+380" & SVOr.Kontinfo2;
+		end;	
+		lName[SVOr.Kontinfo1] = SVOr.Priynato;
+		fName[SVOr.Kontinfo1] = SVOr.Name;
+		mName[SVOr.Kontinfo1] = SVOr.MiddleName;
+	end else begin
+		SVOCount[SVOr.Kontinfo1]= SVOCount[SVOr.Kontinfo1] + 1;
+	end;
+	GetVectorTags(SVOCount,vectorKeys);
+	for(i=0;i<vectorKeys.length;i=i+1) begin
+		startformat(15);
+			OutString(40,0,phone1[vectorKeys[i]],false);
+			OutString(80,0,phone2[vectorKeys[i]],false);
+			OutString(120,0,lName[vectorKeys[i]],false);
+			OutString(200,0,mName[vectorKeys[i]],false);
+			OutString(260,0,fName[vectorKeys[i]],false);
+			OutString(320,0,SVOCount[vectorKeys[i]],false);
+		endformat;	
+	end;
+end;
+endjob;
+
 return;
 end;
 
