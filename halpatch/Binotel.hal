@@ -575,9 +575,10 @@ node = "callDetails(getCallData)(domain)";
 			end;
 		end;
 
-
-
-		
+	logtext(0,"WebBinotelAPICallEnd");
+	logtext(0,"targetphone " & targetphone);
+	logtext(0,"BECr.externalNumber " & BECr.externalNumber);
+	logtext(0,"for User " & USr.Code);
 	
 		if(nonblank(USr.Code))then begin// Edit ************************** BPI Ukraine - KramarAlexandr - 04, 03 10 2019 y. at 3:09:37 PM
 			readfirstmain(USr,1,true);
