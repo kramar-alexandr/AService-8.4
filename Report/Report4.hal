@@ -242,7 +242,7 @@ while(LoopKey("RegDate",SVOr,1,TrHs)) begin
 	if(nonblank(SVOr.Phone2) and TrHs) then begin
 		if(SVOCount[SVOr.Phone2]==0) then begin
 			SVOCount[SVOr.Phone2]= SVOCount[SVOr.Phone2] + 1;
-			switch (len(SVOr.Kontinfo1)) begin
+			switch (len(SVOr.Phone2)) begin
 				case 13 : phone1[SVOr.Phone2] = SVOr.Phone2;
 				case 12 : phone1[SVOr.Phone2] = "+" & SVOr.Phone2;
 				case 11 : phone1[SVOr.Phone2] = "+3" & SVOr.Phone2;
