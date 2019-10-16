@@ -212,15 +212,15 @@ boolean TrHs;
 		OutString(40,0,"отчет за период - " & RepSpec.sStartDate & ":" & RepSpec.sEndDate,false);
 	endFormat;	
  StartFormat(15);
-		OutString(40,0,"Телефон1",false);
+		OutString(40,0,"Телефон",false);
 		OutString(120,0,"Фамилия",false);
-		OutString(200,0,"Отчество",false);
-		OutString(260,0,"Имя",false);
+		OutString(200,0,"Имя",false);
+		OutString(260,0,"Отчество",false);
 		OutString(320,0,"Кол-во заказов",false);
 	endFormat;	
 SVOr.RegDate = RepSpec.sStartDate;
 TrHs = true;
-while(LoopKey("RegDate",SVOr,2,TrHs)) begin
+while(LoopKey("RegDate",SVOr,1,TrHs)) begin
 	if(SVOr.RegDate>RepSpec.sEndDate) then begin TrHs = false; end;
 	if(nonblank(SVOr.Kontinfo1) and TrHs) then begin
 		if(SVOCount[SVOr.Kontinfo1]==0) then begin
@@ -238,21 +238,35 @@ while(LoopKey("RegDate",SVOr,2,TrHs)) begin
 		end else begin
 			SVOCount[SVOr.Kontinfo1]= SVOCount[SVOr.Kontinfo1] + 1;
 		end;
-		if(nonblank(SVOr.Kontinfo2) and TrHs) then begin
-			SVOCount[SVOr.Kontinfo2] = SVOCount[SVOr.Kontinfo2] + 1;
+	end;	
+	if(nonblank(SVOr.Phone2) and TrHs) then begin
+		if(SVOCount[SVOr.Phone2]==0) then begin
+			SVOCount[SVOr.Phone2]= SVOCount[SVOr.Phone2] + 1;
+			switch (len(SVOr.Kontinfo1)) begin
+				case 13 : phone1[SVOr.Phone2] = SVOr.Phone2;
+				case 12 : phone1[SVOr.Phone2] = "+" & SVOr.Phone2;
+				case 11 : phone1[SVOr.Phone2] = "+3" & SVOr.Phone2;
+				case 10 : phone1[SVOr.Phone2] = "+38" & SVOr.Phone2;
+				case 9 : phone1[SVOr.Phone2] = "+380" & SVOr.Phone2;
+			end;	
+			lName[SVOr.Phone2] = SVOr.Priynato;
+			fName[SVOr.Phone2] = SVOr.Name;
+			mName[SVOr.Phone2] = SVOr.MiddleName;
+		end else begin
+			SVOCount[SVOr.Phone2]= SVOCount[SVOr.Phone2] + 1;
 		end;
 	end;	
+end;	
 	GetVectorTags(SVOCount,vectorKeys);
 	for(i=0;i<vectorKeys.length;i=i+1) begin
 		startformat(15);
 			OutString(40,0,phone1[vectorKeys[i]],false);
 			OutString(120,0,lName[vectorKeys[i]],false);
-			OutString(200,0,mName[vectorKeys[i]],false);
-			OutString(260,0,fName[vectorKeys[i]],false);
+			OutString(200,0,fName[vectorKeys[i]],false);
+			OutString(260,0,mName[vectorKeys[i]],false);
 			OutString(320,0,SVOCount[vectorKeys[i]],false);
 		endformat;	
 	end;
-end;
 endjob;
 
 return;
