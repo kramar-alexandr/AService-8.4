@@ -209,7 +209,7 @@ integer i;
 boolean TrHs;
  StartReportNoHeaderJob("‘писок телефонов");
   StartFormat(15);
-		OutString(40,0,"отчет за период - " & RepSpec.sStartDate & ":" & RepSpec.sEndDate,false);
+		OutString(40,0,"Ћтчет за период - " & RepSpec.sStartDate & ":" & RepSpec.sEndDate,false);
 	endFormat;	
  StartFormat(15);
 		OutString(40,0,"’елефон",false);
