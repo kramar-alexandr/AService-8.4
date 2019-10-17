@@ -25,6 +25,8 @@ external procedure GetStandardProblemText(string,Integer,var string);
 external procedure PrintBranchData(string);
 external function roundmode SetRoundModeD(Integer);
 external procedure GetFieldArgument(record DocVc,Integer,var string);
+external procedure CreateEAN128(var string);// Edit ************************** BPI Ukraine - KramarAlexandr - 04, 17 10 2019 y. at 2:26:45 PM
+
 
 SetLangMode(LangRussian,"RUS",0);
 
@@ -318,7 +320,15 @@ end;
 	// Edit End ---------------------------------------------- Edit End
 
     PrintWorksRows(SVOr);
-
+		if(currentuser=="SA")then begin
+		
+			if (FIELDINFORM("F_SVO128CODE")) then begin
+				tstr = SVOr.SerNr;
+				CreateEAN128(tstr);
+				OUTFORMFIELD("F_SVO128CODE",tstr);
+			end;
+    end;
+		
 		enginer = "";
 		if (FIELDINFORM("F_STANDARDPROBLEMTEXT")) then begin
 			cnt=1;
