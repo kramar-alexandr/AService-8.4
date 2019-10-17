@@ -320,14 +320,12 @@ end;
 	// Edit End ---------------------------------------------- Edit End
 
     PrintWorksRows(SVOr);
-		if(currentuser=="SA")then begin
 		
-			if (FIELDINFORM("F_SVO128CODE")) then begin
-				tstr = SVOr.SerNr;
-				CreateEAN128(tstr);
-				OUTFORMFIELD("F_SVO128CODE",tstr);
-			end;
-    end;
+		if (FIELDINFORM("F_SVO128CODE")) then begin
+			tstr = SVOr.SerNr;
+			CreateEAN128(tstr);
+			OUTFORMFIELD("F_SVO128CODE",tstr);
+		end;
 		
 		enginer = "";
 		if (FIELDINFORM("F_STANDARDPROBLEMTEXT")) then begin
