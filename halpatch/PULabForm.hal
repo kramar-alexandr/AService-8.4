@@ -27,6 +27,7 @@ BEGIN
   row GigieneTextVc GGrw;
   integer i,mtrw,rowqty;
   boolean rowtest;
+  string 100 tsertxt;
   
  // Edit Start ---------------------------------------------- Edit Start
 	//вторник, 22 июня 2010 г. 10:11:26
@@ -45,7 +46,11 @@ BEGIN
     end;
     end;
 	// Edit End ---------------------------------------------- Edit End
-	  OUTFORMFIELD("F_SERIENR",PUrw.SerialNr);
+		tsertxt = PUrw.SerialNr;
+		if(len(tsertxt)>25)then begin
+			tsertxt = left(PUrw.SerialNr,25) & chr(10) & mid(PUrw.SerialNr,25,len(PUrw.SerialNr)-25); 
+		end;
+	  OUTFORMFIELD("F_SERIENR",tsertxt);
   
   //OUTFORMFIELD("F_COMMENT",PUr.Comment);
   
@@ -95,7 +100,7 @@ BEGIN
   	OUTFORMFIELD("F_PRIS",USetStr(7684) & ": " & PUrw.RetailPrice & USetStr(31000));  // Edit ************************** Tuesday, 26 January 2016 11:15:05
   end;
   
-  OUTFORMFIELD("F_SERIENR",PUrw.SerialNr);
+  //OUTFORMFIELD("F_SERIENR",PUrw.SerialNr);
   OUTFORMFIELD("F_SPECIFIKATION",PUrw.Spec);
   BC39(PUrw.VEItemCode,tstr);
   OUTFORMFIELD("F_LEVARTNRBC39",tstr);
