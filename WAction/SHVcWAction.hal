@@ -974,7 +974,7 @@ begin
   getwindowrecord(wn,SVOr);
   path = "http://" & CBrw.TCPIP & ":" & PSb.httpPort & "/AtFile.html?svonr=" & SVOr.SerNr;
 	path = urldecode(path);
-  html = "<html><body><img src= \"https://chart.googleapis.com/chart?chl=" & path & "&cht=qr&chs=120x120\" alt=\"QR code\"></body></html>";
+  html = "<html><body><img src= \"https://chart.googleapis.com/chart?chl=" & path & "&cht=qr&chs=140x140\" alt=\"QR code\"></body></html>";
 
   SetWebPageData(wn,"$HWStore",html);
   SVODClassOnOpenWindow = false;
@@ -998,7 +998,7 @@ begin
   
   path = "http://" & CBrw.TCPIP & ":" & PSb.httpPort & "/AtFile.html?svonr=" & SVOr.SerNr;
 	path = urldecode(path);
-  html = "<html><body><img src= \"https://chart.googleapis.com/chart?chl=" & path & "&cht=qr&chs=120x120\" alt=\"QR code\"></body></html>";
+  html = "<html><body><img src= \"https://chart.googleapis.com/chart?chl=" & path & "&cht=qr&chs=140x140\" alt=\"QR code\"></body></html>";
 
   SetWebPageData(wn,"$HWStore",html);
 
