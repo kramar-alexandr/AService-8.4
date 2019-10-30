@@ -1,6 +1,7 @@
 external function roundmode SetRoundModeD(Integer);
 external procedure ExtractObj(string,var Integer,var string);
 external updating procedure CreateCustomActivityFromSVO(record SVOVc,string,string,date,string,string);// Edit ************************** BPI Ukraine - KramarAlexandr - Tuesday, 12 December 2017 11:56:41
+external procedure ShowRedirectHtml(string,boolean);
 
 SetLangMode(LangRussian,"RUS",0);
 
@@ -704,4 +705,96 @@ json jobj;
 		ResetCompany(1);
 	end;
 return;
+end;
+
+
+
+webpublic global
+updating procedure Webattach()
+begin
+area webgetdata,temparea,imagearea;  
+string 255 SVONrline,fileNameLine,endarea,endmark,filename,fname;
+record SVOVc SVOr;
+longint areal,i,nl,imgstpos,filenapos,kav;
+
+	setcompany(8,false);
+
+  logtext(0,"Webattach");
+		
+	webgetpostdata(webgetdata);
+	
+	ShowRedirectHTML("/" & "AtFile.html",WebSecureMode);
+	
+	areal = getarealength(webgetdata);
+	endmark = "------";
+	logtext(0,areal);
+	if(areal>len(endmark))then begin
+		for(i=areal-len(endmark);i>0;i=i-1)begin
+			endarea = getstringfromarea(webgetdata,i,len(endmark));
+			if(endarea==endmark)then begin
+				getareafromarea(webgetdata,0,i,temparea);
+				setareazerosize(webgetdata);
+				getareafromarea(temparea,0,getarealength(temparea),webgetdata);
+				setareazerosize(temparea);
+				goto lEndArea;
+			end;
+		end;
+	end;
+lEndArea:;
+	
+	areal = getarealength(webgetdata);
+	if(areal>9)then begin
+		for(i=0;i<areal-2;i=i+1)begin
+			endarea = getstringfromarea(webgetdata,i,1);
+			filename = getstringfromarea(webgetdata,i,len("filename="));
+			if(filename=="filename=")then begin
+				filenapos = i;
+				logtext(0,"Filename found " & i);
+			end;
+			if(filenapos>0)then begin
+				if(getstringfromarea(webgetdata,i,1)=="\"")then begin
+					
+					kav = kav + 1;
+					logtext(0,"kav found " & kav);
+					if(kav==1)then begin
+						logtext(0,"Second kav found");
+						fname = getstringfromarea(webgetdata,filenapos+len("filename=")+1,i-filenapos-len("filename=")-1);
+						filenapos = 0;
+						logtext(0,"fname " & fname);
+					end;
+				end;
+			end;
+			
+			if(asc(endarea)==13)then begin
+				endarea = getstringfromarea(webgetdata,i+1,1);
+				if(asc(endarea)==10)then begin
+					nl = nl+1;
+					if(nl==7)then begin
+						imgstpos = i+2;
+						getareafromarea(webgetdata,imgstpos,areal-imgstpos,imagearea);
+						writeareatofile(imagearea,"MobAttach/" & fname,0);
+						goto lBeginImage;
+					end;
+				end;
+			end;
+		end;
+	end;
+	
+lBeginImage:;
+	
+	writeareatofile(webgetdata,"Webattach.txt",0);
+	SVONrline = GetLineFromArea(webgetdata,3);
+	logtext(0,stringtolongint(SVONrline));
+	if(stringtolongint(SVONrline)>0)then begin
+		logtext(0,stringtolongint(SVONrline));
+		SVOr.SerNr = stringtolongint(SVONrline);
+		if(readfirstmain(SVOr,1,true))then begin
+		
+			fileNameLine = GetLineFromArea(webgetdata,5);
+			RECORDLINKFILE("MobAttach/" & fname,0,SVOr,CurrentCompany)
+			logtext(0,"SVONrline " & SVONrline);
+			logtext(0,"fileNameLine " & fileNameLine);
+		end;
+  end;
+  return;
 end;

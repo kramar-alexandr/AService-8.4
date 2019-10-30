@@ -550,7 +550,9 @@ begin
 		EditField(h+=120,v,50,"Гарантія",Normal,Garanty,false,0);
 		EditField(h+=120,v,100,"Гарант. №",Normal,GarNo,false,0);
 		EditField(h+=220,v,100,"Гарант. від дати",Normal,GarDate,false,PasteCurDate);
-  
+  	
+  	WebPage(h+120,v-80,h+250,v+30,"","$HWStore");
+  	
   SpecialMenu("Статус замовлення на обсл.",'r',0,"SVOStaDsm");
   SpecialMenu("Статус клієнта",'e',1,"SVOCustStatDsm");
   SpecialMenu("Пошук товару",'f',2,"ItemSearchDsm");

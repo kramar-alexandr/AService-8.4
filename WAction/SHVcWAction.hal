@@ -958,3 +958,49 @@ TaxAdminServSeal is in SHVc record
   return;
 end;
 */
+
+global
+function Boolean SVODClassOnOpenWindow(Integer wn)
+begin
+  record SVOVc SVOr;
+  string 255 head,tstr,html,allhtml,prodhtml,path;
+  record ProgramStatusBlock PSb;
+  record CompaniesBlock CBb;
+  row CompaniesBlock CBrw;
+  
+  blockload(PSb);
+  blockload(CBb);
+  matrowget(CBb,7,CBrw);
+  getwindowrecord(wn,SVOr);
+  path = "http://" & CBrw.TCPIP & ":" & PSb.httpPort & "/AtFile.html?svonr=" & SVOr.SerNr;
+	path = urldecode(path);
+  html = "<html><body><img src= \"https://chart.googleapis.com/chart?chl=" & path & "&cht=qr&chs=120x120\" alt=\"QR code\"></body></html>";
+
+  SetWebPageData(wn,"$HWStore",html);
+  SVODClassOnOpenWindow = false;
+  return;
+end;
+
+global
+procedure SVODClassOnWindowRecordChange(Integer wn)
+begin
+  record SVOVc SVOr;
+	record ProgramStatusBlock PSb;
+  record CompaniesBlock CBb;
+  row CompaniesBlock CBrw;
+	string 255 head,tstr,html,allhtml,prodhtml,path;
+
+  
+  blockload(PSb);
+  blockload(CBb);
+  matrowget(CBb,7,CBrw);
+  getwindowrecord(wn,SVOr);
+  
+  path = "http://" & CBrw.TCPIP & ":" & PSb.httpPort & "/AtFile.html?svonr=" & SVOr.SerNr;
+	path = urldecode(path);
+  html = "<html><body><img src= \"https://chart.googleapis.com/chart?chl=" & path & "&cht=qr&chs=120x120\" alt=\"QR code\"></body></html>";
+
+  SetWebPageData(wn,"$HWStore",html);
+
+  return;
+end;
