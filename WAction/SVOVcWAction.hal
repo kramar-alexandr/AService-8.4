@@ -2246,7 +2246,7 @@ begin
 	res = "<html><body><img src= \"https://chart.googleapis.com/chart?chl=" & path & "&cht=qr&chs=140x140\" alt=\"QR code\"></body></html>";
 	
 	if(SVOr.DoneMark==1 and nonblankdate(SVOr.RegDate))then begin
-		res = "";
+		res = "<html><body></body></html>";
 	end;
 	
 	getHTMLQRCodeForSVO = res;
