@@ -798,6 +798,7 @@ lBeginImage:;
 			end;
 		end;
   end;
+  millisleep(1000);
   delete_file("MobAttach/" & fname);
   
   ShowRedirectHTML("/" & "AtFile.html?svonr=" & SVOr.SerNr,WebSecureMode);
