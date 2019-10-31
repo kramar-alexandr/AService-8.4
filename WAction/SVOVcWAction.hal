@@ -2262,7 +2262,8 @@ begin
   record CompaniesBlock CBb;
   row CompaniesBlock CBrw;
   
-  html = getHTMLQRCodeForSVO(SVOr);//"<html><body><img src= \"https://chart.googleapis.com/chart?chl=" & path & "&cht=qr&chs=140x140\" alt=\"QR code\"></body></html>";
+  GetWindowRecord(wn,SVOr);
+  html = getHTMLQRCodeForSVO(c);//"<html><body><img src= \"https://chart.googleapis.com/chart?chl=" & path & "&cht=qr&chs=140x140\" alt=\"QR code\"></body></html>";
 
   SetWebPageData(wn,"$HWStore",html);
   SVODClassOnOpenWindow = false;
@@ -2277,7 +2278,8 @@ begin
   record CompaniesBlock CBb;
   row CompaniesBlock CBrw;
 	string 255 head,tstr,html,allhtml,prodhtml,path;
-
+	
+	GetWindowRecord(wn,SVOr);
 	html = getHTMLQRCodeForSVO(SVOr);
   SetWebPageData(wn,"$HWStore",html);
 
