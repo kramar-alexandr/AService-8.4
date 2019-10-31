@@ -32,6 +32,7 @@ remote procedure SendSMSText(string,longint,string,string);
 external procedure  FindPhonePerson(var record Phone1Vc,string);
 external procedure  CreateSVOSerNoterForMove(record SVOVc,string);// Edit ************************** BPI Ukraine - KramarAlexandr - Thursday, 29 March 2018 11:27:11
 external updating procedure CreateCustomActivityFromSVO(record SVOVc,string,string,date,string,string);// Edit ************************** BPI Ukraine - KramarAlexandr - Tuesday, 12 December 2017 11:56:41
+external function Boolean SVODClassOnOpenWindow(Integer);
 
 SetLangMode(LangRussian,"RUS",0);
 
@@ -1595,6 +1596,8 @@ BEGIN
   		openwindow("YesNoCancelSMSWClass",1,0,"","",RepSpec);
   	end;
   end;
+  
+  SVODClassOnOpenWindow(wn);
   
   SVOVcRecordCheckClient = 0;
   RETURN;
