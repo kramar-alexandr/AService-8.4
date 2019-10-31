@@ -1603,6 +1603,17 @@ BEGIN
   RETURN;
 END;
 
+global
+function LongInt SVOVcRecordSaveClient(LongInt wn,var record SVOVc SVOr,record SVOVc SVO2r,LongInt stat,LongInt check)
+begin
+  LongInt res;
+  
+  SVODClassOnOpenWindow(wn);
+  
+  SVOVcRecordSaveClient = res; 
+  return;
+end;
+
 
 global procedure DblSendSMSOkDsm()
 begin
