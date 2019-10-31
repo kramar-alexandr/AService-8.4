@@ -789,6 +789,8 @@ lBeginImage:;
 		logtext(0,stringtolongint(SVONrline));
 		SVOr.SerNr = stringtolongint(SVONrline);
 		if(readfirstmain(SVOr,1,true))then begin
+			logtext(0,"SVOr.DoneMark " & SVOr.DoneMark);
+			logtext(0,"SVOr.RegDate " & SVOr.RegDate);
 			if(SVOr.DoneMark==0 and blankdate(SVOr.RegDate))then begin
 				fileNameLine = GetLineFromArea(webgetdata,5);
 				RECORDLINKFILE("MobAttach/" & fname,0,SVOr,CurrentCompany)
