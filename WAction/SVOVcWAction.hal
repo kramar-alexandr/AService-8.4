@@ -2245,7 +2245,7 @@ begin
 	path = "http://" & CBrw.TCPIP & ":" & PSb.httpPort & "/AtFile.html?svonr=" & SVOr.SerNr;
 	res = "<html><body><img style=\"margin:-20px\" src= \"https://chart.googleapis.com/chart?chl=" & path & "&cht=qr&chs=145x145\" alt=\"QR code\"></body></html>";
 	logtext(0,res);
-	if(SVOr.DoneMark==1 and nonblankdate(SVOr.RegDate))then begin
+	if(SVOr.DoneMark==1 or nonblankdate(SVOr.RegDate))then begin
 		res = "<html><body></body></html>";
 	end;
 	
