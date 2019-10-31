@@ -723,7 +723,6 @@ longint areal,i,nl,imgstpos,filenapos,kav;
 		
 	webgetpostdata(webgetdata);
 	
-	ShowRedirectHTML("/" & "AtFile.html",WebSecureMode);
 	
 	areal = getarealength(webgetdata);
 	endmark = "------";
@@ -800,5 +799,7 @@ lBeginImage:;
 		end;
   end;
   delete_file("MobAttach/" & fname);
+  
+  ShowRedirectHTML("/" & "AtFile.html?svonr=" & SVOr.SerNr,WebSecureMode);
   return;
 end;
