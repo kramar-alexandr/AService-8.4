@@ -771,6 +771,7 @@ lEndArea:;
 					if(nl==7)then begin
 						imgstpos = i+2;
 						getareafromarea(webgetdata,imgstpos,areal-imgstpos,imagearea);
+						logtext(0,"Attachment size " & getarealength(imagearea));
 						writeareatofile(imagearea,"MobAttach/" & fname,0);
 						goto lBeginImage;
 					end;
