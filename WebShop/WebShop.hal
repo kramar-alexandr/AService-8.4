@@ -789,12 +789,14 @@ lBeginImage:;
 		logtext(0,stringtolongint(SVONrline));
 		SVOr.SerNr = stringtolongint(SVONrline);
 		if(readfirstmain(SVOr,1,true))then begin
-		
-			fileNameLine = GetLineFromArea(webgetdata,5);
-			RECORDLINKFILE("MobAttach/" & fname,0,SVOr,CurrentCompany)
-			logtext(0,"SVONrline " & SVONrline);
-			logtext(0,"fileNameLine " & fileNameLine);
+			if(SVOr.DoneMark==0 and blankdate(SVOr.RegDate))then begin
+				fileNameLine = GetLineFromArea(webgetdata,5);
+				RECORDLINKFILE("MobAttach/" & fname,0,SVOr,CurrentCompany)
+				logtext(0,"SVONrline " & SVONrline);
+				logtext(0,"fileNameLine " & fileNameLine);
+			end;
 		end;
   end;
+  delete_file("MobAttach/" & fname);
   return;
 end;
