@@ -1360,7 +1360,24 @@ begin
     				invfr = 1;
     				invto1 = 1;
     			end; //Edit***************************Sasha2,16:00 23.04.2015 }
+    			    			
           GetIVSumAndDate(IPrsr,IVr,enddate,sum,curncy);
+          
+          if(IPrsr.IVNr!=IPrsr.TransNr and IPrsr.TransType==0)then begin// Edit ************************** Monday, 13 June 2016 16:02:42
+						newIVr.SerNr = IPrsr.TransNr;
+						if(readfirstmain(newIVr,1,true))then begin
+							if(blankdate(enddate) or enddate<RepSpec.sStartDate)then begin
+								enddate = newIVr.InvDate;
+								cred = 1;
+								if(newIVr.InvType==kInvoiceTypeCredit)then begin
+									cred =-1;
+								end;
+								sum = cred * newIVr.Sum4;
+								goto l1;
+							end;
+						end;
+					end;
+          
           if(currentuser=="SA")then begin
 						logtext(0,IVr.SerNr & "  " & enddate & " " & sum);
           end;
