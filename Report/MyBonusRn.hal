@@ -531,6 +531,7 @@ begin
 									cred =-1;
 								end;
 								sum = cred * newIVr.Sum4;
+								logtext(0,"GOTo to " & IPrsr.TransNr);
 								goto l1;
 							end;
 						end;
@@ -1381,6 +1382,7 @@ begin
 									cred =-1;
 								end;
 								sum = cred * newIVr.Sum4;
+								logtext(0,"GOTo to " & IPrsr.TransNr);
 								goto l1;
 							end;
 						end;
