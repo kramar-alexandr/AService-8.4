@@ -491,6 +491,7 @@ begin
   IPrsr.TransDate = RepSpec.sStartDate;
   logtext(0,"IPrsr.TransDate " & IPrsr.TransDate);
   while (LoopKey("TransDate",IPrsr,1,TrHs)) begin
+		UtverjFinishUser = "";
     testf = true;
     if(IPrsr.TransDate>RepSpec.sEndDate)then begin TrHs = false; end;
     
@@ -896,7 +897,7 @@ l1:;
         IPrs2r.IVNr = IPrsr.IVNr;
         testf2 = true;
         while(loopkey("IVKey",IPrs2r,1,testf2)) begin
-        	
+        	UtverjFinishUser = "";
           if(IPrs2r.IVNr!=IPrsr.IVNr)then begin testf2=false; end;
           if(testf2 and IPrs2r.TransType==0 and IPrs2r.TransNr!=IPrs2r.IVNr)then begin
             newIVr.SerNr = IPrs2r.TransNr;
@@ -1647,7 +1648,7 @@ lsm1:;
         IPrs2r.IVNr = IPrsr.IVNr;
         testf2 = true;
         while(loopkey("IVKey",IPrs2r,1,testf2)) begin
-        	//UtverjFinishUser = "";
+        	UtverjFinishUser = "";
           if(IPrs2r.IVNr!=IPrsr.IVNr)then begin testf2=false; end;
           if(testf2 and IPrs2r.TransType==0 and IPrs2r.TransNr!=IPrs2r.IVNr)then begin
             newIVr.SerNr = IPrs2r.TransNr;
@@ -1703,6 +1704,7 @@ lsm1:;
                       	trhs2=true;
 												notenr = 1;
 												while (ReadRecordLink(newIVr,notenr,SVOr,RLr) and trhs2) begin
+													UtverjFinishUser = SVOr.UtverjFinishUsr; 
 													notenr1=1;
 													while (ReadRecordLink(SVOr,notenr1,WOr,RLr) and trhs2) begin
 														notenr2=1;
@@ -1766,6 +1768,7 @@ lsm1:;
                           trhs2=true;
                           notenr = 1;
                           while (ReadRecordLink(newIVr,notenr,SVOr,RLr) and trhs2) begin
+                          	UtverjFinishUser = SVOr.UtverjFinishUsr; 
                             notenr1=1;
                             while (ReadRecordLink(SVOr,notenr1,WOr,RLr) and trhs2) begin
                               notenr2=1;
@@ -1826,6 +1829,7 @@ lsm1:;
 													trhs2=true;
                           notenr = 1;
                           while (ReadRecordLink(IVr,notenr,SVOr,RLr) and trhs2) begin
+                          	UtverjFinishUser = SVOr.UtverjFinishUsr; 
                             notenr1=1;
                             while (ReadRecordLink(SVOr,notenr1,WOr,RLr) and trhs2) begin
                               notenr2=1;
@@ -1860,6 +1864,7 @@ lsm1:;
 											end;
                       
                       svonr = newIVr.SVONr;
+                      
 											if(blank(enginer) or CredNo>-1)then begin// Edit ************************** Wednesday, 1 February 2017 14:44:22
 												FindEnginer(newIVrw.ArtCode,newIVr,enginer,svonr);
 											end;
