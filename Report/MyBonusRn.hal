@@ -1386,10 +1386,11 @@ begin
 						end;
 					end;
           
-          if(currentuser=="SA")then begin
-						logtext(0,IVr.SerNr & "  " & enddate & " " & sum);
-          end;
+          
           if(nonblank(enddate) and sum<=0) then begin
+          	if(currentuser=="SA")then begin
+							logtext(0,IVr.SerNr & "  " & enddate & " " & sum);
+						end;
             mtrw = matrowcnt(IVr);
             For(i=0;i<mtrw;i=i+1) begin
             matrowget(IVr,i,IVrw);
@@ -1508,9 +1509,6 @@ begin
                         notenr1=notenr1+1;
                       end;
                     end;
-                    
-                   
-
                   end;
                 end;
                 
@@ -1639,7 +1637,6 @@ l1:;
         IPrs2r.IVNr = IPrsr.IVNr;
         testf2 = true;
         while(loopkey("IVKey",IPrs2r,1,testf2)) begin
-        	
           if(IPrs2r.IVNr!=IPrsr.IVNr)then begin testf2=false; end;
           if(testf2 and IPrs2r.TransType==0 and IPrs2r.TransNr!=IPrs2r.IVNr)then begin
             newIVr.SerNr = IPrs2r.TransNr;
