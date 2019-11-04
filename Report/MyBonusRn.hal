@@ -1377,7 +1377,7 @@ begin
           if(IPrsr.IVNr!=IPrsr.TransNr and IPrsr.TransType==0)then begin// Edit ************************** Monday, 13 June 2016 16:02:42
 						newIVr.SerNr = IPrsr.TransNr;
 						if(readfirstmain(newIVr,1,true))then begin
-							if(blankdate(enddate) or enddate<RepSpec.sDate)then begin
+							if(blankdate(enddate) or enddate<sDate)then begin
 								enddate = newIVr.InvDate;
 								cred = 1;
 								if(newIVr.InvType==kInvoiceTypeCredit)then begin
@@ -1644,7 +1644,7 @@ lsm1:;
           if(IPrs2r.IVNr!=IPrsr.IVNr)then begin testf2=false; end;
           if(testf2 and IPrs2r.TransType==0 and IPrs2r.TransNr!=IPrs2r.IVNr)then begin
             newIVr.SerNr = IPrs2r.TransNr;
-            if(readfirstmain(newIVr,1,true) and ((newIVr.InvDate>=sDate and newIVr.InvDate<=RepSpec.eDate) or newIVr.InvDate<enddate) and usedinvno[IPrs2r.TransNr]==false)then begin// Edit ************************** Monday, 13 June 2016 15:29:47
+            if(readfirstmain(newIVr,1,true) and ((newIVr.InvDate>=sDate and newIVr.InvDate<=eDate) or newIVr.InvDate<enddate) and usedinvno[IPrs2r.TransNr]==false)then begin// Edit ************************** Monday, 13 June 2016 15:29:47
 							if(currentuser=="SA")then begin
 								logtext(0,"newIVr " & newIVr.SerNr & " " & enddate & " " & sum);
 							end;
