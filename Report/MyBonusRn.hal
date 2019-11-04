@@ -1647,7 +1647,7 @@ lsm1:;
         IPrs2r.IVNr = IPrsr.IVNr;
         testf2 = true;
         while(loopkey("IVKey",IPrs2r,1,testf2)) begin
-        	UtverjFinishUser = "";
+        	//UtverjFinishUser = "";
           if(IPrs2r.IVNr!=IPrsr.IVNr)then begin testf2=false; end;
           if(testf2 and IPrs2r.TransType==0 and IPrs2r.TransNr!=IPrs2r.IVNr)then begin
             newIVr.SerNr = IPrs2r.TransNr;
