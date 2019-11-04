@@ -1361,6 +1361,9 @@ begin
     				invto1 = 1;
     			end; //Edit***************************Sasha2,16:00 23.04.2015 }
           GetIVSumAndDate(IPrsr,IVr,enddate,sum,curncy);
+          if(currentuser=="SA")then begin
+						logtext(0,IVr.SerNr);
+          end;
           if(nonblank(enddate) and sum<=0) then begin
             mtrw = matrowcnt(IVr);
             For(i=0;i<mtrw;i=i+1) begin
@@ -1615,6 +1618,9 @@ l1:;
           if(IPrs2r.IVNr!=IPrsr.IVNr)then begin testf2=false; end;
           if(testf2 and IPrs2r.TransType==0 and IPrs2r.TransNr!=IPrs2r.IVNr)then begin
             newIVr.SerNr = IPrs2r.TransNr;
+            if(currentuser=="SA")then begin
+							logtext(0,"newIVr " & newIVr.SerNr);
+						end;
             if(readfirstmain(newIVr,1,true) and usedinvno[IPrs2r.TransNr]==false)then begin
 							usedinvno[newIVr.SerNr] = true;// Edit ************************** Monday, 16 January 2017 17:42:23
             	cred = 1;
