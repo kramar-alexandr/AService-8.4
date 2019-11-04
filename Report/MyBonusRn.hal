@@ -489,6 +489,7 @@ begin
   
   TrHs = true;
   IPrsr.TransDate = RepSpec.sStartDate;
+  logtext(0,"IPrsr.TransDate " & IPrsr.TransDate);
   while (LoopKey("TransDate",IPrsr,1,TrHs)) begin
     testf = true;
     if(IPrsr.TransDate>RepSpec.sEndDate)then begin TrHs = false; end;
@@ -1334,6 +1335,7 @@ begin
     OutString(pos[23],0,"Item",false);
   EndFormat;
   
+  logtext(0,"IPrsr.TransDate " & IPrsr.TransDate);
   while (LoopKey("TransDate",IPrsr,1,TrHs)) begin
     testf = true;
     if(IPrsr.TransDate>eDate)then begin TrHs = false; end;
