@@ -536,6 +536,9 @@ begin
 						end;
 					end;
           
+          if(currentuser=="SA")then begin
+          	logtext(0,IVr.SerNr & " " & enddate & " " & sum);
+          end;
           
           if(nonblank(enddate) and sum<=0) then begin
             mtrw = matrowcnt(IVr);
