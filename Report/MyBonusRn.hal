@@ -954,6 +954,7 @@ l1:;
                       	trhs2=true;
 												notenr = 1;
 												while (ReadRecordLink(newIVr,notenr,SVOr,RLr) and trhs2) begin
+													UtverjFinishUser = SVOr.UtverjFinishUsr; 
 													notenr1=1;
 													while (ReadRecordLink(SVOr,notenr1,WOr,RLr) and trhs2) begin
 														notenr2=1;
@@ -1015,6 +1016,7 @@ l1:;
                           trhs2=true;
                           notenr = 1;
                           while (ReadRecordLink(newIVr,notenr,SVOr,RLr) and trhs2) begin
+                          	UtverjFinishUser = SVOr.UtverjFinishUsr; 
                             notenr1=1;
                             while (ReadRecordLink(SVOr,notenr1,WOr,RLr) and trhs2) begin
                               notenr2=1;
@@ -1063,6 +1065,7 @@ l1:;
 													trhs2=true;
                           notenr = 1;
                           while (ReadRecordLink(IVr,notenr,SVOr,RLr) and trhs2) begin
+                          	UtverjFinishUser = SVOr.UtverjFinishUsr; 
                             notenr1=1;
                             while (ReadRecordLink(SVOr,notenr1,WOr,RLr) and trhs2) begin
                               notenr2=1;
