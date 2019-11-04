@@ -1095,6 +1095,8 @@ l1:;
 												end;
 											end;
                       
+                      logtext(0,"Prelist " & newIVr.SerNr);
+                      
                       CollectCostMyInvoice(newIVr,i,cost,curcost,curncyarr,rate,indate,vecode,serial,qty,ressize,cred,-1,realcostbase,realcostuah,realpricebase,realpriceuah,realsumbase,realsumuah,uahpurate,uahcurrate,comment,BCb); //Edit***************************Sasha2,15:53 23.04.2015
             					foundqty = 0;
             					For(j=0;j<ressize;j=j+1) begin
@@ -1856,7 +1858,7 @@ lsm1:;
 											if(blank(enginer) or CredNo>-1)then begin// Edit ************************** Wednesday, 1 February 2017 14:44:22
 												FindEnginer(newIVrw.ArtCode,newIVr,enginer,svonr);
 											end;
-                      
+                      logtext(0,"Prelist " & newIVr.SerNr);
                       if (enginer == cusr or (blank(enginer) and newIVr.SalesMan==cusr) or ((currentuser=="SHILKIN" or currentuser=="SA") and SVOr.UtverjFinishUsr== "SHILKIN")) then begin
 												CollectCostMyInvoice(newIVr,i,cost,curcost,curncyarr,rate,indate,vecode,serial,qty,ressize,cred,-1,realcostbase,realcostuah,realpricebase,realpriceuah,realsumbase,realsumuah,uahpurate,uahcurrate,comment,BCb); //Edit***************************Sasha2,15:53 23.04.2015
 												foundqty = 0;
@@ -1899,6 +1901,7 @@ lsm1:;
 															end;
 														end;
 													end;
+													
 													StartFormat(15);
 														if (blankdate(enddate)) then begin
 															OutDate(pos[4],0,newIVr.PayDate,false);
