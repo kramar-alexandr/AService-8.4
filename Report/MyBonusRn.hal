@@ -1385,7 +1385,7 @@ begin
 								end;
 								sum = cred * newIVr.Sum4;
 								logtext(0,"GOTo to " & IPrsr.TransNr);
-								goto l1;
+								goto lsm1;
 							end;
 						end;
 					end;
@@ -1630,13 +1630,13 @@ begin
                       end; //CurrentUser == enginer
               end;
             end;
-            goto l1;
+            goto lsm1;
           end;
           
         end;
       end;
       
-l1:;
+lsm1:;
       if(nonblank(enddate) and sum<=0) then begin
         IPrs2r.IVNr = IPrsr.IVNr;
         testf2 = true;
