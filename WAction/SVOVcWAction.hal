@@ -2262,10 +2262,11 @@ begin
   record CompaniesBlock CBb;
   row CompaniesBlock CBrw;
   
-  GetWindowRecord(wn,SVOr);
-  html = getHTMLQRCodeForSVO(SVOr);//"<html><body><img src= \"https://chart.googleapis.com/chart?chl=" & path & "&cht=qr&chs=140x140\" alt=\"QR code\"></body></html>";
-
-  SetWebPageData(wn,"$HWStore",html);
+  if(wn>0)then begin
+ 		GetWindowRecord(wn,SVOr);
+		html = getHTMLQRCodeForSVO(SVOr);//"<html><body><img src= \"https://chart.googleapis.com/chart?chl=" & path & "&cht=qr&chs=140x140\" alt=\"QR code\"></body></html>";
+		SetWebPageData(wn,"$HWStore",html);
+  end;
   SVODClassOnOpenWindow = false;
   return;
 end;
