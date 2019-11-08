@@ -999,7 +999,7 @@ begin
 						end; 
 			    end;
 			    
-			    if(!findf and cred<0 and nonblank(IVrw.SerialNr))then begin
+			    /*if(!findf and cred<0 and nonblank(IVrw.SerialNr))then begin
 			    	cost[ressize] = IVrw.FIFORowVal;
 			    	curcost[ressize] = IVrw.FIFORowVal;
 			    	curncy[ressize] = IVr.CurncyCode;
@@ -1008,7 +1008,7 @@ begin
 			    	com = "CredWS ";
 						NewCalcCostAndPrice(IVr,IVrw,cost,curcost,qty,ressize,cred,realcostbase,realcostuah,realpricebase,realpriceuah,realsumbase,realsumuah,PUr,uahpurate,uahcurrate,com,comment,BCb,vecode);
 			    	ressize = ressize + 1;
-			    end;
+			    end;*/
 			    
 			    if(!findf)then begin
 						com = "Simple IV NOHIST ";
