@@ -139,16 +139,6 @@ begin
 			end;
 		end else begin
 			if(BCb.BaseCur1==left(IVr.CurncyCode,3))then begin
-				/*curncy = "USD";
-				GetFullCurncyRate (curncy,IVr.InvDate,fr,to1,to2,br1,br2);
-				uahcurrate[ressize] = to1;
-				uahpurate[ressize] = to1;
-				realcostuah[ressize] = IVrw.BasePrice;
-				realcostbase[ressize] = IVrw.BasePrice;
-				realpriceuah[ressize] = IVrw.Price/fr*to1;
-				realsumuah[ressize] = IVrw.Sum/IVrw.Quant*qty[ressize]/fr*to1;
-				realpricebase[ressize] = IVrw.Price;
-				realsumbase[ressize] = IVrw.Sum/IVrw.Quant*qty[ressize]/fr*to1;*/
 				realpricebase[ressize] = IVrw.Price;
 				realsumbase[ressize] = IVrw.Sum/IVrw.Quant*qty[ressize];
 				realcostbase[ressize] = cost[ressize];
@@ -1010,7 +1000,7 @@ begin
 			    end;
 			    if(!findf)then begin
 						com = "Simple IV NOHIST ";
-						
+						logtext(0,"Simple IV NOHIST " & IVrw.ArtCode);
 						if(left(INr.LastPurchCurncyCode,3)=="UAH")then begin
 							if(INr.LastPurchPrice2/IVrw.BasePrice>7)then begin
 								IVrw.BasePrice = INr.LastPurchPrice2;
