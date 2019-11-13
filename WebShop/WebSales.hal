@@ -1,0 +1,94 @@
+//server-only
+external procedure ExtractObjWithSeparator(string,string,Boolean,var Integer,var string);
+external function Boolean LoggedInTest();
+external function string 255 ChangeCaseStr(string,integer);
+external function boolean CompanyIsJWLikeCompany(Integer);
+external function val MulRateToBase1(var string,val,val,val,val,val,val,roundmode);
+external procedure RunSTCompRn(record RcVc,boolean);
+
+webpublic global
+procedure WebMainMenu()
+begin
+  if (WebLoginStatus==3) then begin
+    WebOutString(MD5String(GetHour(CurrentTime) & ":" & GetMinute(CurrentTime)));
+  end;
+  return;
+end;
+
+webpublic global
+procedure WebMain()
+begin
+  string 60 serverip;
+	record ProgramStatusBlock PSb;
+	integer compnr;
+	record CompaniesBlock Cb;
+	row CompaniesBlock Cbrw;
+	
+  blockload(PSb);
+	blockload(Cb);
+	compnr = currentcompany;
+	matrowget(Cb,compnr-1,Cbrw);
+	serverip = Cbrw.TCPIP & ":" & PSb.httpPort;
+  WebOutString("<script>location.href = 'http://" & serverip & "/SaleStat.html'</script>");
+  return;
+end;
+
+webpublic global
+procedure WebUnknownLogin()
+begin
+  return;
+end;
+
+webpublic global
+procedure ToolWebNotLoggedinMess()
+begin
+  return;
+end;
+
+webpublic
+global procedure WebMyLogIn()
+begin
+  Time checkTime;
+  array string 5 checkTimeStr;
+  string 255 sentMD5,checkMD5;
+  integer deltaMin,i,cti;
+  boolean isLogedIn;
+  
+  deltaMin = 2;
+  sentMD5 = WebGetArg("param");
+  checkTime = CurrentTime;
+  cti = 0;
+  checkTimeStr[cti] = GetHour(checkTime) & ":" & GetMinute(checkTime);
+  cti = cti + 1;
+  for (i=1;i<deltaMin;i=i+1) begin
+    checkTimeStr[cti] = GetHour(checkTime) & ":" & (GetMinute(checkTime) + i);
+    cti = cti + 1;
+    checkTimeStr[cti] = GetHour(checkTime) & ":" & (GetMinute(checkTime) - i);
+    cti = cti + 1;
+  end;
+  isLogedIn = LoggedInTest();
+  if !isLogedIn then begin
+    for (i=0;i<checkTimeStr.length;i=i+1) begin
+      checkMD5 = MD5String(checkTimeStr[i]);
+      if (sentMD5==checkMD5) then begin
+        isLogedIn = true;
+        i = checkTimeStr.length;
+      end;
+    end;
+  end;
+  if isLogedIn then begin
+    WebOutString(MD5String(GetHour(checkTime) & ":" & GetMinute(checkTime)));
+    if (WebGetArg("comp")=="") then begin
+      WebOutString("," & currentcompany);
+    end;
+  end;
+  return;
+end;
+
+webpublic global
+updating procedure WebDoLogout()
+begin
+  WebLogout;
+  //WebMain;
+  return;
+end;
