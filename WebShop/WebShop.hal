@@ -892,7 +892,7 @@ lBeginImage:;
 		if(readfirstmain(SVOr,1,true))then begin
 			logtext(0,"SVOr.DoneMark " & SVOr.DoneMark);
 			logtext(0,"SVOr.RegDate " & SVOr.RegDate);
-			if(SVOr.DoneMark==0 and blankdate(SVOr.RegDate))then begin
+			if(true)then begin
 				RECORDLINKFILE("MobAttach/" & fname,0,SVOr,CurrentCompany)
 				logtext(0,"SVONrline " & SVONrline);
 				logtext(0,"fileNameLine " & fileNameLine);
@@ -901,7 +901,7 @@ lBeginImage:;
   end;
   //millisleep(6000);
   if(nonblank(fname))then begin
-  	//delete_file("MobAttach/" & fname);
+  	delete_file("MobAttach/" & fname);
   end;
   return;
 end;
