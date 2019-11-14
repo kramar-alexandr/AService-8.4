@@ -322,13 +322,13 @@ end;
     PrintWorksRows(SVOr);
 		
 		
-		if(currentuser=="SA")then begin
+		//if(currentuser=="SA")then begin
 			if (FIELDINFORM("F_SVOQRCODE")) then begin
 				tstr = "http://134.249.184.148:1081/Serv.html?svonr=" & SVOr.SerNr;
 				//tstr = "ABCSDEFABCSDEFABCSDEFABCSDEFABCSDEFABCSDEFABCSDEFABCSDEF";
 				OUTFORMFIELD("F_SVOQRCODE",tstr);
 			end;
-		end;
+		//end;
 		
 		if (FIELDINFORM("F_SVO128CODE")) then begin
 			tstr = SVOr.SerNr;

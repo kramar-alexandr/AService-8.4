@@ -1021,10 +1021,10 @@ boolean TrHs,testf;
 		if(readfirstmain(SVOr,1,true))then begin
 			PhoneLine = webgetarg("Phone");
 			if(PhoneLine=="1") then begin
-				//CallToClient(SVOr);
+				CallToClient(SVOr);
 				logtext(0,"Call1");
 			end else begin
-				//CallToClient2(SVOr);
+				CallToClient2(SVOr);
 				logtext(0,"Call2");
 			end;
 		end;
