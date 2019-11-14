@@ -324,7 +324,7 @@ end;
 		
 		if(currentuser=="SA")then begin
 			if (FIELDINFORM("F_SVOQRCODE")) then begin
-				tstr = "134.249.184.148:1081/Serv.html?svonr=" & SVOr.SerNr;
+				tstr = "http://134.249.184.148:1081/Serv.html?svonr=" & SVOr.SerNr;
 				//tstr = "ABCSDEFABCSDEFABCSDEFABCSDEFABCSDEFABCSDEFABCSDEFABCSDEF";
 				OUTFORMFIELD("F_SVOQRCODE",tstr);
 			end;
