@@ -2230,7 +2230,7 @@ return;
 end;
 
 
-
+global
 function string 255 getHTMLQRCodeForSVO(record SVOVc SVOr)
 begin
   string 255 head,tstr,html,allhtml,prodhtml,path;

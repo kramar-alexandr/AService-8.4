@@ -321,6 +321,14 @@ end;
 
     PrintWorksRows(SVOr);
 		
+		
+		if(currentuser=="SA1")then begin
+			if (FIELDINFORM("F_SVOQRCODE")) then begin
+				tstr = "134.249.184.148:1081/Serv.html?svonr=" & SVOr.SerNr;
+				OUTFORMFIELD("F_SVOQRCODE",tstr);
+			end;
+		end;
+		
 		if (FIELDINFORM("F_SVO128CODE")) then begin
 			tstr = SVOr.SerNr;
 			CreateEAN128(tstr);
