@@ -47,7 +47,7 @@ external procedure LogoutHansaWorldID();
 external procedure SendHansaWorldIDUserTask2(string,string,Integer);
 external procedure GetUserAccessGroup(string,var string);// Edit ************************** Thursday, 30 March 2017 10:16:28
 remote  procedure MyBonusCurrentUserRemote(var val,var val,var boolean);
-
+external procedure ExtractObjWithSeparator(string,string,Boolean,var Integer,var string);
 	SetLangMode(LangRussian,"RUS",0);
 
 
@@ -917,4 +917,76 @@ end;
 global function integer EmailValidationStatusWithStdID()// Edit ************************** BPI Ukraine - KramarAlexandr - Friday, 9 March 2018 15:29:23
 begin		
 	EmailValidationStatusWithStdID = 2;
+end;
+
+global procedure OpenNewClient(string param)
+begin
+	record CUVc CUr,newCUr,blankCUr;
+	
+	recordnew(blankCUr);
+	CUr.Code = "INTERNET";
+	if(readfirstmain(CUr,1,true))then begin
+		recordcopy(newCUr,CUr);
+		newCUr.Code = param;
+		newCUr.UUID = blankCUr.UUID;
+		newCUr.Name = "Новый клиент";
+		OpenWindow("CUDClass",0,CurWindow,"","",newCUr);
+	end;
+
+return;
+end;
+
+global procedure OpenClientReport(string param)
+begin
+	record CUVc CUr,newCUr,blankCUr;
+	record RcVc RepSpec;
+	
+	reportdefaults(RepSpec,"ClientVClass");
+	RepSpec.repname = "ClientInfoForCallRn";
+	RepSpec.f1 = param;
+	RunReport(RepSpec,0);
+		
+return;
+end;
+
+global procedure OpenSVOr(string param)
+begin
+	record SVOVc SVOr;
+	
+	SVOr.SerNr = param;
+	if(readfirstmain(SVOr,1,true))then begin
+		OpenWindow("SVODClass",0,CurWindow,"","",SVOr);
+	end;
+
+return;
+end;
+
+global procedure RemoteUserFunction(string users,string action,string param1,string param2)
+begin
+	record ActVc Actr;
+	integer pos;
+	string 255 tstr;
+	
+	pos = 0;
+	ExtractObjWithSeparator(",",users,true,pos,tstr);
+	while(nonblank(tstr))begin
+		if(nonblank(tstr))then begin
+			if(tstr==currentuser)then begin
+				switch(action)begin
+					case "OpenNewClient": if(nonblank(param1))then begin
+																	OpenNewClient(param1);
+																end;
+					case "OpenClientReport": if(nonblank(param1))then begin
+																	OpenClientReport(param1);
+																end;
+					case "OpenSVOr": if(nonblank(param1))then begin
+																	OpenSVOr(param1);
+																end;											
+				end;
+			end;
+		end;
+		ExtractObjWithSeparator(",",users,true,pos,tstr);
+	end;
+
+return;
 end;

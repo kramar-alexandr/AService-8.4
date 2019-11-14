@@ -288,10 +288,9 @@ begin
 return;
 end;
 
-global procedure CallToClientDsm()
+global procedure CallToClient( record SVOVc SVOr)
 begin
 integer wn;
-record SVOVc SVOr;
 array longint sernr;
 integer count;
 record RcVc RepSpec;
@@ -301,12 +300,9 @@ area mainRequest,replyarea;
 longint port;
 string 50 location;
 	
-	wn = curwindow;
-	getwindowrecord(wn,SVOr);
 	
 	USr.Code = currentuser;
-	
-	
+
 	//http://www.a-service.ua/index.php?phone=0662200737&int=111
 	if(readfirstmain(USr,1,true))then begin
 		location = "";
@@ -350,7 +346,7 @@ string 50 location;
 return
 end;
 
-global procedure CallToClient2Dsm()
+global procedure CallToClientDsm()
 begin
 integer wn;
 record SVOVc SVOr;
@@ -366,7 +362,25 @@ string 50 location;
 	wn = curwindow;
 	getwindowrecord(wn,SVOr);
 	
-	USr.Code = currentuser;
+	CallToClient(SVOr);
+
+
+return
+end;
+
+global procedure CallToClient2(record SVOVc SVOr)
+begin
+integer wn;
+array longint sernr;
+integer count;
+record RcVc RepSpec;
+record UserVc USr;
+string 100 host,page,getParam;
+area mainRequest,replyarea;
+longint port;
+string 50 location;
+
+USr.Code = currentuser;
 	
 	
 	if(readfirstmain(USr,1,true))then begin
@@ -406,6 +420,26 @@ string 50 location;
 
 		end;
 	end;
+return;
+end;	
+
+global procedure CallToClient2Dsm()
+begin
+integer wn;
+record SVOVc SVOr;
+array longint sernr;
+integer count;
+record RcVc RepSpec;
+record UserVc USr;
+string 100 host,page,getParam;
+area mainRequest,replyarea;
+longint port;
+string 50 location;
+	
+	wn = curwindow;
+	getwindowrecord(wn,SVOr);
+	CallToClient2(SVOr);
+
 
 return
 end;
