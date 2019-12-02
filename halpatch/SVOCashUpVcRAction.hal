@@ -267,7 +267,7 @@ begin
   GetWindowRecord(wn,RepSpec);
   
   if(value==2)then begin
-  	RepSpec.vals1 = round((RepSpec.vals0 * 1.05),defaultcurroundoff);
+  	RepSpec.vals1 = round((RepSpec.vals0 * 1.03),defaultcurroundoff);
   end else begin
   	RepSpec.vals1 = blankval;
   end;
