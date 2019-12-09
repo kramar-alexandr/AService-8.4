@@ -1463,7 +1463,7 @@ begin
 //if (HasTouchScreenLook==false) then begin  //no more TS interface in SL 
 if (true) then begin
   ActiveFieldOnNew("CustCode");
-  SetWRect(20,80,750,460);
+  SetWRect(20,80,850,460);
   CommunicateButton;
   Tile(0,74,false,"",CustCode);
   EditField(75,vm=(v=6),95,"Номер",Normal,SerNr,false,TSerSClass);
@@ -1505,9 +1505,9 @@ if (true) then begin
   EditField(h1,v+=vs,60, "Готівка",Normal,FastCash,false,0);
   EditField(h1,v+=vs,60, "Термін.",Normal,FastTerm,false,0); // Edit ************ Dima 8 February 2018, 15:45
   
-  EditField(h2,v=vm,135,"Ответственный",Normal,OurContact,false,0);
-  EditField(h2,v+=vs,135,"Внимание",Normal,ClientContact,false,ContactSClass);
-  EditField(h2,v+=vs,135,"Объекты",Normal,Objects,false,ObjSClass);
+  //EditField(h2,v=vm,135,"Ответственный",Normal,OurContact,false,0);
+  //EditField(h2,v+=vs,135,"Внимание",Normal,ClientContact,false,ContactSClass);
+  EditField(h2,v=vm,135,"Объекты",Normal,Objects,false,ObjSClass);
   EditField(h2,v+=vs,135,"Ответственный",Normal,RefStr,false,0);
   EditField(h2,v+=vs,135,"№ счета клиенту",Normal,CustOrdNr,false,0);
   EditField(h3,v=vm,80,"Продавец",Normal,SalesMan,false,UserSClass);
@@ -1532,8 +1532,8 @@ if (true) then begin
   if (HasLocalization("RUS")) then begin
     EditField(h3,v+=vs,-20,"К пл/рсч док-ту",Normal,ReceiptInfo,false,0);
   end;
-  CheckBox(h3,v+=vs,0,"Принять по нулевой FIFO",IgnoreBlankFIFO);	//Edit----------------------Dima  09.02.2016
-  CheckBox(h3,v+=vs,0,"Работы приемки",SalesFlag);// Edit ************************** BPI Ukraine - KramarAlexandr - 04, 19 09 2019 y. at 3:37:12 PM
+  //CheckBox(h3,v+=vs,0,"Принять по нулевой FIFO",IgnoreBlankFIFO);	//Edit----------------------Dima  09.02.2016
+  //CheckBox(h3,v+=vs,0,"Работы приемки",SalesFlag);// Edit ************************** BPI Ukraine - KramarAlexandr - 04, 19 09 2019 y. at 3:37:12 PM
   CheckBox(-80,v=6,0,"Спорные",DisputedFlag);
   CheckBox(h4,v+=vs,0,"Bixolon напечат.",PrintedFlag); //Edit***************************Sasha2,12:28 11.01.2016
   if (StandardHansa) then begin
@@ -1743,6 +1743,8 @@ if (true) then begin
   //  MatCol(t=kInvoiceRowTypeNormal,194,"Описание",0,Spec,false,0);
   t=kInvoiceRowTypeNormal;
   MatCol(t,184,"Описание",0,Spec,false,0); //144 // Edit ************************** Tuesday, 29 July 2014 17:13:58
+  MatCol(t,-320,"Сер. №",0,SerialNr,false,SerialNrSClass);
+
   MatCol(t,-180,"Цена",0,Price,true,0); //-235 //Edit***************************Sasha2,15:14 11.05.2017
   //  MatColTL(t,-235,"",0,M45Val,Normal,0,Price,true,0);
   MatCol(t,-105,"%",0,vRebate,true,0); //-135 //Edit***************************Sasha2,15:15 11.05.2017
