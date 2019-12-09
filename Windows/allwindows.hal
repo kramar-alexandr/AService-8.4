@@ -1490,10 +1490,10 @@ if (true) then begin
   TileButton(2,"Товары");
   TileButton(3,"Валюта");
   TileButton(4,"Условия отгр.");
-  TileButton(5,"Идентификаторы");
-  TileButton(6,"Прайс-лист");
-  TileButton(7,"Адрес сч/ф");
-  TileButton(8,"Адрес дост.");
+  //TileButton(5,"Идентификаторы");
+  //TileButton(6,"Прайс-лист");
+  //TileButton(7,"Адрес сч/ф");
+  //TileButton(8,"Адрес дост.");
   Tile(1,110,false,"1",InvDate);
   vs = 20; h1 = 110; h2 = 290; h3 = 530; h4 = -100;
   EditField(h1,vm=(v=6),82,"Дата с/ф",Normal,InvDate,false,PasteCurDate);
@@ -1505,8 +1505,8 @@ if (true) then begin
   //EditField(h2,v=vm,135,"Ответственный",Normal,OurContact,false,0);
   //EditField(h2,v+=vs,135,"Внимание",Normal,ClientContact,false,ContactSClass);
   EditField(h2,v=vm,135,"Объекты",Normal,Objects,false,ObjSClass);
-  EditField(h2,v+=vs,135,"Ответственный",Normal,RefStr,false,0);
-  EditField(h2,v+=vs,135,"№ счета клиенту",Normal,CustOrdNr,false,0);
+  //EditField(h2,v+=vs,135,"Ответственный",Normal,RefStr,false,0);// Edit ************************** BPI Ukraine - KramarAlexandr - 01, 09 12 2019 y. at 11:44:27 AM
+  //EditField(h2,v+=vs,135,"№ счета клиенту",Normal,CustOrdNr,false,0);// Edit ************************** BPI Ukraine - KramarAlexandr - 01, 09 12 2019 y. at 11:44:30 AM
 	EditField(h2,v+=vs,60, "Готівка",Normal,FastCash,false,0);
   EditField(h2,v+=vs,60, "Термін.",Normal,FastTerm,false,0); // Edit ************ Dima 8 February 2018, 15:45
 
@@ -2013,7 +2013,7 @@ if (true) then begin
     EditField(h3,v+=vs,80,"Глоб. № трансп.",Normal,GlobalTransportNr,false,0);  
     EditField(h3,v+=vs,80,"Глоб. дата трансп.",Normal,GlobalTransportDate,false,PasteCurDate);  
   end;
-  Tile(5,170,false,"5",OrderNr);
+  /*Tile(5,170,false,"5",OrderNr);
   EditField(h1,v=vm,80,"Номер счета",ViewOnly,OrderNr,false,0);
   if (StandardHansa==false) then begin
     EditField(h1,v+=vs,80,"Зак.на обсл.",ViewOnly,SVONr,false,0);
@@ -2143,16 +2143,7 @@ if (true) then begin
     if (HasApprovals) then begin
       SoftEditField(h3=h+4,v=(vm+=40),123,"Статус утверждения",ViewOnly,"AcceptanceStatusFlag",false,0,M4Str,255);
     end;
-/*
-//oldapprovals    
-    ButtonFrame(h3=h+4,v=(vm+=40),123,6,"Статус утверждения");
-    RadioButton(h3,v,kAcceptanceStateNotRequired,0,"не обязательно",AcceptanceStatus);
-    RadioButton(h3,v+=16,kAcceptanceStateNotStarted,0,"не начато",AcceptanceStatus);
-    RadioButton(h3,v+=16,kAcceptanceStateNotRequested,0,"не запрошено",AcceptanceStatus);
-    RadioButton(h3,v+=16,kAcceptanceStatePending,0,"в ожидании",AcceptanceStatus);
-    RadioButton(h3,v+=16,kAcceptanceStateApproved,0,"утверждено",AcceptanceStatus);
-    RadioButton(h3,v+=16,kAcceptanceStateRejected,0,"отклонено",AcceptanceStatus);
-*/    
+  
     v = VATZoneButtonsLabelsrus(h3=290,v=vm,170,16);
   end else begin
     v = VATZoneButtonsLabelsrus(h3=290,v=vm+40,170,16);
@@ -2180,7 +2171,7 @@ if (true) then begin
     EditField(h1+91,v,232,"",ViewOnly,DelCountryName,false,0);
   end;  
   EditField(h2,v,150,"GLN доставки",ViewOnly,DelRecipientGLN,false,0);  
-  EnterSkip(InvDate);
+  EnterSkip(InvDate);*/
   if (GuiType==kGuiMetro) then begin // Temporarily disabled on Windows 8
     SpecialMenu("Статус счета-фактуры",'r',2,"IVInfoIVDsm");
     SpecialMenu("Статус товара",'I',0,"ItemStatusIVDsm");
