@@ -81,6 +81,29 @@ external function Boolean SDVc_PasteArtCode(var record SDVc,Integer,Integer,var 
 external function Boolean SDVc_PasteQty(var record SDVc,Integer);// Edit ************************** Wednesday, 20 August 2014 18:27:24
 external procedure SDVc_PasteSerialNr(var record SDVc,Integer,var string);// Edit ************************** Wednesday, 20 August 2014 18:28:59
 
+global updating procedure PUupdateRetailPrice(record PUVc PUr)
+begin
+integer i,rwcnt;
+row PUVc PUrw;
+record INVc INr;
+	
+	rwcnt = matrowcnt(PUr);
+	for(i=0;i<rwcnt;i=i+1)begin
+		matrowget(PUr,i,PUrw);
+		if(PUrw.RetailPrice>0)then begin
+			if(INr.UPrice1!=PUrw.RetailPrice)then begin
+				INr.Code = PUrw.ArtCode;
+				if(readfirstmain(INr,1,true))then begin
+					INr.UPrice1 = PUrw.RetailPrice;
+					recordstore(INr,true);
+				end;
+			end;
+		end;
+	end;
+
+return;
+end;
+
 global
 function LongInt PUVcRecordDefaults(var record PUVc PUr,record PUVc PU2r,LongInt stat,LongInt long4)
 begin
@@ -481,7 +504,9 @@ updating function LongInt PUVcRecordSaveAfter(var record PUVc PUr,record PUVc PU
 begin
   LongInt res;
   record UserVc Userr;
-
+	
+	PUupdateRetailPrice(PUr);// Edit ************************** BPI Ukraine - KramarAlexandr - 01, 09 12 2019 y. at 1:34:29 PM
+	
   Userr.Code = PUr.Sign;
   ReadFirstMain(Userr,1,true);
   PUr.SalesGroup = Userr.SalesGroup;  
@@ -543,7 +568,9 @@ begin
   record POSettingBlock POSb;
   record RcVc RepSpec;
   val bc1v;
-
+	
+	PUupdateRetailPrice(PUr);// Edit ************************** BPI Ukraine - KramarAlexandr - 01, 09 12 2019 y. at 1:34:29 PM
+	
   ihf = ItemHistExists("PUVc",PUr.SerNr);
   if ((PUr.OKFlag!=0) and (PU2r.OKFlag!=0)) then begin
     // Comment-field has been changed 
