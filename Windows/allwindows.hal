@@ -1455,7 +1455,7 @@ begin
   Integer rn;
   
   WindowBegin("Счёт-фактура клиенту",IVDClass,CGview,-);
-  Sizeable(-1,-1,0,0);
+  Sizeable(-1,1,0,0);
   UseView(IVVc);
   ToolBar; //Edit***************************Sasha2,11:16 20.05.2015{
     HalPushButton(300,5,360,25,"PrintDoInvFormButton","Друк");
@@ -1463,7 +1463,7 @@ begin
 //if (HasTouchScreenLook==false) then begin  //no more TS interface in SL 
 if (true) then begin
   ActiveFieldOnNew("CustCode");
-  SetWRect(20,80,850,460);
+  SetWRect(20,80,850,210);
   CommunicateButton;
   Tile(0,74,false,"",CustCode);
   EditField(75,vm=(v=6),95,"Номер",Normal,SerNr,false,TSerSClass);
@@ -1501,15 +1501,15 @@ if (true) then begin
   EditField(h1,v+=vs,82,"Дата оплаты",Normal,PayDate,false,PasteCurDate);
   EditField(h1,v+=vs,82,"Дата операции",Normal,TransDate,false,PasteCurDate);
   EditField(h1,v+=vs,82,"Дата оказ. услуги",Normal,ServiceDelDate,false,PasteCurDate);  
-  
-  EditField(h1,v+=vs,60, "Готівка",Normal,FastCash,false,0);
-  EditField(h1,v+=vs,60, "Термін.",Normal,FastTerm,false,0); // Edit ************ Dima 8 February 2018, 15:45
-  
+    
   //EditField(h2,v=vm,135,"Ответственный",Normal,OurContact,false,0);
   //EditField(h2,v+=vs,135,"Внимание",Normal,ClientContact,false,ContactSClass);
   EditField(h2,v=vm,135,"Объекты",Normal,Objects,false,ObjSClass);
   EditField(h2,v+=vs,135,"Ответственный",Normal,RefStr,false,0);
   EditField(h2,v+=vs,135,"№ счета клиенту",Normal,CustOrdNr,false,0);
+	EditField(h2,v+=vs,60, "Готівка",Normal,FastCash,false,0);
+  EditField(h2,v+=vs,60, "Термін.",Normal,FastTerm,false,0); // Edit ************ Dima 8 February 2018, 15:45
+
   EditField(h3,v=vm,80,"Продавец",Normal,SalesMan,false,UserSClass);
   if (StandardHansa) then begin
     EditField(h3,v+=vs,80,"Склад",Normal,Location,false,LocationSClass);
@@ -1540,7 +1540,7 @@ if (true) then begin
     CheckBox(h4,v+=16,0,"Обновить склад",UpdStockFlag);
   end;
   EnterSkip(Math);
-  Tile(2,220,true,"2",Math);
+  Tile(2,260,true,"2",Math);
   //  CheckBox(20,-20,0,"OK",OKFlag);
   if (CompileType!=ctiPhone) then begin
     EditField(55,-41,50,"Валюта",Normal,CurncyCode,false,CurncyCodeSClass);
@@ -1574,7 +1574,7 @@ if (true) then begin
     EditField(-120,-21,80,"Итого",ViewOnly ,Sum4,true,0);
   end;
   v = 24;
-  MatrixBegin(4,v,-50,-49,-,200);
+  MatrixBegin(4,v,-50,210,-,200);
   MatTypedRow(stp);
   MatOverStrike(ovst);
   Flip(0);
