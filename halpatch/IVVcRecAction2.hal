@@ -454,9 +454,9 @@ BEGIN
           IVr.FInvExpFlag = 1;
         end;
       end;
-      if(blank(IVr.Phone))then begin// Edit ************************** BPI Ukraine - KramarAlexandr - Wednesday, 7 March 2018 16:46:45
+      /*if(blank(IVr.Phone))then begin// Edit ************************** BPI Ukraine - KramarAlexandr - Wednesday, 7 March 2018 16:46:45
       	IVr.Phone = IVr.Phone2;
-      end;
+      end;*/
       HandlePhone1RepairSum(IVr,true,"",outPhone); //Edit***************************Sasha2,14:00 10.03.2017
       IVr.Phone = outPhone; //Edit***************************Sasha2,14:44 10.03.2017
     end;  
@@ -1011,9 +1011,9 @@ begin
           IVr.FInvExpFlag = 1;
         end;
       end;
-      if(blank(IVr.Phone))then begin// Edit ************************** BPI Ukraine - KramarAlexandr - Wednesday, 7 March 2018 16:47:35
+      /*if(blank(IVr.Phone))then begin// Edit ************************** BPI Ukraine - KramarAlexandr - Wednesday, 7 March 2018 16:47:35
       	IVr.Phone = IVr.Phone2;
-      end;
+      end;*/
       HandlePhone1RepairSum(IVr,true,"",outPhone); //Edit***************************Sasha2,14:00 10.03.2017
       IVr.Phone = outPhone; //Edit***************************Sasha2,14:44 10.03.2017
     end;

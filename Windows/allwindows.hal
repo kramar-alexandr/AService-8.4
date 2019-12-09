@@ -1478,8 +1478,8 @@ if (true) then begin
   if (CurrentUser=="SA") then begin
     EditField(h+200,v,100,"LocOKNr",Normal,LocOKNr,false,0); //Edit***************************Sasha2,14:56 15.02.2016
   end;*/
-		EditField(180,vm=(v+=20),220,"ФІБ",Normal,DelAddr3,false,0);// Edit ************************** BPI Ukraine - KramarAlexandr - Wednesday, 20 December 2017 11:34:08
-		EditField(h+210,v,100,"Телефон",Normal,Phone2,false,0);// Edit ************************** BPI Ukraine - KramarAlexandr - Wednesday, 20 December 2017 11:34:06
+		//EditField(180,vm=(v+=20),220,"ФІБ",Normal,DelAddr3,false,0);// Edit ************************** BPI Ukraine - KramarAlexandr - Wednesday, 20 December 2017 11:34:08
+		//EditField(h+210,v,100,"Телефон",Normal,Phone2,false,0);// Edit ************************** BPI Ukraine - KramarAlexandr - Wednesday, 20 December 2017 11:34:06
   end;
   end else begin
     v = v + 20;

@@ -402,7 +402,7 @@ begin
   
   if(transf)then begin// Edit ************************** BPI Ukraine - KramarAlexandr - Wednesday, 20 December 2017 12:33:20
   		
-  		if (blank(IVp.Phone2)) then begin
+  		/*if (blank(IVp.Phone2)) then begin
 
 				if (IVp.SVONr!=-1) then begin
 					svorNr = IVp.SVONr;
@@ -426,7 +426,7 @@ begin
 				if (NonBlank(Phoner.PhoneNum) and ReadFirstMain(Phoner,1,true)) then begin
 					IVp.Phone2 = Phoner.PhoneNum;
 				end;
-			end;
+			end;*/
 			
 			if(IVp.InvType!=kInvoiceTypeCredit)then begin
 				if(IVp.OrderNr<0 and IVp.SVONr<0)then begin// Edit ************************** BPI Ukraine - KramarAlexandr - Tuesday, 10 April 2018 15:00:38
@@ -438,36 +438,36 @@ begin
 				end;
 			end;
   	
-  	if(blank(IVp.Phone2))then begin
+  	/*if(blank(IVp.Phone2))then begin// Edit ************************** BPI Ukraine - KramarAlexandr - 01, 09 12 2019 y. at 10:38:18 AM
   		RecordCheckError(31092,"",-1,"Phone2");      
 			res = -1; 
 			goto L99;
-  	end;
+  	end;*/
   	
-  	if(len(IVp.Phone2)!=13)then begin
+  	/*if(len(IVp.Phone2)!=13)then begin
   		RecordCheckError(31087,"",-1,"Phone2");      
 			res = -1; 
 			goto L99;
-  	end;
+  	end;*/
   	
-  	if(left(IVp.Phone2,3)!="+38")then begin
+  	/*if(left(IVp.Phone2,3)!="+38")then begin
   		RecordCheckError(31087,"",-1,"Phone2");      
 			res = -1; 
 			goto L99;
-  	end;
+  	end;*/
   	
-  	if(blank(IVp.DelAddr3) and nonblank(IVp.Phone2))then begin
+  	/*if(blank(IVp.DelAddr3) and nonblank(IVp.Phone2))then begin
   		Phoner.PhoneNum = IVp.Phone2;
   		if(readfirstmain(Phoner,1,true))then begin
   			IVp.DelAddr3 = Phoner.FirstName & " " & Phoner.LastName & " " & Phoner.MiddleName;
   		end;
-  	end;
+  	end;*/
   	
-  	if(blank(IVp.DelAddr3))then begin
+  	/*if(blank(IVp.DelAddr3))then begin
   		RecordCheckError(31093,"",-1,"DelAddr3");      
 			res = -1; 
 			goto L99;
-  	end;
+  	end;*/
   end;
   
   BlockLoad(ARAccb);

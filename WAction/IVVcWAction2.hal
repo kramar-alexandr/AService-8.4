@@ -2143,7 +2143,7 @@ begin
   		GetWindowRecord(wn,IVr);
    		
    		if(IVr.OKFlag==1)then begin
-   			if(nonblank(IVr.DelAddr3) and nonblank(IVr.Phone2))then begin
+   			//if(nonblank(IVr.DelAddr3) and nonblank(IVr.Phone2))then begin
 					SetExportCodePage("CP1251");
 					HandleIVReceiptPrinting(IVr,aFile);
 					AddAreaToArea(aFile,aFile);
@@ -2153,9 +2153,9 @@ begin
 					PutWindowRecord(wn,IVr);
 					RECORDSTORE(IVr,true);
 					UpdateBrowses("IVVc");
-				end else begin
-					MessageBox(0,"Заповніть ФІБ та телефон");
-				end;
+				//end else begin
+				//	MessageBox(0,"Заповніть ФІБ та телефон");
+				//end;
      	end else begin
      		MessageBox(0,"Накладна має бути підтврджена Ок");
      	end;
