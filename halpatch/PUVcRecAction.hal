@@ -110,6 +110,7 @@ begin
 	record PUVc PUr;
 	
 	while(loopkey("TransDate",PUr,1,true))begin
+		logtext(0,"PUr.SerNr " & PUr.SerNr);
 		PUupdateRetailPrice(PUr);
 	end;
 	
