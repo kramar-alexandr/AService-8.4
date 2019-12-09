@@ -108,7 +108,7 @@ end;
 global webpublic updating procedure WebUpdatePUPrice()
 begin
 	record PUVc PUr;
-	
+	setcompany(8,false);
 	while(loopkey("TransDate",PUr,1,true))begin
 		logtext(0,"PUr.SerNr " & PUr.SerNr);
 		PUupdateRetailPrice(PUr);
