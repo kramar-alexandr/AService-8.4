@@ -81,6 +81,7 @@ external function Boolean SDVc_PasteArtCode(var record SDVc,Integer,Integer,var 
 external function Boolean SDVc_PasteQty(var record SDVc,Integer);// Edit ************************** Wednesday, 20 August 2014 18:27:24
 external procedure SDVc_PasteSerialNr(var record SDVc,Integer,var string);// Edit ************************** Wednesday, 20 August 2014 18:28:59
 
+
 global updating procedure PUupdateRetailPrice(record PUVc PUr)
 begin
 integer i,rwcnt;
@@ -103,6 +104,18 @@ record INVc INr;
 
 return;
 end;
+
+global webpublic updating procedure WebUpdatePUPrice()
+begin
+	record PUVc PUr;
+	
+	while(loopkey("Transdate",PUr,1,true))begin
+		PUupdateRetailPrice(PUr);
+	end;
+	
+return;
+end;
+
 
 global
 function LongInt PUVcRecordDefaults(var record PUVc PUr,record PUVc PU2r,LongInt stat,LongInt long4)
