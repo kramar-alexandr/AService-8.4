@@ -1514,9 +1514,9 @@ if (true) then begin
   if (StandardHansa) then begin
     EditField(h3,v+=vs,80,"Склад",Normal,Location,false,LocationSClass);
   end else begin
-    EditField(h3,v+=vs,80,"Проект",Normal,PRCode,false,0);
+    //EditField(h3,v+=vs,80,"Проект",Normal,PRCode,false,0);
   end;
-  EditField(h3,v+=vs,80,"Причина кр.сч/ф",Normal,Reason,false,StandProblemsSClass);
+  //EditField(h3,v+=vs,80,"Причина кр.сч/ф",Normal,Reason,false,StandProblemsSClass);
   if (HasLocalization("MEX")) then begin  
     EditField(h3,v+=vs,80,"Способ оплаты",Normal,PMCode,false,PMSClass);  
   end;
