@@ -109,7 +109,7 @@ global webpublic updating procedure WebUpdatePUPrice()
 begin
 	record PUVc PUr;
 	
-	while(loopkey("Transdate",PUr,1,true))begin
+	while(loopkey("TransDate",PUr,1,true))begin
 		PUupdateRetailPrice(PUr);
 	end;
 	
