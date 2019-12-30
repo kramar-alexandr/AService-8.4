@@ -24,6 +24,8 @@ begin
 	record CompaniesBlock Cb;
 	row CompaniesBlock Cbrw;
 	
+	setcompany(8,false);
+	
   blockload(PSb);
 	blockload(Cb);
 	compnr = currentcompany;
@@ -36,6 +38,8 @@ end;
 webpublic global
 procedure WebUnknownLogin()
 begin
+	setcompany(8,false);
+
   return;
 end;
 
@@ -55,6 +59,7 @@ begin
   boolean isLogedIn;
   
   //logtext(0,"WebMyLogIn");
+  setcompany(8,false);
   
   deltaMin = 2;
   sentMD5 = WebGetArg("param");
@@ -93,6 +98,8 @@ end;
 webpublic global
 updating procedure WebDoLogout()
 begin
+	setcompany(8,false);
+	
   WebLogout;
   
   logtext(0,"WebDoLogout");
