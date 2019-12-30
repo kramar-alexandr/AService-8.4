@@ -54,7 +54,7 @@ begin
   integer deltaMin,i,cti;
   boolean isLogedIn;
   
-  logtext(0,"WebMyLogIn");
+  //logtext(0,"WebMyLogIn");
   
   deltaMin = 2;
   sentMD5 = WebGetArg("param");
@@ -79,7 +79,7 @@ begin
     end;
   end;
   
-  logtext(0,"WebMyLogIn isLogedIn " & isLogedIn);
+  //logtext(0,"WebMyLogIn isLogedIn " & isLogedIn);
   
   if isLogedIn then begin
     WebOutString(MD5String(GetHour(checkTime) & ":" & GetMinute(checkTime)));
