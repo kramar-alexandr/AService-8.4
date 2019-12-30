@@ -223,7 +223,7 @@ begin
         if(SVOr.SerNr>=9000000)then begin
         	smstext = "Ваш ремонт №" & SVOr.SerNr & " принят на диагностику, тел.044-5857702.";
           body = "[SENDER]AServis[/SENDER][SMS]" & smstext & "[/SMS]";
-          
+          turbo = true;
         end else begin
           if(SVOr.SerNr>=8000000)then begin
           	smstext = "Ваш ремонт №" & SVOr.SerNr & " принят на диагностику, тел.044-2229293.";
