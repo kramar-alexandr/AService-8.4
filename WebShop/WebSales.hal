@@ -94,6 +94,9 @@ webpublic global
 updating procedure WebDoLogout()
 begin
   WebLogout;
+  
+  logtext(0,"WebDoLogout");
+  
   //WebMain;
   return;
 end;
