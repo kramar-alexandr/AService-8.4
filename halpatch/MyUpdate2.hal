@@ -221,7 +221,7 @@ begin
         addtexttoarea(subject,a_subject);
         writeareatofile(a_subject,"SMS/sms_subj.txt",0);
         if(SVOr.SerNr>=9000000)then begin
-        	smstext = "Ваш ремонт №" & SVOr.SerNr & " принят на диагностику, тел.044-4515451.";
+        	smstext = "Ваш ремонт №" & SVOr.SerNr & " принят на диагностику, тел.044-5857702.";
           body = "[SENDER]AServis[/SENDER][SMS]" & smstext & "[/SMS]";
           
         end else begin
