@@ -21,6 +21,8 @@ begin
   Register("APVc","APVc",APVc,modDBMain);
   Register("OPPVc","OPPVc",OPPVc,modDBMain);
   
+  Setting("HT Who Online",HTSWhoPresentLClass,modDBMain);
+  
   Register("Выплаты по бонусам","Выплаты по бонусам",ServBonusOutVc,modSVO);// Edit ************************** BPI Ukraine - KramarAlexandr - 04, 26 09 2019 y. at 11:15:03 AM
 
 	Report("Отчет по истории товаров технический ",FindErrorInIHRClass,FindErrorInIHRn,0,modDBMain);
