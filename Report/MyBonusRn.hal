@@ -2018,6 +2018,7 @@ lsm1:;
 		OutVal(pos[12],0,vtotCost["nocost"],M4Val,false);
 		OutVal(pos[13],0,vtotGP["nocost"],M4Val,false);
 		OutString(pos[21],0,USetStr(32632) & vn["nocost"],false);
+		endformat;
 		startformat(15);
 			outstring(0,0,"Запчасти",false);
 		endformat;
