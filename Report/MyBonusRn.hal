@@ -2005,16 +2005,6 @@ lsm1:;
   if (totSum>0 or totCost>0) then begin
 		startformat(15);
 		endformat;
-		Black_Divider(0,1);
-		startformat(15);
-			outstring(0,0,"Суммарно",false);
-		endformat;
-		startformat(15);
-		OutVal(pos[11],0,totSum,M4Val,false);
-		OutVal(pos[12],0,totCost,M4Val,false);
-		OutVal(pos[13],0,totGP,M4Val,false);
-		OutString(pos[21],0,USetStr(32632) & n,false);//***************************************************************************** edit dima-f 12.09.17
-		endformat;
 		
 		Black_Divider(0,1);
 		startformat(15);
@@ -2036,7 +2026,16 @@ lsm1:;
 		OutString(pos[21],0,USetStr(32632) & vn["cost"],false);
 		endformat;
 		
-		
+		Black_Divider(0,1);
+		startformat(15);
+			outstring(0,0,"Суммарно",false);
+		endformat;
+		startformat(15);
+		OutVal(pos[11],0,totSum,M4Val,false);
+		OutVal(pos[12],0,totCost,M4Val,false);
+		OutVal(pos[13],0,totGP,M4Val,false);
+		OutString(pos[21],0,USetStr(32632) & n,false);//***************************************************************************** edit dima-f 12.09.17
+		endformat;
 	end;
 	RepSpec.vals3=n;//***************************************************************************** edit dima-f 12.09.17
     RepSpec.vals4=totGP;//***************************************************************************** edit dima-f 12.09.17
