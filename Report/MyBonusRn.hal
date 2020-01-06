@@ -1552,12 +1552,12 @@ begin
                     OutString(pos[23],0,FindSVOPhone(svonr,IVr),false);
                     OutString(pos[23],0,FindSVOItem(svonr),false);
                     //***************************************************************************** edit dima-f 12.09.17
-                    if(nonblank(svonr and quant>0)) begin
+                    /*if(nonblank(svonr and quant>0)) begin
                         if(vec[svonr]==false) begin
                             vec[svonr]=true;
                             n = n + 1;
                         end;
-                    end;
+                    end;*/
                     //***************************************************************************** end edit
                   endformat;
                   	totSum = totSum + sumorig;
@@ -1573,6 +1573,7 @@ begin
                   	if(nonblank(svonr and quant>0)) begin
                         if(vec[svonr]==false) begin
                             vec[svonr]=true;
+                            n = n + 1;
                             vn[vkey] = vn[vkey] + 1;
                         end;
                     end;
@@ -1626,12 +1627,12 @@ begin
                     OutString(pos[23],0,FindSVOPhone(svonr,IVr),false);
                     OutString(pos[23],0,FindSVOItem(svonr),false);
                     //***************************************************************************** edit dima-f 12.09.17
-                    if(nonblank(svonr and quant>0)) begin
+                    /*if(nonblank(svonr and quant>0)) begin
                         if(vec[svonr]==false) begin
                             vec[svonr]=true;
                             n = n + 1;
                         end;
-                    end;
+                    end;*/
                     //***************************************************************************** end edit
 										endformat;
 										totSum = totSum + sumorig;
@@ -1648,6 +1649,7 @@ begin
                         if(vec[svonr]==false) begin
                             vec[svonr]=true;
                             vn[vkey] = vn[vkey] + 1;
+                            n = n + 1;
                         end;
                     end;
                   	
@@ -1958,13 +1960,13 @@ lsm1:;
 														OutString(pos[23],0,FindSVOPhone(svonr,newIVr),false);
 														OutString(pos[23],0,FindSVOItem(svonr),false);
 														//***************************************************************************** edit dima-f 12.09.17
-                                                        if(nonblank(svonr) and quant>0) begin
-                                                            if(vec[svonr]==false) begin
-                                                                vec[svonr]=true;
-                                                                n = n + 1;
-                                                            end;
-                                                        end;
-                                                        //***************************************************************************** end edit
+														/*if(nonblank(svonr) and quant>0) begin
+																if(vec[svonr]==false) begin
+																		vec[svonr]=true;
+																		n = n + 1;
+																end;
+														end;*/
+														//***************************************************************************** end edit
 													endformat;
 														totSum = totSum + sumorig;
 														totCost = totCost + sumcostorig;
@@ -1980,6 +1982,7 @@ lsm1:;
 																if(vec[svonr]==false) begin
 																		vec[svonr]=true;
 																		vn[vkey] = vn[vkey] + 1;
+																		n = n + 1;
 																end;
 														end;
 										
