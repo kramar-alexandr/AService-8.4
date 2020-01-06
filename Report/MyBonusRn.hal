@@ -1565,7 +1565,7 @@ begin
                   	totGP = totGP + gporig;
                   	
                   	vkey = "nocost";
-                  	if(costorig!=0)then begin
+                  	if(sumcostorig!=0)then begin
                   		vkey = "cost";
                   	end;
                   	
@@ -1639,7 +1639,7 @@ begin
 										totGP = totGP + gporig;
 										
 										vkey = "nocost";
-                  	if(costorig!=0)then begin
+                  	if(sumcostorig!=0)then begin
                   		vkey = "cost";
                   	end;
                   	
@@ -1971,7 +1971,7 @@ lsm1:;
 														totGP = totGP + gporig;  
 														
 														vkey = "nocost";
-														if(costorig!=0)then begin
+														if(sumcostorig!=0)then begin
 															vkey = "cost";
 														end;
 										
