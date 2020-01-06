@@ -1258,7 +1258,7 @@ begin
   row WSVc WSrw;
   string 50 enginer,tstr,group;
   val priceorig,costorig,sumorig,sumcostorig,gporig,curorig;
-  string 10 curncy;
+  string 10 curncy,vkey;
   array val rate,qty,cost,curcost; //Edit***************************Sasha2,15:29 23.04.2015
 	array date indate; //Edit***************************Sasha2,15:29 23.04.2015
 	array string 100 vecode,serial,curncyarr; //Edit***************************Sasha2,15:29 23.04.2015
@@ -1271,15 +1271,14 @@ begin
 	array string 100 comment;
 	longint worksheet,CredNo,svonr;
 	val totSum,totCost,totGP;
+	vector val vtotSum,vtotCost,vtotGP;
 	integer cred;
 	vector boolean usedinvno;
 	string 50 cusr,UtverjFinishUser;
-	
-	//***************************************************************************** edit dima-f 12.09.17
-    integer n;
-    vector boolean vec;
-	n=0;
-	//***************************************************************************** end edit
+	integer n;
+	vector integer vn;
+	vector boolean vec;
+
 	cusr = currentuser;
 	
 	if(nonblank(RepSpec.f1))then begin
@@ -1564,6 +1563,24 @@ begin
                   	totSum = totSum + sumorig;
                   	totCost = totCost + sumcostorig;
                   	totGP = totGP + gporig;
+                  	
+                  	vkey = "nocost";
+                  	if(costorig!=0)then begin
+                  		vkey = "cost";
+                  	end;
+                  	
+                  	
+                  	if(nonblank(svonr and quant>0)) begin
+                        if(vec[svonr]==false) begin
+                            vec[svonr]=true;
+                            vn[vkey] = vn[vkey] + 1;
+                        end;
+                    end;
+                  	
+                  	vtotSum[vkey] = totSum + sumorig;
+                  	vtotCost[vkey] = totCost + sumcostorig;
+                  	vtotGP[vkey] = totGP + gporig;
+                  	
                   
                 end; //Edit***************************Sasha2,15:52 23.04.2015
                 if(foundqty<IVrw.Quant) then begin //Edit***************************Sasha2,15:52 23.04.2015 {
@@ -1616,12 +1633,30 @@ begin
                         end;
                     end;
                     //***************************************************************************** end edit
-                          endformat;
-                                totSum = totSum + sumorig;
-                                totCost = totCost + sumcostorig;
-                                totGP = totGP + gporig;
-                      end;	 //Edit***************************Sasha2,18:04 23.04.2015 }
-                      end; //CurrentUser == enginer
+										endformat;
+										totSum = totSum + sumorig;
+										totCost = totCost + sumcostorig;
+										totGP = totGP + gporig;
+										
+										vkey = "nocost";
+                  	if(costorig!=0)then begin
+                  		vkey = "cost";
+                  	end;
+                  	
+                  	
+                  	if(nonblank(svonr and quant>0)) begin
+                        if(vec[svonr]==false) begin
+                            vec[svonr]=true;
+                            vn[vkey] = vn[vkey] + 1;
+                        end;
+                    end;
+                  	
+                  	vtotSum[vkey] = totSum + sumorig;
+                  	vtotCost[vkey] = totCost + sumcostorig;
+                  	vtotGP[vkey] = totGP + gporig;
+										
+								end;	 //Edit***************************Sasha2,18:04 23.04.2015 }
+								end; //CurrentUser == enginer
               end;
             end;
             goto lsm1;
@@ -1933,7 +1968,25 @@ lsm1:;
 													endformat;
 														totSum = totSum + sumorig;
 														totCost = totCost + sumcostorig;
-														totGP = totGP + gporig;                        
+														totGP = totGP + gporig;  
+														
+														vkey = "nocost";
+														if(costorig!=0)then begin
+															vkey = "cost";
+														end;
+										
+										
+														if(nonblank(svonr and quant>0)) begin
+																if(vec[svonr]==false) begin
+																		vec[svonr]=true;
+																		vn[vkey] = vn[vkey] + 1;
+																end;
+														end;
+										
+														vtotSum[vkey] = totSum + sumorig;
+														vtotCost[vkey] = totCost + sumcostorig;
+														vtotGP[vkey] = totGP + gporig;
+														                      
 												end;
       					      end;
 	                 end;
@@ -1950,11 +2003,32 @@ lsm1:;
 		startformat(15);
 		endformat;
 		Black_Divider(0,1);
+		startformat(15);
 		OutVal(pos[11],0,totSum,M4Val,false);
 		OutVal(pos[12],0,totCost,M4Val,false);
 		OutVal(pos[13],0,totGP,M4Val,false);
 		OutString(pos[21],0,USetStr(32632) & n,false);//***************************************************************************** edit dima-f 12.09.17
 		endformat;
+		
+		startformat(15);
+			outstring(0,0,"Услуги",false);
+		endformat;
+		Black_Divider(0,1);
+		OutVal(pos[11],0,vtotSum["nocost"],M4Val,false);
+		OutVal(pos[12],0,vtotCost["nocost"],M4Val,false);
+		OutVal(pos[13],0,vtotGP["nocost"],M4Val,false);
+		OutString(pos[21],0,USetStr(32632) & vn["nocost"],false);
+		startformat(15);
+			outstring(0,0,"Запчасти",false);
+		endformat;
+		Black_Divider(0,1);
+		OutVal(pos[11],0,vtotSum["cost"],M4Val,false);
+		OutVal(pos[12],0,vtotCost["cost"],M4Val,false);
+		OutVal(pos[13],0,vtotGP["cost"],M4Val,false);
+		OutString(pos[21],0,USetStr(32632) & vn["cost"],false);
+		endformat;
+		
+		
 	end;
 	RepSpec.vals3=n;//***************************************************************************** edit dima-f 12.09.17
     RepSpec.vals4=totGP;//***************************************************************************** edit dima-f 12.09.17
