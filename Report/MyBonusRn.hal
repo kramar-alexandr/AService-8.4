@@ -1578,9 +1578,9 @@ begin
                         end;
                     end;
                   	
-                  	vtotSum[vkey] = totSum + sumorig;
-                  	vtotCost[vkey] = totCost + sumcostorig;
-                  	vtotGP[vkey] = totGP + gporig;
+                  	vtotSum[vkey] = vtotSum[vkey] + sumorig;
+                  	vtotCost[vkey] = vtotCost[vkey] + sumcostorig;
+                  	vtotGP[vkey] = vtotGP[vkey] + gporig;
                   	
                   
                 end; //Edit***************************Sasha2,15:52 23.04.2015
@@ -1653,9 +1653,9 @@ begin
                         end;
                     end;
                   	
-                  	vtotSum[vkey] = totSum + sumorig;
-                  	vtotCost[vkey] = totCost + sumcostorig;
-                  	vtotGP[vkey] = totGP + gporig;
+                  	vtotSum[vkey] = vtotSum[vkey] + sumorig;
+                  	vtotCost[vkey] = vtotCost[vkey] + sumcostorig;
+                  	vtotGP[vkey] = vtotGP[vkey] + gporig;
 										
 								end;	 //Edit***************************Sasha2,18:04 23.04.2015 }
 								end; //CurrentUser == enginer
@@ -1986,9 +1986,9 @@ lsm1:;
 																end;
 														end;
 										
-														vtotSum[vkey] = totSum + sumorig;
-														vtotCost[vkey] = totCost + sumcostorig;
-														vtotGP[vkey] = totGP + gporig;
+														vtotSum[vkey] = vtotSum[vkey] + sumorig;
+														vtotCost[vkey] = vtotCost[vkey] + sumcostorig;
+														vtotGP[vkey] = vtotGP[vkey] + gporig;
 														                      
 												end;
       					      end;
