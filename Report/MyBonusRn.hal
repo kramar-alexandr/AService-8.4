@@ -2007,7 +2007,7 @@ lsm1:;
 		endformat;
 		
 		Black_Divider(0,1);
-		startformat(15);
+		/*startformat(15);
 			outstring(0,0,"Услуги",false);
 		endformat;
 		
@@ -2029,7 +2029,7 @@ lsm1:;
 		Black_Divider(0,1);
 		startformat(15);
 			outstring(0,0,"Суммарно",false);
-		endformat;
+		endformat;*/
 		startformat(15);
 		OutVal(pos[11],0,totSum,M4Val,false);
 		OutVal(pos[12],0,totCost,M4Val,false);
