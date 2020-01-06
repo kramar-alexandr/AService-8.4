@@ -2007,25 +2007,29 @@ lsm1:;
 		endformat;
 		Black_Divider(0,1);
 		startformat(15);
+			outstring(0,0,"Суммарно",false);
+		endformat;
+		startformat(15);
 		OutVal(pos[11],0,totSum,M4Val,false);
 		OutVal(pos[12],0,totCost,M4Val,false);
 		OutVal(pos[13],0,totGP,M4Val,false);
 		OutString(pos[21],0,USetStr(32632) & n,false);//***************************************************************************** edit dima-f 12.09.17
 		endformat;
 		
+		Black_Divider(0,1);
 		startformat(15);
 			outstring(0,0,"Услуги",false);
 		endformat;
-		Black_Divider(0,1);
+		
 		OutVal(pos[11],0,vtotSum["nocost"],M4Val,false);
 		OutVal(pos[12],0,vtotCost["nocost"],M4Val,false);
 		OutVal(pos[13],0,vtotGP["nocost"],M4Val,false);
 		OutString(pos[21],0,USetStr(32632) & vn["nocost"],false);
 		endformat;
+		Black_Divider(0,1);
 		startformat(15);
 			outstring(0,0,"Запчасти",false);
 		endformat;
-		Black_Divider(0,1);
 		OutVal(pos[11],0,vtotSum["cost"],M4Val,false);
 		OutVal(pos[12],0,vtotCost["cost"],M4Val,false);
 		OutVal(pos[13],0,vtotGP["cost"],M4Val,false);
