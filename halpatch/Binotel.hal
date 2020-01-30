@@ -834,7 +834,7 @@ begin
 	
 	for(j=0;j<JSONCountChildren(jobj,"");j=j+1)begin
 		keystr = JSONGet(jobj,JSONGetChildName(jobj,"",j));
-		if(JSONGet(jobj,JSONGetChildName(jobj,"",j))=="gettingCallSettings" and JSONGetChildName(jobj,"",j)=="requestType")then begin
+		if(JSONGet(jobj,JSONGetChildName(jobj,"",j))=="apiCallSettings" and JSONGetChildName(jobj,"",j)=="requestType")then begin
 			rectype = true;
 		end;
 		if(JSONGetChildName(jobj,"",j)=="externalNumber")then begin
@@ -941,7 +941,8 @@ begin
 			end;
 			
 			if(blank(targetphone))then begin
-				str = "{\"customerData\":{\"name\":\"" & name & "\",\"description\":\"programer\"}}";
+				str = "{\"name\":\"" & name & "\"}";
+				//str = "{\"customerData\":{\"name\":\"" & name & "\",\"description\":\"programer\"}}";
 			end else begin
 				
 				if(name=="5001494 Александр Крамар ")then begin
@@ -955,7 +956,7 @@ begin
 				end;
 				recordstore(Phoner,true);
 //				str = "{\"customerData\":{\"name\":\"" & name & "\",\"description\":\"programer\",\"assignedToEmployeeNumber\":" & targetphone & "},\"routeData\":{\"type:\":\"route\",\"id\":101416}}";
-				str = "{\"customerData\":{\"name\":\"" & name & "\",\"description\":\"programer\",\"assignedToEmployeeEmail\":\"" & targetphone & "\"" & "}}";
+				str = "{\"name\":\"" & name & "\",\"customerData\":{\"assignedToEmployeeEmail\":\"" & targetphone & "\"" & "}}";
 				if(blank(BActr.UserNum))then begin
 					BActr.UserNum = USr.Phone2;
 				end;
