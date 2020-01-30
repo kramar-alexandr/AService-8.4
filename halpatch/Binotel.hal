@@ -943,8 +943,8 @@ begin
 			end;
 			
 			if(blank(targetphone))then begin
-				str = "{\"name\":\"" & name & "\"}";
-				//str = "{\"customerData\":{\"name\":\"" & name & "\",\"description\":\"programer\"}}";
+				//str = "{\"name\":\"" & name & "\"}";
+				str = "{\"customerData\":{\"name\":\"" & name & "\",\"description\":\"programer\"}}";
 			end else begin
 				
 				if(name=="5001494 Александр Крамар ")then begin
@@ -957,8 +957,8 @@ begin
 					targetphone = targetphone & "@a-service.ua";
 				end;
 				recordstore(Phoner,true);
-//				str = "{\"customerData\":{\"name\":\"" & name & "\",\"description\":\"programer\",\"assignedToEmployeeNumber\":" & targetphone & "},\"routeData\":{\"type:\":\"route\",\"id\":101416}}";
-				str = "{\"name\":\"" & name & "\",\"customerData\":{\"assignedToEmployeeEmail\":\"" & targetphone & "\"" & "}}";
+				str = "{\"customerData\":{\"name\":\"" & name & "\",\"description\":\"programer\",\"assignedToEmployeeNumber\":" & targetphone & "},\"routeData\":{\"type:\":\"route\",\"id\":101416}}";
+				//str = "{\"name\":\"" & name & "\",\"customerData\":{\"assignedToEmployeeEmail\":\"" & targetphone & "\"" & "}}";
 				/*if(blank(BActr.UserNum))then begin
 					BActr.UserNum = USr.Phone2;
 				end;
