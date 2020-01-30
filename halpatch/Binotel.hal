@@ -836,6 +836,7 @@ begin
 	
 	for(j=0;j<JSONCountChildren(jobj,"");j=j+1)begin
 		keystr = JSONGet(jobj,JSONGetChildName(jobj,"",j));
+		logtext(0,"json keystr " & keystr);
 		if(JSONGet(jobj,JSONGetChildName(jobj,"",j))=="apiCallSettings" and JSONGetChildName(jobj,"",j)=="requestType")then begin
 			rectype = true;
 		end;
