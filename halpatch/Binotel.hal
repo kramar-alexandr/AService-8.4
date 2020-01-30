@@ -791,7 +791,8 @@ begin
 	setcompany(8,false)
 	
 	webgetpostdata(encodearea);
-	writeareatofile(encodearea,"WebBinotelAPICallSet.txt",0);
+	addtexttoarea(chr(13) & chr(10),encodearea);
+	writeareatofile(encodearea,"WebBinotelAPICallSet.txt",1);
 	
 	
 	tstr = "";
@@ -826,7 +827,8 @@ begin
 	  end;
 	end; 
 	addtexttoarea("}",newarea);
-	writeareatofile(newarea,"WebBinotelAPICallSetnewarea.txt",0);
+	addtexttoarea(chr(13) & chr(10),newarea);
+	writeareatofile(newarea,"WebBinotelAPICallSetnewarea.txt",1);
 	
 	jobj = parsejsonarea(newarea);
 	
