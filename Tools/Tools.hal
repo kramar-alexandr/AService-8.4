@@ -1134,7 +1134,7 @@ begin
 			case"APP1":Actr.MainPersons = "BATCHENKO,DIMA,KAYZER";
 								 Actr.Comment = addhours(determtime,2) & " " & Actr.Comment;
 								 needcreate = true;
-			case"APP2":Actr.MainPersons = "TRIKOPA,SAO,RABCHUN,KAYZER";//"TRIKOPA,SAO,RABCHUN,KAYZER";
+			case"APP2":Actr.MainPersons = "TRIKOPA,SAO,RABCHUN,KAYZER,PIROGOV";//"TRIKOPA,SAO,RABCHUN,KAYZER";
 								 Actr.Comment = addhours(determtime,5) & " " & Actr.Comment;
 								 needcreate = true;
 			case"APP3":Actr.MainPersons = "TRIKOPA,SAO,RABCHUN,KAYZER";//TRIKOPA,SAO,RABCHUN,
