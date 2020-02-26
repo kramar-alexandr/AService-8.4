@@ -665,7 +665,7 @@ record IVVc IVr;
 	setfileonserver(true);
 	
 	i = 0;
-	RepSpec.sStartDate = currentdate;
+	RepSpec.sStartDate = addday(currentdate,-1);
 	IVr.TransDate = RepSpec.sStartDate;
 	TrHs = true;
 	while (loopkey("TransDate",IVr,1,TrHs))begin
@@ -721,7 +721,7 @@ record IVVc IVr;
 	addtexttoarea("\"user\":\"aservice.report@gmail.com\",",request);
 	addtexttoarea("\"pass\":\"arPassword123QWE@\",",request);
 	addtexttoarea("\"from\":\"kramar.alexandr@gmail.com\",",request);
-	addtexttoarea("\"to\":\"" & "dv@a-service.in.ua,sg@a-service.in.ua" & "\",",request);
+	addtexttoarea("\"to\":\"" & "dv@a-service.in.ua,sg@a-service.in.ua,kramar.alexandr@gmail.com" & "\",",request);
 	addtexttoarea("\"subject\":\"" & USetStr(31101) & " " & CurrentDate & "\",",request);
 	addtexttoarea("\"plaintext\":\"notblank\",",request);
 					
