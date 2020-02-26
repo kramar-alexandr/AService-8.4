@@ -741,6 +741,7 @@ end;
 global webpublic procedure WebGenRnForMail()
 begin
 	
+	setcompany(8,false);
 	GenRnForMail;
 	
 return;
