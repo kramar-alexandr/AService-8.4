@@ -5756,7 +5756,7 @@ begin
   RlColKey(79,79,"ОК",OKFlag,false,OKFlag);
   RlColKey(111,111,"Дата сч/ф",InvDate,false,InvDate);
   if (StandardHansa==false) then begin
-    RlColKey(191,191,"Офиц. Но.",OfficialSerNr,false,OfficialSerNr);
+    RlColKey(191,191,"Зак. на обсл.",SVONr,false,SVONr);
   end;
   RlColKey(301,301,"Счёт Но.",OrderNr,false,OrderNr);
   pos = 381;
