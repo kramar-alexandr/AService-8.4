@@ -665,7 +665,7 @@ record IVVc IVr;
 	setfileonserver(true);
 	
 	i = 0;
-	RepSpec.sStartDate = addday(currentdate,-1);
+	RepSpec.sStartDate = currentdate;
 	IVr.TransDate = RepSpec.sStartDate;
 	TrHs = true;
 	while (loopkey("TransDate",IVr,1,TrHs))begin
