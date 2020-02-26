@@ -738,6 +738,14 @@ record IVVc IVr;
 return;
 end;
 
+global webpublic procedure WebGenRnForMail()
+begin
+	
+	GenRnForMail;
+	
+return;
+end;
+
 global
 updating procedure ImportOfRegisterRewriting(record RcVc RepSpec)
 BEGIN
