@@ -692,44 +692,44 @@ record IVVc IVr;
 	end;	
 	//setexportcodepage("Windows1251");
 	Delete_File("Stock/SalesGroup.txt");
-		for(j=0;j<keys.length;j=j+1) begin
-			if (OpenExportFile("Stock/SalesGroup.txt", true)) then begin
-				logtext(0,"Stock/SalesGroup" & keys[j]);
-				RepSpec.flags[2]=0;
-				RepSpec.Media=mtFile;
-				RepSpec.f2 = keys[j];
-				RepSpec.ArtMode = 1;
-				startformat(15);
-				OutString(0,0,"------------------------",false);
-				endformat;
-				startformat(15);
-				OutString(0,0,names[keys[j]],false);
-				OutString(0,0,keys[j],false);
-				endformat;
-				startformat(15);
-				endformat;
-				SalesReportAccRn(RepSpec);
-			end;		
-		end;			
-		CloseFile;
+	OpenExportFile("Stock/SalesGroup.txt", true);
+	
+	for(j=0;j<keys.length;j=j+1) begin
+		logtext(0,"Stock/SalesGroup" & keys[j]);
+		RepSpec.flags[2]=0;
+		RepSpec.Media=mtFile;
+		RepSpec.f2 = keys[j];
+		RepSpec.ArtMode = 1;
+		startformat(15);
+		OutString(0,0,"------------------------",false);
+		endformat;
+		startformat(15);
+		OutString(0,0,names[keys[j]],false);
+		OutString(0,0,keys[j],false);
+		endformat;
+		startformat(15);
+		endformat;
+		SalesReportAccRn(RepSpec);
+	end;			
+	CloseFile;
 							
-			setareazerosize(request);
-			addtexttoarea("{",request);
-			addtexttoarea("\"host\":\"smtp.gmail.com\",",request);
-			addtexttoarea("\"port\":465,",request);
-			addtexttoarea("\"secure\":true,",request);
-			addtexttoarea("\"user\":\"aservice.report@gmail.com\",",request);
-			addtexttoarea("\"pass\":\"arPassword123QWE@\",",request);
-			addtexttoarea("\"from\":\"kramar.alexandr@gmail.com\",",request);
-			addtexttoarea("\"to\":\"" & "dv@a-service.in.ua,sg@a-service.in.ua" & "\",",request);
-			addtexttoarea("\"subject\":\"" & USetStr(31101) & " " & CurrentDate & "\",",request);
-			addtexttoarea("\"plaintext\":\"notblank\",",request);
-							
-			//addtexttoarea("\"filename\":\"SalesGroup" & keys[j] & ".txt"& "\",",request);
-			addtexttoarea("\"path\":\"/usr/local/bin/StandardERPServer/Stock/" & "SalesGroup.txt" & "\"",request);
-			addtexttoarea("}",request);
+	setareazerosize(request);
+	addtexttoarea("{",request);
+	addtexttoarea("\"host\":\"smtp.gmail.com\",",request);
+	addtexttoarea("\"port\":465,",request);
+	addtexttoarea("\"secure\":true,",request);
+	addtexttoarea("\"user\":\"aservice.report@gmail.com\",",request);
+	addtexttoarea("\"pass\":\"arPassword123QWE@\",",request);
+	addtexttoarea("\"from\":\"kramar.alexandr@gmail.com\",",request);
+	addtexttoarea("\"to\":\"" & "dv@a-service.in.ua,sg@a-service.in.ua" & "\",",request);
+	addtexttoarea("\"subject\":\"" & USetStr(31101) & " " & CurrentDate & "\",",request);
+	addtexttoarea("\"plaintext\":\"notblank\",",request);
+					
+	//addtexttoarea("\"filename\":\"SalesGroup" & keys[j] & ".txt"& "\",",request);
+	addtexttoarea("\"path\":\"/usr/local/bin/StandardERPServer/Stock/" & "SalesGroup.txt" & "\"",request);
+	addtexttoarea("}",request);
 
-			MySendWebRequest("127.0.0.1",1070,1070,false,"POST","/sendMail","application/json","",false,request,reply,5);
+	MySendWebRequest("127.0.0.1",1070,1070,false,"POST","/sendMail","application/json","",false,request,reply,5);
 
 	
 	setfileonserver(false);
