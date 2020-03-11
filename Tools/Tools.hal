@@ -1178,16 +1178,16 @@ begin
 	
 	if(point==5)then begin
 		switch(INr.Code)begin
-			case "IMAC":	Actr.MainPersons = "TRIKOPA,SAO,RABCHUN,KAYZER,PIROGOV";
+			case "IMAC":	Actr.MainPersons = "TRIKOPA,SAO,RABCHUN,KAYZER,PIROGOV,SAVIN";
 											Actr.Comment = addhours(currenttime,5) & " " & Actr.Comment;
 											needcreate = true;
-			case "MACBOOK":	Actr.MainPersons = "TRIKOPA,SAO,RABCHUN,KAYZER,POGEDAEV,PIROGOV";
+			case "MACBOOK":	Actr.MainPersons = "TRIKOPA,SAO,RABCHUN,KAYZER,POGEDAEV,PIROGOV,SAVIN";
 											Actr.Comment = addhours(currenttime,5) & " " & Actr.Comment;
 											needcreate = true;
-			case "MACBOOK_PRO":	Actr.MainPersons = "TRIKOPA,SAO,RABCHUN,KAYZER,PIROGOV";
+			case "MACBOOK_PRO":	Actr.MainPersons = "TRIKOPA,SAO,RABCHUN,KAYZER,PIROGOV,SAVIN";
 											Actr.Comment = addhours(currenttime,5) & " " & Actr.Comment;
 											needcreate = true;
-			case "MACBOOK_AIR":	Actr.MainPersons = "TRIKOPA,SAO,RABCHUN,KAYZER,POGEDAEV,PIROGOV";
+			case "MACBOOK_AIR":	Actr.MainPersons = "TRIKOPA,SAO,RABCHUN,KAYZER,POGEDAEV,PIROGOV,SAVIN";
 											Actr.Comment = addhours(currenttime,5) & " " & Actr.Comment;
 											needcreate = true;
 			case "IPHONE":	Actr.MainPersons = "BATCHENKO,DIMA,KAYZER";
@@ -1204,16 +1204,16 @@ begin
 	
 	if(point==9)then begin
 		switch(INr.Code)begin
-			case "IMAC":	Actr.MainPersons = "TRIKOPA,SAO,RABCHUN,KAYZER,PIROGOV";
+			case "IMAC":	Actr.MainPersons = "TRIKOPA,SAO,RABCHUN,KAYZER,PIROGOV,SAVIN";
 											Actr.Comment = addhours(currenttime,5) & " " & Actr.Comment;
 											needcreate = true;
-			case "MACBOOK":	Actr.MainPersons = "TRIKOPA,SAO,RABCHUN,KAYZER,POGEDAEV,PIROGOV";
+			case "MACBOOK":	Actr.MainPersons = "TRIKOPA,SAO,RABCHUN,KAYZER,POGEDAEV,PIROGOV,SAVIN";
 											Actr.Comment = addhours(currenttime,5) & " " & Actr.Comment;
 											needcreate = true;
-			case "MACBOOK_PRO":	Actr.MainPersons = "TRIKOPA,SAO,RABCHUN,KAYZER,PIROGOV";
+			case "MACBOOK_PRO":	Actr.MainPersons = "TRIKOPA,SAO,RABCHUN,KAYZER,PIROGOV,SAVIN";
 											Actr.Comment = addhours(currenttime,5) & " " & Actr.Comment;
 											needcreate = true;
-			case "MACBOOK_AIR":	Actr.MainPersons = "TRIKOPA,SAO,RABCHUN,KAYZER,POGEDAEV,PIROGOV";
+			case "MACBOOK_AIR":	Actr.MainPersons = "TRIKOPA,SAO,RABCHUN,KAYZER,POGEDAEV,PIROGOV,SAVIN";
 											Actr.Comment = addhours(currenttime,5) & " " & Actr.Comment;
 											needcreate = true;
 			case "IPHONE":	Actr.MainPersons = "BATCHENKO,DIMA,KAYZER";
