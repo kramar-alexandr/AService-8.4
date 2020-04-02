@@ -2211,6 +2211,25 @@ return;
 end;
 
 global
+updating procedure ChangeToGolovizinDsm()
+begin
+
+record ActVc Actr;
+integer wn;	
+	
+	wn = curwindow;
+	deselectwindow(wn,true);
+	getwindowrecord(wn,Actr);
+	
+	Actr.Comment = "Cогласовать ремонт " & Actr.SVOSerNr;
+	Actr.MainPersons = "SEREGA";
+	putwindowrecord(wn,Actr);
+	windowdook(wn,0);
+	
+return;
+end;
+
+global
 updating procedure ChangeToLEKHOLETOVDsm()
 begin
 
