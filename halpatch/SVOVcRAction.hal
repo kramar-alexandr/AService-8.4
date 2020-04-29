@@ -963,8 +963,8 @@ BEGIN
   	SVOr.FastTermPrepayDate = currentdate;
   	SVOr.FastTermPrepayTime = currenttime;
   end;
- 
-  
+ 	
+
   if(blank(SVOr.Kontinfo2))then begin// Edit ************************** Friday, 16 October 2015 17:36:32
   	SVOr.Kontinfo2 = USetStr(31047);
   end;
@@ -1084,6 +1084,14 @@ BEGIN
   	RecordCheckError(31088,"",-1,"Kontinfo1");
 		res = -1;
 		goto LSVOVcRecordCheck;
+  end;
+  
+  if (stat==Rs_insert) then begin
+		if(blank(SVOr.Kontinfo2))then begin// Edit ************************** BPI Ukraine - KramarAlexandr - 03, 29 04 2020 y. at 1:19:32 PM
+			RecordCheckError(31095,"",-1,"Kontinfo2");
+			res = -1;
+			goto LSVOVcRecordCheck;
+		end;
   end;
   
 	// Edit End ---------------------------------------------- Edit End
