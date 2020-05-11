@@ -606,6 +606,8 @@ begin
   
   StrSetText(AllowOKServBonusOut,"Дозволити ОК Виплату бонусу");// Edit ************************** BPI Ukraine - KramarAlexandr - 04, 26 09 2019 y. at 1:30:12 PM
   StrSetText(ViewAllServBonusOut,"Дозволити перегляд всіх виплат бонусів");// Edit ************************** BPI Ukraine - KramarAlexandr - 04, 26 09 2019 y. at 1:30:53 PM
+    StrSetText(RestAPI,"Rest API");
+
   EndStrSet;
 	
 	SetBegin(31);
