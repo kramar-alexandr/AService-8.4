@@ -99,8 +99,7 @@ begin
 	AddTextToArea("" & chr(13) & chr(10),a_req);
 	AddTextToArea("{",a_req);
 	
-	AddTextToArea("}",a_req);
-	AddTextToArea("" & chr(13) & chr(10),a_req);
+	
 	addParamToJSONArea("OrderNumber",NormalizeStrToJson(SVOr.SerNr),a_req);
 	addParamToJSONArea("Status",NormalizeStrToJson(SVOr.OrderStatus),a_req);
 	addParamToJSONArea("FirstName",NormalizeStrToJson(SVOr.Name),a_req);
@@ -113,6 +112,9 @@ begin
 	
 	
 	delLastComaInArea(a_req);
+	
+	AddTextToArea("}",a_req);
+	AddTextToArea("" & chr(13) & chr(10),a_req);
 	SendRawWebRequest("api.a-service.ua","443",true,"POST","/bot/sender.php","application/json","",false,a_req,replyarea,5);
 	writeareatofile(a_req,"sendMessageToSergeyRequest.txt",0);
 	writeareatofile(replyarea,"sendMessageToSergeyReply.txt",0);
