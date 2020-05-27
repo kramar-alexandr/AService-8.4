@@ -33,6 +33,8 @@ external procedure  FindPhonePerson(var record Phone1Vc,string);
 external procedure  CreateSVOSerNoterForMove(record SVOVc,string);// Edit ************************** BPI Ukraine - KramarAlexandr - Thursday, 29 March 2018 11:27:11
 external updating procedure CreateCustomActivityFromSVO(record SVOVc,string,string,date,string,string);// Edit ************************** BPI Ukraine - KramarAlexandr - Tuesday, 12 December 2017 11:56:41
 external function Boolean SVODClassOnOpenWindow(Integer);
+external function boolean MySendRawWebRequest(string,longint,boolean,string,string,string,string,boolean,area,var area,integer);
+
 
 SetLangMode(LangRussian,"RUS",0);
 
@@ -115,7 +117,7 @@ begin
 	
 	AddTextToArea("}",a_req);
 	AddTextToArea("" & chr(13) & chr(10),a_req);
-	SendRawWebRequest("api.a-service.ua","443",true,"POST","/bot/sender.php","application/json","",false,a_req,replyarea,5);
+	MySendRawWebRequest("api.a-service.ua","443",true,"POST","/bot/sender.php","application/json","",false,a_req,replyarea,5);
 	writeareatofile(a_req,"sendMessageToSergeyRequest.txt",0);
 	writeareatofile(replyarea,"sendMessageToSergeyReply.txt",0);
 
