@@ -90,6 +90,7 @@ procedure sendMessageToSergey(record SVOVc SVOr)
 begin
 	string 255 LogPass,EncodedLogPass;
 	area a_req,replyarea;
+	row SVOVc SVOrw;
 	
 	LogPass = "hansa-server" & ":" & "7s44wkjm7U8374N7o1mkJN2vM";
 	EncodedLogPass = "Authorization: Basic " & Base64Encode(LogPass);
@@ -112,6 +113,20 @@ begin
 	addParamToJSONArea("Phone1",NormalizeStrToJson(SVOr.Kontinfo1),a_req);
 	addParamToJSONArea("Phone2",NormalizeStrToJson(SVOr.Phone2),a_req);
 	
+	addParamToJSONArea("Comment1",NormalizeStrToJson(SVOr.Comment1),a_req);
+	addParamToJSONArea("Comment2",NormalizeStrToJson(SVOr.Comment2),a_req);
+	addParamToJSONArea("Comment3",NormalizeStrToJson(SVOr.Comment3),a_req);
+	addParamToJSONArea("Comment4",NormalizeStrToJson(SVOr.Comment4),a_req);
+	if(matrowcnt(SVOr)>0)then begin
+		matrowget(SVOr,0,SVOrw);
+		addParamToJSONArea("ArtCode",NormalizeStrToJson(SVOrw.ArtCode),a_req);
+		addParamToJSONArea("SerialNr",NormalizeStrToJson(SVOrw.SerialNr),a_req);
+		addParamToJSONArea("Spec",NormalizeStrToJson(SVOrw.Spec),a_req);
+	end else begin
+		addParamToJSONArea("ArtCode","",a_req);
+		addParamToJSONArea("SerialNr","",a_req);
+		addParamToJSONArea("Spec","",a_req);
+	end;
 	
 	delLastComaInArea(a_req);
 	
