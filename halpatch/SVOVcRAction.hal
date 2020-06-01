@@ -611,7 +611,7 @@ BEGIN
     AddPhoneLightAfterSVOVcSaved(SVOr);//************************ dima-f 14.09.17
   end;
   
-  sendMessageToSergey(SVOr);// Edit ************************** BPI Ukraine - KramarAlexandr - 02, 26 05 2020 y. at 4:03:04 PM
+  queued.sendMessageToSergey(SVOr);// Edit ************************** BPI Ukraine - KramarAlexandr - 02, 26 05 2020 y. at 4:03:04 PM
   
   //SendSMSText(SVOr.Addr0,SVOr.SerNr,"0662200737");
   SVOVcRecordSaveAfter = res; 
@@ -836,7 +836,7 @@ BEGIN
 		comment = USetStr(31059);
 		CreateNoterChangeInSVO(SVOr,tstr,comment);
 		
-		sendMessageToSergey(SVOr);
+		queued.sendMessageToSergey(SVOr);
 		
 	end;
 	
