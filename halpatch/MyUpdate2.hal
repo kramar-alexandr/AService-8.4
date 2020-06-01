@@ -4,6 +4,7 @@ external function Boolean MySendWebRequest(string,longint,longint,boolean,string
 external function Boolean FindStringInString(string, string);
 external function Boolean MySendAsyncWebRequest(string,longint,boolean,string,string,string,string,area,string,integer);
 external updating function boolean EasySendTurboSMS(string, string);
+remote procedure sendMessageToSergey(record SVOVc);
 
 SetLangMode(LangRussian,"RUS",0);
 
@@ -366,6 +367,9 @@ begin
 					logtext(0,"SENDSECONDSMS SMS");
 			end;
 		end;
+		
+		queued.sendMessageToSergey(SVOr);// Edit ************************** BPI Ukraine - KramarAlexandr - 01, 01 06 2020 y. at 11:21:42 AM
+
   end;
 	
 	LSENDSMS:;

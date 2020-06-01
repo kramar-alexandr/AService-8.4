@@ -86,7 +86,7 @@ begin
 	return;
 end;
 
-procedure sendMessageToSergey(record SVOVc SVOr)
+global procedure sendMessageToSergey(record SVOVc SVOr)
 begin
 	string 255 LogPass,EncodedLogPass;
 	area a_req,replyarea;
@@ -127,6 +127,7 @@ begin
 		addParamToJSONArea("SerialNr","",a_req);
 		addParamToJSONArea("Spec","",a_req);
 	end;
+	addParamToJSONArea("WSCost",SVOr.WSCost,a_req);
 	
 	delLastComaInArea(a_req);
 	
