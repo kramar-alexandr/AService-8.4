@@ -368,6 +368,7 @@ begin
 			end;
 		end;
 		
+		SVOr.OrderStatus = 999;// Edit ************************** BPI Ukraine - KramarAlexandr - 02, 02 06 2020 y. at 10:43:38 AM
 		queued.sendMessageToSergey(SVOr);// Edit ************************** BPI Ukraine - KramarAlexandr - 01, 01 06 2020 y. at 11:21:42 AM
 
   end;
