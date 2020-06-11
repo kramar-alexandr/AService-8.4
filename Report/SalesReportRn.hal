@@ -40,7 +40,7 @@ begin
 	lStartNewCalcCostAndPrice: 
 
 	//newcostblockbegin*****************
-	if(blank(PUr.CurncyCode) and com!="SVO2")then begin)then begin
+	if(blank(PUr.CurncyCode) and com!="SVO2")then begin
 		if(nonblank(IVrw.SerialNr))then begin
 			
 			IHr.ArtCode = IVrw.ArtCode;
