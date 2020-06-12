@@ -40,7 +40,7 @@ begin
 	lStartNewCalcCostAndPrice: 
 
 	//newcostblockbegin*****************
-	if(blank(PUr.CurncyCode) and com!="SVO2")then begin
+	if(blank(PUr.CurncyCode) and com!="SVO2 ")then begin
 		if(nonblank(IVrw.SerialNr))then begin
 			
 			IHr.ArtCode = IVrw.ArtCode;
@@ -75,7 +75,7 @@ begin
 						IHLoop = false;
 						IHfoundf = true;
 						PUr.SerNr = IHr.TransNr;
-						if(com!="SVO2")then begin
+						if(com!="SVO2 ")then begin
 							logtext(0,"com|" & com & "|");
 							cost[ressize] = IHr.TotCostPrice;
 							logtext(0,"lStartNewCalcCostAndPrice " & cost[ressize]);
@@ -93,7 +93,7 @@ begin
 			IHr.FileName = "PUVc";
 			if(readlastkey("ArtCodeSerialNr",IHr,3,true))then begin
 				PUr.SerNr = IHr.TransNr;
-				if(com!="SVO2")then begin
+				if(com!="SVO2 ")then begin
 					cost[ressize] = IHr.TotCostPrice;
 				end;
 				//qty[ressize] = IHr.Qty*cred;// Edit ************************** Tuesday, 22 September 2015 15:30:44
