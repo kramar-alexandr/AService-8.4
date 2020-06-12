@@ -197,6 +197,7 @@ begin
 				curncy = "USD";
 				GetFullCurncyRate(curncy,IVr.InvDate,fr,to1,to2,br1,br2);
 				uahcurrate[ressize] = to1;
+				logtext(0,IVrw.ArtCode & " comment[ressize] " & cost[ressize]);
 				comment[ressize] = com & " 1";
 			end else begin
 				if(left(IVr.CurncyCode,3)=="UAH")then begin
