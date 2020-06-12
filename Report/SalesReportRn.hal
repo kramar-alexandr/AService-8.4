@@ -76,6 +76,7 @@ begin
 						IHfoundf = true;
 						PUr.SerNr = IHr.TransNr;
 						if(com!="SVO2")then begin
+							logtext(0,"com|" & com & "|");
 							cost[ressize] = IHr.TotCostPrice;
 							logtext(0,"lStartNewCalcCostAndPrice " & cost[ressize]);
 						end;
