@@ -871,6 +871,7 @@ begin
 													end;
 											end else begin
 													cost[ressize] = 	AbsoluteVal(IHr.TotCostPrice / IHr.Qty);
+													logtext(0,IVrw.ArtCode & "cost[ressize] SVO2 " & cost[ressize]);
 													curcost[ressize] = AbsoluteVal(IHr.TotCostPriceCurncy / IHr.Qty);
 													curncy[ressize] = IHr.PUCurncyCode;
 													if(PUr.CurncyCode!=BCb.BaseCur1)then begin
@@ -886,6 +887,7 @@ begin
 													serial[ressize] = IHr.SerialNr;
 													qty[ressize] = -IHr.Qty; 
 													com = "SVO2 ";
+													
 													NewCalcCostAndPrice(IVr,IVrw,cost,curcost,qty,ressize,cred,realcostbase,realcostuah,realpricebase,realpriceuah,realsumbase,realsumuah,PUr,uahpurate,uahcurrate,com,comment,BCb,vecode);
 													ressize = ressize + 1;
 													if(ressize>=IVrw.Quant)then begin
