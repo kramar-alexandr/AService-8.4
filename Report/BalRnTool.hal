@@ -1566,7 +1566,8 @@ begin
   if ((nonblank(t2)) or (RepSpec.Media==mtFile)) then begin
     OutString(2,0,t2,false);
   end;  
-
+	
+	logtext(0,"PLfPLfPLfPLfPLfPLfPLfPLf");
 
   if (PLf==true) then begin
 /*
