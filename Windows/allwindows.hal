@@ -7892,7 +7892,7 @@ begin
   if (HasNLBudget) then begin
     EditFieldTL(h,v+=20,150,"Период бюджета",M4UStr,Normal,21,Stext,false,PerSClass);
   end;
-  CheckBox(345,v,0,"По местам",flags[10]);			//Edit----------------------Dima  29.01.2016
+  CheckBox(345,v,0,"По месяцам",flags[10]);			//Edit----------------------Dima  29.01.2016
   if (HasObjects) then begin
     EditFieldTL(h,v+=20,150,"Объект",M4UStr,Normal,60 ,ObjStr,false,ObjSClass);
     EditFieldTL(h,v+=20,50,"Тип объекта",M4UStr,Normal,5 ,ObjType,false,OTSClass);
