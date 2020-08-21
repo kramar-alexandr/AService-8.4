@@ -1358,15 +1358,17 @@ not needed any more
                     if (SNrb.BulkSerialNos!=0) then begin
                       serqty = blankval;
                       serialnr = FirstInRange(IVrw.SerialNr,60);
-                      while (nonblank(serialnr)) begin
-                        if (SerialNrAvail(IVrw.ArtCode,serialnr,location,1.00)==false) then begin
-                          RecordCheckError(1240,"",i,"SerialNr");      
-                          res = -1; 
-                          goto L99;
-                        end;
-                        serqty = serqty + 1;
-                        serialnr = NextSerialNumber(IVrw.ArtCode,serialnr,SNrb);
-                        if (serqty>=IVrw.Quant) then begin serialnr = ""; end;
+                      if (IVp.UpdStockFlag!=0) then begin// Edit ************************** BPI Ukraine - KramarAlexandr - 05, 21 08 2020 y. at 2:03:38 PM
+												while (nonblank(serialnr)) begin
+													if (SerialNrAvail(IVrw.ArtCode,serialnr,location,1.00)==false) then begin
+														RecordCheckError(1240,"",i,"SerialNr");      
+														res = -1; 
+														goto L99;
+													end;
+													serqty = serqty + 1;
+													serialnr = NextSerialNumber(IVrw.ArtCode,serialnr,SNrb);
+													if (serqty>=IVrw.Quant) then begin serialnr = ""; end;
+												end;
                       end;
                     end else begin
                       if (quant>1) then begin
@@ -1374,10 +1376,12 @@ not needed any more
                         res = -1; 
                         goto L99;
                       end;
-                      if (SerialNrAvail(IVrw.ArtCode,IVrw.SerialNr,location,quant)==false) then begin
-                        RecordCheckError(1240,"",i,"SerialNr");      
-                        res = -1; 
-                        goto L99;
+                      if (IVp.UpdStockFlag!=0) then begin// Edit ************************** BPI Ukraine - KramarAlexandr - 05, 21 08 2020 y. at 2:03:38 PM
+												if (SerialNrAvail(IVrw.ArtCode,IVrw.SerialNr,location,quant)==false) then begin
+													RecordCheckError(1240,"",i,"SerialNr");      
+													res = -1; 
+													goto L99;
+												end;
                       end;
                     end;                    
                   end;
@@ -1396,10 +1400,12 @@ not needed any more
                       end;
                     end;
                     prevsn = prevsn + IVrw.Quant;
-                    if (SerialNrAvail(IVrw.ArtCode,IVrw.SerialNr,location,prevsn)==false) then begin
-                      RecordCheckError(1240,"",i,"SerialNr");      
-                      res = -1; 
-                      goto L99;
+                    if (IVp.UpdStockFlag!=0) then begin// Edit ************************** BPI Ukraine - KramarAlexandr - 05, 21 08 2020 y. at 2:03:38 PM
+											if (SerialNrAvail(IVrw.ArtCode,IVrw.SerialNr,location,prevsn)==false) then begin
+												RecordCheckError(1240,"",i,"SerialNr");      
+												res = -1; 
+												goto L99;
+											end;
                     end;
                   end;
                 end;
