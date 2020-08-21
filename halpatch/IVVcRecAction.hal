@@ -1495,7 +1495,7 @@ L12:;
 					rwcnt = MatRowCnt(IVp);
 					for (i=0;i<rwcnt;i=i+1) begin
 						MatRowGet(IVp,i,IVrw);
-						if(IVrw.stp==kInvoiceRowTypeNormal)then begin
+						if(IVrw.stp==kInvoiceRowTypeNormal and IVrw.Sum!=0)then begin
 							if(nonblank(IVrw.ArtCode))then begin
 								INr.Code = IVrw.ArtCode;
 								if(readfirstmain(INr,1,true))then begin
@@ -1519,7 +1519,7 @@ L12:;
 					rwcnt = MatRowCnt(IVp);
 					for (i=0;i<rwcnt;i=i+1) begin
 						MatRowGet(IVp,i,IVrw);
-						if(IVrw.stp==kInvoiceRowTypeNormal)then begin
+						if(IVrw.stp==kInvoiceRowTypeNormal and IVrw.Sum!=0)then begin
 							if(nonblank(IVrw.ArtCode))then begin
 								INr.Code = IVrw.ArtCode;
 								if(readfirstmain(INr,1,true))then begin
