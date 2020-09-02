@@ -8537,9 +8537,9 @@ begin
     																							 HalPushButton(h+200,v,h+310,v+20,"ChangeToLEKHOLETOVDsm","На Лехолетова");
     																							 HalPushButton(h+320,v,h+430,v+20,"ChangeToShilkinDsm","На Шилкина");
     																							 HalPushButton(h+440,v,h+550,v+20,"ChangeToShkolarskyDsm","На Школярского");
-    																							 
+    v = v + vs;																							 
     																							 HalPushButton(h+90,v,h+190,v+20,"ChangeToKRAPIVNYTSDsm","На Крапивницьку");
-		v = v + vs;
+		
     EditField(h,v+=vs+5,-40,"Текст",Normal,Comment,false,0);
     EditField(h,v+=vs,-40,"Текст 1",Normal,Comment1,false,0);// Edit ************************** BPI Ukraine - KramarAlexandr - Monday, 27 November 2017 16:06:24
     EditField(h,v+=vs,80,"Тип",Normal,ActType,false,ActTypeSClass);//ActType2SClass
