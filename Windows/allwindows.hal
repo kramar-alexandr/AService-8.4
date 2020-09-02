@@ -8533,12 +8533,12 @@ begin
     v = 6; vs = 20; h = 100; h2 = 270; h3 = 420; h4 = 450; fs = 100;
     CommunicateButton;
     Tile(0,160,false,"",Comment);
-    EditField(h,v,50,"#",ViewOnly,SerNr,false,0);  HalPushButton(h+90,v,h+190,v+20,"ChangeToGolovizinDsm","На Головизина");// Edit ************************** BPI Ukraine - KramarAlexandr - 04, 01 08 2019 y. at 12:06:59 PM
-    																							 HalPushButton(h+200,v,h+310,v+20,"ChangeToLEKHOLETOVDsm","На Лехолетова");
-    																							 HalPushButton(h+320,v,h+430,v+20,"ChangeToShilkinDsm","На Шилкина");
-    																							 HalPushButton(h+440,v,h+550,v+20,"ChangeToShkolarskyDsm","На Школярского");
-    v = v + vs;																							 
-    																							 HalPushButton(h+90,v,h+190,v+20,"ChangeToKRAPIVNYTSDsm","На Крапивницьку");
+    EditField(h,v,50,"#",ViewOnly,SerNr,false,0);  HalPushButton(h+80,v,h+190,v+20,"ChangeToGolovizinDsm","На Головизина");// Edit ************************** BPI Ukraine - KramarAlexandr - 04, 01 08 2019 y. at 12:06:59 PM
+    																							 HalPushButton(h+200,v,h+320,v+20,"ChangeToLEKHOLETOVDsm","На Лехолетова");
+    																							 HalPushButton(h+330,v,h+450,v+20,"ChangeToShilkinDsm","На Шилкина");
+    																							 HalPushButton(h+460,v,h+580,v+20,"ChangeToShkolarskyDsm","На Школярского");
+    v = v + vs + 5;																							 
+    																							 HalPushButton(h+80,v,h+190,v+20,"ChangeToKRAPIVNYTSDsm","На Крапивницьку");
 		
     EditField(h,v+=vs+5,-40,"Текст",Normal,Comment,false,0);
     EditField(h,v+=vs,-40,"Текст 1",Normal,Comment1,false,0);// Edit ************************** BPI Ukraine - KramarAlexandr - Monday, 27 November 2017 16:06:24
