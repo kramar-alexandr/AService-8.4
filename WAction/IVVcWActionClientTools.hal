@@ -48,6 +48,9 @@ begin
 			if(Userr.SalesGroup=="7GR")then begin
 				IVr.CustCode = "ISTUDIO";
 			end;
+			if(Userr.SalesGroup=="SC")then begin
+				IVr.CustCode = "SERVCENTER";
+			end;
 			if(blank(Userr.SalesGroup) or Userr.SalesGroup=="1GR")then begin
 				IVr.CustCode = "A-SRV_KVZ";
 			end;
