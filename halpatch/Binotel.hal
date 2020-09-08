@@ -1125,9 +1125,9 @@ begin
 return;
 end;
 
-global webpublic updating procedure WebCalReqCallBack()
+global updating procedure WebCalReqCallBack(Area a_reply,Area a_replyheader,boolean timeout)
 begin
-	area a_reply;
+	//area a_reply;
 	
 	setcompany(8,false)
 	
