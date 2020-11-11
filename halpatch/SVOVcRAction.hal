@@ -96,8 +96,8 @@ begin
 	EncodedLogPass = "Authorization: Basic " & Base64Encode(LogPass);
 	
 	
-	addtexttoarea("host: " & "api.a-service.ua" & chr(13) & chr(10),a_req);
-	addtexttoarea("Content-Type: application/json" & chr(13) & chr(10),a_req);
+	//addtexttoarea("host: " & "api.a-service.ua" & chr(13) & chr(10),a_req);
+	//addtexttoarea("Content-Type: application/json" & chr(13) & chr(10),a_req);
 	addtexttoarea(EncodedLogPass & chr(13) & chr(10),a_req);
 	AddTextToArea("" & chr(13) & chr(10),a_req);
 	AddTextToArea("{",a_req);
