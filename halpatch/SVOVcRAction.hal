@@ -1156,6 +1156,22 @@ BEGIN
   	end;	
   end;
  
+ 	if(blank(SVOr.Kontinfo1))then begin// Edit ************************** BPI Ukraine - KramarAlexandr - 05, 13 11 2020 y. at 5:28:28 PM
+		RecordCheckError(1058,"",-1,"Kontinfo1");
+		res = -1;
+		goto LSVOVcRecordCheck;
+  end;
+  if(blank(SVOr.Vlastnik))then begin// Edit ************************** BPI Ukraine - KramarAlexandr - 05, 13 11 2020 y. at 5:28:28 PM
+		RecordCheckError(1058,"",-1,"Vlastnik");
+		res = -1;
+		goto LSVOVcRecordCheck;
+  end;
+  if(blank(SVOr.Priynato))then begin// Edit ************************** BPI Ukraine - KramarAlexandr - 05, 13 11 2020 y. at 5:28:28 PM
+		RecordCheckError(1058,"",-1,"Priynato");
+		res = -1;
+		goto LSVOVcRecordCheck;
+  end;
+  
 	 
   if(nonblank(SVOr.Kontinfo1))then begin
   	if(left(SVOr.Kontinfo1,1)!="0")then begin
