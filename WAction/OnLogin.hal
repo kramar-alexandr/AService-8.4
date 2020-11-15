@@ -501,7 +501,7 @@ LOtherwise01:;
         //nwn = OpenToDoWClass(mailboxnr,mailboxname,acptRepSpec);    // Edit ************************** Thursday, 13 October 2016 10:49:36
       end;
      GetUserAccessGroup(currentuser,accessgroup);
-      if(accessgroup!="FIN+" and accessgroup!="ADMIN" and accessgroup!="ISTUD")then begin
+      if(accessgroup!="FIN+" and accessgroup!="ADMIN" and accessgroup!="ISTUD" and accessgroup!="OBOLO")then begin
 				acptRepSpec.f1 = CurrentUser;// Edit ************************** Thursday, 13 October 2016 16:26:39
 				acptRepSpec.sStartDate = stringtodate("01/01/2012");
 				acptRepSpec.sEndDate = Currentdate;
@@ -523,7 +523,7 @@ LOtherwise01:;
        //nwn = OpenToDoWClass(mailboxnr,mailboxname,acptRepSpec);  // Edit ************************** Thursday, 13 October 2016 10:51:13  
     end;
     GetUserAccessGroup(currentuser,accessgroup);
-      if(accessgroup!="FIN+" and accessgroup!="ADMIN" and accessgroup!="ISTUD")then begin
+      if(accessgroup!="FIN+" and accessgroup!="ADMIN" and accessgroup!="ISTUD" and accessgroup!="OBOLO")then begin
 			acptRepSpec.f1 = CurrentUser;// Edit ************************** Thursday, 13 October 2016 13:10:06
 			acptRepSpec.sStartDate = stringtodate("01/01/2012");
 			acptRepSpec.sEndDate = Currentdate;

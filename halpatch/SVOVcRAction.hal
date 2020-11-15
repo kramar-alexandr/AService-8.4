@@ -405,6 +405,9 @@ BEGIN
     if(Userr.SalesGroup=="SC")then begin
     	SVOr.CustCode = "SERVCENTER";
     end;
+    if(Userr.SalesGroup=="OBOLO")then begin
+    	SVOr.CustCode = "OBOLON";
+    end;
     if(blank(Userr.SalesGroup) or Userr.SalesGroup=="1GR")then begin
     	SVOr.CustCode = "A-SRV_KVZ";
     end;
