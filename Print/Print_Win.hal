@@ -64,14 +64,20 @@ GetUserAccessGroup(CurrentUser,usergroup);
 		matrowget(FDr,i,FDrw);
 		formcode = ""; 
 		if(Getformcode(i,FDrw.intdocnr,FDrw.FPCode,FDrw.UserGroup,FDrw.LangCode,FDrw.SerNr,-1,FDrw.PrintGroupCode,"",i+1,recname,formcode))then begin
-			if(usergroup=="ISTUD")then begin
-				if(FDrw.UserGroup=="ISTUD")then begin
+			switch(usergroup)begin
+				case "ISTUD":
+					if(FDrw.UserGroup=="ISTUD")then begin
+						RadioButton(h,v,FDrw.intdocnr,0,GetTextForPrint(i,recname),flags[0]); //Edit***************************Sasha2,11:21 20.01.2015
+						v=v+16;
+					end;
+				case "OBOLO":
+					if(FDrw.UserGroup=="OBOLO")then begin
+						RadioButton(h,v,FDrw.intdocnr,0,GetTextForPrint(i,recname),flags[0]); //Edit***************************Sasha2,11:21 20.01.2015
+						v=v+16;
+					end;
+				otherwise
 					RadioButton(h,v,FDrw.intdocnr,0,GetTextForPrint(i,recname),flags[0]); //Edit***************************Sasha2,11:21 20.01.2015
 					v=v+16;
-				end;
-			end else begin
-				RadioButton(h,v,FDrw.intdocnr,0,GetTextForPrint(i,recname),flags[0]); //Edit***************************Sasha2,11:21 20.01.2015
-				v=v+16;
 			end;
 		end;
 	end;
