@@ -311,6 +311,9 @@ begin
 	SString(31101,"Продажи на приемке за");
 	SString(31102,"Заказы на обслуживание за ");
 	SString(31103,"Товара не достаточно на месте");
+	SString(31104,"Ремонт виконано");
+	SString(31105,"Предан на Аутсорс");
+	SString(31106,"Готов к выдаче");
 	
 	
   StrSetBegin(3); /* Try to keep them in alphabetical order */

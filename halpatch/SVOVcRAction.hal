@@ -838,6 +838,9 @@ BEGIN
 			case 3: tstr = tstr & USetStr(31050);
 			case 2: tstr = tstr & USetStr(31046);
 			case 4: tstr = tstr & USetStr(31061);
+			case 5: tstr = tstr & USetStr(31104);
+			case 6: tstr = tstr & USetStr(31105);
+			case 7: tstr = tstr & USetStr(31106);
 		end;
 		tstr = tstr & "' " & USetStr(31058) & " '";
 		switch (SVOr.OrderStatus) begin
@@ -846,6 +849,9 @@ BEGIN
 			case 3: tstr = tstr & USetStr(31050);
 			case 2: tstr = tstr & USetStr(31046);
 			case 4: tstr = tstr & USetStr(31061);
+			case 5: tstr = tstr & USetStr(31104);
+			case 6: tstr = tstr & USetStr(31105);
+			case 7: tstr = tstr & USetStr(31106);
 		end;
 		tstr = tstr & "'";
 		comment = USetStr(31059);
@@ -878,6 +884,9 @@ BEGIN
 	end;
 	if(SVOr.OrderStatus!=SVO2r.OrderStatus and SVO2r.OrderStatus==5)then begin
 		CloseActivitiesFromSVO(SVOr,"DIAG");
+	end;
+	if(SVOr.OrderStatus!=SVO2r.OrderStatus and SVO2r.OrderStatus==7)then begin
+		CloseActivitiesFromSVO(SVOr,"MOVE");
 	end;
 	if(SVOr.OrderStatus!=SVO2r.OrderStatus and SVO2r.OrderStatus==4)then begin
 		CloseActivitiesFromSVO(SVOr,"CONF");
@@ -1738,12 +1747,12 @@ function LongInt SVOVcRecordCheckClient(LongInt wn,var record SVOVc SVOr,record 
 BEGIN
   record RcVc RepSpec;
   
-  if(stat==Rs_update)then begin
+  /*if(stat==Rs_update)then begin//Отключил по просбе Сергея // Edit ************************** BPI Ukraine - KramarAlexandr - 01, 04 01 2021 y. at 1:10:32 PM
   	if(SVOr.OrderStatus==4 and SVO2r.OrderStatus!=SVOr.OrderStatus)then begin
   		RepSpec.long1 = SVOr.SerNr;
   		openwindow("YesNoCancelSMSWClass",1,0,"","",RepSpec);
   	end;
-  end;
+  end;*/
   
   SVODClassOnOpenWindow(wn);
   

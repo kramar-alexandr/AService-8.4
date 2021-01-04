@@ -326,6 +326,18 @@ begin
         if (SVOr.OrderStatus==2) then begin
           testf = true;
         end;
+      end; 
+      if (RepSpec.flags[12]==1) and (!testf) then begin /* на аутсорсе */
+        //testf = false;
+        if (SVOr.OrderStatus==6) then begin
+          testf = true;
+        end;
+      end; 
+      if (RepSpec.flags[13]==1) and (!testf) then begin /* на аутсорсе */
+        //testf = false;
+        if (SVOr.OrderStatus==7) then begin
+          testf = true;
+        end;
       end;     
     end;
     if(testf)then begin
