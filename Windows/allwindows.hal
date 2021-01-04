@@ -417,9 +417,9 @@ begin
 		RadioButton(h+460,vm+16+16,5,0,"На діагностиці",OrderStatus);
 		RadioButton(h+460,vm+32+16,1,0,"Діаг. заверш.",OrderStatus);
 		RadioButton(h+460,vm+48+16,4,0,"На узгодженні",OrderStatus);
-		RadioButton(h+460,vm+64+16,3,0,"Очікує запч.",OrderStatus);
-		RadioButton(h+460,vm+80+16,2,0,"Ремонт виконано",OrderStatus);
-		RadioButton(h+460,vm+96+16,6,0,"Предан на Аутсорс",OrderStatus);
+		RadioButton(h+460,vm+64+16,6,0,"Предан на Аутсорс",OrderStatus);
+		RadioButton(h+460,vm+80+16,3,0,"Очікує запч.",OrderStatus);
+		RadioButton(h+460,vm+96+16,2,0,"Ремонт виконано",OrderStatus);
 		RadioButton(h+460,vm+112+16,7,0,"Готов к выдаче",OrderStatus);
 		//vm = vm + 32;
 		
