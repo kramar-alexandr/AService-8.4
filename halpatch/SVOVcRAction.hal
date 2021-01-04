@@ -866,6 +866,9 @@ BEGIN
 		PhonesFromSVO(SVOr);
 		CloseActivitiesFromSVO(SVOr,"MOVE");
 	end;
+	if(SVOr.OrderStatus==7)then begin// Edit ************************** BPI Ukraine - KramarAlexandr - Tuesday, 6 February 2018 12:28:31
+		CloseActivitiesFromSVO(SVOr,"MOVE");
+	end;
   if(SVOr.Kontinfo1!=SVO2r.Kontinfo1 or SVOr.Phone2!=SVO2r.Phone2)then begin// Edit ************************** BPI Ukraine - KramarAlexandr - Tuesday, 6 February 2018 12:27:54
   	PhonesFromSVO(SVOr);//Edit-------------------Vitalii 17:09 03.11.2016
   	UpdatePhoneLightAfterSVOVcChanging(SVOr);//************************ dima-f 14.09.17
@@ -884,9 +887,6 @@ BEGIN
 	end;
 	if(SVOr.OrderStatus!=SVO2r.OrderStatus and SVO2r.OrderStatus==5)then begin
 		CloseActivitiesFromSVO(SVOr,"DIAG");
-	end;
-	if(SVOr.OrderStatus!=SVO2r.OrderStatus and SVO2r.OrderStatus==7)then begin
-		CloseActivitiesFromSVO(SVOr,"MOVE");
 	end;
 	if(SVOr.OrderStatus!=SVO2r.OrderStatus and SVO2r.OrderStatus==4)then begin
 		CloseActivitiesFromSVO(SVOr,"CONF");
