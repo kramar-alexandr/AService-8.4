@@ -1085,7 +1085,7 @@ BEGIN
     SVOr.ServiceManager = CurrentUser;
   end;
   if(nonblankdate(SVOr.PlanShipDate))then begin
-  	SVOr.OrderStatus=2;// Edit ************************** Thursday, 10 September 2015 17:31:49
+  	SVOr.OrderStatus=7;// Edit ************************** Thursday, 10 September 2015 17:31:49
   end;
   
   if(SVOr.FastPrepay>0 and blankdate(SVOr.FastPrepayDate))then begin
