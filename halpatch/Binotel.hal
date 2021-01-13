@@ -1006,7 +1006,7 @@ begin
 			
 				AddTextToArea("{",req);
 				AddTextToArea(extNumNode & ",",req);
-				AddTextToArea(phoneNode & ",",req);
+				AddTextToArea(phoneNode,req);
 				AddTextToArea("}",req);
 			
 				WriteAreaToFile(req,"Binotel_Sergey.txt",0);
