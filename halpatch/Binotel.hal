@@ -984,36 +984,65 @@ begin
   string 255 key,secret,host,keyNode,signatureNode,extNumNode,phoneNode,page;
   Area req,reply;
   record BinotelSettingsBlock BSb;
+  string 255 LogPass,EncodedLogPass;
   
   blockload(BSb);
     
-    if (NonBlank(fromExtNumber) and NonBlank(toPhoneNumber)) then begin
-      key = BSb.ApiKey;//"bc327a-61c63b1";
-      secret = BSb.ApiSecret;//"1546c2-8c393b-fcf888-acbaba-3ec826a2";
-      host = "api.binotel.com";
-      page = "/api/2.0/calls/ext-to-phone.json";
-      
-      extNumNode = "\"ext_number\":" & "\"" & fromExtNumber & "\"";
-      phoneNode = "\"phone_number\":" & "\"" & toPhoneNumber & "\"";
-      keyNode = "\"key\":" & "\"" & key & "\"";
-      
-      secret = secret & "{" & extNumNode & "," & phoneNode & "}";
-      signatureNode = "\"signature\":" & "\"" & LowerCase(MD5String(secret)) & "\"";
-      
-      AddTextToArea("{",req);
-      AddTextToArea(extNumNode & ",",req);
-      AddTextToArea(phoneNode & ",",req);
-      AddTextToArea(signatureNode & ",",req);
-      AddTextToArea(keyNode,req);
-      AddTextToArea("}",req);
-      
-      WriteAreaToFile(req,"Binotel.txt",0);
-      //SendRawWebRequest(host,"433",false,"POST","","application/json","",false,req,reply,10);
-      //MySendWebRequest(host,443,-1,true,"POST",page,"application/json","",false,req,reply,10);
-      //MySendRawWebRequest(host,"443",true,"POST","","application/json","",false,req,reply,10);
-			MySendAsyncWebRequest(host,443,true,"POST",page,"application/json","",req,"WebCalReqCallBack",5);
+    if(false or currentuser=="SA")then begin
+    	if (NonBlank(fromExtNumber) and NonBlank(toPhoneNumber)) then begin
+				
+				LogPass = "hansa-server" & ":" & "7s44wkjm7U8374N7o1mkJN2vM";
+				EncodedLogPass = "Authorization: Basic " & Base64Encode(LogPass);
+				
+				
+				addtexttoarea(EncodedLogPass & chr(13) & chr(10),req);
+				AddTextToArea("" & chr(13) & chr(10),req);
+				
+				host = "api.a-service.ua";
+				page = "/asrvbotv2/calltoclient.php";
+			
+				extNumNode = "\"inner_number\":" & "\"" & fromExtNumber & "\"";
+				phoneNode = "\"external_number\":" & "\"" & toPhoneNumber & "\"";
+			
+				AddTextToArea("{",req);
+				AddTextToArea(extNumNode & ",",req);
+				AddTextToArea(phoneNode & ",",req);
+				AddTextToArea("}",req);
+			
+				WriteAreaToFile(req,"Binotel_Sergey.txt",0);
+				MySendAsyncWebRequest(host,443,true,"POST",page,"application/json","",req,"WebCalReqCallBack1",5);
 
-			logtext(0,fromExtNumber & "CallTo " & toPhoneNumber);
+				logtext(0,fromExtNumber & "CallTo " & toPhoneNumber);
+			end;
+    end else begin
+			if (NonBlank(fromExtNumber) and NonBlank(toPhoneNumber)) then begin
+				key = BSb.ApiKey;//"bc327a-61c63b1";
+				secret = BSb.ApiSecret;//"1546c2-8c393b-fcf888-acbaba-3ec826a2";
+				host = "api.binotel.com";
+				page = "/api/2.0/calls/ext-to-phone.json";
+			
+				extNumNode = "\"ext_number\":" & "\"" & fromExtNumber & "\"";
+				phoneNode = "\"phone_number\":" & "\"" & toPhoneNumber & "\"";
+				keyNode = "\"key\":" & "\"" & key & "\"";
+			
+				secret = secret & "{" & extNumNode & "," & phoneNode & "}";
+				signatureNode = "\"signature\":" & "\"" & LowerCase(MD5String(secret)) & "\"";
+			
+				AddTextToArea("{",req);
+				AddTextToArea(extNumNode & ",",req);
+				AddTextToArea(phoneNode & ",",req);
+				AddTextToArea(signatureNode & ",",req);
+				AddTextToArea(keyNode,req);
+				AddTextToArea("}",req);
+			
+				WriteAreaToFile(req,"Binotel.txt",0);
+				//SendRawWebRequest(host,"433",false,"POST","","application/json","",false,req,reply,10);
+				//MySendWebRequest(host,443,-1,true,"POST",page,"application/json","",false,req,reply,10);
+				//MySendRawWebRequest(host,"443",true,"POST","","application/json","",false,req,reply,10);
+				MySendAsyncWebRequest(host,443,true,"POST",page,"application/json","",req,"WebCalReqCallBack",5);
+
+				logtext(0,fromExtNumber & "CallTo " & toPhoneNumber);
+			end;
     end;
     
   return;
