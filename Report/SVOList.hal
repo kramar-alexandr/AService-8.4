@@ -338,6 +338,18 @@ begin
         if (SVOr.OrderStatus==7) then begin
           testf = true;
         end;
+      end;  
+      if (RepSpec.flags[14]==1) and (!testf) then begin /* на аутсорсе */
+        //testf = false;
+        if (SVOr.OrderStatus==8) then begin
+          testf = true;
+        end;
+      end;  
+      if (RepSpec.flags[15]==1) and (!testf) then begin /* на аутсорсе */
+        //testf = false;
+        if (SVOr.OrderStatus==9) then begin
+          testf = true;
+        end;
       end;     
     end;
     if(testf)then begin
