@@ -1943,6 +1943,8 @@ begin
 		case 5: res = USetStr(31085);//Edit-------------------Vitalii 16:43 25.12.2015
 		case 6: res = USetStr(31105);// Edit ************************** BPI Ukraine - KramarAlexandr - 01, 04 01 2021 y. at 1:33:36 PM
 		case 7: res = USetStr(31106);// Edit ************************** BPI Ukraine - KramarAlexandr - 01, 04 01 2021 y. at 1:33:36 PM
+		case 8: res = USetStr(31107);
+		case 9: res = USetStr(31108);
   end;
   
   SVOServStatus = res;
@@ -1966,6 +1968,8 @@ begin
 		case 5: res = kRowcolorYellow;
 		case 6: res = kRowcolorYellow;
 		case 7: res = kRowcolorYellow;
+		case 8: res = kRowcolorYellow;
+		case 9: res = kRowcolorYellow;
   end;
   
   SVO3LClassRowColor = res;

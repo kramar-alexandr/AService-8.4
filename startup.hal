@@ -314,6 +314,8 @@ begin
 	SString(31104,"Ремонт виконано");
 	SString(31105,"Предан на Аутсорс");
 	SString(31106,"Готов к выдаче");
+	SString(31107,"Не дозвонились");
+	SString(31108,"Узгоджено");
 	
 	
   StrSetBegin(3); /* Try to keep them in alphabetical order */

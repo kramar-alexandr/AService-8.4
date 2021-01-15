@@ -73,6 +73,8 @@ BEGIN
   RepSpec.flags[11] = 1; //Edit***************************Sasha2,13:46 14.02.2017
   RepSpec.flags[12] = 1; // Edit ************************** BPI Ukraine - KramarAlexandr - 01, 04 01 2021 y. at 1:32:12 PM
   RepSpec.flags[13] = 1; // Edit ************************** BPI Ukraine - KramarAlexandr - 01, 04 01 2021 y. at 1:32:12 PM
+  RepSpec.flags[14] = 1; // Edit ************************** BPI Ukraine - KramarAlexandr - 01, 04 01 2021 y. at 1:32:12 PM
+  RepSpec.flags[15] = 1; // Edit ************************** BPI Ukraine - KramarAlexandr - 01, 04 01 2021 y. at 1:32:12 PM
   PutWindowRecord(wn,RepSpec);
   SelectWindow(wn);
   RETURN;

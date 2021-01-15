@@ -841,6 +841,8 @@ BEGIN
 			case 5: tstr = tstr & USetStr(31104);
 			case 6: tstr = tstr & USetStr(31105);
 			case 7: tstr = tstr & USetStr(31106);
+			case 8: tstr = tstr & USetStr(31107);
+			case 9: tstr = tstr & USetStr(31108);
 		end;
 		tstr = tstr & "' " & USetStr(31058) & " '";
 		switch (SVOr.OrderStatus) begin
@@ -852,6 +854,8 @@ BEGIN
 			case 5: tstr = tstr & USetStr(31104);
 			case 6: tstr = tstr & USetStr(31105);
 			case 7: tstr = tstr & USetStr(31106);
+			case 8: tstr = tstr & USetStr(31107);
+			case 9: tstr = tstr & USetStr(31108);
 		end;
 		tstr = tstr & "'";
 		comment = USetStr(31059);

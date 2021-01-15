@@ -412,17 +412,20 @@ begin
 		
 		h2=240;
 		vm = 0;
-		ButtonFrame(h+460,vm+16,120,8,"");
-		RadioButton(h+460,vm+16,0,0,"В очікуванні",OrderStatus);
-		RadioButton(h+460,vm+16+16,5,0,"На діагностиці",OrderStatus);
-		RadioButton(h+460,vm+32+16,1,0,"Діаг. заверш.",OrderStatus);
-		RadioButton(h+460,vm+48+16,4,0,"На узгодженні",OrderStatus);
-		RadioButton(h+460,vm+64+16,6,0,"Предан на Аутсорс",OrderStatus);
-		RadioButton(h+460,vm+80+16,3,0,"Очікує запч.",OrderStatus);
-		RadioButton(h+460,vm+96+16,2,0,"Ремонт виконано",OrderStatus);
-		RadioButton(h+460,vm+112+16,7,0,"Готов к выдаче",OrderStatus);
-		//vm = vm + 32;
+		ButtonFrame(h+460,vm+=16,120,10,"");
+		RadioButton(h+460,vm,0,0,"В очікуванні",OrderStatus);
+		RadioButton(h+460,vm+=16,5,0,"На діагностиці",OrderStatus);
+		RadioButton(h+460,vm+=16,1,0,"Діаг. заверш.",OrderStatus);
+		RadioButton(h+460,vm+=16,4,0,"На узгодженні",OrderStatus);
+		RadioButton(h+460,vm+=16,8,0,"Не дозвонились",OrderStatus);
+		RadioButton(h+460,vm+=16,9,0,"Узгоджено",OrderStatus);
 		
+		RadioButton(h+460,vm+=16,6,0,"Предан на Аутсорс",OrderStatus);
+		RadioButton(h+460,vm+=16,3,0,"Очікує запч.",OrderStatus);
+		RadioButton(h+460,vm+=16,2,0,"Ремонт виконано",OrderStatus);
+		RadioButton(h+460,vm+=16,7,0,"Готов к выдаче",OrderStatus);
+		//vm = vm + 32;
+		vm = 0;
 		ButtonFrame(h+620,vm+16+20,90,5,"Звідки дізналися");
 		RadioButton(h+620,vm+16+20,0,0,"-",InfoGet);
 		RadioButton(h+620,vm+32+20,1,0,"З інтернета",InfoGet);
@@ -442,7 +445,7 @@ begin
 		EditField(h2,v,60,"Час",mode,RegTime,false,0);// Edit ************************** Friday, 17 December 2010 09:38:48
 						EditField(h2+250,v+vs-10,70,"Конт. особа",Normal,CustContact,false,ContactSClass);
 						EditField(h3+180,v+2*vs-10,100,"Власник",ViewOnly,Addr0,false,0);
-						EditField(h3+130,v+3*vs-10,130, "Клієнт",Normal,CustCode,false,CUSClass);
+						EditField(h3+150,v+3*vs-10,130, "Кл.",Normal,CustCode,false,CUSClass);
 		
 		
 		EditField(h1,v+=vs,60,"Дата заверш.діаг.",mode,EndDiagnDate,false,PasteCurDate); //Edit***************************Sasha2,15:40 25.10.2016
@@ -465,7 +468,7 @@ begin
 		v = v + 20;
 		halpushbutton(h2+200,v,h2+325,v+50,"FastPaySVODsm","Швидка оплата");// Edit ************************** Friday, 25 November 2016 11:32:03 
 		EditField(h2+240,v+=25,60, "Термін.",Normal,FastTerm,false,0); // Edit ************ Dima 8 February 2018, 15:45
-		EditField(h2+400,v,60,"Предоплата трм.",Normal,FastTermPrepay,false,0);
+		EditField(h3+200,v,60,"Пред. трм.",Normal,FastTermPrepay,false,0);
 
 		EditField(h2+240,v+=20,60, "Готівка",Normal,FastCash,false,0);
 		EditField(h2+340,v,60,"Банк",Normal,FastBank,false,0);// Edit ************************** BPI Ukraine - KramarAlexandr - Monday, 2 April 2018 11:27:59
@@ -8413,6 +8416,8 @@ begin
   CheckBox(h,v+=16,0,"Ремонт выполнен",flags[11]); //Edit***************************Sasha2,14:55 15.05.2017 }
   CheckBox(h,v+=16,0,"На Антсорсе",flags[12]);// Edit ************************** BPI Ukraine - KramarAlexandr - 01, 04 01 2021 y. at 1:31:37 PM
   CheckBox(h,v+=16,0,"Готов к выдаче",flags[13]);
+  CheckBox(h,v+=16,0,"Не дозвонились",flags[14]);
+  CheckBox(h,v+=16,0,"Узгоджено",flags[15]);
   ButtonFrame(h+=148,v = vm,123,3,"Заказ на работу");
   CheckBox(h,v,0,"Не выполнен",flags[4]);
   //CheckBox(h,v+=16,0,"Част. выполнен",flags[5]);  //origin field
