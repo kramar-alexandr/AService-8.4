@@ -1921,6 +1921,16 @@ end;
 Global 
 function Boolean SVOLClassOnOpenWindow(integer wn)
 begin
+	record UserVc USr;
+	
+	USr.Code = currentuser;// Edit ************************** BPI Ukraine - KramarAlexandr - 04, 04 03 2021 y. at 12:00:55 PM
+	if(readfirstmain(USr,1,true))then begin
+		if(nonblank(USr.SalesGroup))then begin
+			if(USr.limitedAccess==kLimitedAccessGroupOnly)then begin
+				setwindowsubset(wn,USr.SalesGroup);
+			end;
+		end;
+	end;
 	
 	if(usercanaction("DisableListOgSVO",false))then begin
 		setwindowsubset(wn,"BLANK");
