@@ -2085,24 +2085,6 @@ record RcVc RepSpec;
 return;
 end;
 
-global procedure TESTDSM()
-begin
-record RcVc RepSpec;
-integer wn;
-record UserVc USr;
-	
-	USr.Code = currentuser;
-	readfirstmain(USr,1,true);
-	
-	wn = curwindow;	
-	messagebox(0,getwindowsubset(wn));
-	messagebox(0,USr.SalesGroup);
-	setwindowsubset(wn,USr.SalesGroup);
-	
-return;
-end;
-
-
 global procedure Dbl14RepRnAll()
 begin
 record RcVc RepSpec;
