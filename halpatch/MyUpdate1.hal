@@ -1005,7 +1005,25 @@ begin
 end;
 
 
+global webpublic updating procedure WebFillALSGMn()
+begin
+	record UserVc USr;
+	record SVOVc SVOr;
+	boolean TrHs,testf;
+	
+	
+	SVOr.SerNr = 8000001;
+	TrHs = true;
+	while(loopmain(SVOr,1,TrHs))begin
+		if(SVOr.SerNr>=9000000)then begin TrHs = false; end;
+			if(SVOr.SalesGroup!="SC")then begin
+				SVOr.SalesGroup = "SC";
+				recordstore(SVOr,true);
+			end;
+	end;
 
+return;
+end;
 
 global updating procedure FillALSGMn()
 begin

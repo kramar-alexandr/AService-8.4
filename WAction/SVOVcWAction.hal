@@ -2032,6 +2032,9 @@ begin
 					CreateSVOSerNoterForMove(SVOr,currenttime & " " & currentdate & " " & currentuser & " " & SVOr.MoveSVOToSGStatus);
 					CloseActivitiesFromSVO(SVOr,"MOVE");
 					SVOr.MoveSVOToSGmov = "";
+					if(left(SVOr.SerNr,1)=="8")then begin// Edit ************************** BPI Ukraine - KramarAlexandr - 03, 10 03 2021 y. at 10:38:42 AM
+						SVOr.SalesGroup = "SC";
+					end;
 					putwindowrecord(wn,SVOr);
 					WindowDoOK(wn,0);
 					//recordstore(SVOr,true);

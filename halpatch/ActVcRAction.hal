@@ -1383,6 +1383,9 @@ moved to client side
 						CreateSVOSerNoterForMove(SVOr,currenttime & " " & currentdate & " " & currentuser & " " & SVOr.MoveSVOToSGStatus);
 						Actr.ActResult = "OK";
 						SVOr.MoveSVOToSGmov = "";
+						if(left(SVOr.SerNr,1)=="8")then begin
+							SVOr.SalesGroup = "SC";
+						end;
 						recordstore(SVOr,true);
 					end;
   			end;
