@@ -2266,7 +2266,7 @@ integer wn;
 	getwindowrecord(wn,Actr);
 	
 	Actr.Comment = "Cогласовать ремонт " & Actr.SVOSerNr;
-	Actr.MainPersons = "NINA";
+	Actr.MainPersons = "SERGEEV";
 	putwindowrecord(wn,Actr);
 	windowdook(wn,0);
 	
