@@ -2201,7 +2201,7 @@ begin
 			if(recordinsert(IntORr,true))then begin
 				CreateRecordLink(IntORr,currentcompany,SVOr,currentcompany);
 				CreateRecordLink(SVOr,currentcompany,IntORr,currentcompany);
-				OpenWindow("IntORDClass",0,0,"","",IntORr);")
+				OpenWindow("IntORDClass",0,0,"","",IntORr);
 			end;
 		end else begin
 			messagebox(0,"Заполните данные по товару");
