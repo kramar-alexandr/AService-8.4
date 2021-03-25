@@ -2166,40 +2166,6 @@ begin
 end;
 
 global //Edit***************************Sasha2,13:21 13.10.2016
-updating procedure CreateIntORfromSVODsm()
-begin
-	record SVOVc SVOr;
-	row SVOVc SVOrw;
-	integer wn;
-	record IntORVc IntORr;
-	record UserVc USr;
-	record MainStockBlock MSb;
-	
-	wn = curwindow;
-	getwindowrecord(wn,SVOr);
-	if(matrowcnt(SVOr)>0)then begin
-		
-		matrowget(SVOr,0,SVOrw);
-		if(nonblank(SVOrw.ArtCode) and nonblank(SVOrw.Spec) and nonblank(SVOrw.SerialNr))then begin
-			
-			recordnew(IntORr);
-			if(RA_CreateIntORfromSVOD(SVOr,IntORr))begin
-				messagebox(0,1);
-				OpenWindow("IntORDClass",0,0,"","",IntORr);
-			end;
-		end else begin
-			messagebox(0,"Заполните данные по товару");
-		end;
-	end else begin
-		messagebox(0,"Заполните данные по товару");
-	end;
-
-
-return;
-end;
-
-
-global //Edit***************************Sasha2,13:21 13.10.2016
 updating procedure PrintSVOReceiptDsm()
 begin
 	area aFile;
