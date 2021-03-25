@@ -39,48 +39,55 @@ begin
     ChangeMatrixField(Spec,M4Str,255,0);
     ArrayField(Comment,M4Str,255,0);
     
+    DisableIndex("SerNr");
+    MainKeyBegin(SerNr,1);
+  	KeySegment(SerNr);
+  	StoreInBaseKey;
+    AppendFieldToKeyName(SalesMan);
+    AppendFieldToKeyName(SalesGroup);
+    
     SubsetKeyBegin2(ActSerNr);// Edit ************************** BPI Ukraine - KramarAlexandr - 01, 22 03 2021 y. at 8:48:00 PM
     StoreInBaseKey;
-    AppendListFieldToKeyName(SalesMan);
-    AppendListFieldToKeyName(SalesGroup);
+    AppendFieldToKeyName(SalesMan);
+    AppendFieldToKeyName(SalesGroup);
     KeySegment(SerNr);
     
     SubsetKeyBegin2(SVONr);// Edit ************************** BPI Ukraine - KramarAlexandr - 01, 22 03 2021 y. at 8:48:02 PM
     StoreInBaseKey;
-    AppendListFieldToKeyName(SalesMan);
-    AppendListFieldToKeyName(SalesGroup);
+    AppendFieldToKeyName(SalesMan);
+    AppendFieldToKeyName(SalesGroup);
     KeySegment(SVONr); 
     KeySegment(SerNr); 
     SubsetKeyBegin2(ActSVONr);// Edit ************************** BPI Ukraine - KramarAlexandr - 01, 22 03 2021 y. at 8:48:02 PM
     StoreInBaseKey;
-    AppendListFieldToKeyName(SalesMan);
-    AppendListFieldToKeyName(SalesGroup);
+    AppendFieldToKeyName(SalesMan);
+    AppendFieldToKeyName(SalesGroup);
     KeySegment(SVONr); 
     KeySegment(SerNr); 
     
     SubsetKeyBegin2(Status);// Edit ************************** BPI Ukraine - KramarAlexandr - 01, 22 03 2021 y. at 8:48:02 PM
     StoreInBaseKey;
-    AppendListFieldToKeyName(SalesMan);
-    AppendListFieldToKeyName(SalesGroup);
+    AppendFieldToKeyName(SalesMan);
+    AppendFieldToKeyName(SalesGroup);
     KeySegment(Status); 
     KeySegment(SerNr); 
     SubsetKeyBegin2(ActStatus);// Edit ************************** BPI Ukraine - KramarAlexandr - 01, 22 03 2021 y. at 8:48:02 PM
     StoreInBaseKey;
-    AppendListFieldToKeyName(SalesMan);
-    AppendListFieldToKeyName(SalesGroup);
+    AppendFieldToKeyName(SalesMan);
+    AppendFieldToKeyName(SalesGroup);
     KeySegment(Status); 
     KeySegment(SerNr); 
     
     SubsetKeyBegin2(StatusText);// Edit ************************** BPI Ukraine - KramarAlexandr - 01, 22 03 2021 y. at 8:48:02 PM
     StoreInBaseKey;
-    AppendListFieldToKeyName(SalesMan);
-    AppendListFieldToKeyName(SalesGroup);
+    AppendFieldToKeyName(SalesMan);
+    AppendFieldToKeyName(SalesGroup);
     KeySegment(StatusText); 
     KeySegment(SerNr); 
     SubsetKeyBegin2(ActStatusText);// Edit ************************** BPI Ukraine - KramarAlexandr - 01, 22 03 2021 y. at 8:48:02 PM
     StoreInBaseKey;
-    AppendListFieldToKeyName(SalesMan);
-    AppendListFieldToKeyName(SalesGroup);
+    AppendFieldToKeyName(SalesMan);
+    AppendFieldToKeyName(SalesGroup);
     KeySegment(StatusText); 
     KeySegment(SerNr); 
   EndRecordAdd; 

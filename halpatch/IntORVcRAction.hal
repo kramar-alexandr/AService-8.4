@@ -514,3 +514,40 @@ begin
   IntORVcRecordRemove = res; 
   return;
 end;
+
+global updating function boolean RA_CreateIntORfromSVOD(record SVOVc SVOr,var record IntORVc IntORr)
+begin
+	row SVOVc SVOrw;
+	integer wn;
+	record UserVc USr;
+	record MainStockBlock MSb;
+	boolean res;
+	
+	matrowget(SVOr,0,SVOrw);
+	USr.Code = currentuser;
+	readfirstmain(USr,1,true);
+	IntORr.Location = USr.Location;
+	if(blank(IntORr.Location))then begin
+		blockload(MSb);
+		IntORr.Location = MSb.MainStock;
+	end;
+	IntORr.SVONr = SVOr.SerNr;
+	IntORr.SalesMan = SVOr.SalesMan;
+	IntORr.SalesGroup = SVOr.SalesGroup;
+	IntORr.SVOItem = SVOrw.ArtCode;
+	IntORr.SVOSerial = SVOrw.SerialNr;
+	IntORr.SVOSpec = SVOrw.Spec;
+	IntORr.SVOContactName = trim(SVOr.Priynato & " " & SVOr.Name & " " & SVOr.MiddleName);
+	IntORr.SVOContactPhone1 = SVOr.Kontinfo1;
+	IntORr.SVOContactPhone2 = SVOr.Phone2;
+	IntORr.SVOContactMail = SVOr.Kontinfo2;
+	IntORr.SerNr = NextSerNr("IntORVc",IntORr.TransDate,-1,false,"");
+	if(recordinsert(IntORr,true))then begin
+		CreateRecordLink(IntORr,currentcompany,SVOr,currentcompany);
+		CreateRecordLink(SVOr,currentcompany,IntORr,currentcompany);
+		res = true;
+	end;
+
+	RA_CreateIntORfromSVOD = res;
+return;
+end;

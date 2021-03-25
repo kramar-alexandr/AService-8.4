@@ -55,6 +55,7 @@ external function Boolean UserCanChangePendingRecord(Integer);
 remote updating procedure HandleWSReceiptPrinting(record WSVc,var area);//Edit----------------------Dima  21.09.2015
 remote procedure HandleIVReceiptPrinting(record IVVc,var area);//Edit----------------------Dima  21.09.2015
 remote updating procedure HandleSVOReceiptPrinting(record SVOVc,var area); //Edit***************************Sasha2,13:20 13.10.2016
+remote updating function boolean RA_CreateIntORfromSVOD(record SVOVc,var record IntORVc);// Edit ************************** BPI Ukraine - KramarAlexandr - 04, 25 03 2021 y. at 9:00:07 PM
 
 SetLangMode(LangRussian,"RUS",0);
 
@@ -2177,30 +2178,13 @@ begin
 	wn = curwindow;
 	getwindowrecord(wn,SVOr);
 	if(matrowcnt(SVOr)>0)then begin
+		
 		matrowget(SVOr,0,SVOrw);
 		if(nonblank(SVOrw.ArtCode) and nonblank(SVOrw.Spec) and nonblank(SVOrw.SerialNr))then begin
+			
 			recordnew(IntORr);
-			USr.Code = currentuser;
-			readfirstmain(USr,1,true);
-			IntORr.Location = USr.Location;
-			if(blank(IntORr.Location))then begin
-				blockload(MSb);
-				IntORr.Location = MSb.MainStock;
-			end;
-			IntORr.SVONr = SVOr.SerNr;
-			IntORr.SalesMan = SVOr.SalesMan;
-			IntORr.SalesGroup = SVOr.SalesGroup;
-			IntORr.SVOItem = SVOrw.ArtCode;
-			IntORr.SVOSerial = SVOrw.SerialNr;
-			IntORr.SVOSpec = SVOrw.Spec;
-			IntORr.SVOContactName = trim(SVOr.Priynato & " " & SVOr.Name & " " & SVOr.MiddleName);
-			IntORr.SVOContactPhone1 = SVOr.Kontinfo1;
-			IntORr.SVOContactPhone2 = SVOr.Phone2;
-			IntORr.SVOContactMail = SVOr.Kontinfo2;
-			IntORr.SerNr = NextSerNr("IntORVc",IntORr.TransDate,-1,false,"");
-			if(recordinsert(IntORr,true))then begin
-				CreateRecordLink(IntORr,currentcompany,SVOr,currentcompany);
-				CreateRecordLink(SVOr,currentcompany,IntORr,currentcompany);
+			if(RA_CreateIntORfromSVOD(SVOr,IntORr))begin
+				messagebox(0,1);
 				OpenWindow("IntORDClass",0,0,"","",IntORr);
 			end;
 		end else begin
