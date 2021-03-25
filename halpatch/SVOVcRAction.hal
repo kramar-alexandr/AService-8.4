@@ -39,7 +39,7 @@ external function boolean MySendRawWebRequest(string,longint,boolean,string,stri
 SetLangMode(LangRussian,"RUS",0);
 
 
-procedure addParamToJSONArea(string param, string value, var area req)
+global procedure addParamToJSONArea(string param, string value, var area req)
 begin
 
 AddTextToArea("\"" & param & "\":" &  "\"" & value & "\",",req);
@@ -47,7 +47,7 @@ AddTextToArea("\"" & param & "\":" &  "\"" & value & "\",",req);
 return;
 end;
 
-procedure delLastComaInArea(var area req)
+global procedure delLastComaInArea(var area req)
 begin
 	longint alen;
 	string 1 lastsymb;

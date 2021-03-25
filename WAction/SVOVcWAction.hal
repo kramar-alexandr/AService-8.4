@@ -1893,6 +1893,15 @@ begin
 return;
 end;
 
+global procedure OpenIntOR2LClass()
+begin
+	record IntORVc IntORr;
+	
+	OpenWindow("IntOR2LClass",0,0,"","",IntORr);
+	
+return;
+end;
+
 
 global procedure SetSubsetLClass()
 begin

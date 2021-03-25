@@ -17,6 +17,75 @@ SourceFile("halcust\\Lib",0);
 SourceFile("halcust\\innerTools",3);
 
 begin 
+	RecordAddBegin(IntORVc,"IntORVc_Custom");// Edit ************************** BPI Ukraine - KramarAlexandr - 01, 22 03 2021 y. at 8:38:29 PM
+    RecordField(SVONr,M4Long,0,0);
+    RecordField(SVOItem,M4Str,100,0);
+    RecordField(SVOSerial,M4Str,100,0);
+    RecordField(SVOSpec,M4Str,100,0);
+    RecordField(SVOContactName,M4Str,100,0);
+    RecordField(SVOContactPhone1,M4Str,20,0);
+    RecordField(SVOContactPhone2,M4Str,20,0);
+    RecordField(SVOContactMail,M4Str,100,0);
+    RecordField(OnlyOfficial,M4Int,0,0);
+    RecordField(DoneFlag,M4Int,0,0);
+    RecordField(SalesMan,M4Code,20,0);
+    FieldIsUser(SalesMan);
+    RecordField(SendFlag,M4Int,0,0);
+    RecordField(Status,M4Int,0,0);
+    RecordField(StatusText,M4Str,255,0);
+    
+    
+    ChangeMatrixField(ArtCode,M4Str,100,0);
+    ChangeMatrixField(Spec,M4Str,255,0);
+    ArrayField(Comment,M4Str,255,0);
+    
+    SubsetKeyBegin2(ActSerNr);// Edit ************************** BPI Ukraine - KramarAlexandr - 01, 22 03 2021 y. at 8:48:00 PM
+    StoreInBaseKey;
+    AppendListFieldToKeyName(SalesMan);
+    AppendListFieldToKeyName(SalesGroup);
+    KeySegment(SerNr);
+    
+    SubsetKeyBegin2(SVONr);// Edit ************************** BPI Ukraine - KramarAlexandr - 01, 22 03 2021 y. at 8:48:02 PM
+    StoreInBaseKey;
+    AppendListFieldToKeyName(SalesMan);
+    AppendListFieldToKeyName(SalesGroup);
+    KeySegment(SVONr); 
+    KeySegment(SerNr); 
+    SubsetKeyBegin2(ActSVONr);// Edit ************************** BPI Ukraine - KramarAlexandr - 01, 22 03 2021 y. at 8:48:02 PM
+    StoreInBaseKey;
+    AppendListFieldToKeyName(SalesMan);
+    AppendListFieldToKeyName(SalesGroup);
+    KeySegment(SVONr); 
+    KeySegment(SerNr); 
+    
+    SubsetKeyBegin2(Status);// Edit ************************** BPI Ukraine - KramarAlexandr - 01, 22 03 2021 y. at 8:48:02 PM
+    StoreInBaseKey;
+    AppendListFieldToKeyName(SalesMan);
+    AppendListFieldToKeyName(SalesGroup);
+    KeySegment(Status); 
+    KeySegment(SerNr); 
+    SubsetKeyBegin2(ActStatus);// Edit ************************** BPI Ukraine - KramarAlexandr - 01, 22 03 2021 y. at 8:48:02 PM
+    StoreInBaseKey;
+    AppendListFieldToKeyName(SalesMan);
+    AppendListFieldToKeyName(SalesGroup);
+    KeySegment(Status); 
+    KeySegment(SerNr); 
+    
+    SubsetKeyBegin2(StatusText);// Edit ************************** BPI Ukraine - KramarAlexandr - 01, 22 03 2021 y. at 8:48:02 PM
+    StoreInBaseKey;
+    AppendListFieldToKeyName(SalesMan);
+    AppendListFieldToKeyName(SalesGroup);
+    KeySegment(StatusText); 
+    KeySegment(SerNr); 
+    SubsetKeyBegin2(ActStatusText);// Edit ************************** BPI Ukraine - KramarAlexandr - 01, 22 03 2021 y. at 8:48:02 PM
+    StoreInBaseKey;
+    AppendListFieldToKeyName(SalesMan);
+    AppendListFieldToKeyName(SalesGroup);
+    KeySegment(StatusText); 
+    KeySegment(SerNr); 
+  EndRecordAdd; 
+
+	
   RecordAddBegin(CUVc,"CUVc_Custom");
     // record field "Partner" already added in 8.3
     RecordField(IsPartner,M4Mark,0,0); 

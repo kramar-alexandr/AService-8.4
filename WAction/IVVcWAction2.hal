@@ -2164,6 +2164,55 @@ begin
 		end;
 end;
 
+global //Edit***************************Sasha2,13:21 13.10.2016
+updating procedure CreateIntORfromSVODsm()
+begin
+	record SVOVc SVOr;
+	row SVOVc SVOrw;
+	integer wn;
+	record IntORVc IntORr;
+	record UserVc USr;
+	record MainStockBlock MSb;
+	
+	wn = curwindow;
+	getwindowrecord(wn,SVOr);
+	if(matrowcnt(SVOr)>0)then begin
+		matrowget(SVOr,0,SVOrw);
+		if(nonblank(SVOrw.ArtCode) and nonblank(SVOrw.Spec) and nonblank(SVOrw.SerialNr))then begin
+			recordnew(IntORr);
+			USr.Code = currentuser;
+			readfirstmain(USr,1,true);
+			IntORr.Location = USr.Location;
+			if(blank(IntORr.Location))then begin
+				blockload(MSb);
+				IntORr.Location = MSb.MainStock;
+			end;
+			IntORr.SVONr = SVOr.SerNr;
+			IntORr.SalesMan = SVOr.SalesMan;
+			IntORr.SalesGroup = SVOr.SalesGroup;
+			IntORr.SVOItem = SVOrw.ArtCode;
+			IntORr.SVOSerial = SVOrw.SerialNr;
+			IntORr.SVOSpec = SVOrw.Spec;
+			IntORr.SVOContactName = trim(SVOr.Priynato & " " & SVOr.Name & " " & SVOr.MiddleName);
+			IntORr.SVOContactPhone1 = SVOr.Kontinfo1;
+			IntORr.SVOContactPhone2 = SVOr.Phone2;
+			IntORr.SVOContactMail = SVOr.Kontinfo2;
+			IntORr.SerNr = NextSerNr("IntORVc",IntORr.TransDate,-1,false,"");
+			if(recordinsert(IntORr,true))then begin
+				CreateRecordLink(IntORr,currentcompany,SVOr,currentcompany);
+				CreateRecordLink(SVOr,currentcompany,IntORr,currentcompany);
+			end;
+		end else begin
+			messagebox(0,"Заполните данные по товару");
+		end;
+	end else begin
+		messagebox(0,"Заполните данные по товару");
+	end;
+
+
+return;
+end;
+
 
 global //Edit***************************Sasha2,13:21 13.10.2016
 updating procedure PrintSVOReceiptDsm()
