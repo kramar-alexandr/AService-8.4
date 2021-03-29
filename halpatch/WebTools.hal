@@ -84,7 +84,7 @@ begin
 		Actr.Comment = JSONGet(jreq,"text");
 		Actr.SerNr = NextSerNr("ActVc",Actr.TransDate,-1,false,"");
 		if(recordinsert(Actr,true))then begin
-			weboutstring("{\"result\"}:\"ok\"");
+			weboutstring("{\"result\":\"ok\"}");
 		end;
 	end;
 	
