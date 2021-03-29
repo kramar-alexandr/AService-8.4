@@ -532,7 +532,7 @@ begin
 		IntORr.Location = MSb.MainStock;
 	end;
 	IntORr.SVONr = SVOr.SerNr;
-	IntORr.SalesMan = SVOr.SalesMan;
+	IntORr.SalesMan = CurrentUser;
 	IntORr.SalesGroup = SVOr.SalesGroup;
 	IntORr.SVOItem = SVOrw.ArtCode;
 	IntORr.SVOSerial = SVOrw.SerialNr;

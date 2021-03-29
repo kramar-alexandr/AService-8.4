@@ -586,6 +586,35 @@ begin
   return;
 end;
 
+global
+function Boolean IntORDClassSendFlagButtonAction(Integer wn,Integer value)
+begin
+  Boolean res;
+  record IntORVc IntORr;
+  Integer normalmode,updatemode;
+  record AcceptSetBlock AcceptSetRec;
+ 
+  res = true;
+  normalmode = 0;//Rs_normal
+  updatemode = 2;//Rs_update
+  if (WindowState(wn)==normalmode) then begin
+    GetWindowRecord(wn,IntORr);
+  end;
+  if (WindowState(wn)==updatemode) then begin
+    GetPrevWindowRecord(wn,IntORr);  
+  end;
+	
+	if(IntORr.SendFlag==1)then begin
+		res = false;
+	end;
+	if(currentuser=="SA")then begin
+		res = true;
+	end;
+	
+  IntORDClassSendFlagButtonAction = res;
+  return;
+end;
+
 function Boolean IntORDClassPlanShipEFAfter(Integer wn,Boolean changedf)
 begin
   record IntORVc IntORr;

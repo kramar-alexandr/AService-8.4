@@ -8902,7 +8902,7 @@ begin
   h = 100; h2 = 230; h3 = 450; vs = 20;
   Tile(0,50+24,false,"",OurUser);
   EditField(75,vm=(v=6),95,"Номер",Normal,SerNr,false,TSerSClass);
-  EditField(75,v+=20,95,"Сотрудник",ViewOnly,OurUser,false,UserSClass);
+  EditField(75,v+=20,95,"Сотрудник",ViewOnly,SalesMan,false,0);
   EnterSkip(PlanShip);
   EditField(h2=280,v=vm,-40,"ФИО",Normal,Name,false,0);
   EditField(h2,vm=(v+=20),95,"Группа продаж",Normal,SalesGroup,false,SalesGroupSClass);
