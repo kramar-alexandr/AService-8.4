@@ -59,3 +59,35 @@ begin
 
 return;
 end;*/
+
+
+global webpublic updating procedure WebCreateTask()
+begin
+	area req;
+	json jreq;
+	record ActVc Actr;
+	
+	setcompany(8,false);
+	
+	webgetpostdata(req);
+	
+	jreq = parsejsonarea(req);
+	if(JSONGet(jreq,"token")=="7s44wkjm7U8374N7o1mkJN2vM")then begin
+		logtext(0,1);
+		
+		Actr.SymbNr = 3;
+		Actr.TodoFlag = kTodoFlagTodo;
+		Actr.AlarmType = kAlarmTypeNone;
+		Actr.MainPersons = JSONGet(jreq,"login");
+		Actr.TransDate = currentdate;
+		Actr.StartTime = currenttime;
+		Actr.Comment = JSONGet(jreq,"text");
+		Actr.SerNr = NextSerNr("ActVc",Actr.TransDate,-1,false,"");
+		if(recordinsert(Actr,true))then begin
+			weboutstring("{\"result\"}:\"ok\"");
+		end;
+	end;
+	
+	
+return;
+end;
