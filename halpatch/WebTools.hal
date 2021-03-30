@@ -87,6 +87,7 @@ begin
 		Actr.SerNr = NextSerNr("ActVc",Actr.TransDate,-1,false,"");
 		
 		if(recordinsert(Actr,true))then begin
+			logtext(0,"WebCreateTask " & Actr.SerNr);
 			SVOr.SerNr = Actr.SVOSerNr;
 			if(readfirstmain(SVOr,1,true))then begin
 				createrecordlink(SVOr,currentcompany,Actr,currentcompany);
