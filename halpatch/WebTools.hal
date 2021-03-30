@@ -74,8 +74,6 @@ begin
 	
 	jreq = parsejsonarea(req);
 	if(JSONGet(jreq,"token")=="7s44wkjm7U8374N7o1mkJN2vM")then begin
-		logtext(0,1);
-		
 		Actr.SymbNr = 3;
 		Actr.TodoFlag = kTodoFlagTodo;
 		Actr.AlarmType = kAlarmTypeNone;
@@ -83,7 +81,7 @@ begin
 		Actr.TransDate = currentdate;
 		Actr.StartTime = currenttime;
 		Actr.Comment = JSONGet(jreq,"text");
-		Actr.SVOSerNr = stringtolongint(JSONGet(jreq,"SVOSerNr"));
+		//Actr.SVOSerNr = stringtolongint(JSONGet(jreq,"SVOSerNr"));
 		Actr.SerNr = NextSerNr("ActVc",Actr.TransDate,-1,false,"");
 		
 		if(recordinsert(Actr,true))then begin
