@@ -392,11 +392,11 @@ BEGIN
     res = -1; 
     goto LIntORVcRecordCheck;
   end;
-  
-  /*
   if (IntORr.SerNr<=0) then begin
     IntORr.SerNr = NextSerNr("IntORVc",IntORr.TransDate,-1,false,"");
   end;
+  /*
+  
   if ((stat==insertmode) or (IntORr.SerNr!=IntOR2r.SerNr)) then begin
     lIntORr.SerNr = IntORr.SerNr;
     if (ReadFirstMain(lIntORr,1,true)) then begin
