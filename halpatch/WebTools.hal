@@ -66,6 +66,7 @@ begin
 	area req;
 	json jreq;
 	record ActVc Actr;
+	record SVOVc SVOr;
 	
 	setcompany(8,false);
 	
@@ -82,8 +83,15 @@ begin
 		Actr.TransDate = currentdate;
 		Actr.StartTime = currenttime;
 		Actr.Comment = JSONGet(jreq,"text");
+		Actr.SVOSerNr = stringtolongint(JSONGet(jreq,"SVOSerNr"));
 		Actr.SerNr = NextSerNr("ActVc",Actr.TransDate,-1,false,"");
+		
 		if(recordinsert(Actr,true))then begin
+			SVOr.SerNr = Actr.SVOSerNr;
+			if(readfirstmain(SVOr,1,true))then begin
+				createrecordlink(SVOr,currentcompany,Actr,currentcompany);
+				createrecordlink(Actr,currentcompany,SVOr,currentcompany);
+			end;
 			weboutstring("{\"result\":\"ok\"}");
 		end;
 	end;
