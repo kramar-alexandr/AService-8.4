@@ -898,6 +898,9 @@ begin
 			//Actr.SymbNr = 3;
 			Actr.ActType = "MES";
 			Actr.MainPersons = users;
+			Actr.TransDate = currentdate;
+			Actr.SerNr = NextSerNr("ActVc",Actr.TransDate,-1,false,"");
+
 			
 		recordstore(Actr,true);
 	end;
