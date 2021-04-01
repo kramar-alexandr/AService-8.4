@@ -2203,6 +2203,25 @@ begin
 return;
 end;
 
+global procedure OpenIntORsm()
+begin
+	integer wn;
+	record ActVc Actr;
+	record IntORVc IntORr;
+	
+	wn = curwindow;
+	deselectwindow(wn,true);
+	getwindowrecord(wn,Actr);
+	if(Actr.IntORNr>-1)then begin
+		IntORr.SerNr = Actr.IntORNr;
+		if(readfirstmain(IntORr,1,true))then begin
+			OpenWindow("IntORDClass",1,0,"","",IntORr);
+		end;
+	end;
+	
+return;
+end;
+
 
 
 global updating procedure AttachToMailWEBLinkDsm()

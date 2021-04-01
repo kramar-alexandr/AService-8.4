@@ -8560,6 +8560,8 @@ begin
     EditField(h,v+=vs,120,"Сер. №",Normal,SerialNr,false,SVOSerSClass);// Edit ************************** BPI Ukraine - KramarAlexandr - Thursday, 16 November 2017 14:33:10
     EditField(h,v+=vs, 80,"Замовл. на обсл.",Normal,SVOSerNr,false,SVOSClass);// Edit ************************** BPI Ukraine - KramarAlexandr - Friday, 17 November 2017 15:54:06
 		halpushbutton(h+90,v,h+90+80,v+vs,"OpenSVODsm","Відкр.");
+		EditField(h,v+=vs, 80,"Заявка. постач.",Normal,IntORNr,false,0);// Edit ************************** BPI Ukraine - KramarAlexandr - 04, 01 04 2021 y. at 6:38:39 PM
+		halpushbutton(h+90,v,h+90+80,v+vs,"OpenIntORsm","Відкр.");
     vm=vm+vs+vs+10+vs;
     EditField(h2,v=vm+vs,-40,"",Normal,ActTypeComment,false,0);
     EditField(h2,v+=vs,140,"Особи",Normal,MainPersons,false,UserSClass);
