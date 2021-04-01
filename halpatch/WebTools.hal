@@ -67,6 +67,7 @@ begin
 	json jreq;
 	record ActVc Actr;
 	record SVOVc SVOr;
+	record IntORVc IntORr;
 	
 	setcompany(8,false);
 	
@@ -84,6 +85,7 @@ begin
 		Actr.StartTime = currenttime;
 		Actr.Comment = JSONGet(jreq,"text");
 		Actr.SVOSerNr = stringtolongint(JSONGet(jreq,"SVOSerNr"));
+		Actr.IntORNr = stringtolongint(JSONGet(jreq,"IntORSerNr"));
 		Actr.SerNr = NextSerNr("ActVc",Actr.TransDate,-1,false,"");
 		
 		if(recordinsert(Actr,true))then begin
@@ -92,6 +94,11 @@ begin
 			if(readfirstmain(SVOr,1,true))then begin
 				createrecordlink(SVOr,currentcompany,Actr,currentcompany);
 				createrecordlink(Actr,currentcompany,SVOr,currentcompany);
+			end;
+			IntORr.SerNr = Actr.IntORNr;
+			if(readfirstmain(IntORr,1,true))then begin
+				createrecordlink(IntORr,currentcompany,Actr,currentcompany);
+				createrecordlink(Actr,currentcompany,IntORr,currentcompany);
 			end;
 			weboutstring("{\"result\":\"ok\"}");
 		end;
