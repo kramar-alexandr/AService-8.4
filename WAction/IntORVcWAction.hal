@@ -996,7 +996,7 @@ begin
 			
 			recordnew(IntORr);
 			if(RA_CreateIntORfromSVOD(SVOr,IntORr))begin
-				OpenWindow("IntORDClass",0,0,"","",IntORr);
+				OpenWindow("IntORDClass",1,0,"","",IntORr);
 			end;
 		end else begin
 			messagebox(0,"Заполните данные по товару");
