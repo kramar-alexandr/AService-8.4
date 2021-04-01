@@ -84,6 +84,7 @@ begin
 		Actr.TransDate = currentdate;
 		Actr.StartTime = currenttime;
 		Actr.Comment = JSONGet(jreq,"text");
+		Actr.Comment1 = JSONGet(jreq,"text2");
 		Actr.SVOSerNr = stringtolongint(JSONGet(jreq,"SVOSerNr"));
 		Actr.IntORNr = stringtolongint(JSONGet(jreq,"IntORSerNr"));
 		Actr.SerNr = NextSerNr("ActVc",Actr.TransDate,-1,false,"");
