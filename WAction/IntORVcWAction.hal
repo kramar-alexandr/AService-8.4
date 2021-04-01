@@ -478,6 +478,11 @@ BEGIN
         end;
     end;
   end;
+  
+  switch (fieldname) begin
+      case "Math2": res = false;
+  end;
+  
 LIntORDClassActiveEditField:;  
   IntORDClassActiveEditField = res;
   RETURN;
