@@ -86,6 +86,7 @@ begin
 					
 					if(cntr==50)then begin
 						tstr = getstringfromarea(req,lastindex,50);
+						logtext(0,tstr);
 						addtotext(tstr,IntORr);
 						lastindex = i;
 						cntr = 0;
@@ -93,6 +94,7 @@ begin
 					cntr = cntr + 1;
 				end;
 				tstr = getstringfromarea(req,lastindex,50);
+				logtext(0,tstr);
 				addtotext(tstr,IntORr);
 				recordstore(IntORr,true);
 			end;
