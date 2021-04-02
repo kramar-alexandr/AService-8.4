@@ -83,7 +83,7 @@ begin
 				alength = getarealength(req);
 				cntr = 0;
 				for(i=0;i<alength;i=i+1)begin
-					addtotext(getstringfromarea(req,i,1),IntORr);
+					addtotext(GetByteFromArea(req,i),IntORr);
 					/*if(cntr==50)then begin
 						tstr = getstringfromarea(req,lastindex,50);
 						logtext(0,tstr);
