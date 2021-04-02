@@ -83,19 +83,18 @@ begin
 				alength = getarealength(req);
 				cntr = 0;
 				for(i=0;i<alength;i=i+1)begin
-					addtotext(GetByteFromArea(req,i),IntORr);
-					/*if(cntr==50)then begin
-						tstr = getstringfromarea(req,lastindex,50);
+					if(cntr==50 and getstringfromarea(req,i,1)==" ")then begin
+						tstr = getstringfromarea(req,lastindex,i-lastindex);
 						logtext(0,tstr);
 						addtotext(tstr,IntORr);
 						lastindex = i;
 						cntr = 0;
 					end;
-					cntr = cntr + 1;*/
+					cntr = cntr + 1;
 				end;
-				//tstr = getstringfromarea(req,lastindex,50);
-				//logtext(0,tstr);
-				//addtotext(tstr,IntORr);
+				tstr = getstringfromarea(req,lastindex,i-lastindex);
+				logtext(0,tstr);
+				addtotext(tstr,IntORr);
 				recordstore(IntORr,true);
 			end;
 		end;
