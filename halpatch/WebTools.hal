@@ -192,8 +192,8 @@ begin
 						end;
 						//logtext(0,"-nl " & nl);
 						//weboutarea2(anote);
-						
-						alength = getarealength(anote);
+						AddAreaToTextField(anote,Noter);
+						/*alength = getarealength(anote);
 						cntr = 0;
 						for(i=0;i<alength;i=i+1)begin
 							if(cntr>=20 and getstringfromarea(anote,i,1)==" ")then begin
@@ -205,8 +205,8 @@ begin
 							cntr = cntr + 1;
 						end;
 						tstr = getstringfromarea(anote,lastindex,i-lastindex);
-						addtotext(tstr,Noter);
-						Noter.SerNr = NextSerNr("NotepadVc",CurrentDate,-1,false,"");
+						addtotext(tstr,Noter);*/
+						//Noter.SerNr = NextSerNr("NotepadVc",CurrentDate,-1,false,"");
 						if (RecordInsert(Noter,true)) then begin
 						
 							if(SVOSerNr>0)then begin
@@ -224,7 +224,9 @@ begin
 									end;
 								end;
 							end;
-	
+						end;
+						Noter.SerNr = -1;
+						if (RecordInsert(Noter,true)) then begin
 							if(IntORSerNr>0)then begin
 								IntORr.SerNr = IntORSerNr;
 								if(readfirstmain(IntORr,1,true))then begin
