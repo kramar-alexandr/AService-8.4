@@ -80,12 +80,12 @@ begin
 		if(token=="7s44wkjm7U8374N7o1mkJN2vM")then begin
 			IntORr.SerNr = stringtolongint(order);
 			if(readfirstmain(IntORr,1,true))then begin
+				addtotext("======================",IntORr);
 				alength = getarealength(req);
 				cntr = 0;
 				for(i=0;i<alength;i=i+1)begin
 					if(cntr>=50 and getstringfromarea(req,i,1)==" ")then begin
 						tstr = getstringfromarea(req,lastindex,i-lastindex);
-						logtext(0,tstr);
 						addtotext(tstr,IntORr);
 						lastindex = i;
 						cntr = 0;
@@ -93,7 +93,6 @@ begin
 					cntr = cntr + 1;
 				end;
 				tstr = getstringfromarea(req,lastindex,i-lastindex);
-				logtext(0,tstr);
 				addtotext(tstr,IntORr);
 				recordstore(IntORr,true);
 			end;
@@ -106,6 +105,151 @@ begin
 	writeareatofile(addit,"WebGetIntORAnsver.txt",1);
 	writeareatofile(req,"WebGetIntORAnsver.txt",1);
 	
+	
+return;
+end;
+
+global webpublic updating procedure WebCustomNoter()
+begin
+	record NotepadVc Noter,OldNoter;
+	record RLinkVc RLinkr;
+	Integer notenr,cntr,nl;
+	boolean findf;
+	longint SVOSerNr, IntORSerNr,alength,i,lastindex;
+	record SVOVc SVOr;
+	record IntORVc IntORr;
+	area req,anote;
+	string 255 token,subject,tstr;
+	
+	setcompany(8,false);
+
+	SVOSerNr = stringtolongint(webgetarg("svonr"));
+	IntORSerNr = stringtolongint(webgetarg("intornr"));
+	token = webgetarg("token");
+	
+	webgetpostdata(req);
+	
+	weboutstring("ok");
+	if(token=="7s44wkjm7U8374N7o1mkJN2vM")then begin
+		if(getarealength(req)>20 and countlinesinarea(req)>2)then begin
+			subject = getlinefromarea(req,0);
+			if(len(subject)>0 and len(subject)<=50)then begin
+				if(len(getlinefromarea(req,1))<3)then begin
+					
+					if(SVOSerNr>0)then begin
+						SVOr.SerNr = SVOSerNr;
+						if(readfirstmain(SVOr,1,true))then begin
+							findf = true;
+							notenr = 1;
+							while (ReadRecordLink(SVOr,notenr,Noter,RLinkr)) begin
+								 if(RLinkr.Comment==subject)then begin 
+								 	recorddelete(Noter);
+								 	recorddelete(RLinkr);
+								 	notenr = notenr - 1;
+								 end;
+								 notenr = notenr + 1;
+							end;
+						end;
+					end;
+	
+					if(IntORSerNr>0)then begin
+						IntORr.SerNr = IntORSerNr;
+						if(readfirstmain(IntORr,1,true))then begin
+							findf = true;
+							notenr = 1;
+							while (ReadRecordLink(IntORr,notenr,Noter,RLinkr)) begin
+								 if(RLinkr.Comment==subject)then begin 
+								 	recorddelete(Noter);
+								 	recorddelete(RLinkr);
+								 	notenr = notenr - 1;
+								 end;
+								 notenr = notenr + 1;
+							end;
+						end;
+					end;
+					
+					if(findf==true)then begin
+						recordNew(Noter);
+					
+						alength = getarealength(req);
+						cntr = 0;
+						for(i=0;i<alength;i=i+1)begin
+							if(i<alength-1)then begin
+								if(getbytefromarea(req,i)==13 and getbytefromarea(req,i+1)==10)then begin
+									nl = nl + 1;
+									i=i+1;
+								end else begin
+									if(getbytefromarea(req,i)==13 or getbytefromarea(req,i)==10)then begin
+										nl = nl + 1;
+									end;
+								end;
+								
+								if(nl==2)then begin
+									getareafromarea(req,i+1,getarealength(req)-(i+1),anote);
+									i = alength;
+								end;
+							end;
+						end;
+						//logtext(0,"-nl " & nl);
+						//weboutarea2(anote);
+						
+						alength = getarealength(anote);
+						cntr = 0;
+						for(i=0;i<alength;i=i+1)begin
+							if(cntr>=20 and getstringfromarea(anote,i,1)==" ")then begin
+								tstr = getstringfromarea(anote,lastindex,i-lastindex);
+								addtotext(tstr,Noter);
+								lastindex = i;
+								cntr = 0;
+							end;
+							cntr = cntr + 1;
+						end;
+						tstr = getstringfromarea(anote,lastindex,i-lastindex);
+						addtotext(tstr,Noter);
+						Noter.SerNr = NextSerNr("NotepadVc",CurrentDate,-1,false,"");
+						if (RecordInsert(Noter,true)) then begin
+						
+							if(SVOSerNr>0)then begin
+								SVOr.SerNr = SVOSerNr;
+								if(readfirstmain(SVOr,1,true))then begin
+									CreateRecordLink(SVOr,CurrentCompany,Noter,CurrentCompany);  
+									CreateRecordLink(Noter,CurrentCompany,SVOr,CurrentCompany);  
+									notenr = 1;
+									while (ReadRecordLink(SVOr,notenr,Noter,RLinkr)) begin
+										notenr = notenr + 1;
+									end;
+									if (ReadRecordLink(SVOr,notenr-1,Noter,RLinkr)) then begin
+										RLinkr.Comment = subject;//"Printed Docs";   
+										if (RecordStore(RLinkr,true)) then begin  end;
+									end;
+								end;
+							end;
+	
+							if(IntORSerNr>0)then begin
+								IntORr.SerNr = IntORSerNr;
+								if(readfirstmain(IntORr,1,true))then begin
+									CreateRecordLink(IntORr,CurrentCompany,Noter,CurrentCompany);  
+									CreateRecordLink(Noter,CurrentCompany,IntORr,CurrentCompany);  
+									notenr = 1;
+									while (ReadRecordLink(IntORr,notenr,Noter,RLinkr)) begin
+										notenr = notenr + 1;
+									end;
+									if (ReadRecordLink(IntORr,notenr-1,Noter,RLinkr)) then begin
+										RLinkr.Comment = subject;//"Printed Docs";   
+										if (RecordStore(RLinkr,true)) then begin  end;
+									end;
+								end;
+							end;
+						
+							
+						end;
+					end;
+					
+				end;
+			end;
+		end;
+	end;
+
 	
 return;
 end;
