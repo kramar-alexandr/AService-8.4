@@ -80,7 +80,7 @@ begin
 		if(token=="7s44wkjm7U8374N7o1mkJN2vM")then begin
 			IntORr.SerNr = stringtolongint(order);
 			if(readfirstmain(IntORr,1,true))then begin
-				addtotext("======================",IntORr);
+				/*addtotext("======================",IntORr);
 				alength = getarealength(req);
 				cntr = 0;
 				for(i=0;i<alength;i=i+1)begin
@@ -93,7 +93,9 @@ begin
 					cntr = cntr + 1;
 				end;
 				tstr = getstringfromarea(req,lastindex,i-lastindex);
-				addtotext(tstr,IntORr);
+				addtotext(tstr,IntORr);*/
+				
+				AddAreaToTextField(req,IntORr);
 				recordstore(IntORr,true);
 			end;
 		end;
