@@ -266,6 +266,8 @@ global webpublic updating procedure WebFixActr()
 begin
 	record ActVc Actr;
 	
+	
+	SETCOMPANY(8,false);
 	while(loopmain(Actr,1,true))begin
 		if(Actr.Comment==" Ответ от поставщика  по заказу ")then begin
 			if(Actr.MainPersons=="MANKRS")then begin
