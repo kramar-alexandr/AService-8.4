@@ -261,3 +261,19 @@ begin
 	
 return;
 end;
+
+global webpublic updating procedure WebFixActr()
+begin
+	record ActVc Actr;
+	
+	while(loopmain(Actr,1,true))begin
+		if(Actr.Comment==" Ответ от поставщика  по заказу ")then begin
+			if(Actr.MainPersons=="MANKRS")then begin
+				logtext(0,Actr.SerNr);
+			end;
+		end;
+	end;
+	
+	
+return;
+end;
