@@ -80,34 +80,12 @@ begin
 		if(token=="7s44wkjm7U8374N7o1mkJN2vM")then begin
 			IntORr.SerNr = stringtolongint(order);
 			if(readfirstmain(IntORr,1,true))then begin
-				/*addtotext("======================",IntORr);
-				alength = getarealength(req);
-				cntr = 0;
-				for(i=0;i<alength;i=i+1)begin
-					if(cntr>=50 and getstringfromarea(req,i,1)==" ")then begin
-						tstr = getstringfromarea(req,lastindex,i-lastindex);
-						addtotext(tstr,IntORr);
-						lastindex = i;
-						cntr = 0;
-					end;
-					cntr = cntr + 1;
-				end;
-				tstr = getstringfromarea(req,lastindex,i-lastindex);
-				addtotext(tstr,IntORr);*/
-				
 				AddAreaToTextField(req,IntORr);
 				recordstore(IntORr,true);
+				weboutstring("{\"result\":\"ok\"}");
 			end;
 		end;
 	end;
-	
-	
-	
-	addtexttoarea(chr(13) & chr(10) & "===============" & currentdate & "  " & currenttime & chr(13) & chr(10),addit);
-	writeareatofile(addit,"WebGetIntORAnsver.txt",1);
-	writeareatofile(req,"WebGetIntORAnsver.txt",1);
-	
-	
 return;
 end;
 
@@ -131,7 +109,6 @@ begin
 	
 	webgetpostdata(req);
 	
-	weboutstring("ok");
 	if(token=="7s44wkjm7U8374N7o1mkJN2vM")then begin
 		if(getarealength(req)>20 and countlinesinarea(req)>2)then begin
 			subject = getlinefromarea(req,0);
@@ -253,9 +230,7 @@ begin
 	webgetpostdata(req);
 	
 	jreq = parsejsonarea(req);
-	if(JSONGet(jreq,"token")=="7s44wkjm7U8374N7o1mkJN2vM")then begin
-		logtext(0,1);
-		
+	if(JSONGet(jreq,"token")=="7s44wkjm7U8374N7o1mkJN2vM")then begin		
 		Actr.SymbNr = 3;
 		Actr.TodoFlag = kTodoFlagTodo;
 		Actr.AlarmType = kAlarmTypeNone;
@@ -269,7 +244,6 @@ begin
 		Actr.SerNr = NextSerNr("ActVc",Actr.TransDate,-1,false,"");
 		
 		if(recordinsert(Actr,true))then begin
-			logtext(0,"WebCreateTask " & Actr.SerNr);
 			SVOr.SerNr = Actr.SVOSerNr;
 			if(readfirstmain(SVOr,1,true))then begin
 				createrecordlink(SVOr,currentcompany,Actr,currentcompany);
