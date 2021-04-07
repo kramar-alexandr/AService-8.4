@@ -262,22 +262,3 @@ begin
 return;
 end;
 
-global webpublic updating procedure WebFixActr()
-begin
-	record ActVc Actr;
-	
-	
-	SETCOMPANY(8,false);
-	while(loopmain(Actr,1,true))begin
-		if(len(Actr.Comment)==32)then begin
-			if(Actr.MainPersons=="MANKRS" and Actr.SerNr>160188)then begin
-				logtext(0,Actr.Comment & " " & Actr.SerNr);
-				recorddelete(Actr);
-				stepback(Actr);
-			end;
-		end;
-	end;
-	
-	
-return;
-end;
