@@ -234,7 +234,7 @@ begin
 					
 				end;
 			end;
-			webouttext("{\"result\":\"ok\"}");
+			//webouttext("{\"result\":\"ok\"}");
 		end;
 	end;
 
