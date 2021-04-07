@@ -270,7 +270,7 @@ begin
 	SETCOMPANY(8,false);
 	while(loopmain(Actr,1,true))begin
 		if(len(Actr.Comment)==32)then begin
-			if(Actr.MainPersons=="MANKRS")then begin
+			if(Actr.MainPersons=="MANKRS" and Actr.SerNr>160188)then begin
 				logtext(0,Actr.Comment & " " & Actr.SerNr);
 			end;
 		end;
