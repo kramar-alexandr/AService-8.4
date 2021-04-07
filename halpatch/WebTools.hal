@@ -269,9 +269,8 @@ begin
 	
 	SETCOMPANY(8,false);
 	while(loopmain(Actr,1,true))begin
-		logtext(0,Actr.Comment);
-		if(Actr.Comment==" Ответ от поставщика  по заказу ")then begin
-			
+		if(len(Actr.Comment)==32)then begin
+			logtext(0,Actr.Comment);
 			if(Actr.MainPersons=="MANKRS")then begin
 				logtext(0,Actr.SerNr);
 			end;
