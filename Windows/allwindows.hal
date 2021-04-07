@@ -8991,9 +8991,9 @@ begin
   EditField(h,v+=vs,-20,"",Normal,DelAddr4,false,0);
   EditField(h2=-170,v+=vs,150,"Телефон",Normal,Phone,false,0);
   EditField(h2,v+=vs,150,"Факс",Normal,Fax,false,0);*/
-  Tile(3,400,false,"3",Math); vs = 20;
-
-  TextField(10,10,-10,-10,Math,0);
+  Tile(3,400,false,"3",Reference); vs = 20;
+	EditField(h,v=20,135,"Ссылка",ViewOnly,Reference,false,0);
+  TextField(10,v+=vs,-10,-10,Math,0);
 	StaticText(h,300,"",true);
   //SpecialMenu("Статус внутреннего заказа",'r',5,"IntORStatIntORDsm");
 
