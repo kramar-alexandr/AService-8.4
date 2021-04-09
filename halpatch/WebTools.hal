@@ -121,6 +121,7 @@ begin
 				writeareatofile(req,"POSTREQ.txt",0);
 				writeareatofile(addit,"POSTaddit.txt",0);
 				addtexttoarea(chr(13) & chr(10),addit);
+				addtexttoarea("-" & chr(13) & chr(10),addit);
 				
 				AddAreaToTextField(addit,INr);
 				lastindex = LineTextCnt(INr);
