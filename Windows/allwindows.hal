@@ -8896,8 +8896,9 @@ window IntORDClass:1
 begin
   real h,h1,h2,h3,h4,t,v,vm,vs;
   WindowBegin("Внутренний заказ",IntORDClass,CGview,-);
-  SetWRect(20,80,615,350);
-  Sizeable(-1,-1,0,0);
+  SetWRect(20,80,830,400);
+  Sizeable(-1,-1,-1,0);
+  DynamicWindow;
   UseView(IntORVc);
   FormName(IntORForm);
   ActiveFieldOnNew("OurUser");
@@ -8913,10 +8914,8 @@ begin
   CheckBox(h1,vm+=vm,0,"Отправлен",SendFlag);
   EditField(h2-100,vm,30,"",ViewOnly,Status,false,0);
   EditField(h2,vm,100,"Статус",ViewOnly,StatusText,false,0);
-  //CheckBox(h2+120,vm,0,"Pfdthity",Closed);
   TileButton(1,"Условия");
   TileButton(2,"Запчасти");
-  //TileButton(3,"Адрес отгрузки");
   TileButton(3,"Ответ от поствщика");
   Tile(1,70,false,"1",PlanShip);
   vs = 20; h1 = 150; h2 = 290; h3 = 530; h4 = 600;
@@ -8927,22 +8926,12 @@ begin
   EditField(h2,v,182,"ФИО",Normal,SVOContactName,false,0);
   EditField(h3,v,90,"Телефон 2",Normal,SVOContactPhone2,false,0);
   EditField(h3,v-vs,90,"Телефон 1",Normal,SVOContactPhone1,false,0);
-  
   h1 = 70; h2 = 280; h3 = 450;
   EditField(h1,v+=vs,102,"Товар",Normal,SVOItem,false,INSClass);
   EditField(h2,v,92,"Серийный №",Normal,SVOSerial,false,0);
   EditField(h3,v,-20,"Описание",Normal,SVOSpec,false,0);
-  //EditField(h1,v+=vs,82,"Со склада",Normal,FrLocation,false,LocationSClass);
-  //EditField(h2,v=6,82,"Усл. отгр.",Normal,ShipDeal,false,ShipDealSClass);
-  //EditField(h2,v+=vs,82,"Способ отгр.",Normal,ShipMode,false,DMSClass);
-  //EditField(h2,v+=vs,82,"На склад",Normal,Location,false,LocationSClass);
-  //EditField(h3,v=6,82,"Класс внутр. заказ.",Normal,IntORClass,false,IntORClassSClass);
-  //EditField(h3,v+=vs,82,"Язык",Normal,LangCode,false,LangSClass);
-  //EditField(h3,v+=vs,135,"Ссылка",Normal,Reference,false,0);
-//  EditField(h,v+=vs,280,"#Authorised# By",ViewOnly,OKPersons,false,UserSClass);// funcionality removed, no operations menu
   EnterSkip(Math2);
   Tile(2,120,true,"2",Math2);
-  //EditField(-144,-21,90,"ИТОГО",ViewOnly,Total,true,0);
   v = 24;
   MatrixBegin(3,v,-50,-27,-,99);
   MatOverStrike(ovst);
@@ -8959,20 +8948,6 @@ begin
   Flip(1);
   MatCol(1,144,"Описание",0,Spec,false,0);
   MatCol(1,344,"Комментарий",0,Comment,false,0);
-  //MatCol(1,-180,"Стоимость",0,Price,true,0);
-  //MatCol(1,-90,"Итого ст-ть",0,Sum,true,0);
-  /*Flip(2);
-  MatCol(t=1,144,"Описание",0,Spec,false,0);
-  MatCol(t,-304,"Сер. №",0,SerialNr,false,SerialNrSClass);
-  MatCol(t,-204,"Счёт стоим.",0,CostAcc,false,AccSClass);
-  MatCol(t,-124,"Объекты",0,Objects,false,ObjSClass);
-  MatCol(1,-70,"Структура",0,Recepy,false,RecSClass);
-  Flip(3);
-  MatCol(t=1,144,"Опис.",0,Spec,false,0);
-  MatCol(1,-280,"Испол.",0,Shipd1,false,0);
-  MatCol(1,-210,"Достав.",0,Shipd2,false,0);
-  MatCol(t,-140,"Отправ.",0,Sent,true,0);
-  MatCol(t,-70,"Заказ/П.",0,POOrd,true,0);*/
   Flip(2);
   MatCol(t=1,144,"Опис.",0,Spec,false,0);
   MatCol(t,-70,"Заказ/П.",0,POOrd,true,0);
@@ -8981,25 +8956,11 @@ begin
   vs = 20;
   v = 18; VTab(-35,v,-16,v+vs,ToolFlip,1,"A");
   v=v+vs;  VTab(-35,v,-16,v+vs,ToolFlip,2,"B");
-  //v=v+vs;  VTab(-35,v,-16,v+vs,ToolFlip,3,"C");
-  /*Tile(3,170,false,"3",ShipAddr0);
-  EditField(h,v=6,-20,"Отгрузка",Normal,ShipAddr0,false,0);
-  EditField(h,v+=vs,-20,"Адрес",Normal,ShipAddr1,false,0);
-  EditField(h,v+=vs,-20,"",Normal,ShipAddr2,false,0);
-  EditField(h,v+=vs,-20,"",Normal,ShipAddr3,false,0);
-  EditField(h,v+=vs,-20,"",Normal,DelAddr3,false,0);
-  EditField(h,v+=vs,-20,"",Normal,DelAddr4,false,0);
-  EditField(h2=-170,v+=vs,150,"Телефон",Normal,Phone,false,0);
-  EditField(h2,v+=vs,150,"Факс",Normal,Fax,false,0);*/
-  Tile(3,400,false,"3",Reference); vs = 20;
-	EditField(h,v=20,135,"Ссылка",ViewOnly,Reference,false,0);
-  TextField(10,v+=vs,-10,-10,Math,0);
+  Tile(3,400,false,3,Math); vs = 20;
+  StaticText(50,v=20,"Ответ",true);
+  TextField(60,v-5,-20,370,Math,0);
 	StaticText(h,300,"",true);
-  //SpecialMenu("Статус внутреннего заказа",'r',5,"IntORStatIntORDsm");
-
   SpecMenuGroup("",kSpecMenuGroupTypeExtendedPlusMenu,0);         
-  //SpecialMenu("Создать перемещение на складе",' ',0,"StockMovFromIntORDsm");         
-  //SpecialMenu("Создать списание товара",' ',1,"SDFromIntORDsm");         
   SpecialMenu("Создать заказ поставщику",' ',2,"POFromIntORDsm");         
   EndWindow;
 end;
