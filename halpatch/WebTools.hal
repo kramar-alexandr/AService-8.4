@@ -111,6 +111,7 @@ begin
 				for(i=0;i<getarealength(req);i=i+1)begin
 					if(GetByteFromArea(req,i)==13)then begin
 						AddByteToArea(GetByteFromArea(req,i),addit);
+						AddByteToArea(10,addit);
 					end else begin
 						if(GetByteFromArea(req,i)!=10)then begin
 							AddByteToArea(GetByteFromArea(req,i),addit);
