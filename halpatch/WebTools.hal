@@ -80,7 +80,21 @@ begin
 		if(token=="7s44wkjm7U8374N7o1mkJN2vM")then begin
 			IntORr.SerNr = stringtolongint(order);
 			if(readfirstmain(IntORr,1,true))then begin
-				AddAreaToTextField(req,IntORr);
+				for(i=0;i<getarealength(req);i=i+1)begin
+					if(GetByteFromArea(req,i)==0 and i==getarealength(req)-1)then begin
+						
+					end else begin
+						if(GetByteFromArea(req,i)==10)then begin
+							AddByteToArea(13,addit);
+							AddByteToArea(GetByteFromArea(req,i),addit);
+						end else begin
+							if(GetByteFromArea(req,i)!=13)then begin
+								AddByteToArea(GetByteFromArea(req,i),addit);
+							end;
+						end;
+					end;
+				end;
+				AddAreaToTextField(addit,IntORr);
 				recordstore(IntORr,true);
 				weboutstring("{\"result\":\"ok\"}");
 			end;
@@ -122,16 +136,7 @@ begin
 						end;
 					end;
 				end;
-				addtexttoarea(chr(13) & chr(10),addit);
-				addtexttoarea("----------" & chr(13) & chr(10),addit);
-				writeareatofile(req,"POSTREQ.txt",0);
-				writeareatofile(addit,"POSTaddit.txt",0);
-				
-				
 				AddAreaToTextField(addit,INr);
-				lastindex = LineTextCnt(INr);
-				LineTextPut(INr,lastindex,"");
-				recordstore(INr,true);
 				weboutstring("{\"result\":\"ok\"}");
 			end;
 		end;
