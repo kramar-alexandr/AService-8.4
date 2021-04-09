@@ -89,6 +89,34 @@ begin
 return;
 end;
 
+global webpublic updating procedure WebTextTOINNoter()
+begin	
+	area req,addit;
+	json jreq;
+	record INVc INr;
+	string 100 order,token;
+	longint i,alength,lastindex;
+	integer cntr;
+	string 100 tstr;
+	
+	setcompany(8,false);
+	
+	token = webgetarg("token");
+	webgetpostdata(req);
+	
+	if(nonblank(token))then begin
+		if(token=="7s44wkjm7U8374N7o1mkJN2vM")then begin
+			INr.Code = "00-00010226";
+			if(readfirstmain(INr,1,true))then begin
+				AddAreaToTextField(req,INr);
+				recordstore(INr,true);
+				weboutstring("{\"result\":\"ok\"}");
+			end;
+		end;
+	end;
+return;
+end;
+
 global webpublic updating procedure WebCustomNoter()
 begin
 	record NotepadVc Noter,OldNoter;
