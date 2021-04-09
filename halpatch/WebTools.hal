@@ -119,7 +119,7 @@ begin
 				end;
 				writeareatofile(req,"POSTREQ.txt",0);
 				writeareatofile(addit,"POSTaddit.txt",0);
-				AddAreaToTextField(req,INr);
+				AddAreaToTextField(addit,INr);
 				recordstore(INr,true);
 				weboutstring("{\"result\":\"ok\"}");
 			end;
