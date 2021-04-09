@@ -109,10 +109,10 @@ begin
 			INr.Code = "00-00010226";
 			if(readfirstmain(INr,1,true))then begin
 				for(i=0;i<getarealength(req);i=i+1)begin
-					if(GetByteFromArea(req,i)==10)then begin
-						addtexttoarea("<CR>",addit);
+					if(GetByteFromArea(req,i)==13)then begin
+						AddByteToArea(GetByteFromArea(req,i),addit);
 					end else begin
-						if(GetByteFromArea(req,i)!=13)then begin
+						if(GetByteFromArea(req,i)!=10)then begin
 							AddByteToArea(GetByteFromArea(req,i),addit);
 						end;
 					end;
