@@ -479,15 +479,18 @@ BEGIN
     end;
   end;
   
-  switch (fieldname) begin
+  
+  
+LIntORDClassActiveEditField:;  
+
+	switch (fieldname) begin
       case "Math": res = false;
   end;
   
   switch (fieldname) begin
       case "Math": if(currentuser=="SA")then begin res = true; end;
   end;
-  
-LIntORDClassActiveEditField:;  
+
   IntORDClassActiveEditField = res;
   RETURN;
 END;
