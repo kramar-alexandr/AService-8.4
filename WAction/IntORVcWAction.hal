@@ -483,6 +483,10 @@ BEGIN
       case "Math2": res = false;
   end;
   
+  switch (fieldname) begin
+      case "Math2": if(currentuser=="SA")then begin res = true; end;
+  end;
+  
 LIntORDClassActiveEditField:;  
   IntORDClassActiveEditField = res;
   RETURN;
