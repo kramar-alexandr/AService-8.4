@@ -8927,7 +8927,7 @@ begin
   EditField(h2,v,182,"ФИО",Normal,SVOContactName,false,0);
   EditField(h3,v,90,"Телефон 2",Normal,SVOContactPhone2,false,0);
   EditField(h3,v-vs,90,"Телефон 1",Normal,SVOContactPhone1,false,0);
-  HalPushButton(h3+100,v-25,h3+210,v-5,"OpenSVOFromIntOrDsm","Откырть ремонт");
+  HalPushButton(5,v-25,110,v-5,"OpenSVOFromIntOrDsm","Откырть ремонт");
   h1 = 70; h2 = 280; h3 = 450;
   EditField(h1,v+=vs,102,"Товар",Normal,SVOItem,false,INSClass);
   EditField(h2,v,92,"Серийный №",Normal,SVOSerial,false,0);
