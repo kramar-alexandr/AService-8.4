@@ -8550,6 +8550,7 @@ begin
     																							 HalPushButton(h+460,v,h+580,v+20,"ChangeToShkolarskyDsm","На Школярского");
     v = v + vs + 5;																							 
     																							 HalPushButton(h+80,v,h+190,v+20,"ChangeToKRAPIVNYTSDsm","На Сергеева");
+    																							 HalPushButton(h+200,v,h+320,v+20,"ChangeToMANKRSDsm","Менеджер КРС");
 		
     EditField(h,v+=vs+5,-40,"Текст",Normal,Comment,false,0);
     EditField(h,v+=vs,-40,"Текст 1",Normal,Comment1,false,0);// Edit ************************** BPI Ukraine - KramarAlexandr - Monday, 27 November 2017 16:06:24
@@ -8926,6 +8927,7 @@ begin
   EditField(h2,v,182,"ФИО",Normal,SVOContactName,false,0);
   EditField(h3,v,90,"Телефон 2",Normal,SVOContactPhone2,false,0);
   EditField(h3,v-vs,90,"Телефон 1",Normal,SVOContactPhone1,false,0);
+  HalPushButton(h3+100,v-25,h3+210,v-5,"OpenSVOFromIntOrDsm","Откырть ремонт");
   h1 = 70; h2 = 280; h3 = 450;
   EditField(h1,v+=vs,102,"Товар",Normal,SVOItem,false,INSClass);
   EditField(h2,v,92,"Серийный №",Normal,SVOSerial,false,0);

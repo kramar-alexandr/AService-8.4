@@ -2281,6 +2281,24 @@ integer wn;
 return;
 end;
 
+global
+procedure OpenSVOFromIntOrDsm()
+begin
+	record SVOVc SVOr;
+	record IntORVc IntORr;
+	integer wn;
+		
+	wn = curwindow;
+	getwindowrecord(wn,IntORr);
+	if(IntORr.SVONr>-1)then begin
+		SVOr.SerNr = IntORr.SVONr;
+		if(readfirstmain(SVOr,1,true))then begin
+			OpenWindow("SVODClass",0,CurWindow,"","",SVOr);
+		end;
+	end;
+	
+return;
+end;
 
 global
 updating procedure ChangeToKRAPIVNYTSDsm()
@@ -2295,6 +2313,25 @@ integer wn;
 	
 	Actr.Comment = "Cогласовать ремонт " & Actr.SVOSerNr;
 	Actr.MainPersons = "SERGEEV";
+	putwindowrecord(wn,Actr);
+	windowdook(wn,0);
+	
+return;
+end;
+
+global
+updating procedure ChangeToMANKRSDsm()
+begin
+
+record ActVc Actr;
+integer wn;	
+	
+	wn = curwindow;
+	deselectwindow(wn,true);
+	getwindowrecord(wn,Actr);
+	
+	Actr.Comment = "Cогласовать ремонт " & Actr.SVOSerNr;
+	Actr.MainPersons = "MANKRSD";
 	putwindowrecord(wn,Actr);
 	windowdook(wn,0);
 	
