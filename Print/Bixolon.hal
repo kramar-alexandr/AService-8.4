@@ -835,7 +835,8 @@ begin
   TLTOARR(cjecklength,"Вартість ремонту: " & ValToString(SVOr.WSCost,M4Val,"",".",0) & " грн.",aFile);
   
   //Дата заказа
-  TLTOARR(cjecklength,"Замовлення на обслуговування No " & SVOr.SerNr & " від: " & SVOr.TransDate & " " & SVOr.RegTime & "",aFile);
+  TLTOARR(cjecklength,"Замовлення на обслуговування No " & SVOr.SerNr,aFile);
+  TLTOARR(cjecklength," від: " & SVOr.TransDate & " " & SVOr.RegTime & "",aFile);
   
   //Kon Info
   
@@ -877,11 +878,19 @@ begin
   addtexttoarea(chr(13) & chr(10),aFile);
   
   TLTOARR(cjecklength,"Правила обслуговування сервісного центру: ",aFile);
-  TLTOARR(cjecklength,"- Обладнання приймається до сервісного центру для проведення діагностики,",aFile);
-  TLTOARR(cjecklength,"а у випадку необхідності подальшого його ремонту. ",aFile);
-  TLTOARR(cjecklength,"- Під час оформлення замовлення проводиться зовнішній огляд виробу на наявність ознак порушення умов експлуатації.",aFile);
-  TLTOARR(cjecklength,"Незначні, важкопомітні пошкодження, потертості, подряпини, тріщини, сколи можуть бути не зафіксовані при оформленні замовлення,",aFile);
-  TLTOARR(cjecklength,"що не є підставою для пред`явлення замовником вимог щодо часткової або повної компенсації вартості виробу, моральної шкоди тощо.",aFile);
+  TLTOARR(cjecklength,"- Обладнання приймається до сервісного",aFile);
+  TLTOARR(cjecklength,"центру для проведення діагностики,",aFile);
+  TLTOARR(cjecklength,"а у випадку необхідності подальшого",aFile);
+  TLTOARR(cjecklength,"його ремонту. ",aFile);
+  TLTOARR(cjecklength,"- Під час оформлення замовлення прово-",aFile);
+  TLTOARR(cjecklength,"диться зовнішній огляд виробу на наявність",aFile);
+  TLTOARR(cjecklength,"ознак порушення умов експлуатації.",aFile);
+  TLTOARR(cjecklength,"Незначні, важкопомітні пошкодження, потертості,",aFile);
+  TLTOARR(cjecklength,"подряпини, тріщини, сколи можуть бути не",aFile);
+  TLTOARR(cjecklength,"зафіксовані при оформленні замовлення,",aFile);
+  TLTOARR(cjecklength,"що не є підставою для пред`явлення замовником",aFile);
+  TLTOARR(cjecklength,"вимог щодо часткової або повної компенсації",aFile);
+  TLTOARR(cjecklength,"вартості виробу, моральної шкоди тощо.",aFile);
   addtexttoarea(chr(13) & chr(10),aFile);
   
   addtexttoarea(SetBoldOn,aFile);
