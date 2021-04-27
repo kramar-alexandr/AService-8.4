@@ -40,6 +40,8 @@ remote updating procedure RA_AttachToMailWEBLinkDsm(record WebNavLinkVc);
 external updating procedure  CreateSVOSerNoterForMove(record SVOVc,string);// Edit ************************** BPI Ukraine - KramarAlexandr - Thursday, 29 March 2018 11:27:11
 external updating procedure CloseActivitiesFromSVO(var record SVOVc,string);
 remote procedure sendMessageToSergey(record SVOVc);
+remote procedure HandleSVOAct1(record SVOVc,var area);
+remote procedure HandleSVOAct2(record SVOVc,var area);
 
 // Edit Start ---------------------------------------------- Edit Start
 	//Wednesday, 3 June 2015 16:58:34
@@ -47,7 +49,33 @@ remote procedure sendMessageToSergey(record SVOVc);
 SetLangMode(LangRussian,"RUS",0);
 
 
+global procedure PrintSVOActExecute(record SVOVc SVOr)
+BEGIN
+  area aFile;
+  Boolean testf;
+	
+  SetExportCodePage("CP1251");
+  HandleSVOAct1(SVOr,aFile);//Для сервиса
+  PrintBixolonReceipt(aFile);
 
+  millisleep(2000);
+  //HandleSVOAct2(SVOr,aFile);//Для клиента
+  //PrintBixolonReceipt(aFile);
+		
+  RETURN;
+END;
+
+
+
+global procedure PrintSVOActExecuteDsm()
+begin
+  record SVOVc SVOr;
+  
+  getwindowrecord(curwindow,SVOr);
+  PrintSVOActExecute(SVOr);
+  
+return;
+end;
 
 global //Edit-------------------Vitalii 13:52 27.10.2016
 updating procedure PrintAndSetRegDateInSVOExecute(var record SVOVc SVOr)

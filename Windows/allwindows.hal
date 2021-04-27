@@ -578,6 +578,7 @@ begin
   end;
   SpecialMenu("Статус оплат по замовленню",' ',0,"SVOPaymentRnDsm");
   SpecialMenu("Друкувати чек",' ',0,"PrintSVOReceiptDsm"); //Edit***************************Sasha2,13:47 13.10.2016
+  SpecialMenu("Друкувати акт Bixolon",' ',0,"PrintSVOActExecuteDsm");// Edit ************************** BPI Ukraine - KramarAlexandr - 01, 26 04 2021 y. at 4:35:01 PM
   SpecMenuGroup("",kSpecMenuGroupTypeExtendedPlusMenu,0); 
   SpecialMenu("Заявка поставщику",' ',0,"CreateIntORfromSVODsm");  // Edit ************************** BPI Ukraine - KramarAlexandr - 02, 23 03 2021 y. at 8:13:01 AM
   EndWindow;
