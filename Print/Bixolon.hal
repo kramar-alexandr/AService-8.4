@@ -885,9 +885,9 @@ begin
   TLTOARR(cjecklength,"- Під час оформлення замовлення прово-",aFile);
   TLTOARR(cjecklength,"диться зовнішній огляд виробу на наявність",aFile);
   TLTOARR(cjecklength,"ознак порушення умов експлуатації.",aFile);
-  TLTOARR(cjecklength,"Незначні, важкопомітні пошкодження, потертості,",aFile);
-  TLTOARR(cjecklength,"подряпини, тріщини, сколи можуть бути не",aFile);
-  TLTOARR(cjecklength,"зафіксовані при оформленні замовлення,",aFile);
+  TLTOARR(cjecklength,"Незначні, важкопомітні пошкодження, потер-",aFile);
+  TLTOARR(cjecklength,"тості, подряпини, тріщини, сколи можуть бути",aFile);
+  TLTOARR(cjecklength,"не зафіксовані при оформленні замовлення,",aFile);
   TLTOARR(cjecklength,"що не є підставою для пред`явлення замовником",aFile);
   TLTOARR(cjecklength,"вимог щодо часткової або повної компенсації",aFile);
   TLTOARR(cjecklength,"вартості виробу, моральної шкоди тощо.",aFile);
