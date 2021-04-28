@@ -878,7 +878,20 @@ begin
   
   addtexttoarea(chr(13) & chr(10),aFile);
   
+  addtexttoarea(SetUnderlineOn,aFile);
   TLTOARR(cjecklength,"Правила обслуговування сервісного центру: ",aFile);
+  addtexttoarea(SetUnderlineOff,aFile);
+  addtexttoarea(SetBoldOn,aFile);
+  TLTOARR(cjecklength,"- Вартість діагностики пристроїв (платных",aFile);
+  TLTOARR(cjecklength,"та гарантiйних): iPhone - 250грн.,",aFile);
+  TLTOARR(cjecklength,"iPad - 400грн., MacBook - 400грн., ",aFile);
+  TLTOARR(cjecklength,"iMac - 1000грн., моноблоків - 400грн.,",aFile);
+  TLTOARR(cjecklength,"смартфонів - 250грн., планшетів- 300грн.,",aFile);
+  TLTOARR(cjecklength,"навушників- 250,00грн.",aFile);
+  //addtexttoarea(SetBoldOff,aFile);
+  addtexttoarea(chr(13) & chr(10),aFile);
+  
+  addtexttoarea(SetUnderlineOn,aFile);
   TLTOARR(cjecklength,"- Обладнання приймається до сервісного",aFile);
   TLTOARR(cjecklength,"центру для проведення діагностики,",aFile);
   TLTOARR(cjecklength,"а у випадку необхідності подальшого",aFile);
@@ -895,23 +908,9 @@ begin
   TLTOARR(cjecklength,"шкоди тощо.",aFile);
   addtexttoarea(chr(13) & chr(10),aFile);
   
-  addtexttoarea(SetBoldOn,aFile);
-  TLTOARR(cjecklength,"- Вартість діагностики пристроїв (платных",aFile);
-  TLTOARR(cjecklength,"та гарантiйних): iPhone - 250грн.,",aFile);
-  TLTOARR(cjecklength,"iPad - 400грн., MacBook - 400грн., ",aFile);
-  TLTOARR(cjecklength,"iMac - 1000грн., ноутбуків - 300грн., ",aFile);
-  TLTOARR(cjecklength,"моноблоків - 400грн.,смартфонів - 250грн.,",aFile);
-  TLTOARR(cjecklength,"планшетів- 300грн., навушників- 250,00грн.",aFile);
-  addtexttoarea(SetBoldOff,aFile);
-  
-  
   TLTOARR(cjecklength,"- Діагностика обладнання виконується про-",aFile);
   TLTOARR(cjecklength,"тягом 3 робочих днів з моменту підтверджен",aFile);
   TLTOARR(cjecklength,"ня наявності дефекту у сервісному центрі.",aFile);
-  TLTOARR(cjecklength,"- Якщо несправність має періодичний харак-",aFile);
-  TLTOARR(cjecklength,"тер, датою початку робіт з діагностики",aFile);
-  TLTOARR(cjecklength,"вважається час її проявлення у сервіс-",aFile);
-  TLTOARR(cjecklength,"центрі.",aFile);
   TLTOARR(cjecklength,"- Термін виконання гарантійного ремонту",aFile);
   TLTOARR(cjecklength,"становить 14 днів.",aFile);
   TLTOARR(cjecklength,"У випадку відсутності запчастин на складі",aFile);
@@ -919,14 +918,14 @@ begin
   TLTOARR(cjecklength,"подовжено на 30 днів.",aFile);
   addtexttoarea(chr(13) & chr(10),aFile);
   
-  addtexttoarea(SetBoldOn,aFile);
+  //addtexttoarea(SetBoldOn,aFile);
   TLTOARR(cjecklength,"- Сервісний центр не несе відповідальності",aFile);
   TLTOARR(cjecklength,"за збереження будь-якої інформації, про-",aFile);
   TLTOARR(cjecklength,"грамного забезпечення, персональних даних,",aFile);
   TLTOARR(cjecklength,"налаштувань користувача при проведенні",aFile);
   TLTOARR(cjecklength,"будь-яких робіт з обладнанням і не ком-",aFile);
   TLTOARR(cjecklength,"пенсує їх часткову або повну втрату.",aFile);
-  addtexttoarea(SetBoldOff,aFile);
+  //addtexttoarea(SetBoldOff,aFile);
   TLTOARR(cjecklength,"- Результат попереднього огляду не є кін-",aFile);
   TLTOARR(cjecklength,"цевим, про виявлені в процесі діагностики",aFile);
   TLTOARR(cjecklength,"або ремонту несправності сервісний центр",aFile);
@@ -935,12 +934,12 @@ begin
   TLTOARR(cjecklength,"вважається дата повідомлення клієнта теле-",aFile);
   TLTOARR(cjecklength,"фоном або шляхом смс-інформування.",aFile);
   
-  addtexttoarea(SetBoldOn,aFile);
+  //addtexttoarea(SetBoldOn,aFile);
   TLTOARR(cjecklength,"- У випадку потрапляння рідини, комах, ме-",aFile);
   TLTOARR(cjecklength,"ханічних пошкоджень сервіс-центр не несе ",aFile);
   TLTOARR(cjecklength,"відповідальності за працездатність прист-",aFile);
   TLTOARR(cjecklength,"рою до та після його ремонту.",aFile);
-  addtexttoarea(SetBoldOff,aFile);
+  //addtexttoarea(SetBoldOff,aFile);
   
   TLTOARR(cjecklength,"- Сервісний центр не несе відповідальності",aFile);
   TLTOARR(cjecklength,"за роботу програм сторонніх виробників,",aFile);
@@ -948,11 +947,11 @@ begin
   TLTOARR(cjecklength,"роботу додаткового сервісу «Знайти iPhone»",aFile);
   TLTOARR(cjecklength,"(Find my iPhone), iCloud, тощо.",aFile);
   
-  addtexttoarea(SetBoldOn,aFile);
+  //addtexttoarea(SetBoldOn,aFile);
   TLTOARR(cjecklength,"- Сервісний центр не повертає Замовнику",aFile);
   TLTOARR(cjecklength,"замінені у процесі виконання замовлення",aFile);
   TLTOARR(cjecklength,"запасні частини, компоненти тощо. ",aFile);
-  addtexttoarea(SetBoldOff,aFile);
+  //addtexttoarea(SetBoldOff,aFile);
   
   TLTOARR(cjecklength,"- Сервісний центр не несе будь-якої від-",aFile);
   TLTOARR(cjecklength,"повідальності за цілісність дисплейного",aFile);
@@ -964,7 +963,8 @@ begin
   TLTOARR(cjecklength,"- Починаючи з 15-ї доби після завершення",aFile);
   TLTOARR(cjecklength,"ремонту вартість зберігання обладнання у ",aFile);
   TLTOARR(cjecklength,"сервісному центрі складає 30 грн. за добу.",aFile);
-  
+  addtexttoarea(SetBoldOff,aFile);
+  addtexttoarea(SetUnderlineOff,aFile);
   addtexttoarea(chr(13) & chr(10),aFile);
   addtexttoarea(chr(13) & chr(10),aFile);
   
