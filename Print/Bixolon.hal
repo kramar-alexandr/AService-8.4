@@ -997,6 +997,7 @@ begin
   TLTOARR(cjecklength,"і згоден.",aFile);
   TLTOARR(cjecklength,"Претензій до зовнішнього вигляду",aFile);
   TLTOARR(cjecklength,"пристрою не маю.\"",aFile);
+  addtexttoarea(chr(13) & chr(10),aFile);
   TLTOARR(cjecklength,"Власник: " & SVOr.Vlastnik,aFile);
   TLTOARR(cjecklength,"__________________________________________",aFile);
   addtexttoarea(chr(13) & chr(10),aFile);
