@@ -879,7 +879,6 @@ begin
   addtexttoarea(SetBoldOff,aFile);
   TLTOARR(cjecklength,SVOr.Comment3,aFile);
   TLTOARR(cjecklength,SVOr.Comment4,aFile);
-  TLTOARR(cjecklength,"__________________________________________",aFile);
     
   addtexttoarea(SetBoldOn,aFile);
   addtexttoarea(SetUnderlineOn,aFile);
