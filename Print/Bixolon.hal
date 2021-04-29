@@ -884,7 +884,6 @@ begin
   addtexttoarea(SetUnderlineOn,aFile);
   TLTOARR(cjecklength,"Правила обслуговування сервісного центру: ",aFile);
   addtexttoarea(SetUnderlineOff,aFile);
-  TLTOARR(cjecklength,"__________________________________________",aFile);
   TLTOARR(cjecklength,"- Вартість діагностики пристроїв (платных",aFile);
   TLTOARR(cjecklength,"та гарантiйних): iPhone - 250грн.,",aFile);
   TLTOARR(cjecklength,"iPad - 400грн., MacBook - 400грн., ",aFile);
