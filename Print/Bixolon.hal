@@ -844,7 +844,6 @@ begin
   
   //Kon Info
   
-  addtexttoarea(SetFontB,aFile);
   addtexttoarea(SetBoldOn,aFile);
   TLTOARR(cjecklength,"Љонтактна ґнформацґЯ",aFile);
   addtexttoarea(SetBoldOff,aFile);
