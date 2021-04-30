@@ -1016,12 +1016,20 @@ begin
 	string 10 SetLeftAlignment,SetRightAlignment,SetMiddleAlignment,SetTextSize;
 	string 10 SetBoldOn,SetBoldOff,SetUnderlineOn,SetUnderlineOff;
 	string 10 BigLetterOn,BigLetterOff,SmallLetterOn;
-	string 100 s1,s2,s3, sTot,sVAT,sPay;
+	string 100 s1,s2,s3, sTot,sVAT,sPay,SetFontA,SetFontB;
 	string 200 Name,Address,Phone;
 	integer rowLength;
 	string 10 rebate;
 	record Phone1Vc Phoner;
 	val sumreb;
+	integer cjecklength;
+	row SVOVc SVOrw;
+	record UserVc USr;
+	
+	cjecklength = 42;
+	
+	SetFontA = chr(27) & chr(33) & chr(0);
+	SetFontB = chr(27) & chr(33) & chr(1);
 	
 	SetLeftAlignment = chr(27) & chr(97) & "0";
 	SetMiddleAlignment = chr(27) & chr(97) & "1";
@@ -1046,18 +1054,65 @@ begin
 	
 	//Rekviziti
 	addtexttoarea(SetLeftAlignment,aFile);
-	TLTOARR(25,"СПД-ФО Форманчук Д.В. (ТМ \"А-Сервіс)\"",aFile)
-	addtexttoarea(chr(13) & chr(10),aFile);
+	TLTOARR(cjecklength,"СПД-ФО Форманчук Д.В. (ТМ \"А-Сервіс)\"",aFile)
   
   //COST
-  TLTOARR(25,"Вартість ремонту: " & ValToString(SVOr.WSCost,M4Val,"",".",0) & " грн.",aFile)
-	addtexttoarea(chr(13) & chr(10),aFile);
+  //TLTOARR(cjecklength,"Вартість ремонту: " & ValToString(SVOr.WSCost,M4Val,"",".",0) & " грн.",aFile);
   
   //Дата заказа
-  TLTOARR(25,"Замовлення на обслуговування No " & SVOr.SerNr & "від: " & SVOr.TransDate & " " & SVOr.RegTime & "",aFile)
-	addtexttoarea(chr(13) & chr(10),aFile);
+  addtexttoarea(SetBoldOn,aFile);
+  TLTOARR(cjecklength,"Замовлення на обслуговування No " & SVOr.SerNr,aFile);
+  addtexttoarea(SetBoldOff,aFile);
+  TLTOARR(cjecklength," від: " & SVOr.TransDate & " " & SVOr.RegTime & "",aFile);
   
+  //Kon Info
+  TLTOARR(cjecklength,"__________________________________________",aFile);
+  addtexttoarea(SetBoldOn,aFile);
+  TLTOARR(cjecklength,"Контактна інформація",aFile);
+  addtexttoarea(SetBoldOff,aFile);
+  TLTOARR(cjecklength,"Власник: " & SVOr.Vlastnik,aFile);
+  TLTOARR(cjecklength,"Замовник: "& SVOr.Addr0,aFile);
+  TLTOARR(cjecklength,"Конт.тел.: " & SVOr.Kontinfo1,aFile);
+  TLTOARR(cjecklength,"E-Mail: " & SVOr.Kontinfo2,aFile);
+  TLTOARR(cjecklength,"Адреса: " & SVOr.Kontinfo3,aFile);
   
+  //DeagInf
+  TLTOARR(cjecklength,"__________________________________________",aFile);
+  addtexttoarea(SetBoldOn,aFile);
+  TLTOARR(cjecklength,"Сервісний центр прийняв на діагностику виріб:",aFile);
+  addtexttoarea(SetBoldOff,aFile);
+  matrowget(SVOr,0,SVOrw);
+  TLTOARR(cjecklength,"Виробник: " & SVOr.Region,aFile);
+  TLTOARR(cjecklength,"Серійний номер: " & SVOrw.SerialNr,aFile);
+  TLTOARR(cjecklength,"Модель виробу: " & SVOrw.ArtCode,aFile);
+  TLTOARR(cjecklength,"Батарея(з'ємна): " & SVOr.Batary,aFile);
+  TLTOARR(cjecklength,"Зар.пристрій: " & SVOr.Zaryadka,aFile);
+  TLTOARR(cjecklength,"Інше: " & SVOr.Inshe,aFile);
+  TLTOARR(cjecklength,"Гарантія: " & SVOr.Garanty,aFile);
+  
+  //nespravnost
+  TLTOARR(cjecklength,"__________________________________________",aFile);
+  addtexttoarea(SetBoldOn,aFile);
+  TLTOARR(cjecklength,"Несправності зі слів замовника:",aFile);
+  addtexttoarea(SetBoldOff,aFile);
+  TLTOARR(cjecklength,SVOr.Comment1,aFile);
+  TLTOARR(cjecklength,SVOr.Comment2,aFile);
+  addtexttoarea(SetBoldOn,aFile);
+  TLTOARR(cjecklength,"Зовнішній вигляд та наявні дефекти:",aFile);
+  addtexttoarea(SetBoldOff,aFile);
+  TLTOARR(cjecklength,SVOr.Comment3,aFile);
+  TLTOARR(cjecklength,SVOr.Comment4,aFile);
+  
+  addtexttoarea(chr(13) & chr(10),aFile);
+  TLTOARR(cjecklength,"Обладнання до ремонту прийняв(ла):",aFile);
+  USr.Code = SVOr.SalesMan;
+  readfirstmain(USr,1,true);
+  TLTOARR(cjecklength,USr.Name,aFile);
+  TLTOARR(cjecklength,"__________________________________________",aFile);
+  addtexttoarea(chr(13) & chr(10),aFile);
+  TLTOARR(cjecklength," ",aFile);
+  TLTOARR(cjecklength," ",aFile);
+  addtexttoarea(chr(13) & chr(10),aFile);
   //Cut receipt  
   addtexttoarea(chr(29) & chr(86) & "1",aFile);
   
