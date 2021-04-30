@@ -856,7 +856,8 @@ begin
   //DeagInf
   TLTOARR(cjecklength,"__________________________________________",aFile);
   addtexttoarea(SetBoldOn,aFile);
-  TLTOARR(cjecklength,"Сервісний центр прийняв на діагностику виріб:",aFile);
+  TLTOARR(cjecklength,"Сервісний центр прийняв на діагностику",aFile);
+  TLTOARR(cjecklength,"виріб:",aFile);
   addtexttoarea(SetBoldOff,aFile);
   matrowget(SVOr,0,SVOrw);
   TLTOARR(cjecklength,"Виробник: " & SVOr.Region,aFile);
@@ -1079,7 +1080,8 @@ begin
   //DeagInf
   TLTOARR(cjecklength,"__________________________________________",aFile);
   addtexttoarea(SetBoldOn,aFile);
-  TLTOARR(cjecklength,"Сервісний центр прийняв на діагностику виріб:",aFile);
+  TLTOARR(cjecklength,"Сервісний центр прийняв на діагностику",aFile);
+  TLTOARR(cjecklength,"виріб:",aFile);
   addtexttoarea(SetBoldOff,aFile);
   matrowget(SVOr,0,SVOrw);
   TLTOARR(cjecklength,"Виробник: " & SVOr.Region,aFile);
