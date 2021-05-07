@@ -846,7 +846,7 @@ begin
 	
 	SetFontA = chr(27) & chr(33) & chr(0);
 	SetFontB = chr(27) & chr(33) & chr(1);
-	PrintImage = chr(28) & chr(112) & chr(1) & chr(0);
+	PrintImage = chr(27) & chr(112) & chr(1) & chr(0);
 	SetLeftAlignment = chr(27) & chr(97) & "0";
 	SetMiddleAlignment = chr(27) & chr(97) & "1";
 	SetRightAlignment = chr(27) & chr(97) & "2";
@@ -1072,7 +1072,7 @@ begin
 	
 	cjecklength = 42;
 	
-	PrintImage = chr(28) & chr(112) & chr(1) & chr(0);
+	PrintImage = chr(27) & chr(112) & chr(1) & chr(0);
 	SetFontA = chr(27) & chr(33) & chr(0);
 	SetFontB = chr(27) & chr(33) & chr(1);
 	
