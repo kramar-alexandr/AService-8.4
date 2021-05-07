@@ -789,6 +789,42 @@ LTLTOARR:;
 return;
 end;
 
+
+
+procedure adresses(record SVOVc SVOr,var string Name, var string Address, var string Phone)
+begin
+
+  switch (SVOr.SalesGroup) begin
+		case "1GR":
+					Name = "СПД-ФО Форманчук Д.В. (ТМ \"А-Сервіс)\"";
+					Address = "Україна, Київ, вул. Кіквідзе,3";
+					Phone = "Телефон \(044\) 222-77-09";	
+		case "3GR":
+					Name = "СПД-ФО Іваненко В.І. (ТМ \"А-Сервіс)\"";
+					Address = "Україна, Київ, вул. Білоруська, 8";
+					Phone = "Телефон \(044\) 222-57-74";
+		case "5GR":
+					Name = "ФОП Грицаєнко Б.Ф. (ТМ \"А-Сервіс)\"";
+					Address = "Україна, Київ, вул. Велика Васильківська 21";
+					Phone = "Телефон \(093\) 170-45-56";	
+		case "8GR":
+					Name = "СПД-ФО Моісеєв Д. А. (ТМ \"А-Сервіс)\"";
+					Address = "Україна, Київ, просп. Московський, 6";
+					Phone = "Телефон \(044\) 222-92-93";		
+		case "9GR":
+					Name = "СПД-ФО Головізнін С. Г. (ТМ \"А-Сервіс)\"";
+					Address = "Україна, Київ, вул. Червоноармійська,21";
+					Phone = "Телефон \(044\) 451-5-451";			
+		otherwise
+					Name = "СПД-ФО Форманчук Д.В.(ТМ \"А-Сервіс)\"";
+					Address = "Україна, Київ, вул. Кіквідзе,3";
+					Phone = "Телефон \(044\) 222-77-09";	
+	end;	
+
+return;
+end;
+
+
 global 
 updating procedure HandleSVOAct1(record SVOVc SVOr,var area aFile)		//Edit----------------------Dima  21.09.2015
 begin
@@ -804,6 +840,7 @@ begin
 	integer cjecklength;
 	row SVOVc SVOrw;
 	record UserVc USr;
+	
 	
 	cjecklength = 42;
 	
@@ -833,7 +870,12 @@ begin
 	
 	//Rekviziti
 	addtexttoarea(SetLeftAlignment,aFile);
-	TLTOARR(cjecklength,"СПД-ФО Форманчук Д.В. (ТМ \"А-Сервіс)\"",aFile)
+	
+	adresses(SVOr,Name,Address,Phone);
+	
+	TLTOARR(cjecklength,Name,aFile);
+	TLTOARR(cjecklength,Address,aFile);
+	TLTOARR(cjecklength,Phone,aFile);
   
   //COST
   TLTOARR(cjecklength,"Вартість ремонту: " & ValToString(SVOr.WSCost,M4Val,"",".",0) & " грн.",aFile);
@@ -862,7 +904,7 @@ begin
   matrowget(SVOr,0,SVOrw);
   TLTOARR(cjecklength,"Виробник: " & SVOr.Region,aFile);
   TLTOARR(cjecklength,"Серійний номер: " & SVOrw.SerialNr,aFile);
-  TLTOARR(cjecklength,"Модель виробу: " & SVOrw.ArtCode,aFile);
+  TLTOARR(cjecklength,"Модель виробу: " & SVOrw.Spec,aFile);
   TLTOARR(cjecklength,"Батарея(з'ємна): " & SVOr.Batary,aFile);
   TLTOARR(cjecklength,"Зар.пристрій: " & SVOr.Zaryadka,aFile);
   TLTOARR(cjecklength,"Інше: " & SVOr.Inshe,aFile);
@@ -1055,7 +1097,11 @@ begin
 	
 	//Rekviziti
 	addtexttoarea(SetLeftAlignment,aFile);
-	TLTOARR(cjecklength,"СПД-ФО Форманчук Д.В. (ТМ \"А-Сервіс)\"",aFile)
+	adresses(SVOr,Name,Address,Phone);
+	
+	TLTOARR(cjecklength,Name,aFile);
+	TLTOARR(cjecklength,Address,aFile);
+	TLTOARR(cjecklength,Phone,aFile);
   
   //COST
   //TLTOARR(cjecklength,"Вартість ремонту: " & ValToString(SVOr.WSCost,M4Val,"",".",0) & " грн.",aFile);
@@ -1086,7 +1132,7 @@ begin
   matrowget(SVOr,0,SVOrw);
   TLTOARR(cjecklength,"Виробник: " & SVOr.Region,aFile);
   TLTOARR(cjecklength,"Серійний номер: " & SVOrw.SerialNr,aFile);
-  TLTOARR(cjecklength,"Модель виробу: " & SVOrw.ArtCode,aFile);
+  TLTOARR(cjecklength,"Модель виробу: " & SVOrw.Spec,aFile);
   TLTOARR(cjecklength,"Батарея(з'ємна): " & SVOr.Batary,aFile);
   TLTOARR(cjecklength,"Зар.пристрій: " & SVOr.Zaryadka,aFile);
   TLTOARR(cjecklength,"Інше: " & SVOr.Inshe,aFile);
