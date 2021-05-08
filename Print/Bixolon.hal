@@ -846,7 +846,7 @@ begin
 	
 	SetFontA = chr(27) & chr(33) & chr(0);
 	SetFontB = chr(27) & chr(33) & chr(1);
-	PrintImage = chr(28) & chr(112) & chr(1) & chr(0);
+	PrintImage = chr(28) & chr(112) & chr(1) & chr(31);
 	SetLeftAlignment = chr(27) & chr(97) & "0";
 	SetMiddleAlignment = chr(27) & chr(97) & "1";
 	SetRightAlignment = chr(27) & chr(97) & "2";
@@ -883,7 +883,9 @@ begin
   TLTOARR(cjecklength,"Вартість ремонту: " & ValToString(SVOr.WSCost,M4Val,"",".",0) & " грн.",aFile);
   
   //Дата заказа
+  addtexttoarea(SetBoldOn,aFile);
   TLTOARR(cjecklength,"Замовлення на обслуговування No " & SVOr.SerNr,aFile);
+  addtexttoarea(SetBoldOff,aFile);
   TLTOARR(cjecklength," від: " & SVOr.TransDate & " " & SVOr.RegTime & "",aFile);
   
   //Kon Info
@@ -1073,7 +1075,7 @@ begin
 	
 	cjecklength = 42;
 	
-	PrintImage = chr(28) & chr(112) & chr(1) & chr(0);
+	PrintImage = chr(28) & chr(112) & chr(1) & chr(31);
 	SetFontA = chr(27) & chr(33) & chr(0);
 	SetFontB = chr(27) & chr(33) & chr(1);
 	
