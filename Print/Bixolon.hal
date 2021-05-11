@@ -880,8 +880,11 @@ begin
 	TLTOARR(cjecklength,Phone,aFile);
   
   //COST
-  TLTOARR(cjecklength,"Вартість ремонту: " & ValToString(SVOr.WSCost,M4Val,"",".",0) & " грн.",aFile);
-  
+  TLTOARR(cjecklength,"__________________________________________",aFile);
+  addtexttoarea(SetBoldOn,aFile);
+  TLTOARR(cjecklength,"Вартість ремонту:          " & ValToString(SVOr.WSCost,M4Val,"",".",0) & " грн.",aFile);
+  addtexttoarea(SetBoldOff,aFile);
+  TLTOARR(cjecklength,"__________________________________________",aFile);
   //Дата заказа
   addtexttoarea(SetBoldOn,aFile);
   TLTOARR(cjecklength,"Замовлення на обслуговування No " & SVOr.SerNr,aFile);
