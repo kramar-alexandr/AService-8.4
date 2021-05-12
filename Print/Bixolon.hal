@@ -896,7 +896,7 @@ begin
   addtexttoarea(SetBoldOn,aFile);
   TLTOARR(cjecklength,"Контактна інформація",aFile);
   addtexttoarea(SetBoldOff,aFile);
-  TLTOARR(cjecklength,"Власник: " & SVOr.LastName & " " & SVOr.FirstName & " " & SVOr.MiddleName,aFile);
+  TLTOARR(cjecklength,"Власник: " & SVOr.Priynato & " " & SVOr.Name & " " & SVOr.MiddleName,aFile);
   TLTOARR(cjecklength,"Замовник: "& SVOr.Addr0,aFile);
   TLTOARR(cjecklength,"Конт.тел.: " & SVOr.Kontinfo1,aFile);
   TLTOARR(cjecklength,"E-Mail: " & SVOr.Kontinfo2,aFile);
@@ -1128,7 +1128,7 @@ begin
   addtexttoarea(SetBoldOn,aFile);
   TLTOARR(cjecklength,"Контактна інформація",aFile);
   addtexttoarea(SetBoldOff,aFile);
-  TLTOARR(cjecklength,"Власник: " & SVOr.LastName & " " & SVOr.FirstName & " " & SVOr.MiddleName,aFile);
+  TLTOARR(cjecklength,"Власник: " & SVOr.Priynato & " " & SVOr.Name & " " & SVOr.MiddleName,aFile);
   TLTOARR(cjecklength,"Замовник: "& SVOr.Addr0,aFile);
   TLTOARR(cjecklength,"Конт.тел.: " & SVOr.Kontinfo1,aFile);
   TLTOARR(cjecklength,"E-Mail: " & SVOr.Kontinfo2,aFile);
