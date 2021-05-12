@@ -791,22 +791,22 @@ end;
 
 
 
-procedure adresses(record SVOVc SVOr,var string Name, var string Address, var string Phone)
+procedure adresses(record SVOVc SVOr,var string Name, var string Address, var string Phone,var string eMail)
 begin
 
   switch (SVOr.SalesGroup) begin
 		case "1GR":
 					Name = "СПД-ФО Форманчук Д.В. (ТМ \"А-Сервіс)\"";
-					Address = "Україна, Київ, вул. Кіквідзе,3";
-					Phone = "Телефон \(044\) 222-77-09";	
+					Address = "м.Київ, вул. Михайла Бойчука 1/2 (Кіквідзе 1/2)";
+					Phone = "Телефон \(093\) 170-45-00";	
 		case "3GR":
 					Name = "СПД-ФО Іваненко В.І. (ТМ \"А-Сервіс)\"";
 					Address = "Україна, Київ, вул. Білоруська, 8";
 					Phone = "Телефон \(044\) 222-57-74";
 		case "5GR":
 					Name = "ФОП Грицаєнко Б.Ф. (ТМ \"А-Сервіс)\"";
-					Address = "Україна, Київ, вул. Велика Васильківська 21";
-					Phone = "Телефон \(093\) 170-45-56";	
+					Address = "м.Київ, вул. Велика Васильківська 72, ТЦ Олімпійський \"0 поверх\"";
+					Phone = "Телефон \(093\) 170-45-00";	
 		case "8GR":
 					Name = "СПД-ФО Моісеєв Д. А. (ТМ \"А-Сервіс)\"";
 					Address = "Україна, Київ, просп. Московський, 6";
@@ -832,7 +832,7 @@ begin
 	string 10 SetBoldOn,SetBoldOff,SetUnderlineOn,SetUnderlineOff;
 	string 10 BigLetterOn,BigLetterOff,SmallLetterOn;
 	string 100 s1,s2,s3, sTot,sVAT,sPay,SetFontA,SetFontB;
-	string 200 Name,Address,Phone;
+	string 200 Name,Address,Phone,eMail;
 	integer rowLength;
 	string 10 rebate;
 	record Phone1Vc Phoner;
@@ -873,7 +873,7 @@ begin
 	//Rekviziti
 	addtexttoarea(SetLeftAlignment,aFile);
 	
-	adresses(SVOr,Name,Address,Phone);
+	adresses(SVOr,Name,Address,Phone,eMail);
 	
 	TLTOARR(cjecklength,Name,aFile);
 	TLTOARR(cjecklength,Address,aFile);
@@ -1067,7 +1067,7 @@ begin
 	string 10 SetBoldOn,SetBoldOff,SetUnderlineOn,SetUnderlineOff;
 	string 10 BigLetterOn,BigLetterOff,SmallLetterOn;
 	string 100 s1,s2,s3, sTot,sVAT,sPay,SetFontA,SetFontB;
-	string 200 Name,Address,Phone;
+	string 200 Name,Address,Phone,eMail;
 	integer rowLength;
 	string 10 rebate;
 	record Phone1Vc Phoner;
@@ -1107,11 +1107,12 @@ begin
 	
 	//Rekviziti
 	addtexttoarea(SetLeftAlignment,aFile);
-	adresses(SVOr,Name,Address,Phone);
+	adresses(SVOr,Name,Address,Phone,eMail);
 	
 	TLTOARR(cjecklength,Name,aFile);
 	TLTOARR(cjecklength,Address,aFile);
 	TLTOARR(cjecklength,Phone,aFile);
+  TLTOARR(cjecklength,eMail,aFile);
   
   //COST
   //TLTOARR(cjecklength,"Вартість ремонту: " & ValToString(SVOr.WSCost,M4Val,"",".",0) & " грн.",aFile);
