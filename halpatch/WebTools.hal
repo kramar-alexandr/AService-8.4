@@ -77,6 +77,7 @@ begin
 	webgetpostdata(req);
 	
 	logtext(0,"WebGetIntORAnsver " & order & "   " & token);
+	logtext(0,"Length " & getarealength(req));
 	
 	if(nonblank(order) and nonblank(token))then begin
 		if(token=="7s44wkjm7U8374N7o1mkJN2vM")then begin
