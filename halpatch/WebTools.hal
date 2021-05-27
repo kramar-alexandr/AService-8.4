@@ -287,6 +287,9 @@ begin
 	
 	webgetpostdata(req);
 	
+  logtext(0,"WebCreateTask " & order & "   " & token);
+	logtext(0,"Length " & getarealength(req));
+	
 	jreq = parsejsonarea(req);
 	if(JSONGet(jreq,"token")=="7s44wkjm7U8374N7o1mkJN2vM")then begin		
 		Actr.SymbNr = 3;
