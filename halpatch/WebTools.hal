@@ -287,7 +287,7 @@ begin
 	
 	webgetpostdata(req);
 	
-  logtext(0,"WebCreateTask " & order & "   " & token);
+  logtext(0,"WebCreateTask ");
 	logtext(0,"Length " & getarealength(req));
 	
 	jreq = parsejsonarea(req);
