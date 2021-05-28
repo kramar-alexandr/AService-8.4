@@ -988,7 +988,7 @@ begin
   
   blockload(BSb);
     
-    if(currentuser=="SA")then begin
+    if(currentuser=="SEREGA")then begin
     	if (NonBlank(fromExtNumber) and NonBlank(toPhoneNumber)) then begin
 				
 				LogPass = "hansa-server" & ":" & "7s44wkjm7U8374N7o1mkJN2vM";
