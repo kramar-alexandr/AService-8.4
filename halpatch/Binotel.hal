@@ -1169,6 +1169,19 @@ begin
 return;
 end;
 
+global updating procedure WebCalReqCallBack1(Area a_reply,Area a_replyheader,boolean timeout)
+begin
+	//area a_reply;
+	
+	setcompany(8,false)
+	
+	logtext(0,"WebCalReqCallBack1");
+	webgetpostdata(a_reply);
+	WriteAreaToFile(a_reply,"WebCalReqCallBackCallBack1.txt",0);
+
+return;
+end;
+
 global updating procedure ImportBinotel()
 begin
 	record BinotelCallEndVc BCEr;
