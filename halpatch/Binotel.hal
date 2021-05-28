@@ -999,7 +999,7 @@ begin
 				AddTextToArea("" & chr(13) & chr(10),req);
 				
 				host = "api.a-service.ua";
-				page = "/asrvbotv2/calltoclient.php";
+				page = "/asrvbotv2/callfromhansa.php";
 			
 				extNumNode = "\"inner_number\":" & "\"" & fromExtNumber & "\"";
 				phoneNode = "\"external_number\":" & "\"" & toPhoneNumber & "\"";
