@@ -992,12 +992,12 @@ begin
     if(currentuser=="SEREGA" or currentuser=="SA")then begin
     	if (NonBlank(fromExtNumber) and NonBlank(toPhoneNumber)) then begin
 				
-				LogPass = "hansa-server" & ":" & "7s44wkjm7U8374N7o1mkJN2vM";
-				EncodedLogPass = "Authorization: Basic " & Base64Encode(LogPass);
+				//LogPass = "hansa-server" & ":" & "7s44wkjm7U8374N7o1mkJN2vM";
+				//EncodedLogPass = "Authorization: Basic " & Base64Encode(LogPass);
 				
 				
-				addtexttoarea(EncodedLogPass & chr(13) & chr(10),req);
-				AddTextToArea("" & chr(13) & chr(10),req);
+				//addtexttoarea(EncodedLogPass & chr(13) & chr(10),req);
+				//AddTextToArea("" & chr(13) & chr(10),req);
 				
 				host = "api.a-service.ua";
 				page = "/asrvbotv2/callfromhansa.php";
@@ -1006,14 +1006,15 @@ begin
 				phoneNode = "\"external_number\":" & "\"" & toPhoneNumber & "\"";
 			
 				AddTextToArea("{",req);
+				AddTextToArea("\"passwd\":\"7s44wkjm7U8374N7o1mkJN2vM\"" & ",",req);
 				AddTextToArea(extNumNode & ",",req);
 				AddTextToArea(phoneNode,req);
 				AddTextToArea("}",req);
 			
 				WriteAreaToFile(req,"Binotel_Sergey.txt",0);
-				MySendRawWebRequest(host,"443",true,"POST",page,"application/json","",false,req,reply,5);
+				//MySendRawWebRequest(host,"443",true,"POST",page,"application/json","",false,req,reply,5);
 				//MySendWebRequest(host,443,-1,true,"POST",page,"application/json","",false,req,reply,5);
-				//MySendAsyncWebRequest(host,443,true,"POST",page,"application/json","",req,"WebCalReqCallBack1",5);
+				MySendAsyncWebRequest(host,443,true,"POST",page,"application/json","",req,"WebCalReqCallBack1",5);
 
 				logtext(0,fromExtNumber & "CallTo " & toPhoneNumber);
 			end;
