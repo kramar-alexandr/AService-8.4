@@ -1014,7 +1014,11 @@ begin
 				WriteAreaToFile(req,"Binotel_Sergey.txt",0);
 				//MySendRawWebRequest(host,"443",true,"POST",page,"application/json","",false,req,reply,5);
 				//MySendWebRequest(host,443,-1,true,"POST",page,"application/json","",false,req,reply,5);
-				MySendAsyncWebRequest(host,443,true,"POST",page,"application/json","",req,"WebCalReqCallBack1",5);
+				if(currentuser=="SEREGA")then begin
+				  MySendWebRequest(host,443,-1,true,"POST",page,"application/json","",false,req,reply,5);
+				end else begin
+          MySendAsyncWebRequest(host,443,true,"POST",page,"application/json","",req,"WebCalReqCallBack1",5);
+				end;
 
 				logtext(0,fromExtNumber & "CallTo " & toPhoneNumber);
 			end;
