@@ -2321,7 +2321,7 @@ begin
 	if(IntORr.SVONr>-1)then begin
 		SVOr.SerNr = IntORr.SVONr;
 		if(readfirstmain(SVOr,1,true))then begin
-			OpenWindow("SVODClass",0,0,"","",SVOr);
+			OpenWindow("SVODClass",1,0,"","",SVOr);
 		end;
 	end;
 	
