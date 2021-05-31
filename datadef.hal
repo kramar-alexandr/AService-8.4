@@ -38,6 +38,7 @@ begin
     ChangeMatrixField(ArtCode,M4Str,100,0);
     ChangeMatrixField(Spec,M4Str,255,0);
     RecordField(NewComment,M4Str,255,0);
+    RecordField(OnlyAlternative,M4Int,0,0);
     ArrayField(Comment,M4Str,255,0);
     
     DisableIndex("SerNr");

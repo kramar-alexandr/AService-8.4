@@ -57,6 +57,7 @@ begin
 					addParamToJSONArea("SalesGroup",NormalizeStrToJson(IntORr.SalesGroup),req);
 					addParamToJSONArea("DoneFlag",NormalizeStrToJson(IntORr.DoneFlag),req);
 					addParamToJSONArea("OnlyOfficial",NormalizeStrToJson(IntORr.OnlyOfficial),req);
+					addParamToJSONArea("OnlyAlternative",NormalizeStrToJson(IntORr.OnlyOfficial),req);
 					
 					addParamToJSONArea("SVOItem",NormalizeStrToJson(IntORr.SVOItem),req);
 					addParamToJSONArea("SVOSerial",NormalizeStrToJson(IntORr.SVOSerial),req);

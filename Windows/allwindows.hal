@@ -8913,6 +8913,7 @@ begin
   EditField(h2,vm=(v+=20),95,"Группа продаж",Normal,SalesGroup,false,SalesGroupSClass);
   CheckBox(h2+120,vm,0,"Завершен",DoneFlag);
   CheckBox(h2+220,vm,0,"Только Официал.",OnlyOfficial);
+  CheckBox(h2+220,vm+vs,0,"Только Альтерн.",OnlyAlternative);
   CheckBox(h1,vm+=vm,0,"Отправлен",SendFlag);
   EditField(h2-100,vm,30,"",ViewOnly,Status,false,0);
   EditField(h2,vm,100,"Статус",ViewOnly,StatusText,false,0);
