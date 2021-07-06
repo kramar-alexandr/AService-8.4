@@ -21,6 +21,52 @@ external function string 255 NormalizeStrToJson(string);
 external function boolean MySendRawWebRequest(string,longint,boolean,string,string,string,string,boolean,area,var area,integer);
 
 
+global function boolean RemoteSendConfirmSMS(record SVOVc SVOr, string code)
+begin
+  boolean res;
+  string 255 key,secret,host,keyNode,signatureNode,extNumNode,phoneNode,page;
+	Area req,reply;
+	record BinotelSettingsBlock BSb;
+	string 255 LogPass,EncodedLogPass,tstr;
+	row IntORVc IntORrw;
+	integer i,rwcnt;
+	json jreply;
+	longint ii;
+	boolean nextdata,resok;
+	
+	LogPass = "hansa-server" & ":" & "7s44wkjm7U8374N7o1mkJN2vM";
+  EncodedLogPass = "Authorization: Basic " & Base64Encode(LogPass);
+  
+  addtexttoarea(EncodedLogPass & chr(13) & chr(10),req);
+  AddTextToArea("" & chr(13) & chr(10),req);
+  
+  host = "api.a-service.ua";
+  page = "/partsearch/request.php";
+  
+  AddTextToArea("{",req);
+    addParamToJSONArea("Status",NormalizeStrToJson("997"),req);
+    addParamToJSONArea("Date",NormalizeStrToJson(CurrentDate),req);
+    addParamToJSONArea("Time",NormalizeStrToJson(CurrentTime),req);
+    addParamToJSONArea("User",NormalizeStrToJson(CurrentUser),req);
+    addParamToJSONArea("OrderNumber",NormalizeStrToJson(SVOr.SerNr),req);
+    addParamToJSONArea("ConfirmCode",NormalizeStrToJson(code),req);
+    addParamToJSONArea("Phone1",NormalizeStrToJson(SVOr.Kontinfo1),req);
+	  addParamToJSONArea("Phone2",NormalizeStrToJson(SVOr.Phone2),req);
+    delLastComaInArea(req);
+  AddTextToArea("}",req);
+  AddTextToArea("" & chr(13) & chr(10),req);
+  
+  if(MySendRawWebRequest("api.a-service.ua","443",true,"POST","/bot/sender.php","application/json","",false,req,reply,5))then begin
+    writeareatofile(reply,"SendSVOrConfirmCodeReply.txt",1);
+    res = true;
+  end;
+  
+  WriteAreaToFile(req,"SendSVOrConfirmCode.txt",0);
+  
+  RemoteSendConfirmSMS = res;
+return;
+end;
+
 global procedure SendIntOR(var record IntORVc IntORr)
 begin
 	string 255 key,secret,host,keyNode,signatureNode,extNumNode,phoneNode,page;

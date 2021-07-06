@@ -34,7 +34,7 @@ external procedure  CreateSVOSerNoterForMove(record SVOVc,string);// Edit ******
 external updating procedure CreateCustomActivityFromSVO(record SVOVc,string,string,date,string,string);// Edit ************************** BPI Ukraine - KramarAlexandr - Tuesday, 12 December 2017 11:56:41
 external function Boolean SVODClassOnOpenWindow(Integer);
 external function boolean MySendRawWebRequest(string,longint,boolean,string,string,string,string,boolean,area,var area,integer);
-
+remote function boolean RemoteSendConfirmSMS(record SVOVc,string);
 
 SetLangMode(LangRussian,"RUS",0);
 
@@ -1857,6 +1857,76 @@ begin
 return;
 end;
 
+global updating procedure DblSMSAutorizedDsm()
+begin
+	integer wn,mwn;
+	record RcVc RepSpec;
+	record SVOVc SVOr;
+	string 50 confirmcode;
+	
+	wn = curwindow;
+	mwn = motherwindow(wn);
+	getwindowrecord(mwn,SVOr);
+	if(SVOr.SMSAutorizationConfirmFlag==0)then begin
+	  confirmcode = random(1000,9999);
+	  if(len(confirmcode)==4)then begin
+	    if(RemoteSendConfirmSMS(SVOr,confirmcode))then begin
+        logtext(0,"confirmcode " & confirmcode);
+        SVOr.SMSAutorizationCode = confirmcode;
+        SVOr.SMSAutorizationDate = currentdate;
+        SVOr.SMSAutorizationTime = currenttime;
+        recordstore(SVOr,true);
+        OpenWindow("ConfirmSMSWClass",1,mwn,"","",RepSpec);
+        putwindowrecord(mwn,SVOr);
+	    end else begin
+	      messagebox(0,"Технические проблемы с отправкой СМС - свяжитесь с администратором");
+	    end;
+	  end;
+	end else begin
+	  messagebox(0,"Клиент уже подтвержден");
+	end;
+	//closewindow(wn);
+	
+
+return;
+end;
+
+global updating procedure DblSMSAutorizedConformDsm()
+begin
+	integer wn,mwn;
+	record RcVc RepSpec;
+	record SVOVc SVOr;
+	string 50 confirmcode;
+		
+	wn = curwindow;
+	deselectwindow(wn,false);
+	getwindowrecord(wn,RepSpec);
+	mwn = motherwindow(wn);
+	getwindowrecord(mwn,SVOr);
+	if(SVOr.SMSAutorizationConfirmFlag==0)then begin
+	  confirmcode = SVOr.SMSAutorizationCode;
+	  messagebox(0,confirmcode);
+	  if(len(confirmcode)==4)then begin
+	    if(stringtolongint(confirmcode)==RepSpec.long1)then begin
+        logtext(0,"confirmcode " & confirmcode);
+        SVOr.SMSAutorizationConfirmFlag = 1;
+        SVOr.SMSAutorizationConfirmDate = currentdate;
+        SVOr.SMSAutorizationConfirmTime = currenttime;
+        recordstore(SVOr,true);
+        putwindowrecord(mwn,SVOr);
+        closewindow(wn);
+	    end else begin
+	      messagebox(0,"Код не совпадает");
+	    end;
+	  end;
+	end else begin
+	  messagebox(0,"Клиент уже подтвержден");
+	end;
+	//closewindow(wn);
+	
+
+return;
+end;
 
 
 global updating procedure DblConfirmSelectSVOPointDsm()// Edit ************************** BPI Ukraine - KramarAlexandr - Thursday, 11 April 2019 10:48:41

@@ -546,8 +546,15 @@ begin
 		v=v+10;
 		StaticText(h,v+=vs,"Комплектність",true);
 		EditField(h,v+=vs-10,300,"Батарея:",Normal,Batary,false,0);
+		
+		CheckBox(h+320,v,0,"Выдано через авторизацию СМС/Viber",SMSAutorizationConfirmFlag);
+		
 		EditField(h,v+=vs,300,"Зар. пристрій:",Normal,Zaryadka,false,0);
+		EditField(h+450,v,80,"Дата авторизации",ViewOnly,SMSAutorizationConfirmDate,false,0);
+		
+		
 		EditField(h,v+=vs,300,"Інше:",Normal,Inshe,false,0);
+		EditField(h+450,v,80,"Время авторизации",ViewOnly,SMSAutorizationConfirmTime,false,0);
 
 		//v=v+10;
 		EditField(h,v+=vs,50,"Виробник",Normal,Region,false,ITSClass);

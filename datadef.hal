@@ -216,6 +216,16 @@ begin
 		RecordField(InfoGet,M4Int,0,0); //Edit_________________ABR 07.11.2018 10:48
 		RecordField(MoveSVOToSGmov,M4UStr,20,0);// Edit ************************** BPI Ukraine - KramarAlexandr - Thursday, 11 April 2019 11:08:05
 		
+		RecordField(SMSAutorizationCode,M4Str,20,0);
+		RecordField(SMSAutorizationDate,M4Date,0,0);
+		RecordField(SMSAutorizationTime,M4Time,0,0);
+		RecordField(SMSAutorizationConfirmDate,M4Date,0,0);
+		RecordField(SMSAutorizationConfirmTime,M4Time,0,0);
+		RecordField(SMSAutorizationConfirmFlag,M4Mark,0,0);
+		
+		
+		
+		
     SubsetKeyBegin2(RegDate);// Edit ************************** Wednesday, 15 February 2017 19:31:45
   StoreInBaseKey;
   AppendFieldToKeyName(SalesGroup);
