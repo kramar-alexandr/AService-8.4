@@ -35,6 +35,7 @@ external updating procedure CreateCustomActivityFromSVO(record SVOVc,string,stri
 external function Boolean SVODClassOnOpenWindow(Integer);
 external function boolean MySendRawWebRequest(string,longint,boolean,string,string,string,string,boolean,area,var area,integer);
 remote function boolean RemoteSendConfirmSMS(record SVOVc,string);
+external procedure DblConfirmPaymentManagerDsm();
 
 SetLangMode(LangRussian,"RUS",0);
 
@@ -1876,7 +1877,8 @@ begin
         SVOr.SMSAutorizationDate = currentdate;
         SVOr.SMSAutorizationTime = currenttime;
         recordstore(SVOr,true);
-        OpenWindow("ConfirmSMSWClass",1,mwn,"","",RepSpec);
+        RepSpec.long2 = SVOr.SerNr;
+        OpenWindow("ConfirmSMSWClass",1,wn,"","",RepSpec);
         putwindowrecord(mwn,SVOr);
 	    end else begin
 	      messagebox(0,"Технические проблемы с отправкой СМС - свяжитесь с администратором");
@@ -1903,18 +1905,22 @@ begin
 	getwindowrecord(wn,RepSpec);
 	mwn = motherwindow(wn);
 	getwindowrecord(mwn,SVOr);
+	SVOr.SerNr = RepSpec.long2;
 	if(SVOr.SMSAutorizationConfirmFlag==0)then begin
 	  confirmcode = SVOr.SMSAutorizationCode;
 	  messagebox(0,confirmcode);
 	  if(len(confirmcode)==4)then begin
 	    if(stringtolongint(confirmcode)==RepSpec.long1)then begin
-        logtext(0,"confirmcode " & confirmcode);
         SVOr.SMSAutorizationConfirmFlag = 1;
         SVOr.SMSAutorizationConfirmDate = currentdate;
         SVOr.SMSAutorizationConfirmTime = currenttime;
         recordstore(SVOr,true);
-        putwindowrecord(mwn,SVOr);
         closewindow(wn);
+        selectwindow(mwn);
+        wn = motherwindow(mwn);
+        putwindowrecord(wn,SVOr);
+        DblConfirmPaymentManagerDsm;
+        
 	    end else begin
 	      messagebox(0,"Код не совпадает");
 	    end;
