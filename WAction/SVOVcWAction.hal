@@ -1347,6 +1347,21 @@ begin
 end;
 
 global
+function Boolean SVODClassSMSAutorizationConfirmFlagButtonAction(Integer wn,Integer value)
+begin
+  Boolean res;
+  record SVOVc SVOr;
+ 
+  res = false;
+  if(currentuser=="SA")then begin
+    res = true;
+  end;
+  
+  SVODClassSMSAutorizationConfirmFlagButtonAction = res;
+  return;
+end;
+
+global
 function Boolean SVODClassUpdateTest(Integer wn)
 BEGIN
   Boolean res;
