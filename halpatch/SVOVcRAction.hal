@@ -1864,30 +1864,43 @@ begin
 	record RcVc RepSpec;
 	record SVOVc SVOr;
 	string 50 confirmcode;
+	val totpay;
 	
 	wn = curwindow;
 	mwn = motherwindow(wn);
+	deselectwindow(wn,true);
+	getwindowrecord(wn,RepSpec);
 	getwindowrecord(mwn,SVOr);
-	if(SVOr.SMSAutorizationConfirmFlag==0)then begin
-	  confirmcode = random(1000,9999);
-	  if(len(confirmcode)==4)then begin
-	    if(RemoteSendConfirmSMS(SVOr,confirmcode))then begin
-        logtext(0,"confirmcode " & confirmcode);
-        SVOr.SMSAutorizationCode = confirmcode;
-        SVOr.SMSAutorizationDate = currentdate;
-        SVOr.SMSAutorizationTime = currenttime;
-        recordstore(SVOr,true);
-        RepSpec.long2 = SVOr.SerNr;
-        OpenWindow("ConfirmSMSWClass",1,wn,"","",RepSpec);
-        putwindowrecord(mwn,SVOr);
-	    end else begin
-	      messagebox(0,"Технические проблемы с отправкой СМС - свяжитесь с администратором");
-	    end;
-	  end;
+	
+	totpay = RepSpec.vals0 + RepSpec.vals1 + RepSpec.vals2;
+	if(RepSpec.AccSpec>0)then begin
+	  if((SVOr.WSCost!=0 and totpay>=SVOr.WSCost) or SVOr.WSCost==0)then begin
+      if(SVOr.SMSAutorizationConfirmFlag==0)then begin
+        confirmcode = random(1000,9999);
+        if(len(confirmcode)==4)then begin
+          if(RemoteSendConfirmSMS(SVOr,confirmcode))then begin
+            logtext(0,"confirmcode " & confirmcode);
+            SVOr.SMSAutorizationCode = confirmcode;
+            SVOr.SMSAutorizationDate = currentdate;
+            SVOr.SMSAutorizationTime = currenttime;
+            recordstore(SVOr,true);
+            recordnew(RepSpec);
+            RepSpec.long2 = SVOr.SerNr;
+            OpenWindow("ConfirmSMSWClass",1,wn,"","",RepSpec);
+            //putwindowrecord(mwn,SVOr);
+          end else begin
+            messagebox(0,"Технические проблемы с отправкой СМС - свяжитесь с администратором");
+          end;
+        end;
+      end else begin
+        messagebox(0,"Клиент уже подтвержден");
+      end;
+    end else begin
+      messagebox(0,"Необходима полная оплата");
+    end;
 	end else begin
-	  messagebox(0,"Клиент уже подтвержден");
+	  messagebox(0,"Выберите способ оплаты");
 	end;
-	//closewindow(wn);
 	
 
 return;
@@ -1904,29 +1917,30 @@ begin
 	deselectwindow(wn,false);
 	getwindowrecord(wn,RepSpec);
 	mwn = motherwindow(wn);
-	getwindowrecord(mwn,SVOr);
+	//getwindowrecord(mwn,SVOr);
 	SVOr.SerNr = RepSpec.long2;
-	if(SVOr.SMSAutorizationConfirmFlag==0)then begin
-	  confirmcode = SVOr.SMSAutorizationCode;
-	  messagebox(0,confirmcode);
-	  if(len(confirmcode)==4)then begin
-	    if(stringtolongint(confirmcode)==RepSpec.long1)then begin
-        SVOr.SMSAutorizationConfirmFlag = 1;
-        SVOr.SMSAutorizationConfirmDate = currentdate;
-        SVOr.SMSAutorizationConfirmTime = currenttime;
-        recordstore(SVOr,true);
-        closewindow(wn);
-        selectwindow(mwn);
-        wn = motherwindow(mwn);
-        putwindowrecord(wn,SVOr);
-        DblConfirmPaymentManagerDsm;
+	if(readfirstmain(SVOr,1,true))then begin
+    if(SVOr.SMSAutorizationConfirmFlag==0)then begin
+      confirmcode = SVOr.SMSAutorizationCode;
+      if(len(confirmcode)==4)then begin
+        if(stringtolongint(confirmcode)==RepSpec.long1)then begin
+          SVOr.SMSAutorizationConfirmFlag = 1;
+          SVOr.SMSAutorizationConfirmDate = currentdate;
+          SVOr.SMSAutorizationConfirmTime = currenttime;
+          recordstore(SVOr,true);
+          closewindow(wn);
+          selectwindow(mwn);
+          wn = motherwindow(mwn);
+          //putwindowrecord(wn,SVOr);
+          DblConfirmPaymentManagerDsm;
         
-	    end else begin
-	      messagebox(0,"Код не совпадает");
-	    end;
-	  end;
-	end else begin
-	  messagebox(0,"Клиент уже подтвержден");
+        end else begin
+          messagebox(0,"Код не совпадает");
+        end;
+      end;
+    end else begin
+      messagebox(0,"Клиент уже подтвержден");
+    end;
 	end;
 	//closewindow(wn);
 	

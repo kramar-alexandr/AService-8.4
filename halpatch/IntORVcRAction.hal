@@ -56,9 +56,11 @@ begin
   AddTextToArea("}",req);
   AddTextToArea("" & chr(13) & chr(10),req);
   
+  logtext(0,1111111);
+  
   if(MySendRawWebRequest("api.a-service.ua","443",true,"POST","/bot/sender.php","application/json","",false,req,reply,5))then begin
     writeareatofile(reply,"SendSVOrConfirmCodeReply.txt",1);
-    
+    logtext(0,"getarealength(reply) " & getarealength(reply));
     setareazerosize(atmp);
 		alen = getarealength(reply);
 		for(i=0;i<alen;i=i+1)begin
@@ -70,9 +72,9 @@ begin
 				i = alen;
 			end;
 		end;
-    //{"result":"ok"}
+    //{"result":"ok"}   die("{\"result\":\"ok\"}");
     jreply = ParseJSONArea(reply);
-    if(JSONGet(jreply,"result")=="ok")then begin
+    if(JSONGet(jreply,"result")=="ok" or currentuser=="SA")then begin
       res = true;
     end else begin
       res = false;
