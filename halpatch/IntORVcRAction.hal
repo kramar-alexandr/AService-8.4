@@ -58,7 +58,13 @@ begin
   
   if(MySendRawWebRequest("api.a-service.ua","443",true,"POST","/bot/sender.php","application/json","",false,req,reply,5))then begin
     writeareatofile(reply,"SendSVOrConfirmCodeReply.txt",1);
-    res = true;
+    jreply = ParseJSONArea(reply);
+    if(JSONGet(jreply,"result")=="ok")then begin
+      res = true;
+    end else begin
+      res = false;
+    end;
+    
   end;
   
   WriteAreaToFile(req,"SendSVOrConfirmCode.txt",0);
