@@ -70,7 +70,7 @@ begin
 				i = alen;
 			end;
 		end;
-    
+    //{"result":"ok"}
     jreply = ParseJSONArea(reply);
     if(JSONGet(jreply,"result")=="ok")then begin
       res = true;
