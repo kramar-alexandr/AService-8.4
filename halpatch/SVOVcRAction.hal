@@ -1933,10 +1933,11 @@ begin
           wn = motherwindow(mwn);
           //putwindowrecord(wn,SVOr);
           DblConfirmPaymentManagerDsm;
-        
         end else begin
           messagebox(0,"Код не совпадает");
         end;
+      end else begin
+        messagebox(0,"Код не совпадает");
       end;
     end else begin
       messagebox(0,"Клиент уже подтвержден");
