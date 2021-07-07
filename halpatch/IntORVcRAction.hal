@@ -25,13 +25,13 @@ global function boolean RemoteSendConfirmSMS(record SVOVc SVOr, string code)
 begin
   boolean res;
   string 255 key,secret,host,keyNode,signatureNode,extNumNode,phoneNode,page;
-	Area req,reply;
+	Area req,reply,atmp;
 	record BinotelSettingsBlock BSb;
-	string 255 LogPass,EncodedLogPass,tstr;
+	string 255 LogPass,EncodedLogPass,tstr,c;
 	row IntORVc IntORrw;
-	integer i,rwcnt;
+	integer rwcnt;
 	json jreply;
-	longint ii;
+	longint ii,alen,i;
 	boolean nextdata,resok;
 	
 	LogPass = "hansa-server" & ":" & "7s44wkjm7U8374N7o1mkJN2vM";
@@ -58,6 +58,19 @@ begin
   
   if(MySendRawWebRequest("api.a-service.ua","443",true,"POST","/bot/sender.php","application/json","",false,req,reply,5))then begin
     writeareatofile(reply,"SendSVOrConfirmCodeReply.txt",1);
+    
+    setareazerosize(atmp);
+		alen = getarealength(reply);
+		for(i=0;i<alen;i=i+1)begin
+			c = getstringfromarea(reply,i,1);
+			if(c=="{")then begin
+				getareafromarea(reply,i,getarealength(reply)-i,atmp);
+				setareazerosize(reply);
+				getareafromarea(atmp,0,getarealength(atmp),reply)
+				i = alen;
+			end;
+		end;
+    
     jreply = ParseJSONArea(reply);
     if(JSONGet(jreply,"result")=="ok")then begin
       res = true;
