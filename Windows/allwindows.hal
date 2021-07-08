@@ -551,12 +551,14 @@ begin
 		
 		
 		EditField(h,v+=vs,300,"Зар. пристрій:",Normal,Zaryadka,false,0);
-		EditField(h+450,v,80,"Дата авторизации",ViewOnly,SMSAutorizationConfirmDate,false,0);
-		
+		if(currentuser=="SA")then begin
+		  EditField(h+450,v,80,"Дата авторизации",ViewOnly,SMSAutorizationConfirmDate,false,0);
+		end;
 		
 		EditField(h,v+=vs,300,"Інше:",Normal,Inshe,false,0);
-		EditField(h+450,v,80,"Время авторизации",ViewOnly,SMSAutorizationConfirmTime,false,0);
-
+		if(currentuser=="SA")then begin
+      EditField(h+450,v,80,"Время авторизации",ViewOnly,SMSAutorizationConfirmTime,false,0);
+    end;
 		//v=v+10;
 		EditField(h,v+=vs,50,"Виробник",Normal,Region,false,ITSClass);
 	
