@@ -362,6 +362,9 @@ begin
   end;
   if (unokf) then begin
     errcode = IsUnOKAllowed_IVVc(IVp);
+    if(currentuser=="SA")then begin
+      errcode = 0;
+    end;
     if (errcode!=0) then begin
       RecordCheckError(errcode,"",-1,"TransDate");      
       res = -1; 
