@@ -614,7 +614,7 @@ begin
   StrSetText(ViewAllServBonusOut,"Дозволити перегляд всіх виплат бонусів");// Edit ************************** BPI Ukraine - KramarAlexandr - 04, 26 09 2019 y. at 1:30:53 PM
   StrSetText(RestAPI,"Rest API");
   
-  StrSetText(SpecialORWindow,"Оно Для Менеджеров Интернет Магазина");
+  StrSetText(SpecialORWindow,"Окно Для Менеджеров Интернет Магазина");
 
   EndStrSet;
 	
