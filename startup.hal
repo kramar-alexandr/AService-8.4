@@ -22,6 +22,7 @@ begin
   Register("OPPVc","OPPVc",OPPVc,modDBMain);
   
   Setting("HT Who Online",HTSWhoPresentLClass,modDBMain);
+  Setting("Статус заказа",OrderStatusLClass,modSO);
   
   Register("Выплаты по бонусам","Выплаты по бонусам",ServBonusOutVc,modSVO);// Edit ************************** BPI Ukraine - KramarAlexandr - 04, 26 09 2019 y. at 11:15:03 AM
 
@@ -611,7 +612,9 @@ begin
   
   StrSetText(AllowOKServBonusOut,"Дозволити ОК Виплату бонусу");// Edit ************************** BPI Ukraine - KramarAlexandr - 04, 26 09 2019 y. at 1:30:12 PM
   StrSetText(ViewAllServBonusOut,"Дозволити перегляд всіх виплат бонусів");// Edit ************************** BPI Ukraine - KramarAlexandr - 04, 26 09 2019 y. at 1:30:53 PM
-    StrSetText(RestAPI,"Rest API");
+  StrSetText(RestAPI,"Rest API");
+  
+  StrSetText(SpecialORWindow,"Оно Для Менеджеров Интернет Магазина");
 
   EndStrSet;
 	

@@ -131,6 +131,15 @@ begin
     RecordField(ShopsMark,M4Mark,0,0);// Edit ************************** Friday, 31 October 2014 15:51:47
     RecordField(RahSplatNom,M4Str,100,0);// Edit ************************** Friday, 31 October 2014 15:51:47
     RecordField(DogPostNom,M4Str,100,0);// Edit ************************** Friday, 31 October 2014 15:51:47
+    RecordField(OrderStatusText,M4Str,50,0);// Edit ************************** BPI Ukraine - KramarAlexandr - 02, 10 08 2021 y. at 11:18:14 AM
+    RecordField(OrderContName,M4Str,255,0);// Edit ************************** BPI Ukraine - KramarAlexandr - 03, 11 08 2021 y. at 5:11:26 PM
+    RecordField(OrderContPhone1,M4Str,255,0);// Edit ************************** BPI Ukraine - KramarAlexandr - 03, 11 08 2021 y. at 5:11:47 PM
+    RecordField(OrderContPhone2,M4Str,255,0);// Edit ************************** BPI Ukraine - KramarAlexandr - 03, 11 08 2021 y. at 5:11:49 PM
+    RecordField(OrderContMail,M4Str,255,0);
+    RecordField(DeviceModel,M4Str,255,0);
+    RecordField(DeviceSerialNr,M4Str,255,0);
+    RecordField(TTNNumber,M4Str,255,0);
+    
     ArrayField(Shopd,M4UVal,0,0);// Edit ************************** Friday, 31 October 2014 15:52:28
     
     SubsetKeyBegin2(Location);// Edit ************************** Monday, 8 September 2014 09:11:39
@@ -1439,6 +1448,12 @@ begin
 		MainKeyBegin(CallID,0);
 		KeySegment(CallID);
 		
+	EndRecord;
+	
+	RecordBegin(OrderStatusTextVc,-,"");
+		RecordField(Name,M4Str,50,0);
+		MainKeyBegin(Name,0);
+		KeySegment(Name);
 	EndRecord;
 	
 	RecordBegin(MonthsStructVc,-,"");	//Edit----------------------Dima  02.02.2016
