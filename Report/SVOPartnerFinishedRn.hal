@@ -346,6 +346,30 @@ string 50 location;
 return
 end;
 
+global procedure CallToClientPhone(string clientphone)
+begin
+integer wn;
+array longint sernr;
+integer count;
+record RcVc RepSpec;
+record UserVc USr;
+string 100 host,page,getParam;
+area mainRequest,replyarea;
+longint port;
+string 50 location;
+	
+	
+	USr.Code = currentuser;
+
+	if(readfirstmain(USr,1,true))then begin
+		if(nonblank(USr.Phone2)and nonblank(NormalPhone(clientphone)))then begin			
+			MakeBinotelCallFromExtNumToPhone(USr.Phone2,NormalPhone(clientphone));
+		end;
+	end;
+
+return
+end;
+
 global procedure CallToClientDsm()
 begin
 integer wn;
@@ -365,6 +389,48 @@ string 50 location;
 	CallToClient(SVOr);
 
 
+return
+end;
+
+global procedure ORCallToClient1Dsm()
+begin
+integer wn;
+record ORVc ORr;
+array longint sernr;
+integer count;
+record RcVc RepSpec;
+record UserVc USr;
+string 100 host,page,getParam;
+area mainRequest,replyarea;
+longint port;
+string 50 location;
+	
+	wn = curwindow;
+	getwindowrecord(wn,ORr);
+	
+	CallToClientPhone(ORr.OrderContPhone1);
+	
+return
+end;
+
+global procedure ORCallToClient2Dsm()
+begin
+integer wn;
+record ORVc ORr;
+array longint sernr;
+integer count;
+record RcVc RepSpec;
+record UserVc USr;
+string 100 host,page,getParam;
+area mainRequest,replyarea;
+longint port;
+string 50 location;
+	
+	wn = curwindow;
+	getwindowrecord(wn,ORr);
+	
+	CallToClientPhone(ORr.OrderContPhone2);
+	
 return
 end;
 
