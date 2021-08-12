@@ -254,7 +254,7 @@ begin
 end;
 
 global 
-updating function boolean EasySendTurboSMS(string reciever, string text)
+updating procedure EasySendTurboSMS(string reciever, string text)
 begin
   string 50 cookie;
   record SMSConfigBlock SMSb;
@@ -267,7 +267,7 @@ begin
     end;
   end;
   
-  EasySendTurboSMS = res;
+//  EasySendTurboSMS = res;
   return;
 end;
 
