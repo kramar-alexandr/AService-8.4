@@ -1080,9 +1080,9 @@ begin
       EditField(h2,v+=vs,150,"Метод доставки",Normal,ShipMode,false,DMSClass);
       EditField(h3,v,80,"Вид счёта",Normal,OrderClass,false,OrderClassSClass);
       EditField(h2,v+=vs,150,"Модель",Normal,DeviceModel,false,0);
-      EditField(h3,v,25,"Условия оплаты",Normal,PayDeal,false,PDSClass);
+      EditField(h3,v,30,"Условия оплаты",Normal,PayDeal,false,PDSClass);
       EditField(h2,v+=vs,150,"Серийный номер",Normal,DeviceSerialNr,false,0);
-      EditField(h3,v,25,"Склад",Normal,Location,false,LocationSClass);
+      EditField(h3,v,100,"Склад",Normal,Location,false,LocationSClass);
       v = 60;
       EditField(h3,v+vs,160,"ТТН",Normal,TTNNumber,false,0);	
       
