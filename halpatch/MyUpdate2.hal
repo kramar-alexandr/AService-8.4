@@ -264,7 +264,7 @@ begin
         //MySendWebRequest(host,port,-1,false,"POST",page,"application/x-www-form-urlencoded","",false,mainRequest,replyarea,10);// Edit ************************** BPI Ukraine - KramarAlexandr - Tuesday, 9 January 2018 17:39:50
         
         if(SMSConfigb.Balance>0 and turbo)then begin
-        	threadasync.EasySendTurboSMS(right(normphone[0],len(normphone[0])-2),smstext);
+        	EasySendTurboSMS(right(normphone[0],len(normphone[0])-2),smstext);
         end else begin
           MySendAsyncWebRequest(host,port,false,"POST",page,"application/x-www-form-urlencoded","",mainRequest,"SMSCallBack",0);
         end;
