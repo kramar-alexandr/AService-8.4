@@ -1123,7 +1123,7 @@ begin
         v=v+vs;  VTab(-35,v,-16,v+vs,ToolFlip,2,"B");
         //v=v+vs;  VTab(-35,v,-16,v+vs,ToolFlip,3,"C");
       end;
-      v = v + 145;
+      v = v + 170;
       //ButtonFrame(10,v+vs,370,3,"Заполнить!!!");
       //EditField(h1+80,v+=vs,70,"Дата видачи / доставки",Normal,PlanShipDate,false,PasteCurDate);
       //EditField(h1+200,v,70,"Время",Normal,DespatchTime,false,PasteCurTime);
@@ -1149,7 +1149,7 @@ begin
       // v=v+vs;
 			// v = v + 15;
       //EnterSkip(ORChatSend);
-			v = 355;
+			v = 380;
       EditField(h4,v,100,"Способы оплаты",Normal,PayMethod,false,OrderPayTypeTextSClass);
       EditField(h4,v+=vs,100,"Статус оплаты",Normal,PayStatus,false,OrderPayStatusTextSClass);
       EditField(h4,v+=vs,100,"Условия оплаты",Normal,PayDeal,false,PDSClass);
