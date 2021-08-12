@@ -1071,7 +1071,8 @@ begin
         v = v + 3 * vs;
       end;
 			EditField(h1,v+=vs,200,"Контактное лицо",Normal,OrderContName,false,0);
-			EditField(h1,v+=vs,200,"Информация",Normal,ShipAddr0,false,0);  
+			EditField(h1,v+=vs,200,"Комментарий",Normal,Comment,false,0);
+			EditField(h1,v+=vs,200,"",Normal,ShipAddr0,false,0);  
       
       v = 60;
 
@@ -1088,7 +1089,7 @@ begin
       //3
       v = 60 + 5 * vs; 
       if(show)then begin
-        MatrixBegin(3,v+=30,-50,v+170,-,200);
+        MatrixBegin(3,v+=40,-50,v+170,-,200);
         MatTypedRow(stp);
         flipnr = 0;
         Flip(flipnr); flipnr = flipnr + 1;
