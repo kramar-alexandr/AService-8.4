@@ -4869,7 +4869,7 @@ begin
   pos = pos + 80;
   RlCol(pos,pos,"Доставка",ShipMode,false);
   pos = pos + 80;
-  RlCol(pos,pos,"Оплата",PayDeal,false);
+  RlCol(pos,pos,"Оплата",PayStatus,false);
   pos = pos + 80;
   RlCol(pos,pos,"ТТН",TTNNumber,false);
   
