@@ -1396,7 +1396,8 @@ BEGIN
     end;
   end;
   
-  SENDSMS(SVOr,SVO2r);// Edit ************************** Tuesday, 8 January 2013 10:20:35
+  //SENDSMS(SVOr,SVO2r);// Edit ************************** Tuesday, 8 January 2013 10:20:35
+  //  Ћтключил
   
   rwcnt = MatRowCnt(SVOr); //for quick search
   if (rwcnt>0) then begin
@@ -1784,7 +1785,8 @@ begin
 	
 	wn = curwindow;
 	getwindowrecord(wn,RepSpec);
-	SENDSECONDSMS(RepSpec.long1);
+	//SENDSECONDSMS(RepSpec.long1);
+	//Ћтключил// Edit ************************** BPI Ukraine - KramarAlexandr - 04, 12 08 2021 y. at 5:39:39 PM
 	closewindow(wn);
 
 return;
