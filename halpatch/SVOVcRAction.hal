@@ -621,7 +621,7 @@ BEGIN
   	CreateActFromSVOToEnginer(SVOr);
 
   	
-  SENDFIRSTSMS(SVOr);
+  //SENDFIRSTSMS(SVOr);//Ћтключил // Edit ************************** BPI Ukraine - KramarAlexandr - 04, 12 08 2021 y. at 5:37:36 PM
   if(nonblank(SVOr.Kontinfo1) or nonblank(SVOr.Phone2))then begin
 		PhonesFromSVO(SVOr);//Edit-------------------Vitalii 17:10 03.11.2016
     AddPhoneLightAfterSVOVcSaved(SVOr);//************************ dima-f 14.09.17
