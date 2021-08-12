@@ -139,7 +139,8 @@ begin
     RecordField(DeviceModel,M4Str,255,0);
     RecordField(DeviceSerialNr,M4Str,255,0);
     RecordField(TTNNumber,M4Str,255,0);
-    
+    RecordField(PayMethod,M4Str,100,0);
+    RecordField(PayStatus,M4Str,100,0);
     ArrayField(Shopd,M4UVal,0,0);// Edit ************************** Friday, 31 October 2014 15:52:28
     
     SubsetKeyBegin2(Location);// Edit ************************** Monday, 8 September 2014 09:11:39
@@ -1451,6 +1452,18 @@ begin
 	EndRecord;
 	
 	RecordBegin(OrderStatusTextVc,-,"");
+		RecordField(Name,M4Str,50,0);
+		MainKeyBegin(Name,0);
+		KeySegment(Name);
+	EndRecord;
+	
+	RecordBegin(OrderPayTypeTextVc,-,"");
+		RecordField(Name,M4Str,50,0);
+		MainKeyBegin(Name,0);
+		KeySegment(Name);
+	EndRecord;
+	
+	RecordBegin(OrderPayStatusTextVc,-,"");
 		RecordField(Name,M4Str,50,0);
 		MainKeyBegin(Name,0);
 		KeySegment(Name);

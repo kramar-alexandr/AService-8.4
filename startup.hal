@@ -23,6 +23,8 @@ begin
   
   Setting("HT Who Online",HTSWhoPresentLClass,modDBMain);
   Setting("Статус заказа",OrderStatusLClass,modSO);
+  Setting("Способ оплаты",OrderPayTypeTextLClass,modSO);
+  Setting("Статус оплаты",OrderPayStatusTextLClass,modSO);
   
   Register("Выплаты по бонусам","Выплаты по бонусам",ServBonusOutVc,modSVO);// Edit ************************** BPI Ukraine - KramarAlexandr - 04, 26 09 2019 y. at 11:15:03 AM
 
