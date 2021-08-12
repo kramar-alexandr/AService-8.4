@@ -1077,8 +1077,8 @@ begin
       EditField(h2,v+=vs,150,"Способы оплаты",Normal,PayMethod,false,OrderPayTypeTextSClass);
       
       EditField(h3,v,150,"Статус оплаты",Normal,PayStatus,false,OrderPayStatusTextSClass);
-      
       EditField(h2,v+=vs,150,"Метод доставки",Normal,ShipMode,false,DMSClass);
+      EditField(h3,v,80,"Вид счёта",Normal,OrderClass,false,OrderClassSClass);
       EditField(h2,v+=vs,150,"Модель",Normal,DeviceModel,false,0);
       EditField(h2,v+=vs,150,"Серийный номер",Normal,DeviceSerialNr,false,0);
       
