@@ -1068,7 +1068,7 @@ begin
       //EditField(h2,v=60,150," ",Normal,ShipAddr1,false,0);
       if(usercanaction("ViewAllOrderDetails",true) or blank(ORr.CustOrdNr))then begin
 				EditField(h1,v+=vs,120,"Призвище",Normal,OrderContSurName,false,0);
-				EditField(h2,v,120,"Ім'я",Normal,OrderContName,false,0);
+				EditField(h2,v,120,"Ім'я",Normal,OrderContFirstName,false,0);
 				EditField(h3,v,120,"По батькові",Normal,OrderContPatrName,false,0);
         EditField(h1,v+=vs,105,"Тел.1",Normal,OrderContPhone1,false,0);HalPushButton(190,v,250,v+20,"ORCallToClient1Dsm","Звонок");
         EditField(300,v,105,"Тел.2",Normal,OrderContPhone2,false,0);HalPushButton(410,v,470,v+20,"ORCallToClient2Dsm","Звонок");

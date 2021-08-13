@@ -65,6 +65,9 @@ remote function boolean GetPartFileToArea(string,var area); // Edit ************
 remote procedure DeleteXLSXJunk(string); // Edit ************************** Thursday, 11 February 2016 10:23:08
 remote procedure BackupXLSX(string); // Edit ************************** Thursday, 11 February 2016 10:23:08
 remote procedure RecoverXLSX(string,string); // Edit ************************** Thursday, 11 February 2016 10:23:08
+external procedure ExtractObjWithSeparator(string,string,Boolean,var Integer,var string);// Edit ************************** Vas-P	13/08/2021
+remote procedure FindPhonePerson(var record Phone1Vc,string);	//Edit **********************************************Vas-P	13/08/2021
+remote procedure CountNumberRepeatPhone(string,var array longint,var integer );	//Edit **********************************************Vas-P	13/08/2021
 
 	SetLangMode(LangRussian,"RUS",0); // Edit ************************** Thursday, 11 February 2016 10:23:08
  
@@ -2412,3 +2415,179 @@ lORtoExcel1Dsm:;
 
 return;
 end; //Edit***************************Sasha2,13:41 19.05.2017 }
+
+
+//Copy from SVVc WAction **********************************************Vas-P	13/08/2021
+global
+function Boolean ORDClassOrderContNameEFAfter(integer wn, integer changed)
+begin
+  record ORVc ORr;
+  integer pos,k;
+  string 100 tstr;
+  array string 100 fio;
+  
+  GetWindowRecord(wn,ORr);
+  if(changed>0 and Blank(ORr.OrderContSurName))then begin
+  	
+  	k=0;
+  	pos = 0;
+		ExtractObjWithSeparator(" ",ORr.OrderContName,true,pos,tstr);
+		while (nonblank(tstr)) begin    
+			fio[k] = tstr;
+			k=k+1;
+			ExtractObjWithSeparator(" ",ORr.OrderContName,true,pos,tstr);
+		end;
+  	
+  	if(k>0)then begin
+  		ORr.OrderContSurName = fio[0];
+  	end;
+  	if(k>1)then begin
+  		ORr.OrderContFirstName = fio[1];
+  	end;
+  	if(k>2)then begin
+  		ORr.OrderContPatrName = fio[2];
+  	end;
+    PutWindowRecord(wn,ORr);
+  end;
+
+return;
+end; 
+
+
+//Copy from SV WAction **********************************************Vas-P	13/08/2021
+global 
+function Boolean ORDClassOrderContPhone1EFAfter(integer wn, integer changed)
+begin
+  record ORVc ORr;
+  integer pos,k;
+  string 100 tstr;
+  array string 100 fio;
+  record Phone1Vc Phoner;
+  array longint sernr;
+  integer count;
+	
+  GetWindowRecord(wn,ORr);
+  if(changed>0/* and Blank(ORr.OrderContName)*/)then begin
+  	if(nonblank(ORr.OrderContPhone1))then begin
+  		CountNumberRepeatPhone(ORr.OrderContPhone1,sernr,count);
+			if(count>0)then begin
+				// ORr.CustomField9 = count;
+			end;
+  	end else begin
+  		// ORr.CustomField9 = blankval;
+  	end;
+  	
+  	if(nonblank(ORr.OrderContPhone1))then begin
+			FindPhonePerson(Phoner,ORr.OrderContPhone1);
+  	end;
+  	// ORr.PersonalRebCode = Phoner.PersonalRebCode;
+		if (nonblank(Phoner.Vlastnik)) then begin
+			ORr.OrderContName = Phoner.Vlastnik;
+		end;
+		if (nonblank(Phoner.Priynato)) then begin
+			ORr.OrderContSurName = Phoner.Priynato;
+		end;
+  	if(nonblank(Phoner.FirstName))then begin
+			ORr.OrderContSurName = Phoner.LastName;
+			ORr.OrderContFirstName = Phoner.FirstName;
+			ORr.OrderContPatrName = Phoner.MiddleName;
+  	end else begin
+
+			k=0;
+			pos = 0;
+			ExtractObjWithSeparator(" ",ORr.OrderContSurName,true,pos,tstr);
+			while (nonblank(tstr)) begin    
+				fio[k] = tstr;
+				k=k+1;
+				ExtractObjWithSeparator(" ",ORr.OrderContSurName,true,pos,tstr);
+			end;
+	
+			if(k>0)then begin
+				ORr.OrderContSurName = fio[0];
+			end;
+			if(k>1)then begin
+				ORr.OrderContFirstName = fio[1];
+			end;
+			if(k>2)then begin
+				ORr.OrderContPatrName = fio[2];
+			end;
+  		
+  	end;
+  	
+    PutWindowRecord(wn,ORr);
+  end;
+	ORDClassOrderContPhone1EFAfter = true;
+return;
+end; 
+
+
+//Copy from SV WAction **********************************************Vas-P	13/08/2021
+global 
+function Boolean ORDClassOrderContPhone2EFAfter(integer wn, integer changed)
+begin
+  record ORVc ORr;
+  integer pos,k;
+  string 100 tstr;
+  array string 100 fio;
+  record Phone1Vc Phoner;
+  
+  GetWindowRecord(wn,ORr);
+  if(changed>0 and Blank(ORr.OrderContName))then begin
+  	if(nonblank(ORr.OrderContPhone2))then begin
+  		FindPhonePerson(Phoner,ORr.OrderContPhone2);
+  	end;
+  	if(nonblank(Phoner.Vlastnik))then begin
+			ORr.OrderContName = Phoner.Vlastnik;
+  	end;
+  	if(nonblank(Phoner.Priynato))then begin
+			ORr.OrderContSurName = Phoner.Priynato;
+  	end;
+  	if(nonblank(Phoner.FirstName))then begin
+			ORr.OrderContSurName = Phoner.LastName;
+			ORr.OrderContFirstName = Phoner.FirstName;
+			ORr.OrderContPatrName = Phoner.MiddleName;
+  	end else begin
+  		k=0;
+			pos = 0;
+			ExtractObjWithSeparator(" ",ORr.OrderContSurName,true,pos,tstr);
+			while (nonblank(tstr)) begin    
+				fio[k] = tstr;
+				k=k+1;
+				ExtractObjWithSeparator(" ",ORr.OrderContSurName,true,pos,tstr);
+			end;
+	
+			if(k>0)then begin
+				ORr.OrderContSurName = fio[0];
+			end;
+			if(k>1)then begin
+				ORr.OrderContFirstName = fio[1];
+			end;
+			if(k>2)then begin
+				ORr.OrderContPatrName = fio[2];
+			end;
+  	end;
+  	
+  	
+    PutWindowRecord(wn,ORr);
+  end;
+	ORDClassOrderContPhone2EFAfter = true;
+return;
+end; 
+
+
+//Copy from SV WAction **********************************************Vas-P	13/08/2021
+global
+function Boolean ORDClassAfterEditField(Integer wn,string fieldname,Integer fn, Integer rownr,Integer changed)
+BEGIN
+  Boolean res;
+
+  switch (fieldname) begin
+    case "OrderContName": res = ORDClassOrderContNameEFAfter(wn,changed); 
+    case "OrderContPhone1": res = ORDClassOrderContPhone1EFAfter(wn,changed);
+    case "OrderContPhone2": res = ORDClassOrderContPhone2EFAfter(wn,changed);
+  end;
+	
+  ORDClassAfterEditField = res;
+  RETURN;
+END;
+
