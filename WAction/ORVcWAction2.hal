@@ -2576,6 +2576,7 @@ end;
 
 
 //Copy from SV WAction **********************************************Vas-P	13/08/2021
+/*
 global
 function Boolean ORDClassAfterEditField(Integer wn,string fieldname,Integer fn, Integer rownr,Integer changed)
 BEGIN
@@ -2589,5 +2590,5 @@ BEGIN
 	
   ORDClassAfterEditField = res;
   RETURN;
-END;
+END;*/
 
