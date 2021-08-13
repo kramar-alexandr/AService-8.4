@@ -1934,6 +1934,7 @@ updating function LongInt ORVcRecordUpdateAfter(var record ORVc ORr,record ORVc 
 begin
   LongInt res;
   val bc1v;
+  record Phone1Vc Phoner;
 
 //  ORObjectStats(ORr,OR2r); it is stored only and not used ever
   UpdateVARItemsOR(ORr);
@@ -1951,6 +1952,30 @@ begin
     DeletePlannedPayment("ORVc",ORr.SerNr,-1);
     ORCreatePlannedPayment(ORr);
   end;
+  
+  if(nonblank(ORr.OrderContPhone1))then begin
+		Phoner.PhoneNum = ORr.OrderContPhone1;
+		if(ReadFirstMain(Phoner,1,true)==false)then begin
+			Phoner.PhoneNum = ORr.OrderContPhone1;
+			Phoner.Vlastnik = ORr.OrderContName;
+			Phoner.LastName = ORr.OrderContSurName;
+			Phoner.FirstName = ORr.OrderContFirstName;
+			Phoner.MiddleName = ORr.OrderContPatrName;
+			recordstore(Phoner,true);
+		end;
+	end;
+	if(nonblank(ORr.OrderContPhone2))then begin
+		Phoner.PhoneNum = ORr.OrderContPhone2;
+		if(ReadFirstMain(Phoner,1,true)==false)then begin
+			Phoner.PhoneNum = ORr.OrderContPhone2;
+			Phoner.Vlastnik = ORr.OrderContName;
+			Phoner.LastName = ORr.OrderContSurName;
+			Phoner.FirstName = ORr.OrderContFirstName;
+			Phoner.MiddleName = ORr.OrderContPatrName;
+			recordstore(Phoner,true);
+		end;
+	end;
+  
   ORVcRecordUpdateAfter = res; 
   return;
 end;
