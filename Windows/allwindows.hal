@@ -999,7 +999,7 @@ begin
     UseView(ORVc);
     getwindowrecord(curwindow,ORr);
     show = true;
-    if(usercanaction("ViewAllOrderDetails",true)==false)then begin
+    if(true)then begin
       BrowseButtons(false);
       if(blank(ORr.SalesMan) and ORr.SerNr>-1)then begin
         show = false;
@@ -1011,7 +1011,7 @@ begin
     ActiveFieldOnNew("CustCode");    
     EditField(75,vm=(v=6),95,"Номер",Normal,SerNr,false,TSerSClass);
     if(show)then begin
-      if(usercanaction("ViewAllOrderDetails",true) or blank(ORr.CustOrdNr))then begin
+      if(true)then begin
         EditField(75,v+=20,95,"Клиент",Normal,CustCode,false,CUSClass);
 				EditField(235,v,150,"№ зак.",ViewOnly,CustOrdNr,false,0);
       end else begin
@@ -1066,7 +1066,7 @@ begin
 			EditField(h1,v,200,"Власник",Normal,OrderContName,false,0);
       //2
       //EditField(h2,v=60,150," ",Normal,ShipAddr1,false,0);
-      if(usercanaction("ViewAllOrderDetails",true) or blank(ORr.CustOrdNr))then begin
+      if(true)then begin
 				EditField(h1,v+=vs,120,"Призвище",Normal,OrderContSurName,false,0);
 				EditField(h2,v,120,"Ім'я",Normal,OrderContFirstName,false,0);
 				EditField(h3,v,120,"По батькові",Normal,OrderContPatrName,false,0);
@@ -1137,7 +1137,7 @@ begin
       // v = v + 2 * vs;
 			// v = v + 35;
 
-			v = 400;
+			v = 425;
 			h1 = 100;
 			EditField(h1,v,160,"ТТН",Normal,TTNNumber,false,0);	
       EditField(h1,v+=vs,150,"Метод доставки",Normal,ShipMode,false,DMSClass);
@@ -1154,7 +1154,7 @@ begin
       // v=v+vs;
 			// v = v + 15;
       //EnterSkip(ORChatSend);
-			v = 400;
+			v = 425;
       EditField(h4+=150,v,100,"Способы оплаты",Normal,PayMethod,false,OrderPayTypeTextSClass);
       EditField(h4,v+=vs,100,"Статус оплаты",Normal,PayStatus,false,OrderPayStatusTextSClass);
       EditField(h4,v+=vs,100,"Условия оплаты",Normal,PayDeal,false,PDSClass);

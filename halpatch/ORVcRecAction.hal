@@ -2075,6 +2075,7 @@ begin
   LongInt res;
   string 255 autmsgfunciontags;
   record PDVc PDr;
+	record Phone1Vc Phoner;
 
 //  ORObjectStats(ORr,OR2r);it is stored only and not used ever
   CreateActFromOR(ORr);
@@ -2092,6 +2093,30 @@ begin
     end;
   end;
   AutomatedSales(autmsgfunciontags,kAutomatedSalesTagRandom);
+	
+	if(nonblank(ORr.OrderContPhone1))then begin
+		Phoner.PhoneNum = ORr.OrderContPhone1;
+		if(ReadFirstMain(Phoner,1,true)==false)then begin
+			Phoner.PhoneNum = ORr.OrderContPhone1;
+			Phoner.Vlastnik = ORr.OrderContName;
+			Phoner.LastName = ORr.OrderContSurName;
+			Phoner.FirstName = ORr.OrderContFirstName;
+			Phoner.MiddleName = ORr.OrderContPatrName;
+			recordstore(Phoner,true);
+		end;
+	end;
+	if(nonblank(ORr.OrderContPhone2))then begin
+		Phoner.PhoneNum = ORr.OrderContPhone2;
+		if(ReadFirstMain(Phoner,1,true)==false)then begin
+			Phoner.PhoneNum = ORr.OrderContPhone2;
+			Phoner.Vlastnik = ORr.OrderContName;
+			Phoner.LastName = ORr.OrderContSurName;
+			Phoner.FirstName = ORr.OrderContFirstName;
+			Phoner.MiddleName = ORr.OrderContPatrName;
+			recordstore(Phoner,true);
+		end;
+	end;
+	
   ORVcRecordSaveAfter = res; 
   return;
 end;
