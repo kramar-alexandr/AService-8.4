@@ -1164,7 +1164,10 @@ begin
       v = 600;
       StaticText(50,v,"_",true);
     end;
-      
+    
+    SpecialMenu("Создать отгрузку",'L',0,"SHFromORDsm");
+    SpecialMenu("Создать сч/ф",'F',1,"IVFromORDsm");
+    
     EndWindow;
 
 return;
