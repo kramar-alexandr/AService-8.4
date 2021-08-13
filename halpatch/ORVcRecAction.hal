@@ -83,6 +83,7 @@ external function Boolean INVc_AllowSales(record INVc,var LongInt);
 forward function val GetINCostPrice(string,string,Boolean);// Edit ************************** Thursday, 4 September 2014 10:44:53
 external procedure ORDchsum(var record ORVc,Integer);// Edit ************************** Thursday, 4 September 2014 10:45:26
 external procedure ORSumup(var record ORVc);// Edit ************************** Thursday, 4 September 2014 10:47:57
+external function Boolean PasteCustInOR(var record ORVc);
 
 // Edit Start ---------------------------------------------- Edit Start
 	//Thursday, 4 September 2014 10:49:51
@@ -2187,6 +2188,14 @@ begin
   ORr.LocalMachineCode = CurMachineName;
   ORr.OfficialSerNr = "";
   ORr.OfficialSerNrSerie = "";
+  
+  if(usercanaction("SpecialORWindow",false))then begin// Edit ************************** BPI Ukraine - KramarAlexandr - 05, 13 08 2021 y. at 5:02:10 PM
+    ORr.CustCode = "A-SRV_KRS";
+    PasteCustInOR(ORr);
+    ORr.OrderClass = "SALES";
+    ORr.Location = "PARTS#1_KR";
+  end;
+  
   ORVcRecordDefaults = res;  
   return;
 end;
