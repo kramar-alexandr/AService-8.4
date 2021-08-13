@@ -1013,6 +1013,7 @@ begin
     if(show)then begin
       if(usercanaction("ViewAllOrderDetails",true) or blank(ORr.CustOrdNr))then begin
         EditField(75,v+=20,95,"Клиент",Normal,CustCode,false,CUSClass);
+				EditField(235,v,150,"№ зак.",ViewOnly,CustOrdNr,false,0);
       end else begin
         v = v + 20;
       end;
@@ -1021,13 +1022,14 @@ begin
     end;
     //HalPushButton(190,v,270,v+20,"CallToClientDsm","Звонок");
     EnterSkip(PayDeal);
-    EditField(h=255,v=vm,-120,"Имя",Normal,Addr0,false,0);
+		EditField(h=225,v=vm,70,"Дата",Normal,OrdDate,false,PasteCurDate);
+    EditField(h=350,v=vm,100,"Статус",Normal,OrderStatusText,false,OrderStatusSClass);
+    EditField(h=550,v=vm,100,"Менеджер",normal,SalesMan,false,UserSClass);
   
     CheckBox(h4=-110,v,0,"Выполнено",OKFlag);
     CheckBox(h4,v+20,0,"Резерв",Reserved);
-    EditField(h3=320,v+=20,100,"Статус",Normal,OrderStatusText,false,OrderStatusSClass);
     //v=v+20;
-    EditField(h3=510,v,100,"Менеджер",normal,SalesMan,false,UserSClass);
+
     if(show)then begin
       //HalPushButton(h3-100+220,v,h3+270,v+20,"OrderSetToST6Dsm","Готовий до видачі");
     
@@ -1055,41 +1057,42 @@ begin
       //HalPushButton(h3-100,v+=5,h3,v+=20,"OrderSetToST4Dsm","Відхилено");
       //1 
       v = 60;
-      h1 = 130;
-      h2 = 450;
-      h3 = 700;
-			h4 = 770;
+      h1 = 75;
+      h2 = 225;
+      h3 = 425;
+			h4 = 620;
       vs = 20;
-	
+			
+			EditField(h1,v,200,"Власник",Normal,OrderContName,false,0);
       //2
-      //EditField(h2,v=60,150,"Доставка",Normal,ShipAddr1,false,0);
+      //EditField(h2,v=60,150," ",Normal,ShipAddr1,false,0);
       if(usercanaction("ViewAllOrderDetails",true) or blank(ORr.CustOrdNr))then begin
-        EditField(h1,v,105,"Телефон 1",Normal,OrderContPhone1,false,0);HalPushButton(240,v,310,v+20,"ORCallToClient1Dsm","Звонок");
-        EditField(h1,v+=vs,105,"Телефон 2",Normal,OrderContPhone2,false,0);HalPushButton(240,v,310,v+20,"ORCallToClient2Dsm","Звонок");
+				EditField(h1,v+=vs,120,"Призвище",Normal,OrderContSurName,false,0);
+				EditField(h2,v,120,"Ім'я",Normal,OrderContName,false,0);
+				EditField(h3,v,120,"По батькові",Normal,OrderContPatrName,false,0);
+        EditField(h1,v+=vs,105,"Тел.1",Normal,OrderContPhone1,false,0);HalPushButton(190,v,250,v+20,"ORCallToClient1Dsm","Звонок");
+        EditField(300,v,105,"Тел.2",Normal,OrderContPhone2,false,0);HalPushButton(410,v,470,v+20,"ORCallToClient2Dsm","Звонок");
         EditField(h1,v+=vs,200,"eMail",Normal,OrderContMail,false,0);
       end else begin
         v = v + 3 * vs;
       end;
-			EditField(h1,v+=vs,200,"Контактное лицо",Normal,OrderContName,false,0);
-			EditField(h1,v+=vs,200,"Комментарий",Normal,Comment,false,0);
-			EditField(h1,v+=vs,200,"",Normal,ShipAddr0,false,0);  
-      
-      v = 60;
+			EditField(90,v+=vs+10,-150,"Адреса клієнта",Normal,OrderClientAddr,false,0);
+			EditField(90,v+=vs,-150,"Комментарий",Normal,Comment,false,0);
+			EditField(90,v+=vs,-150,"",Normal,ShipAddr0,false,0);  
 
-			EditField(h2,v,150,"Модель",Normal,DeviceModel,false,0);
-			EditField(h2,v+=vs,150,"Серийный номер",Normal,DeviceSerialNr,false,0);
+			v = 35;
+
+      EditField(h4,v,80,"Вид счёта",Normal,OrderClass,false,OrderClassSClass);
+			EditField(h4,v+=vs,100,"Склад",Normal,Location,false,LocationSClass); 
 			
-			v = 60;
-      EditField(h3,v,70,"Дата",Normal,OrdDate,false,PasteCurDate);
-			EditField(h3,v+=vs,150,"№ зак.",ViewOnly,CustOrdNr,false,0);
-      EditField(h3,v+=vs,80,"Вид счёта",Normal,OrderClass,false,OrderClassSClass);
-			EditField(h3,v+=vs,100,"Склад",Normal,Location,false,LocationSClass);    
-      
+			v = 90;
+			EditField(h4,v,150,"Модель",Normal,DeviceModel,false,0);
+			EditField(h4,v+=vs,150,"Серийный номер",Normal,DeviceSerialNr,false,0);
       
       //3
       v = 60 + 5 * vs; 
       if(show)then begin
-        MatrixBegin(3,v+=40,-50,v+170,-,200);
+        MatrixBegin(3,v+=75,-50,v+170,-,200);
         MatTypedRow(stp);
         flipnr = 0;
         Flip(flipnr); flipnr = flipnr + 1;
@@ -1134,15 +1137,16 @@ begin
       // v = v + 2 * vs;
 			// v = v + 35;
 
-			
+			v = 400;
+			h1 = 100;
 			EditField(h1,v,160,"ТТН",Normal,TTNNumber,false,0);	
       EditField(h1,v+=vs,150,"Метод доставки",Normal,ShipMode,false,DMSClass);
       //EditField(h1,v+=vs,-350,"Кредит",Normal,TerminalID,false,0);
       EditField(h1,v+=vs,-300,"Доставка",Normal,ShipAddr1,false,0);
       EditField(h1,v+=vs,-300,"",Normal,ShipAddr2,false,0);
       EditField(h1,v+=vs,-300,"",Normal,ShipAddr3,false,0);
-      EditField(h1,v+=vs,-300,"",Normal,DelAddr3,false,0);
-      EditField(h1,v+=vs,-300,"",Normal,DelAddr4,false,0);
+      // EditField(h1,v+=vs,-300,"",Normal,DelAddr3,false,0);
+      // EditField(h1,v+=vs,-300,"",Normal,DelAddr4,false,0);
 
       // v = v - 2*vs;
       //TextField(h1+520,370,-10,140,Math2,0);
@@ -1150,11 +1154,11 @@ begin
       // v=v+vs;
 			// v = v + 15;
       //EnterSkip(ORChatSend);
-			v = 380;
-      EditField(h4,v,100,"Способы оплаты",Normal,PayMethod,false,OrderPayTypeTextSClass);
+			v = 400;
+      EditField(h4+=150,v,100,"Способы оплаты",Normal,PayMethod,false,OrderPayTypeTextSClass);
       EditField(h4,v+=vs,100,"Статус оплаты",Normal,PayStatus,false,OrderPayStatusTextSClass);
       EditField(h4,v+=vs,100,"Условия оплаты",Normal,PayDeal,false,PDSClass);
-			vs = 50;
+			vs = 40;
       EditField(h4,v+=vs,100,"Всего",ViewOnly ,Sum4,true,0);
     end else begin
       v = 600;
