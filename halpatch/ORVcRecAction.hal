@@ -2219,6 +2219,7 @@ begin
     PasteCustInOR(ORr);
     ORr.OrderClass = "SALES";
     ORr.Location = "PARTS#1_KR";
+    ORr.SalesMan = currentuser;
   end;
   
   ORVcRecordDefaults = res;  
