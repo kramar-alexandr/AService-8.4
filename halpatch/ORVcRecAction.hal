@@ -2215,7 +2215,7 @@ begin
   ORr.OfficialSerNrSerie = "";
   
   if(usercanaction("SpecialORWindow",false))then begin// Edit ************************** BPI Ukraine - KramarAlexandr - 05, 13 08 2021 y. at 5:02:10 PM
-    ORr.CustCode = "A-SRV_KRS";
+    ORr.CustCode = "A-SRV-PAR";
     PasteCustInOR(ORr);
     ORr.OrderClass = "SALES";
     ORr.Location = "PARTS#1_KR";
