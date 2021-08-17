@@ -870,6 +870,9 @@ begin
 	
 	addtexttoarea(chr(13) & chr(10),aFile);
 	
+	addtexttoarea(SetMiddleAlignment,aFile);
+	TLTOARR(cjecklength,SVOr.SerNr,aFile);
+	addtexttoarea(chr(13) & chr(10),aFile);
 	//Rekviziti
 	addtexttoarea(SetLeftAlignment,aFile);
 	
@@ -1103,6 +1106,10 @@ begin
 	addtexttoarea(PrintImage,aFile);
 	//addtexttoarea(SetMiddleAlignment,aFile);
 	//addtexttoarea("А-Сервіс",aFile);
+	addtexttoarea(chr(13) & chr(10),aFile);
+	
+	addtexttoarea(SetMiddleAlignment,aFile);
+	TLTOARR(cjecklength,SVOr.SerNr,aFile);
 	addtexttoarea(chr(13) & chr(10),aFile);
 	
 	//Rekviziti
