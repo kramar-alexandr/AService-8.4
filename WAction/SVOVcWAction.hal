@@ -2266,6 +2266,25 @@ begin
 return;
 end;
 
+global procedure OpenORsm()
+begin
+	integer wn;
+	record ActVc Actr;
+	record ORVc ORr;
+	
+	wn = curwindow;
+	deselectwindow(wn,true);
+	getwindowrecord(wn,Actr);
+	if(Actr.ORNr>-1)then begin
+		ORr.SerNr = Actr.ORNr;
+		if(readfirstmain(ORr,1,true))then begin
+			OpenWindow("ORDClass",1,0,"","",ORr);
+		end;
+	end;
+	
+return;
+end;
+
 
 
 global updating procedure AttachToMailWEBLinkDsm()

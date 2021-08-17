@@ -182,6 +182,7 @@ BEGIN
     GetWindowRecord(wn,ORr);  
     RecordNew(Actr);
     ActVcRecordDefClient(Actr);
+    Actr.ORNr = ORr.SerNr;// Edit ************************** BPI Ukraine - KramarAlexandr - 02, 17 08 2021 y. at 7:31:36 PM
     if (MakeActFromOR(ORr,Actr)) then begin
       nwn = OpenWindow("ActDClass",1,0,"","",Actr);
       SetRLink(wn,true);  
