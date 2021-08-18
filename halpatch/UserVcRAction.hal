@@ -559,7 +559,7 @@ begin
       if(nonblank(CUr.Location))then begin
   
         recordnew(POr);
-        POr.VECode = SHr.CustCode;
+        POr.VECode = "A-SRV-PAR";
         POVc_PasteVECode(POr,true);
         POr.SerNr = NextSerNr("POVc",POr.TransDate,-1,false,"");
         POr.Location = CUr.Location;
