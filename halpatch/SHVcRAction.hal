@@ -67,6 +67,7 @@ external function Boolean Date2Test(string,Date,string,Integer);
 external function Boolean SerNrTestSHVc(LongInt,Date,var Boolean);
 external function val FindPUBaseRate2forSerialNr(string,string);
 external function Boolean IsEnoughRemQtyInHist(string,string,date,val,string); //Edit***************************Sasha2,11:38 04.03.2016
+external updating procedure RA_POFromSH(record SHVc);
 
 function Boolean StockMovOKedForSH(LongInt shnr,var LongInt stmovnr)
 begin
@@ -1699,6 +1700,7 @@ begin
   
   ihef = ItemHistExists("SHVc",SHr.SerNr);
   if ((SHr.OKFlag!=0) and (SH2r.OKFlag==0)) then begin
+    RA_POFromSH(SHr);// Edit ************************** BPI Ukraine - KramarAlexandr - 03, 18 08 2021 y. at 12:05:04 PM
     BlockLoad(OSb);
 //    SHOKStockMovemnts(SHr.SerNr);
     if (ihef==false) then begin

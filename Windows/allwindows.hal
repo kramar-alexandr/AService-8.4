@@ -3867,6 +3867,9 @@ begin
       SpecialMenu("Возращённые товары",'B',2,"RetFromSHDsm"); 
     end;
   end;
+  
+  SpecialMenu("Продажа на сервис",'',2,"POFromSHDsm"); 
+  
   EndWindow;
 end;
 
@@ -6871,6 +6874,7 @@ begin
     EditField(h+135,v,50,"Шабл. нал.(пок.) ",Normal,VETaxTemplateCode,false,TaxTemplateSClass);
   end;
   EditField(h,v+=vs,50,"Язык",Normal,LangCode,false,LangSClass);
+  EditField(h,v+=vs,50,"Склад переб. на сервис",Normal,Location,false,LocationSClass);
   if (HasLocalization("ARG")) then begin
     ButtonFrame(h+125,v+=20,177,4,"Условия налогообложения");
     RadioButton(h+125,v,2,0,"Неподготовленное",TaxCondition);

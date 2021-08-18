@@ -15,6 +15,7 @@ external procedure ExtractObj(string,var Integer,var string);
 external function Boolean SetInSet2(string,string);
 external function Boolean MySendWebRequest(string,longint,longint,boolean,string,string,string,string,boolean,area,var area,integer);
 external function Boolean FindStringInString(string, string);
+remote updating procedure RA_POFromSH(record SHVc);
 
 SetLangMode(LangRussian,"RUS",0);
 
@@ -3321,3 +3322,17 @@ begin
 
 return;
 end; //Edit***************************Sasha2,11:22 22.09.2016 }
+
+
+global updating procedure POFromSHDsm()
+begin
+  record SHVc SHr;
+  integer wn;
+  
+  wn = curwindow;
+  getwindowrecord(wn,SHr);
+  
+  RA_POFromSH(SHr);
+
+return;
+end;

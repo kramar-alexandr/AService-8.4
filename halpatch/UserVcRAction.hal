@@ -6,6 +6,14 @@ external function string 20 ObjectsExist(string);
 external updating procedure CheckUserAdminStatus(Integer,Integer,string);
 external function Boolean CheckEmailStr(string);
 external updating procedure SetDefaultUserAdminAccess(string,string);
+remote function Boolean POVc_PasteVECode(var record POVc,Boolean);
+remote function Boolean POVc_PasteArtCode(var record POVc,Integer,Boolean);
+remote procedure POVc_PasteQuant(var record POVc,Integer);
+remote procedure POVc_PastePrice(var record POVc,Integer);
+remote procedure POSumup(var record POVc);
+remote updating function LongInt RecordAction_raPastePOInPU(var record POVc,var record PUVc);
+remote updating function Integer CreateVIFromPO(LongInt,record RcVc,var record VIVc);
+
 
 // the c code should be switched to calling this function
 // should be moved to amainhal and made "final"
@@ -522,4 +530,109 @@ begin
 LUserVcRecordRemoveTest:;
   UserVcRecordRemoveTest = res; 
   return;
+end;
+
+
+
+global updating procedure RA_POFromSH(record SHVc SHr)
+begin
+  record POVc POr;
+  row POVc POrw;
+  row SHVc SHrw;
+  integer rwcnt,i,j,k,rwcnt2,actnr;
+  record CUVc CUr;
+  record PUVc PUr,oldPUr;
+  row PUVc PUrw;
+  record RcVc RepSpec;
+  record VIVc VIr,oldVIr;
+  record RLinkVc RLr;
+  
+  
+  actnr = 1;
+  while (ReadRecordLink(SHr,actnr,POr,RLr)) begin
+    actnr = actnr + 1;
+  end;
+  
+  if(actnr==1)then begin
+    CUr.Code = SHr.CustCode;
+    if(readfirstmain(CUr,1,true))then begin
+      if(nonblank(CUr.Location))then begin
+  
+        recordnew(POr);
+        POr.VECode = SHr.CustCode;
+        POVc_PasteVECode(POr,true);
+        POr.SerNr = NextSerNr("POVc",POr.TransDate,-1,false,"");
+        POr.Location = CUr.Location;
+        POr.POClass = "PURCH";
+      
+        rwcnt = matrowcnt(SHr);
+        for(i=0;i<rwcnt;i=i+1)begin
+          matrowget(Shr,i,SHrw);
+          if(nonblank(SHrw.ArtCode))then begin
+            clearrow(POr,POrw,1);
+            POrw.ArtCode = SHrw.ArtCode;
+            matrowput(POr,k,POrw);
+            POVc_PasteArtCode(POr,k,false);
+            matrowget(POr,k,POrw);
+            POrw.Quant = SHrw.Ship;
+            matrowput(POr,k,POrw);
+            POVc_PasteQuant(POr,k);
+            matrowget(POr,k,POrw);
+            POrw.Price = SHrw.BasePrice;
+            matrowput(POr,k,POrw);
+            POVc_PastePrice(POr,k);
+            matrowget(POr,k,POrw);
+            POrw.Comment = SHrw.SerialNr;
+            matrowput(POr,k,POrw);
+            k=k+1;
+          end;
+        end;
+        POr.OKFlag = 1;
+        POSumup(POr);
+        recordinsert(POr,true);
+        createrecordlink(SHr,currentcompany,POr,Currentcompany);
+        createrecordlink(POr,currentcompany,SHr,Currentcompany);
+        RecordAction_raPastePOInPU(POr,PUr);
+      
+        readfirstmain(PUr,1,true);
+        if(PUr.SerNr>0)then begin
+          rwcnt2 = matrowcnt(PUr);
+          for(i=0;i<rwcnt2;i=i+1)begin
+            matrowget(PUr,i,PUrw);
+            matrowget(POr,i,POrw);
+            PUrw.SerialNr = POrw.Comment;
+            matrowput(PUr,i,PUrw);
+          end;
+          recordstore(PUr,true);
+          recordCopy(oldPUr,PUr);
+          PUr.OKFlag = 1;
+          recordUpdate(oldPUr,PUr,true);
+          RepSpec.repname = "";
+          RepSpec.FirstVer = POr.SerNr;
+          RepSpec.flags[0] = 1;
+          RepSpec.flags[0] = 1;
+          RepSpec.flags[1] = 1;
+          RepSpec.flags[2] = 1;
+          RepSpec.flags[3] = 1;
+          RepSpec.flags[4] = 1;
+          RepSpec.flags[5] = 1;
+          RepSpec.flags[6] = 1;
+          RepSpec.flags[7] = 1;
+          CreateVIFromPO(RepSpec.FirstVer,RepSpec,VIr);
+          if(readfirstmain(VIr,1,true))then begin
+            recordcopy(oldVIr,VIr);
+            VIr.OKFlag = 1;
+            VIr.OKPersons = currentuser;
+            recordupdate(oldVIr,VIr,true);
+          end;
+        
+        end;
+      
+      end;
+    end;
+  end;
+  
+  
+
+return;
 end;
