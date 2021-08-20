@@ -557,11 +557,11 @@ begin
       
       If(percent<minpercent) then begin
         If(UserCanAction("ViewCostPrice",true))then begin
-          MessageBox(20767," row " & i+1);    
+          //MessageBox(20767," row " & i+1);    
         end else begin
-          RecordCheckError(20767,"",i,"Sum");
-          res = -1;
-          goto LORVcRecordCheck;
+          //RecordCheckError(20767,"",i,"Sum");
+          //res = -1;
+          //goto LORVcRecordCheck;
         end;
       end;
     end; 
