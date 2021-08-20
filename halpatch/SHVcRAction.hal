@@ -1700,7 +1700,6 @@ begin
   
   ihef = ItemHistExists("SHVc",SHr.SerNr);
   if ((SHr.OKFlag!=0) and (SH2r.OKFlag==0)) then begin
-    RA_POFromSH(SHr);// Edit ************************** BPI Ukraine - KramarAlexandr - 03, 18 08 2021 y. at 12:05:04 PM
     BlockLoad(OSb);
 //    SHOKStockMovemnts(SHr.SerNr);
     if (ihef==false) then begin
@@ -1710,6 +1709,7 @@ begin
     SHUpdateInShipment(SH2r,true,SHr,false,true); // What does this function do??
     SHUpdateStock(SHr,false,false);
     AutomatedSalesOrderly("HasIntegratedNL");
+    RA_POFromSH(SHr);// Edit ************************** BPI Ukraine - KramarAlexandr - 03, 18 08 2021 y. at 12:05:04 PM
     if (ihef==false) then begin
       UpdateProjFromShip(SHr);
       SHOK(SHr);
