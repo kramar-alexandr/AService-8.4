@@ -1102,7 +1102,7 @@ begin
         EnterSkip(ArtCode);
         Flip(flipnr); flipnr = flipnr + 1;
         t = 1;
-        MatCol(t,184,"Товар",0,Spec,false,0);// Edit ************************** Monday, July 14, 2014 at 10:34:58
+        MatCol(t,184,"Наим.",0,Spec,false,0);// Edit ************************** Monday, July 14, 2014 at 10:34:58
 
         MatCol(t,-434,"Серийний номер",0,SerialNr,false,SerialNrSClass);
         MatCol(t,-330,"Цена",0,Price,true,PLSClass);// Edit ************************** Monday, July 14, 2014 at 10:34:43
@@ -1112,7 +1112,7 @@ begin
 
     
         Flip(flipnr); flipnr = flipnr + 1;
-        MatCol(t,184,"Товар",0,Spec,false,0);// Edit ************************** Monday, July 14, 2014 at 10:34:58
+        MatCol(t,184,"Наим.",0,Spec,false,0);// Edit ************************** Monday, July 14, 2014 at 10:34:58
         //MatCol(t,384,"Коммент.",0,DopComment,false,0);
         MatCol(t,-180,"Склад",0,Location,true,0);
         //MatCol(t,-120,"Гарантія",0,GarantyFor,true,0);
@@ -4875,12 +4875,13 @@ begin
   RlColKey(4,4,"№",SerNr,false,SerNr);
   RlColKey(79,79,"ОК",OKFlag,false,OKFlag);
   pos = 111;
-  pos = pos + 32;
+  pos = pos + 5; //32
   RlColKey(pos,pos,"Дата заказа",OrdDate,false,OrdDate);
   pos = pos + 80;
-  RlColKey(pos,pos,"Клиент",CustCode,false,CustCode);
-  pos = pos + 60;
-  RlColKey(pos,pos,"Наим.",Addr0,false,Name);
+  RlCol(pos,pos,"Клиент",OrderContName,false); // Edit ************* Ihor Trubachov 23*08*2021
+  pos = pos + 100; // 60
+	CalculatedColumn(pos,pos,"Наим.","ORServStatus",false);
+  //RlColKey(pos,pos,"Наим.",Addr0,false,Name);
   pos = pos + 160;
   RlCol(pos,pos,"Статус",OrderStatusText,false);
   pos = pos + 80;
