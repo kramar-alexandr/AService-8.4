@@ -4870,6 +4870,9 @@ begin
   SetWRect(20,80,1100,298);
   Sizeable(-1,-1,0,0);
   UseView(ORVc);
+  ToolBar; //Edit***************************Sasha2,17:21 10.05.2017 {
+		HalPushButton(450,16,550,16+10,"AllORLClass","Все");
+  EndToolBar; //Edit***************************Sasha2,17:21 10.05.2017 }
   FormName(PrintORL);
   RecordList(4,17,-21,-39);
   RlColKey(4,4,"№",SerNr,false,WActSerNr);
@@ -4909,6 +4912,54 @@ begin
 return;
 end;
 
+procedure DrawWebShopALLORLWindow()
+begin
+  Integer pos,rn;
+
+  WindowBegin("Счета клиентам",ORDClass,CGmlist,-);
+  SpawnClass(ORDClass);
+  SetWRect(20,80,1100,298);
+  Sizeable(-1,-1,0,0);
+  UseView(ORVc);
+  FormName(PrintORL);
+  RecordList(4,17,-21,-39);
+  RlColKey(4,4,"№",SerNr,false,WSerNr);
+  RlColKey(59,59,"Подтв.",OKFlag,false,WOKFlag);
+  RlColKey(99,99,"Отгр.",ShipMark,false,WShipFlag);
+  RlColKey(139,139,"Отф.",InvMark,false,WInvFlag);
+  pos = 159;
+  pos = pos + 15; //32
+  RlColKey(pos,pos,"Дата заказа",OrdDate,false,WOrdDate);
+  pos = pos + 80;
+  RlColKey(pos,pos,"Клиент",OrderContName,false,WOrderContName); // Edit ************* Ihor Trubachov 23*08*2021
+  pos = pos + 100; // 60
+	CalculatedColumn(pos,pos,"Наим.","ORServStatus",false);
+  //RlColKey(pos,pos,"Наим.",Addr0,false,Name);
+  pos = pos + 160;
+  RlColKey(pos,pos,"Статус",OrderStatusText,false,WOrderStatusText);
+  pos = pos + 80;
+  RlColKey(pos,pos,"Тел.1",OrderContPhone1,false,WOrderContPhone1);
+  pos = pos + 80;
+  RlColKey(pos,pos,"Тел.2",OrderContPhone2,false,WOrderContPhone2);
+  pos = pos + 80;
+  RlColKey(pos,pos,"Доставка",ShipMode,false,WShipMode);
+  pos = pos + 80;
+  RlColKey(pos,pos,"Оплата",PayStatus,false,WPayStatus);
+  pos = pos + 80;
+  RlColKey(pos,pos,"ТТН",TTNNumber,false,WTTNNumber);
+  
+  RlColKey(-75,-75,"Сумма",Sum4,true,WSum4);
+  
+  if (HasLimitedAccess) then begin
+    BrowseSubsetButton(-40,-15);
+  end;
+  SearchField("Поиск");
+  
+  EndWindow;
+
+return;
+end;
+
 window ORLClass:3
   wtag("language","RUS"), wtag("product","*"), wtag("productcode","*"), wtag("device","computer")
 begin
@@ -4920,6 +4971,17 @@ begin
   end;
   
 end;
+
+
+window AllORLClass:3
+  wtag("language","RUS"), wtag("product","*"), wtag("productcode","*"), wtag("device","computer")
+begin
+  
+  DrawWebShopALLORLWindow;
+  
+end;
+
+
 
 
 window StockTakeDClass:5

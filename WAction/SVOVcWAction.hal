@@ -1920,6 +1920,19 @@ begin
 return;
 end;
 
+global procedure AllORLClass()
+begin
+	record ORVc ORr;
+	record USerVc USr;
+	
+	USr.Code = currentuser;
+	readfirstmain(USr,1,true);
+	
+	OpenWindow("AllORLClass",0,0,USr.SalesGroup,"",ORr);
+	
+return;
+end;
+
 global procedure SVOLClassOpenSVO2LClass()
 begin
 	record SVOVc SVOr;

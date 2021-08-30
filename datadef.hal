@@ -241,6 +241,83 @@ begin
     KeySegment(Sum4);
     KeySegment(SerNr);
     
+    SubsetKeyBegin2(WSerNr);// Edit ************************** BPI Ukraine - KramarAlexandr - 01, 30 08 2021 y. at 10:44:29 AM
+    StoreInBaseKey;
+    AppendListFieldToKeyName(SalesGroup);
+    KeySegment(SerNr);
+    
+    SubsetKeyBegin2(WOrdDate);// Edit ************************** BPI Ukraine - KramarAlexandr - 01, 30 08 2021 y. at 10:44:29 AM
+    StoreInBaseKey;
+    AppendListFieldToKeyName(SalesGroup);
+    KeySegment(OrdDate);
+    KeySegment(SerNr);
+    
+    SubsetKeyBegin2(WOrderContName);// Edit ************************** BPI Ukraine - KramarAlexandr - 01, 30 08 2021 y. at 10:44:29 AM
+    StoreInBaseKey;
+    AppendListFieldToKeyName(SalesGroup);
+    KeySegment(OrderContName);
+    KeySegment(SerNr);
+        
+    SubsetKeyBegin2(WOrderStatusText);// Edit ************************** BPI Ukraine - KramarAlexandr - 01, 30 08 2021 y. at 10:44:29 AM
+    StoreInBaseKey;
+    AppendListFieldToKeyName(SalesGroup);
+    KeySegment(OrderStatusText);
+    KeySegment(SerNr);
+    
+    SubsetKeyBegin2(WOrderContPhone1);// Edit ************************** BPI Ukraine - KramarAlexandr - 01, 30 08 2021 y. at 10:44:29 AM
+    StoreInBaseKey;
+    AppendListFieldToKeyName(SalesGroup);
+    KeySegment(OrderContPhone1);
+    KeySegment(SerNr);
+    
+    SubsetKeyBegin2(WOrderContPhone2);// Edit ************************** BPI Ukraine - KramarAlexandr - 01, 30 08 2021 y. at 10:44:29 AM
+    StoreInBaseKey;
+    AppendListFieldToKeyName(SalesGroup);
+    KeySegment(OrderContPhone2);
+    KeySegment(SerNr);
+        
+    SubsetKeyBegin2(WShipMode);// Edit ************************** BPI Ukraine - KramarAlexandr - 01, 30 08 2021 y. at 10:44:29 AM
+    StoreInBaseKey;
+    AppendListFieldToKeyName(SalesGroup);
+    KeySegment(ShipMode);
+    KeySegment(SerNr); 
+    
+    SubsetKeyBegin2(WPayStatus);// Edit ************************** BPI Ukraine - KramarAlexandr - 01, 30 08 2021 y. at 10:44:29 AM
+    StoreInBaseKey;
+    AppendListFieldToKeyName(SalesGroup);
+    KeySegment(PayStatus);
+    KeySegment(SerNr);
+    
+    SubsetKeyBegin2(WTTNNumber);// Edit ************************** BPI Ukraine - KramarAlexandr - 01, 30 08 2021 y. at 10:44:29 AM
+    StoreInBaseKey;
+    AppendListFieldToKeyName(SalesGroup);
+    KeySegment(TTNNumber);
+    KeySegment(SerNr);  
+    
+    SubsetKeyBegin2(WShipMark);// Edit ************************** BPI Ukraine - KramarAlexandr - 01, 30 08 2021 y. at 10:44:29 AM
+    StoreInBaseKey;
+    AppendListFieldToKeyName(SalesGroup);
+    KeySegment(ShipMark);
+    KeySegment(SerNr);
+    
+    SubsetKeyBegin2(WOKFlag);// Edit ************************** BPI Ukraine - KramarAlexandr - 01, 30 08 2021 y. at 10:44:29 AM
+    StoreInBaseKey;
+    AppendListFieldToKeyName(SalesGroup);
+    KeySegment(OKFlag);
+    KeySegment(SerNr);
+    
+    SubsetKeyBegin2(WInvMark);// Edit ************************** BPI Ukraine - KramarAlexandr - 01, 30 08 2021 y. at 10:44:29 AM
+    StoreInBaseKey;
+    AppendListFieldToKeyName(SalesGroup);
+    KeySegment(InvMark);
+    KeySegment(SerNr);
+    
+    SubsetKeyBegin2(WSum4);// Edit ************************** BPI Ukraine - KramarAlexandr - 01, 30 08 2021 y. at 10:44:29 AM
+    StoreInBaseKey;
+    AppendListFieldToKeyName(SalesGroup);
+    KeySegment(Sum4);
+    KeySegment(SerNr);
+    
     
   EndRecordAdd;
 
