@@ -2474,6 +2474,13 @@ begin
   while(loopmain(ORr,1,true))begin
     if(ORr.SalesGroup=="ИМ")then begin
       ORr.ActFlag = 1;
+      if(ORr.OrderStatusText=="Выполнен")then begin
+        ORr.ActFlag = 0;
+      end;
+      if(ORr.OrderStatusText=="Отменен")then begin
+        ORr.ActFlag = 0;
+      end;
+      recordstore(ORr,true);
     end;
   end;
 
