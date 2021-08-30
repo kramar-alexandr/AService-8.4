@@ -4877,8 +4877,8 @@ begin
   RecordList(4,17,-21,-39);
   RlColKey(4,4,"№",SerNr,false,WActSerNr);
   RlColKey(59,59,"Подтв.",OKFlag,false,WActOKFlag);
-  RlColKey(99,99,"Отгр.",ShipMark,false,WActShipFlag);
-  RlColKey(139,139,"Отф.",InvMark,false,WActInvFlag);
+  RlColKey(99,99,"Отгр.",ShipMark,false,WActShipMark);
+  RlColKey(139,139,"Отф.",InvMark,false,WActInvMark);
   pos = 159;
   pos = pos + 15; //32
   RlColKey(pos,pos,"Дата заказа",OrdDate,false,WActOrdDate);
