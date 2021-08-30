@@ -1927,6 +1927,14 @@ begin
   SetORFlags(ORr);
   SetORAcceptanceFlag(ORr,OR2r,stat);
   RecalculateWeightORVc(ORr,false);  
+  
+  if(ORr.OrderStatusText=="Выполнен")then begin
+    ORr.ActFlag = 0;
+  end;
+  if(ORr.OrderStatusText=="Отменен")then begin
+    ORr.ActFlag = 0;
+  end;
+  
   ORVcRecordUpdate = res; 
   return;
 end;
