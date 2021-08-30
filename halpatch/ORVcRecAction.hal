@@ -85,6 +85,8 @@ external procedure ORDchsum(var record ORVc,Integer);// Edit *******************
 external procedure ORSumup(var record ORVc);// Edit ************************** Thursday, 4 September 2014 10:47:57
 external function Boolean PasteCustInOR(var record ORVc);
 
+SetLangMode(LangRussian,"RUS",0);
+
 // Edit Start ---------------------------------------------- Edit Start
 	//Thursday, 4 September 2014 10:49:51
 	
@@ -2220,6 +2222,7 @@ begin
     ORr.OrderClass = "SALES";
     ORr.Location = "PARTS#1_KR";
     ORr.SalesMan = currentuser;
+    ORr.ActFlag = 1; 
   end;
   
   ORVcRecordDefaults = res;  
@@ -2439,9 +2442,40 @@ begin
     if (indexname=="ActCustCode")  then begin res = 0; end;
     if (indexname=="ActName")  then begin res = 0; end;
   end;
+  
+  if(ORr.ActFlag==0)then begin
+    if (indexname=="WActOKFlag")  then begin res = 0; end;
+    if (indexname=="WActSerNr")  then begin res = 0; end;
+    if (indexname=="WActOrdDate")  then begin res = 0; end;
+    if (indexname=="WActOrderContName")  then begin res = 0; end;
+    if (indexname=="WActOrderStatusText")  then begin res = 0; end;
+    if (indexname=="WActOrderContPhone1")  then begin res = 0; end;
+    if (indexname=="WActOrderContPhone2")  then begin res = 0; end;
+    if (indexname=="WActShipMode")  then begin res = 0; end;
+    if (indexname=="WActPayStatus")  then begin res = 0; end;
+    if (indexname=="WActTTNNumber")  then begin res = 0; end;
+    if (indexname=="WActShipMark")  then begin res = 0; end;
+    if (indexname=="WActInvMark")  then begin res = 0; end;
+    if (indexname=="WActSum4")  then begin res = 0; end;
+  end;
+  
   if (ORr.OSFlag==0) then begin 
     if (indexname=="ActArtCodeOSFlag")  then begin res = 0; end;
   end;
   ORVcRecordInIndex = res;
   return;
+end;
+
+
+global webpublic updating procedure WebUpdateActIM()
+begin
+  record ORVc ORr;
+  
+  while(loopmain(ORr,1,true))begin
+    if(ORr.SalesGroup=="ˆŒ")then begin
+      ORr.ActFlag = 1;
+    end;
+  end;
+
+return;
 end;

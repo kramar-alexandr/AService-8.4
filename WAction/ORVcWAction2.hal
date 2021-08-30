@@ -365,6 +365,7 @@ BEGIN
   DeselectWindow(wn,false);
   if (WindowState(wn)==Rs_normal and HasModSL) then begin
     GetWindowRecord(wn,ORr);
+    if (ORr.OKFlag!=0) then begin
 //    if (ORr.Closed==0) then begin
       if (UserCanAction("ORToInv",true)) then begin
         testf = true;
@@ -408,6 +409,9 @@ BEGIN
       end else begin
         MessageBox(1274,StringFromStringSet(3,"ORToInv"));
       end;
+    end else begin
+      MessageBox(1794,"");
+    end;
 //    end else begin
 //      MessageBox(1274,"");
 //    end;
@@ -2325,6 +2329,10 @@ begin
 		if(!usercanaction("AllowViewOuwnRecords",true))then begin
 			setwindowsubset(wn,User.SalesGroup);
 		end;
+		if(usercanaction("SpecialORWindow",false))then begin
+			setwindowsubset(wn,User.SalesGroup);
+		end;
+		
 	end;
   
   ORLClassOnOpenWindow = false;

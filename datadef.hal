@@ -146,6 +146,7 @@ begin
 		RecordField(OrderContPatrName,M4Str,255,0);	//Edit **********************************************Vas-P	13/08/2021
 		RecordField(OrderClientAddr,M4Str,255,0);	//Edit **********************************************Vas-P	13/08/2021
 		RecordField(OrderContFirstName,M4Str,255,0);	//Edit **********************************************Vas-P	13/08/2021
+    RecordField(ActFlag,M4Mark,0,0);// Edit ************************** BPI Ukraine - KramarAlexandr - 01, 30 08 2021 y. at 10:43:06 AM
     ArrayField(Shopd,M4UVal,0,0);// Edit ************************** Friday, 31 October 2014 15:52:28
     
     SubsetKeyBegin2(Location);// Edit ************************** Monday, 8 September 2014 09:11:39
@@ -161,6 +162,86 @@ begin
     AppendListFieldToKeyName(SalesGroup);
     KeySegment(ShopsMark);
     KeySegment(SerNr);
+    
+    
+    SubsetKeyBegin2(WActSerNr);// Edit ************************** BPI Ukraine - KramarAlexandr - 01, 30 08 2021 y. at 10:44:29 AM
+    StoreInBaseKey;
+    AppendListFieldToKeyName(SalesGroup);
+    KeySegment(SerNr);
+    
+    SubsetKeyBegin2(WActOrdDate);// Edit ************************** BPI Ukraine - KramarAlexandr - 01, 30 08 2021 y. at 10:44:29 AM
+    StoreInBaseKey;
+    AppendListFieldToKeyName(SalesGroup);
+    KeySegment(OrdDate);
+    KeySegment(SerNr);
+    
+    SubsetKeyBegin2(WActOrderContName);// Edit ************************** BPI Ukraine - KramarAlexandr - 01, 30 08 2021 y. at 10:44:29 AM
+    StoreInBaseKey;
+    AppendListFieldToKeyName(SalesGroup);
+    KeySegment(OrderContName);
+    KeySegment(SerNr);
+        
+    SubsetKeyBegin2(WActOrderStatusText);// Edit ************************** BPI Ukraine - KramarAlexandr - 01, 30 08 2021 y. at 10:44:29 AM
+    StoreInBaseKey;
+    AppendListFieldToKeyName(SalesGroup);
+    KeySegment(OrderStatusText);
+    KeySegment(SerNr);
+    
+    SubsetKeyBegin2(WActOrderContPhone1);// Edit ************************** BPI Ukraine - KramarAlexandr - 01, 30 08 2021 y. at 10:44:29 AM
+    StoreInBaseKey;
+    AppendListFieldToKeyName(SalesGroup);
+    KeySegment(OrderContPhone1);
+    KeySegment(SerNr);
+    
+    SubsetKeyBegin2(WActOrderContPhone2);// Edit ************************** BPI Ukraine - KramarAlexandr - 01, 30 08 2021 y. at 10:44:29 AM
+    StoreInBaseKey;
+    AppendListFieldToKeyName(SalesGroup);
+    KeySegment(OrderContPhone2);
+    KeySegment(SerNr);
+        
+    SubsetKeyBegin2(WActShipMode);// Edit ************************** BPI Ukraine - KramarAlexandr - 01, 30 08 2021 y. at 10:44:29 AM
+    StoreInBaseKey;
+    AppendListFieldToKeyName(SalesGroup);
+    KeySegment(ShipMode);
+    KeySegment(SerNr); 
+    
+    SubsetKeyBegin2(WActPayStatus);// Edit ************************** BPI Ukraine - KramarAlexandr - 01, 30 08 2021 y. at 10:44:29 AM
+    StoreInBaseKey;
+    AppendListFieldToKeyName(SalesGroup);
+    KeySegment(PayStatus);
+    KeySegment(SerNr);
+    
+    SubsetKeyBegin2(WActTTNNumber);// Edit ************************** BPI Ukraine - KramarAlexandr - 01, 30 08 2021 y. at 10:44:29 AM
+    StoreInBaseKey;
+    AppendListFieldToKeyName(SalesGroup);
+    KeySegment(TTNNumber);
+    KeySegment(SerNr);  
+    
+    SubsetKeyBegin2(WActShipMark);// Edit ************************** BPI Ukraine - KramarAlexandr - 01, 30 08 2021 y. at 10:44:29 AM
+    StoreInBaseKey;
+    AppendListFieldToKeyName(SalesGroup);
+    KeySegment(ShipMark);
+    KeySegment(SerNr);
+    
+    SubsetKeyBegin2(WActOKFlag);// Edit ************************** BPI Ukraine - KramarAlexandr - 01, 30 08 2021 y. at 10:44:29 AM
+    StoreInBaseKey;
+    AppendListFieldToKeyName(SalesGroup);
+    KeySegment(OKFlag);
+    KeySegment(SerNr);
+    
+    SubsetKeyBegin2(WActInvMark);// Edit ************************** BPI Ukraine - KramarAlexandr - 01, 30 08 2021 y. at 10:44:29 AM
+    StoreInBaseKey;
+    AppendListFieldToKeyName(SalesGroup);
+    KeySegment(InvMark);
+    KeySegment(SerNr);
+    
+    SubsetKeyBegin2(WActSum4);// Edit ************************** BPI Ukraine - KramarAlexandr - 01, 30 08 2021 y. at 10:44:29 AM
+    StoreInBaseKey;
+    AppendListFieldToKeyName(SalesGroup);
+    KeySegment(Sum4);
+    KeySegment(SerNr);
+    
+    
   EndRecordAdd;
 
   RecordAddBegin(SVOVc,"SVOVc_Custom");

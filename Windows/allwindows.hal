@@ -1026,7 +1026,7 @@ begin
     EditField(h=350,v=vm,100,"Статус",Normal,OrderStatusText,false,OrderStatusSClass);
     EditField(h=550,v=vm,100,"Менеджер",normal,SalesMan,false,UserSClass);
   
-    CheckBox(h4=-110,v,0,"Выполнено",OKFlag);
+    CheckBox(h4=-110,v,0,"Утвержден",OKFlag);
     CheckBox(h4,v+20,0,"Резерв",Reserved);
     //v=v+20;
 
@@ -4872,30 +4872,32 @@ begin
   UseView(ORVc);
   FormName(PrintORL);
   RecordList(4,17,-21,-39);
-  RlColKey(4,4,"№",SerNr,false,SerNr);
-  RlColKey(79,79,"ОК",OKFlag,false,OKFlag);
-  pos = 111;
-  pos = pos + 5; //32
-  RlColKey(pos,pos,"Дата заказа",OrdDate,false,OrdDate);
+  RlColKey(4,4,"№",SerNr,false,WActSerNr);
+  RlColKey(59,59,"Подтв.",OKFlag,false,WActOKFlag);
+  RlColKey(99,99,"Отгр.",ShipMark,false,WActShipFlag);
+  RlColKey(139,139,"Отф.",InvMark,false,WActInvFlag);
+  pos = 159;
+  pos = pos + 15; //32
+  RlColKey(pos,pos,"Дата заказа",OrdDate,false,WActOrdDate);
   pos = pos + 80;
-  RlCol(pos,pos,"Клиент",OrderContName,false); // Edit ************* Ihor Trubachov 23*08*2021
+  RlColKey(pos,pos,"Клиент",OrderContName,false,WActOrderContName); // Edit ************* Ihor Trubachov 23*08*2021
   pos = pos + 100; // 60
 	CalculatedColumn(pos,pos,"Наим.","ORServStatus",false);
   //RlColKey(pos,pos,"Наим.",Addr0,false,Name);
   pos = pos + 160;
-  RlCol(pos,pos,"Статус",OrderStatusText,false);
+  RlColKey(pos,pos,"Статус",OrderStatusText,false,WActOrderStatusText);
   pos = pos + 80;
-  RlCol(pos,pos,"Тел.1",OrderContPhone1,false);
+  RlColKey(pos,pos,"Тел.1",OrderContPhone1,false,WActOrderContPhone1);
   pos = pos + 80;
-  RlCol(pos,pos,"Тел.2",OrderContPhone2,false);
+  RlColKey(pos,pos,"Тел.2",OrderContPhone2,false,WActOrderContPhone2);
   pos = pos + 80;
-  RlCol(pos,pos,"Доставка",ShipMode,false);
+  RlColKey(pos,pos,"Доставка",ShipMode,false,WActShipMode);
   pos = pos + 80;
-  RlCol(pos,pos,"Оплата",PayStatus,false);
+  RlColKey(pos,pos,"Оплата",PayStatus,false,WActPayStatus);
   pos = pos + 80;
-  RlCol(pos,pos,"ТТН",TTNNumber,false);
+  RlColKey(pos,pos,"ТТН",TTNNumber,false,WActTTNNumber);
   
-  RlColKey(-75,-75,"Сумма",Sum4,true,Sum4);
+  RlColKey(-75,-75,"Сумма",Sum4,true,WActSum4);
   
   if (HasLimitedAccess) then begin
     BrowseSubsetButton(-40,-15);
