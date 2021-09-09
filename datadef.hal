@@ -395,7 +395,8 @@ begin
 		RecordField(SMSAutorizationConfirmDate,M4Date,0,0);
 		RecordField(SMSAutorizationConfirmTime,M4Time,0,0);
 		RecordField(SMSAutorizationConfirmFlag,M4Mark,0,0);
-		
+		RecordField(SVOChatSend,M4Str,255,0);
+		RecordField(Math2,M4TextField,0,0);
 		
 		
 		
