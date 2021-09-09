@@ -617,7 +617,7 @@ begin
   StrSetText(RestAPI,"Rest API");
   
   StrSetText(SpecialORWindow,"Окно Для Менеджеров Интернет Магазина");
-
+  StrSetText(AllowEditCommentsAndTextFieldSVO,"Редактировать текст чата");
   EndStrSet;
 	
 	SetBegin(31);

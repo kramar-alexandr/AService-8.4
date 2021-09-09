@@ -874,14 +874,35 @@ begin
 return;
 end; //Edit***************************Sasha2,16:35 15.12.2015 }
 
+updating function SVOChatSendAfterEF(integer wn,integer changed)
+begin
+	string 255 input;
+	record SVOVc SVOr;
+	
+	getwindowrecord(wn,SVOr);
+	
+	input = SVOr.SVOChatSend;
+	SVOr.SVOChatSend = "";
+	
+	if(nonblank(input))then begin
+		AddToText(CurrentDate & " ",SVOr);
+		AddToText(CurrentTime & " ",SVOr);
+		AddToText(CurrentUser & ": ",SVOr);
+		AddToText(input & chr(13) & chr(10),SVOr);
+		putwindowrecord(wn,SVOr);
+	end;
+	
+return;
+end;
 
 
 global
-function Boolean SVODClassAfterEditField(Integer wn,string fieldname,Integer fn, Integer rownr,Integer changed)
+updating function Boolean SVODClassAfterEditField(Integer wn,string fieldname,Integer fn, Integer rownr,Integer changed)
 BEGIN
   Boolean res;
 
   switch (fieldname) begin
+    case "SVOChatSend": SVOChatSendAfterEF(wn,changed);
     case "CurncyCode": res = SVODClassCurncyCodeEFAfter(wn,changed);
     case "CustCode": res = SVODClassCustCodeEFAfter(wn,changed);
     case "InvoiceToCode": res = SVODClassInvoiceToCodeEFAfter(wn,changed);
@@ -1439,6 +1460,7 @@ BEGIN
     end;
   end;
   switch (fieldname) begin
+    case "Math2": res = UsercanAction("AllowEditCommentsAndTextFieldSVO",false);// Edit ************************** Friday, 25 November 2016 12:57:36
     case "VATNr": res = HasLocalization("PRT")==false;
     case "Addr0": res = HasLocalization("PRT")==false;
     case "Addr1": res = HasLocalization("PRT")==false;
@@ -1487,6 +1509,9 @@ BEGIN
       end;
     end;
   end;
+  
+  
+  
   res = true;
 LSVODClassActiveEditField:;  
   SVODClassActiveEditField = res;

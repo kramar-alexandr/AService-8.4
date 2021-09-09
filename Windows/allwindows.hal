@@ -522,7 +522,7 @@ begin
 		EditField(h,v+=vs,70,"Виробник",Normal,Region,false,ITSClass);	
 		
 		v = 370;
-		height = 145;
+		height = 170;
 		if(windowsmode==1)then begin
       TextField(h+310,v+10,-10,height,Math2,0);
     end else begin
