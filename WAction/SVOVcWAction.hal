@@ -874,7 +874,7 @@ begin
 return;
 end; //Edit***************************Sasha2,16:35 15.12.2015 }
 
-updating function SVOChatSendAfterEF(integer wn,integer changed)
+function SVOChatSendAfterEF(integer wn,integer changed)
 begin
 	string 255 input;
 	record SVOVc SVOr;

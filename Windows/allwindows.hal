@@ -389,7 +389,7 @@ begin
   HalPushButton(370,5,480,25,"WorkSheetSVOSalesDsm","Роботи пройомки");
 	HalPushButton(500,5,600,25,"PrintDoSVOFormButton","Друк");	//Edit----------------------Dima  09.02.2015
   EndToolBar;
-  ActiveFieldOnNew("CustCode");  
+  ActiveFieldOnNew("Kontinfo1");  
   //FormName(SVOForm);
   vs = 20; h3 = 550;
   //Tile(0,130,false,"",CustCode);
