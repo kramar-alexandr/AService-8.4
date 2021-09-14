@@ -528,7 +528,9 @@ begin
     end else begin
       TextField(h+310,v+10,-10,height,Math2,0);
     end;
-    EditField(h+380,v+height+30,-20,"Сообщение",Normal,SVOChatSend,false,0);
+    EditField(h+380,v+height+30,-100,"Сообщение",Normal,SVOChatSend,false,0);
+    HalPushButton(-90,v+height+30,-20,v+height+50,"SendChatDsm","Отправить");
+    
 	  EnterSkip(SVOChatSend);
   	
   SpecialMenu("Статус замовлення на обсл.",'r',0,"SVOStaDsm");

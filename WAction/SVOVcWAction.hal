@@ -2552,3 +2552,12 @@ begin
   ORServStatus = res;
   return;
 end;
+
+global updating procedure SendChatDsm()
+begin
+  
+  deselectwindow(curwindow,true);
+  windowdook(curwindow,0);
+  
+return;
+end;
