@@ -553,6 +553,23 @@ BEGIN
   if (blanktime(SVOr.RegTime)) then begin
     SVOr.RegTime = CurrentTime;
   end;
+  
+  if(SVOr.SVOChatFlag==1)then begin
+    if(nonblank(SVOr.UtverjFinishUsr))then begin
+      if(currentuser!=SVOr.UtverjFinishUsr)then begin
+        messagebox(0,2);
+        CreateCustomActivityFromSVO(SVOr,"CHAT",SVOr.UtverjFinishUsr,currentdate,"Новое сообщение от " & currentuser,"");
+      end;
+    end;
+    if(nonblank(SVOr.ServiceManager))then begin
+      if(currentuser!=SVOr.ServiceManager)then begin
+        messagebox(0,1);
+        CreateCustomActivityFromSVO(SVOr,"CHAT",SVOr.ServiceManager,currentdate,"Новое сообщение от " & currentuser,"");
+      end;
+    end;
+    SVOr.SVOChatFlag = 0;
+  end;
+  
   SVOVcRecordSave = res; 
   RETURN;
 END;
@@ -659,7 +676,6 @@ BEGIN
 	//Thursday, 29 March 2018 11:20:01
 	
   if(nonblank(SVOr.MoveSVOToSG))then begin
-  	
   	SGr.SGroupCode = SVOr.MoveSVOToSG;
   	readfirstmain(SGr,1,true);
   	SVOr.MoveSVOToSGmov = SVOr.MoveSVOToSG;// Edit ************************** BPI Ukraine - KramarAlexandr - Thursday, 11 April 2019 11:11:09
@@ -667,7 +683,22 @@ BEGIN
   	SVOr.MoveSVOToSG = "";
   	CreateSVOSerNoterForMove(SVOr,currenttime & " " & currentdate & " " & currentuser & " " & SVOr.MoveSVOToSGStatus);
   	CreateCustomActivityFromSVO(SVOr,"MOVE","MOVE",currentdate,SVOr.MoveSVOToSGStatus,"");
-  	
+  end;
+  
+  if(SVOr.SVOChatFlag==1)then begin
+    if(nonblank(SVOr.UtverjFinishUsr))then begin
+      if(currentuser!=SVOr.UtverjFinishUsr)then begin
+        messagebox(0,2);
+        CreateCustomActivityFromSVO(SVOr,"CHAT",SVOr.UtverjFinishUsr,currentdate,"Новое сообщение от " & currentuser,"");
+      end;
+    end;
+    if(nonblank(SVOr.ServiceManager))then begin
+      if(currentuser!=SVOr.ServiceManager)then begin
+        messagebox(0,1);
+        CreateCustomActivityFromSVO(SVOr,"CHAT",SVOr.ServiceManager,currentdate,"Новое сообщение от " & currentuser,"");
+      end;
+    end;
+    SVOr.SVOChatFlag = 0;
   end;
   
 	// Edit End ---------------------------------------------- Edit End
