@@ -997,6 +997,11 @@ begin
 			end;
 			
 			Actr.MainPersons = tmpusers;
+			
+			if(Actr.ActType=="CHAT")then begin
+			  Actr.Comment1 = LineTextGet(SVor,(LineTextCnt(SVOr)-1));
+			end;
+			
   		Actr.SerNr = NextSerNr("ActVc",Actr.TransDate,-1,false,"");
 			if(recordstore(Actr,true))then begin
   			CreateRecordLink(SVOr,CurrentCompany,Actr,CurrentCompany);  
