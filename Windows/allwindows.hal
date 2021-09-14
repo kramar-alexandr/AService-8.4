@@ -402,7 +402,7 @@ begin
     
     v = 10;
     
-    WebPage(450,v,650,v+150,"","$HWStore");
+    WebPage(430,v,630,v+150,"","$HWStore");
     
 		CheckBox(-80,v,0,"Виконано",DoneMark);
 		v = v+vs;
