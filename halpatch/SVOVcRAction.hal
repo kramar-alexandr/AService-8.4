@@ -557,13 +557,11 @@ BEGIN
   if(SVOr.SVOChatFlag==1)then begin
     if(nonblank(SVOr.UtverjFinishUsr))then begin
       if(currentuser!=SVOr.UtverjFinishUsr)then begin
-        messagebox(0,2);
         CreateCustomActivityFromSVO(SVOr,"CHAT",SVOr.UtverjFinishUsr,currentdate,"Новое сообщение от " & currentuser,"");
       end;
     end;
     if(nonblank(SVOr.ServiceManager))then begin
       if(currentuser!=SVOr.ServiceManager)then begin
-        messagebox(0,1);
         CreateCustomActivityFromSVO(SVOr,"CHAT",SVOr.ServiceManager,currentdate,"Новое сообщение от " & currentuser,"");
       end;
     end;
@@ -688,13 +686,11 @@ BEGIN
   if(SVOr.SVOChatFlag==1)then begin
     if(nonblank(SVOr.UtverjFinishUsr))then begin
       if(currentuser!=SVOr.UtverjFinishUsr)then begin
-        messagebox(0,2);
         CreateCustomActivityFromSVO(SVOr,"CHAT",SVOr.UtverjFinishUsr,currentdate,"Новое сообщение от " & currentuser,"");
       end;
     end;
     if(nonblank(SVOr.ServiceManager))then begin
       if(currentuser!=SVOr.ServiceManager)then begin
-        messagebox(0,1);
         CreateCustomActivityFromSVO(SVOr,"CHAT",SVOr.ServiceManager,currentdate,"Новое сообщение от " & currentuser,"");
       end;
     end;
