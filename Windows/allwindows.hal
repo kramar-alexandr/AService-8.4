@@ -398,7 +398,7 @@ begin
 		EditField(255,v+=vs,100, "Кл.",Normal,CustCode,false,CUSClass);
     EditField(255,v+=vs,100,"Власник",ViewOnly,Addr0,false,0);
     EditField(255,v+=vs,100,"Передать ремонт на точку",Normal,MoveSVOToSG,false,SalesGroupSClass);
-		EditField(255,v+=vs,100,"Статус передачи",ViewOnly,MoveSVOToSGStatus,false,0);
+		EditField(255,v+=vs,200,"Статус передачи",ViewOnly,MoveSVOToSGStatus,false,0);
     
     v = 10;
     
