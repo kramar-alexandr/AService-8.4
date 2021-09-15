@@ -1000,6 +1000,7 @@ begin
 			
 			if(Actr.ActType=="CHAT")then begin
 			  Actr.Comment1 = LineTextGet(SVor,(LineTextCnt(SVOr)-1));
+			  Actr.Comment1 = right(Actr.Comment1,len(Actr.Comment1)-19);
 			end;
 			
   		Actr.SerNr = NextSerNr("ActVc",Actr.TransDate,-1,false,"");
