@@ -2577,6 +2577,7 @@ begin
     RepSpec.f1 = GetWindowString(wn,"ItemStockReportDsmSoft");
     RepSpec.repname = "NewInvValRn";
     RepSpec.ArtMode = 1;
+    RepSpec.Media = mtExcel;
     runreport(RepSpec,0);
   end;
 
