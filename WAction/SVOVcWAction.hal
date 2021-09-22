@@ -2561,3 +2561,23 @@ begin
   
 return;
 end;
+
+
+
+global procedure ItemStockReportDsm()
+begin
+  record SVOVc SVOr;
+  record RcVc RepSpec;
+  integer wn;
+  
+  wn = curwindow;
+  deselectwindow(wn,true);
+  if(nonblank(GetWindowString(wn,"ItemStockReportDsmSoft")))then begin
+    reportdefaults(RepSpec,"NewINRClass");
+    RepSpec.f1 = GetWindowString(wn,"ItemStockReportDsmSoft");
+    RepSpec.repname = "NewInvValRn";
+    runreport(RepSpec,0);
+  end;
+
+return;
+end;

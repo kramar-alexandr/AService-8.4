@@ -456,7 +456,8 @@ begin
 		EditField(h1,v+=vs,60,"Дата видачі",mode,RegDate,false,PasteCurDate);
 		EditField(h2,v,60,"Час",mode,OutTime,false,0);// Edit ************************** Monday, 24 October 2016 17:56:02
     CheckBox(h1,v+=vs,0,"Выдано через авторизацию СМС/Viber",SMSAutorizationConfirmFlag);
-
+    halpushbutton(-450,v,-300,v+20,"ItemStockReportDsm","Отчет по Артикулу");
+    SoftEditField(-280,v,-30,"",Normal,"ItemStockReportDsmSoft",false,INSClass,M4Str,255);
 	
 		//v=vm-20;
 		v = v - 3*vm;
