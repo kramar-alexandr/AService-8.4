@@ -2576,6 +2576,7 @@ begin
     reportdefaults(RepSpec,"NewINRClass");
     RepSpec.f1 = GetWindowString(wn,"ItemStockReportDsmSoft");
     RepSpec.repname = "NewInvValRn";
+    RepSpec.ArtMode = 1;
     runreport(RepSpec,0);
   end;
 
