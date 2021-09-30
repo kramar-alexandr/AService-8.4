@@ -994,8 +994,6 @@ begin
 				
 				//LogPass = "hansa-server" & ":" & "7s44wkjm7U8374N7o1mkJN2vM";
 				//EncodedLogPass = "Authorization: Basic " & Base64Encode(LogPass);
-				
-				
 				//addtexttoarea(EncodedLogPass & chr(13) & chr(10),req);
 				//AddTextToArea("" & chr(13) & chr(10),req);
 				
