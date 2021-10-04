@@ -2080,13 +2080,14 @@ begin
 end;
 
 global
-function Integer ToDOWClassRowColor(record ActVc Actr)
+function Integer ToDoWClassRowColor(record ActVc Actr)
 begin
   Integer res;
 
   res = kRowColorGreen;
+  logtext(0,1);
 
-  ToDOWClassRowColor = res;
+  ToDoWClassRowColor = res;
   return;
 end;
 
