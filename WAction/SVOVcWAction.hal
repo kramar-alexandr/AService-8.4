@@ -2079,19 +2079,7 @@ begin
   return;
 end;
 
-global
-function Integer ToDoWClassRowColor(record ActVc Actr)
-begin
-  Integer res;
 
-  res = kRowColorGreen;
-  logtext(0,1);
-
-  ToDoWClassRowColor = res;
-  return;
-end;
-
-  
 global
 function Boolean SVODClassInfoGetButtonAfter(Integer wn,Boolean changedf)
 begin        
