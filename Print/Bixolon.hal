@@ -187,9 +187,12 @@ begin
 	addtexttoarea(BigLetterOn,aFile);
 	addtexttoarea("…”§‘Š€‹œˆ‰ —…Š" & chr(13) & chr(10) ,aFile);
 	addtexttoarea(BigLetterOff,aFile);			
-	addtexttoarea("." & chr(13) & chr(10),aFile);
-	addtexttoarea("." & chr(13) & chr(10),aFile);
-	addtexttoarea("." & chr(13) & chr(10),aFile);
+	addtexttoarea(" " & chr(13) & chr(10),aFile);
+	addtexttoarea(" " & chr(13) & chr(10),aFile);
+	addtexttoarea(" " & chr(13) & chr(10),aFile);
+	addtexttoarea(" " & chr(13) & chr(10),aFile);
+	addtexttoarea(" " & chr(13) & chr(10),aFile);
+	addtexttoarea(" " & chr(13) & chr(10),aFile);
 	
 
 //Cut receipt  
@@ -313,9 +316,12 @@ begin
 	addtexttoarea(BigLetterOn,aFile);
 	addtexttoarea("…”§‘Š€‹œˆ‰ —…Š" & chr(13) & chr(10) ,aFile);
 	addtexttoarea(BigLetterOff,aFile);			
-	addtexttoarea("." & chr(13) & chr(10),aFile);
-	addtexttoarea("." & chr(13) & chr(10),aFile);
-	addtexttoarea("." & chr(13) & chr(10),aFile);
+	addtexttoarea(" " & chr(13) & chr(10),aFile);
+	addtexttoarea(" " & chr(13) & chr(10),aFile);
+	addtexttoarea(" " & chr(13) & chr(10),aFile);
+	addtexttoarea(" " & chr(13) & chr(10),aFile);
+	addtexttoarea(" " & chr(13) & chr(10),aFile);
+	addtexttoarea(" " & chr(13) & chr(10),aFile);
 	
 
 //Cut receipt  
@@ -516,9 +522,12 @@ begin
 	addtexttoarea(BigLetterOn,aFile);
 	addtexttoarea("…”§‘Š€‹œˆ‰ —…Š" & chr(13) & chr(10) ,aFile);
 	addtexttoarea(BigLetterOff,aFile);			
-	addtexttoarea("." & chr(13) & chr(10),aFile);
-	addtexttoarea("." & chr(13) & chr(10),aFile);
-	addtexttoarea("." & chr(13) & chr(10),aFile);
+	addtexttoarea(" " & chr(13) & chr(10),aFile);
+	addtexttoarea(" " & chr(13) & chr(10),aFile);
+	addtexttoarea(" " & chr(13) & chr(10),aFile);
+	addtexttoarea(" " & chr(13) & chr(10),aFile);
+	addtexttoarea(" " & chr(13) & chr(10),aFile);
+	addtexttoarea(" " & chr(13) & chr(10),aFile);
 	
 
 //Cut receipt  
@@ -656,9 +665,12 @@ begin
 	addtexttoarea(BigLetterOn,aFile);
 	addtexttoarea("…”§‘Š€‹œˆ‰ —…Š" & chr(13) & chr(10) ,aFile);
 	addtexttoarea(BigLetterOff,aFile);			
-	addtexttoarea("." & chr(13) & chr(10),aFile);
-	addtexttoarea("." & chr(13) & chr(10),aFile);
-	addtexttoarea("." & chr(13) & chr(10),aFile);
+	addtexttoarea(" " & chr(13) & chr(10),aFile);
+	addtexttoarea(" " & chr(13) & chr(10),aFile);
+	addtexttoarea(" " & chr(13) & chr(10),aFile);
+	addtexttoarea(" " & chr(13) & chr(10),aFile);
+	addtexttoarea(" " & chr(13) & chr(10),aFile);
+	addtexttoarea(" " & chr(13) & chr(10),aFile);
 	
 
 //Cut receipt  
