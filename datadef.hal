@@ -98,7 +98,11 @@ begin
   RecordAddBegin(CUVc,"CUVc_Custom");
     // record field "Partner" already added in 8.3
     RecordField(IsPartner,M4Mark,0,0); 
-    RecordField(Location,M4Code,20,LocatioVc); 
+    RecordField(Location,M4Code,20,LocatioVc);
+    RecordField(RecieptLine1,M4Str,255,0);
+    RecordField(RecieptLine2,M4Str,255,0);
+    RecordField(RecieptLine3,M4Str,255,0);
+     
   EndRecordAdd; 
   
   RecordAddBegin(ItemHistVc,"ItemHistVc_Custom");

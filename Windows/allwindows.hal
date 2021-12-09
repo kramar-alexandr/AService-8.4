@@ -7017,6 +7017,11 @@ begin
   EditField(h,v+=vs,-20,"Обращение 1",Normal,Salutation1,false,0);
   EditField(h,v+=vs,-20,"Обращение 2",Normal,Salutation2,false,0);
   EditField(h,v+=vs,-20,"Обращение 3",Normal,Salutation3,false,0);
+  
+  EditField(h,v+=vs,-20,"Реквизиты чека 1",Normal,RecieptLine1,false,0);
+  EditField(h,v+=vs,-20,"Реквизиты чека 2",Normal,RecieptLine2,false,0);
+  EditField(h,v+=vs,-20,"Реквизиты чека 3",Normal,RecieptLine3,false,0);
+  
   if (true) then begin//HasModHotel
     Tile(tilenr,250,false,tilenr,DocType); tilenr = tilenr + 1;
     EditField(h,v=6,100,"Тип документа",Normal,DocType,false,CUDocTypeSClass);
