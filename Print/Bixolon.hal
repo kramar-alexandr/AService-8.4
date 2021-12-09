@@ -805,7 +805,8 @@ end;
 
 procedure adresses(record SVOVc SVOr,var string Name, var string Address, var string Phone,var string eMail)
 begin
-
+  record CUVc CUr;
+  
   switch (SVOr.SalesGroup) begin
 		case "1GR":
 					Name = "СПД-ФО Форманчук Д.В. (ТМ \"А-Сервіс)\"";
@@ -832,7 +833,20 @@ begin
 					Address = "Україна, Київ, вул. Кіквідзе,3";
 					Phone = "Телефон \(044\) 222-77-09";	
 	end;	
-
+  
+  CUr.Code = SVOr.CustCode;
+  if(readfirstmain(CUr,1,true))then begin
+    if(nonblank(CUr.RecieptLine1))then begin
+      Name = CUr.RecieptLine1;
+    end;
+    if(nonblank(CUr.RecieptLine2))then begin
+      Address = CUr.RecieptLine2;
+    end;
+    if(nonblank(CUr.RecieptLine3))then begin
+      Phone = CUr.RecieptLine3;
+    end;
+  end;
+  
 return;
 end;
 
