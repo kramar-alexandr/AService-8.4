@@ -1067,9 +1067,9 @@ begin
   TLTOARR(cjecklength,"__________________________________________",aFile);
   addtexttoarea(chr(13) & chr(10),aFile);
   TLTOARR(cjecklength,"\"Моїм підписом я підтверджую, що сервісний",aFile);
-  TLTOARR(cjecklength,"центр " & Name & " виконав свої",aFile);
-  TLTOARR(cjecklength,"зобов'язання з усунення заявлених ",aFile);
-  TLTOARR(cjecklength,"недоліків.",aFile);
+  TLTOARR(cjecklength,"центр " & Name,aFile);
+  TLTOARR(cjecklength,"виконав свої зобов'язання з усунення",aFile);
+  TLTOARR(cjecklength,"заявлених недоліків.",aFile);
   TLTOARR(cjecklength,"Обладнання з ремонту отримано у вищезазна-",aFile);
   TLTOARR(cjecklength,"ченій комплектності. З умовами надання га-",aFile);
   TLTOARR(cjecklength,"рантії на виконаний ремонт ознайомлений",aFile);
