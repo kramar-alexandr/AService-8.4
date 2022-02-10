@@ -1,0 +1,162 @@
+external updating procedure PrintAndSetRegDateInSVOExecute(var record SVOVc);
+remote updating function longint FiscalizeDocument(string, string, longint,record IVVc,string);
+remote procedure FindPhonePerson(var record Phone1Vc,string);
+remote procedure sendMessageToSergey(record SVOVc);
+
+
+SetLangMode(LangRussian,"RUS",0); 
+
+
+global
+updating procedure FiscalPrintAndSetRegDateInSVOExecute(var record SVOVc SVOr)
+BEGIN
+  record SVOVc SVO2r;
+  Integer wn,nwn;
+  area aFile;
+  record IVVc IVr;
+  row IVVc IVrw;
+  string 100 login;
+  record FOPDataBlock FOPb;
+	row FOPDataBlock FOPrw;
+	integer rwcnt,i;
+	record WSVc WSr;
+	row WSVc WSrw;
+	val diagsum;
+	boolean TrHs,testf;	
+	string 10 rebate;
+	record Phone1Vc Phoner;
+	val sumreb;
+	record SalesGroupVc SGr;
+	longint res;
+	
+  wn = CurWindow;
+	
+	blockload(FOPb);
+	rwcnt = matrowcnt(FOPb);
+	SGr.SGroupCode = SVOr.SalesGroup;
+	if(readfirstmain(SGr,1,true))then begin
+    for(i=0;i<matrowcnt(FOPb);i=i+1)begin
+      matrowget(FOPb,i,FOPrw);
+      if(SGr.SGFisLogin==FOPrw.FisLogin)then begin
+        login = FOPrw.FisLogin;
+      end;
+    end;
+	end;
+	
+	WSr.SVONr = SVOr.SerNr;
+  TrHs = true;
+  while(loopkey("SVONr",WSr,1,TrHs))begin
+    testf = true;
+    if(WSr.SVONr!=SVOr.SerNr)then begin testf = false; TrHs = false; end;
+    if(WSr.OKFlag==0)then begin testf = false; end;
+    
+    if(testf)then begin
+      rwcnt = matrowcnt(WSr);
+      for(i=0;i<matrowcnt(WSr);i=i+1)begin
+        matrowget(WSr,i,WSrw);
+        switch(WSrw.ArtCode)begin
+          case "DIAG_MB" :diagsum = diagsum + WSrw.Sum;
+          case "DIAG_IPHONE" :diagsum = diagsum + WSrw.Sum;
+          case "DIAG_IMAC" :diagsum = diagsum + WSrw.Sum;
+          case "DIAG_IPAD" :diagsum = diagsum + WSrw.Sum;
+        end;
+      end;
+    end;
+  end;
+	
+	
+	if(nonblank(SVOr.Kontinfo1))then begin
+		FindPhonePerson(Phoner,SVOr.Kontinfo1);
+		rebate = Phoner.PersonalRebCode;
+	end;
+	
+	if(blank(rebate))then begin
+		if(nonblank(SVOr.Phone2))then begin
+			FindPhonePerson(Phoner,SVOr.Phone2);
+			rebate = Phoner.PersonalRebCode;
+		end;
+	end;
+	
+	if(diagsum>0)then begin
+    if(blank(rebate))then begin
+      clearrow(IVr,IVrw,1);
+      IVrw.ArtCode = "DIAGNOS";
+      IVrw.Spec = "Діагностіка";
+      IVrw.Quant = 1;
+      IVrw.Price = diagsum;
+      IVrw.Sum = diagsum;
+      matrowput(IVr,matrowcnt(IVr),IVrw);
+    end else begin
+      sumreb = diagsum/(1-stringtoval(rebate,M4Val)/100);
+      clearrow(IVr,IVrw,1);
+      IVrw.ArtCode = "DIAGNOS";
+      IVrw.Spec = "Діагностіка";
+      IVrw.Quant = 1;
+      IVrw.Price = sumreb;
+      IVrw.Sum = diagsum;
+      matrowput(IVr,matrowcnt(IVr),IVrw);
+    end;
+    SVOr.WSCost = SVOr.WSCost - diagsum;
+  end;
+  
+  if(SVOr.WSCost>0)then begin
+    if(blank(rebate))then begin
+      clearrow(IVr,IVrw,1);
+      IVrw.ArtCode = "SERVICE";
+      IVrw.Spec = "Сервісне обслуговування";
+      IVrw.Quant = 1;
+      IVrw.Price = SVOr.WSCost;
+      IVrw.Sum = SVOr.WSCost;
+      matrowput(IVr,matrowcnt(IVr),IVrw);
+    end else begin
+      sumreb = SVOr.WSCost/(1-stringtoval(rebate,M4Val)/100);
+      clearrow(IVr,IVrw,1);
+      IVrw.ArtCode = "SERVICE";
+      IVrw.Spec = "Сервісне обслуговування";
+      IVrw.Quant = 1;
+      IVrw.Price = sumreb;
+      IVrw.Sum = SVOr.WSCost;
+      matrowput(IVr,matrowcnt(IVr),IVrw);
+      
+    end;
+    
+	end;
+	SVOr.WSCost = SVOr.WSCost + diagsum;
+	
+	clearrow(IVr,IVrw,kInvoiceRowTypeCreditCardPayment);
+	  IVrw.Sum = SVOr.FastTerm;
+	matrowput(IVr,matrowcnt(IVr),IVrw);
+	SVOr.WSCost = SVOr.WSCost - SVOr.FastTerm;
+	if(SVOr.WSCost>0)then begin
+    clearrow(IVr,IVrw,kInvoiceRowTypeCashPayment);
+      IVrw.Sum = SVOr.WSCost;
+    matrowput(IVr,matrowcnt(IVr),IVrw);
+	end;
+	
+	res = FiscalizeDocument(login,"SVOVc",SVOr.SerNr,IVr,"SVOFiscalCallBack");
+	
+	if(res!=0)then begin
+	  messagebox(res,"");
+	end;
+	
+  RETURN;
+END;
+
+
+global updating procedure PrintFiscalREcieptSVO(string user,longint sernr)
+begin
+  record SVOVc SVOr;
+  
+  logtext(0,"PrintFiscalREcieptSVO " & user & " sernr " & sernr);
+  
+  if(nonblank(user) and sernr>-1 and user==currentuser)then begin
+    SVOr.SerNr = sernr;
+    if(readfirstmain(SVor,1,true))then begin
+      SVOr.OrderStatus = 997;
+      queued.sendMessageToSergey(SVOr);// Edit ************************** BPI Ukraine - KramarAlexandr - 01, 01 06 2020 y. at 11:21:42 AM
+      PrintAndSetRegDateInSVOExecute(SVOr);
+    end;
+  end;
+
+return;
+end;

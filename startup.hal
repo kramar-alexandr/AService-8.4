@@ -115,8 +115,13 @@ begin
 	
 	Setting("События Binotel",BinotelCallPushLClass,modSVO); //-------------------------------------------------------ABR 13.02.19
 	Setting("Завершенные вызовы",BinotelCallEndLClass,modSVO); //-------------------------------------------------------ABR 13.02.19
-	 Setting("Контроль пропущенных звонков",BinotelUserTClass,modSVO);
-	 Setting("Настройки Binotel",BinotelSettingsTClass,modSY);
+	Setting("Контроль пропущенных звонков",BinotelUserTClass,modSVO);
+	Setting("Настройки Binotel",BinotelSettingsTClass,modSY);
+	
+	Setting("Фискальные Реквизиты чека",FOPDataTClass,modSO);	
+	
+	Setting("Фискальные чеки",FiscalReceiptsLClass,modSO);	
+
 	 
 	Setting("Места",PosLClass,modIN);// Edit ************************** BPI Ukraine - KramarAlexandr - Friday, 17 August 2018 14:33:34
 	Setting("Смена цен",PriceChangeLClass,modDBMain);

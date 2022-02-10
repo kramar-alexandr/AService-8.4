@@ -56,6 +56,7 @@ remote updating procedure HandleWSReceiptPrinting(record WSVc,var area);//Edit--
 remote procedure HandleIVReceiptPrinting(record IVVc,var area);//Edit----------------------Dima  21.09.2015
 remote updating procedure HandleSVOReceiptPrinting(record SVOVc,var area); //Edit***************************Sasha2,13:20 13.10.2016
 remote updating function boolean RA_CreateIntORfromSVOD(record SVOVc,var record IntORVc);// Edit ************************** BPI Ukraine - KramarAlexandr - 04, 25 03 2021 y. at 9:00:07 PM
+external updating procedure  FiscalPrintAndSetRegDateInSVOExecute(record SVOVc);
 
 SetLangMode(LangRussian,"RUS",0);
 
@@ -2172,24 +2173,103 @@ begin
 	integer wn;
 	record SVOVc SVOr,SVO2r;
 	longint svonr;
+	record SalesGroupVc SGr;
+	record FiscalReceiptsVc FRr;
+	record RcVc RepSpec;
 	
 		wn = CurWindow;
 		if (WindowState(wn)==Rs_normal) then begin
   		DeselectWindow(wn,false);
   		GetWindowRecord(wn,SVOr);
+   		readfirstmain(SVOr,1,true);
    		
-   		svonr = SVOr.SerNr;
-   		SVOr.SerNr = svonr;
-   		RecordCopy(SVO2r,SVOr);// Edit ************************** Wednesday, 28 October 2015 14:30:40
-			SVOr.RegDate = currentDate;// Edit ************************** Wednesday, 28 October 2015 14:28:31
-			SVOr.OutTime = CurrentTime; //Edit***************************Sasha2,17:10 25.10.2016
-			RecordUpdate(SVO2r,SVOr,true);// Edit ************************** Wednesday, 28 October 2015 14:30:39
-			PutWindowRecord(wn,SVOr);
-   		SetExportCodePage("CP1251");
-   		HandleSVOReceiptPrinting(SVOr,aFile);
-   		AddAreaToArea(aFile,aFile);
-     	PrintBixolonReceipt(aFile);
+   		SGr.SGroupCode = SVOr.SalesGroup;
+			readfirstmain(SGr,1,true);
+			FRr.FileName = "SVOVc";
+			FRr.SerNr = SVOr.SerNr;
+			readfirstmain(FRr,2,true);
+			
+   		if(blank(SGr.SGFisLogin) or nonblank(FRr.FiscalCode))then begin
+        svonr = SVOr.SerNr;
+        SVOr.SerNr = svonr;
+        RecordCopy(SVO2r,SVOr);// Edit ************************** Wednesday, 28 October 2015 14:30:40
+        SVOr.RegDate = currentDate;// Edit ************************** Wednesday, 28 October 2015 14:28:31
+        SVOr.OutTime = CurrentTime; //Edit***************************Sasha2,17:10 25.10.2016
+        RecordUpdate(SVO2r,SVOr,true);// Edit ************************** Wednesday, 28 October 2015 14:30:39
+        PutWindowRecord(wn,SVOr);
+        SetExportCodePage("CP1251");
+        HandleSVOReceiptPrinting(SVOr,aFile);
+        AddAreaToArea(aFile,aFile);
+        PrintBixolonReceipt(aFile);
+      end else begin
+        if(nonblank(SGr.SGFisLogin) or blank(FRr.FiscalCode))then begin
+          RepSpec.long1 = SVOr.SerNr;
+          OpenWindow("FiscalizeSVOWClass",0,0,"","",RepSpec); 
+        end;
+      end;
 		end else begin
 		  MessageBox(1356,"");
 		end; 
+return;
 end;
+
+
+global //Edit***************************Sasha2,13:21 13.10.2016
+updating procedure PrintSVOReceiptAnyway()
+begin
+	area aFile;
+	integer wn;
+	record SVOVc SVOr,SVO2r;
+	longint svonr;
+	record SalesGroupVc SGr;
+	record FiscalReceiptsVc FRr;
+	record RcVc RepSpec;
+	
+  wn = CurWindow;
+  getwindowrecord(wn,RepSpec);
+  closewindow(wn);
+  SVOr.SerNr = RepSpec.long1;
+  if (readfirstmain(SVOr,1,true))then begin
+    svonr = SVOr.SerNr;
+    SVOr.SerNr = svonr;
+    RecordCopy(SVO2r,SVOr);// Edit ************************** Wednesday, 28 October 2015 14:30:40
+    SVOr.RegDate = currentDate;// Edit ************************** Wednesday, 28 October 2015 14:28:31
+    SVOr.OutTime = CurrentTime; //Edit***************************Sasha2,17:10 25.10.2016
+    RecordUpdate(SVO2r,SVOr,true);// Edit ************************** Wednesday, 28 October 2015 14:30:39
+    SetExportCodePage("CP1251");
+    HandleSVOReceiptPrinting(SVOr,aFile);
+    AddAreaToArea(aFile,aFile);
+    PrintBixolonReceipt(aFile);
+  end else begin
+    MessageBox(1356,"");
+  end; 
+return;
+end;
+
+
+global //Edit***************************Sasha2,13:21 13.10.2016
+updating procedure FiscalizeSVOr()
+begin
+	area aFile;
+	integer wn;
+	record SVOVc SVOr,SVO2r;
+	longint svonr;
+	record SalesGroupVc SGr;
+	record FiscalReceiptsVc FRr;
+	record RcVc RepSpec;
+	
+  wn = CurWindow;
+  getwindowrecord(wn,RepSpec);
+  closewindow(wn);
+  
+  SVOr.SerNr = RepSpec.long1;
+  if (readfirstmain(SVOr,1,true))then begin
+    FiscalPrintAndSetRegDateInSVOExecute(SVOr);
+  end else begin
+    MessageBox(1356,"");
+  end; 
+return;
+end;
+
+
+

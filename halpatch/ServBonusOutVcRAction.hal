@@ -271,14 +271,19 @@ begin
   Boolean res;
   record RcVc RepSpec;
 		
+		
   res = true;
   deselectwindow(wn,true);
   GetWindowRecord(wn,RepSpec);
   
+  //отключаем комиссию// Edit ************************** BPI Ukraine - KramarAlexandr - 04, 10 02 2022 y. at 9:26:42 AM
+  RepSpec.vals1 = blankval;
   if(value==2)then begin
-  	RepSpec.vals1 = round((RepSpec.vals0 * 1.03),defaultcurroundoff);
+  	//RepSpec.vals1 = round((RepSpec.vals0 * 1.03),defaultcurroundoff);
+  	RepSpec.flags[1] = RepSpec.flags[2];
   end else begin
-  	RepSpec.vals1 = blankval;
+  	//RepSpec.vals1 = blankval;
+  	RepSpec.flags[1] = 0;
   end;
   putwindowrecord(wn,RepSpec);
   selectwindow(wn);

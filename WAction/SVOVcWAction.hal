@@ -42,7 +42,7 @@ external updating procedure CloseActivitiesFromSVO(var record SVOVc,string);
 remote procedure sendMessageToSergey(record SVOVc);
 remote procedure HandleSVOAct1(record SVOVc,var area);
 remote procedure HandleSVOAct2(record SVOVc,var area);
-
+external updating procedure  FiscalPrintAndSetRegDateInSVOExecute(record SVOVc);
 // Edit Start ---------------------------------------------- Edit Start
 	//Wednesday, 3 June 2015 16:58:34
 	
@@ -85,7 +85,6 @@ BEGIN
   area aFile;
   Boolean testf;
 	
-  wn = CurWindow;
 	if ((SVOr.WSCost!=blankval) and (SVOr.WSCost!=0)) then begin
 		SetExportCodePage("CP1251");
 		HandleSVOReceiptPrinting(SVOr,aFile);
@@ -150,9 +149,12 @@ begin
 					recordupdate(SVO2r,SVOr,true);
 					nwn = motherwindow(wn);
 					
-					//
-					PrintAndSetRegDateInSVOExecute(SVOr);
-					putwindowrecord(nwn,SVOr);
+					if(RepSpec.flags[1]==1)then begin
+					  FiscalPrintAndSetRegDateInSVOExecute(SVOr);
+					end else begin
+            PrintAndSetRegDateInSVOExecute(SVOr);
+            putwindowrecord(nwn,SVOr);
+					end;
 					//setwindowstate(nwn,0);
 					//UpdateBrowses("SVOVc");
 					closewindow(wn);
@@ -224,6 +226,7 @@ BEGIN
   area aFile;
   Boolean testf;
   record RcVc RepSpec;
+  record SalesGroupVc SGr;
 	
 	
 	wn = CurWindow;
@@ -232,6 +235,12 @@ BEGIN
   	if(SVOr.DoneMark==0)then begin
 			RepSpec.long1 = SVOr.SerNr;
 			RepSpec.vals0 = SVOr.WSCost;
+			SGr.SGroupCode = SVOr.SalesGroup;
+			if(readfirstmain(SGr,1,true))then begin
+        if(nonblank(SGr.SGFisLogin))then begin
+          RepSpec.flags[2] = 1;
+        end;
+			end;
 			OpenWindow("ManagerFastPaySVOWClass",1,wn,"","",RepSpec);
   	end else begin
   		messagebox(0,"ђемонт уже завершен");

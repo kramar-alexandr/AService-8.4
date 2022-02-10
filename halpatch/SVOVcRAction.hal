@@ -92,6 +92,7 @@ begin
 	string 255 LogPass,EncodedLogPass;
 	area a_req,replyarea;
 	row SVOVc SVOrw;
+	record FiscalReceiptsVc FRr;
 	
 	LogPass = "hansa-server" & ":" & "7s44wkjm7U8374N7o1mkJN2vM";
 	EncodedLogPass = "Authorization: Basic " & Base64Encode(LogPass);
@@ -129,6 +130,11 @@ begin
 		addParamToJSONArea("Spec","",a_req);
 	end;
 	addParamToJSONArea("WSCost",SVOr.WSCost,a_req);
+	
+	FRr.SerNr = SVOr.SerNr;
+	FRr.FileName = "SVOVc";
+	readfirstmain(FRr,2,true);
+	addParamToJSONArea("FiscalLink",FRr.tax_url,a_req);
 	
 	delLastComaInArea(a_req);
 	

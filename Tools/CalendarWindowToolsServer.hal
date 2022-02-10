@@ -278,9 +278,7 @@ BEGIN
   row ActVc Actrw;
   LongInt compno;
   Boolean newdrawingf;
-  
-  logtext(0,1);
-    
+      
   if (GuiType==kGuiiPhone or CurClientType==kClientiPhone) then begin
     newdrawingf = true;
   end;

@@ -59,7 +59,6 @@ begin
     while (LoopMain(HALRulesr,1,true)) begin
       RecordDelete(HALRulesr);
       StepBack(HALRulesr);
-      logtext(0,1);
     end;
   end else begin
     goto LLRebuildHALRulesMn;
