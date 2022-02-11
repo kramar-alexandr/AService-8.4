@@ -879,7 +879,7 @@ updating procedure HandleServBonusOutReceiptPrinting(record ServBonusOutVc SVOCr
 begin
 	string 10 SetLeftAlignment,SetRightAlignment,SetMiddleAlignment,SetTextSize;
 	string 10 SetBoldOn,SetBoldOff,SetUnderlineOn,SetUnderlineOff;
-	string 10 BigLetterOn,BigLetterOff,SmallLetterOn;
+	string 10 BigLetterOn,BigLetterOff,SmallLetterOn,SmallLetterOff;
 	string 100 s1,s2,s3, sTot,sVAT,sPay;
 	string 200 Name,Address,Phone;
 	integer rowLength,i,mtrw,rwcnt,j;
