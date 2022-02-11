@@ -329,7 +329,6 @@ begin
   addtexttoarea(SmallLetterOn,aFile);
 	addtexttoarea(SetMiddleAlignment,aFile);
 	addtexttoarea(Name & chr(13) & chr(10),aFile);
-	addtexttoarea(SetLeftAlignment,aFile);	
 	addtexttoarea(Address & chr(13) & chr(10),aFile);
 	if(nonblank(ID))then begin
 	  addtexttoarea(ID & chr(13) & chr(10),aFile);
@@ -337,7 +336,8 @@ begin
 	addtexttoarea(Phone & chr(13) & chr(10) ,aFile);
 	addtexttoarea("________________________________________________________" & chr(13) & chr(10) ,aFile);
 	addtexttoarea(chr(13) & chr(10),aFile);	
-	
+	addtexttoarea(SetLeftAlignment,aFile);	
+
 //Body	
 	rwcnt = MatRowCnt(IVr);
 	for(i=0;i<rwcnt;i=i+1) begin
@@ -1092,7 +1092,7 @@ begin
 	//addtexttoarea("А-Сервіс",aFile);
 	
 	addtexttoarea(chr(13) & chr(10),aFile);
-	
+	addtexttoarea(SmallLetterOff,aFile);
 	addtexttoarea(SetMiddleAlignment,aFile);
 	TLTOARR(cjecklength,SVOr.SerNr,aFile);
 	addtexttoarea(chr(13) & chr(10),aFile);
@@ -1328,6 +1328,7 @@ begin
 	//LOGO
 	
 	addtexttoarea(PrintImage,aFile);
+	addtexttoarea(SmallLetterOff,aFile);
 	//addtexttoarea(SetMiddleAlignment,aFile);
 	//addtexttoarea("А-Сервіс",aFile);
 	addtexttoarea(chr(13) & chr(10),aFile);
