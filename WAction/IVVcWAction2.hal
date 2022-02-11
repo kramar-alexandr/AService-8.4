@@ -2176,6 +2176,7 @@ begin
 	record SalesGroupVc SGr;
 	record FiscalReceiptsVc FRr;
 	record RcVc RepSpec;
+	record UserVc USr;
 	
 		wn = CurWindow;
 		if (WindowState(wn)==Rs_normal) then begin
@@ -2183,12 +2184,14 @@ begin
   		GetWindowRecord(wn,SVOr);
    		readfirstmain(SVOr,1,true);
    		
-   		SGr.SGroupCode = SVOr.SalesGroup;
+   		USr.Code = currentuser;
+      readfirstmain(USr,1,true);
+      SGr.SGroupCode = USr.SalesGroup;
 			readfirstmain(SGr,1,true);
 			FRr.FileName = "SVOVc";
 			FRr.SerNr = SVOr.SerNr;
 			readfirstmain(FRr,2,true);
-			
+			messagebox(0,"SGr.SGFisLogin " & SGr.SGFisLogin);
    		if(blank(SGr.SGFisLogin) or nonblank(FRr.FiscalCode))then begin
         svonr = SVOr.SerNr;
         SVOr.SerNr = svonr;
