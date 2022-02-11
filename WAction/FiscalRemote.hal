@@ -282,7 +282,7 @@ begin
         ifcash = true;
       end;
     end;
-    if(tstr=="Cash")then begin
+    if(tstr=="Cash" and cash>0)then begin
       addtexttoarea("\"cash\":" & "\"" & cash & "\"",receipt);
     end;
   
@@ -301,7 +301,7 @@ begin
       end;
     end;
 
-    if(tstr=="CreditCard")then begin
+    if(tstr=="CreditCard" and creditcard>0)then begin
       if(ifcash)then begin
         addtexttoarea(",",receipt);
       end;
