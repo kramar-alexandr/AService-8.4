@@ -2191,7 +2191,6 @@ begin
 			FRr.FileName = "SVOVc";
 			FRr.SerNr = SVOr.SerNr;
 			readfirstmain(FRr,2,true);
-			messagebox(0,"SGr.SGFisLogin " & SGr.SGFisLogin);
    		if(blank(SGr.SGFisLogin) or nonblank(FRr.FiscalCode))then begin
         svonr = SVOr.SerNr;
         SVOr.SerNr = svonr;
