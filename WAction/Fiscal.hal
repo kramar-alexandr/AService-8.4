@@ -2,6 +2,8 @@ external updating procedure PrintAndSetRegDateInSVOExecute(var record SVOVc);
 remote updating function longint FiscalizeDocument(string, string, longint,record IVVc,string);
 remote procedure FindPhonePerson(var record Phone1Vc,string);
 remote procedure sendMessageToSergey(record SVOVc);
+remote procedure HandleIVReceiptPrinting(record IVVc,var area);//Edit----------------------Dima  21.09.2015
+external procedure PrintBixolonReceipt(area);
 
 
 SetLangMode(LangRussian,"RUS",0); 
@@ -165,3 +167,107 @@ begin
 
 return;
 end;
+
+
+global updating procedure PrintFiscalREcieptIV(string user,longint sernr)
+begin
+  record IVVc IVr;
+  area aFile;
+  
+  logtext(0,"PrintFiscalREcieptIV " & user & " sernr " & sernr);
+  
+  if(nonblank(user) and sernr>-1 and user==currentuser)then begin
+    IVr.SerNr = sernr;
+    if(readfirstmain(IVr,1,true))then begin
+      SetExportCodePage("CP1251");
+      HandleIVReceiptPrinting(IVr,aFile);
+      AddAreaToArea(aFile,aFile);
+      PrintBixolonReceipt(aFile);
+      IVr.PrintedFlag = 1;
+      IVr.PrintedSum4 = IVr.Sum4;
+      RECORDSTORE(IVr,true);
+    end;
+  end;
+
+return;
+end;
+
+
+
+
+
+global
+updating procedure FiscalPrintAndSetRegDateInIVExecute(var record IVVc origIVr)
+BEGIN
+  record IVVc IV2r;
+  Integer wn,nwn;
+  area aFile;
+  record IVVc IVr;
+  row IVVc IVrw,origIVrw;
+  string 100 login;
+  record FOPDataBlock FOPb;
+	row FOPDataBlock FOPrw;
+	integer rwcnt,i;
+	record WSVc WSr;
+	row WSVc WSrw;
+	val diagsum;
+	boolean TrHs,testf;	
+	string 10 rebate;
+	record Phone1Vc Phoner;
+	val sumreb;
+	record SalesGroupVc SGr;
+	longint res;
+	record UserVc USr;
+	
+  wn = CurWindow;
+	
+	blockload(FOPb);
+	rwcnt = matrowcnt(FOPb);
+	
+	
+	USr.Code = currentuser;
+	readfirstmain(USr,1,true);
+	SGr.SGroupCode = USr.SalesGroup;
+	if(readfirstmain(SGr,1,true))then begin
+    for(i=0;i<matrowcnt(FOPb);i=i+1)begin
+      matrowget(FOPb,i,FOPrw);
+      if(SGr.SGFisLogin==FOPrw.FisLogin)then begin
+        login = FOPrw.FisLogin;
+      end;
+    end;
+	end;
+	
+	rwcnt = matrowcnt(origIVr);
+	for(i=0;i<rwcnt;i=i+1)begin
+	  matrowget(origIVr,i,origIVrw);
+	  if(origIVrw.stp==1 and origIVrw.Quant>0)then begin
+	    clearrow(IVr,IVrw,1);
+      IVrw.ArtCode = origIVrw.ArtCode;
+      IVrw.Spec = origIVrw.Spec;
+      IVrw.Quant = origIVrw.Quant;
+      IVrw.Price = origIVrw.Price;
+      IVrw.Sum = origIVrw.Sum;
+      matrowput(IVr,matrowcnt(IVr),IVrw);
+	  end;
+	end;
+	
+	
+	if(origIVr.FastTerm>0)then begin
+    clearrow(IVr,IVrw,kInvoiceRowTypeCreditCardPayment);
+    IVrw.Sum = origIVr.FastTerm;
+    matrowput(IVr,matrowcnt(IVr),IVrw);
+	end;
+	if(origIVr.FastCash>0)then begin
+    clearrow(IVr,IVrw,kInvoiceRowTypeCashPayment);
+    IVrw.Sum = origIVr.FastCash;
+    matrowput(IVr,matrowcnt(IVr),IVrw);
+	end;
+	
+	res = FiscalizeDocument(login,"IVVc",origIVr.SerNr,IVr,"IVFiscalCallBack");
+	
+	if(res!=0)then begin
+	  messagebox(res,"");
+	end;
+	
+  RETURN;
+END;

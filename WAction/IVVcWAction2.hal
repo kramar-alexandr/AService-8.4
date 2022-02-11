@@ -57,6 +57,8 @@ remote procedure HandleIVReceiptPrinting(record IVVc,var area);//Edit-----------
 remote updating procedure HandleSVOReceiptPrinting(record SVOVc,var area); //Edit***************************Sasha2,13:20 13.10.2016
 remote updating function boolean RA_CreateIntORfromSVOD(record SVOVc,var record IntORVc);// Edit ************************** BPI Ukraine - KramarAlexandr - 04, 25 03 2021 y. at 9:00:07 PM
 external updating procedure  FiscalPrintAndSetRegDateInSVOExecute(record SVOVc);
+external updating procedure  FiscalPrintAndSetRegDateInIVExecute(record IVVc);
+
 
 SetLangMode(LangRussian,"RUS",0);
 
@@ -2138,14 +2140,27 @@ begin
 	area aFile;
 	integer wn;
 	record IVVc IVr;
+	record SalesGroupVc SGr;
+	record FiscalReceiptsVc FRr;
+	record RcVc RepSpec;
+	record UserVc USr;
 	
 		wn = CurWindow;
 		if (WindowState(wn)==Rs_normal) then begin
   		DeselectWindow(wn,false);
   		GetWindowRecord(wn,IVr);
    		
+   		readfirstmain(IVr,1,true);
+   		USr.Code = currentuser;
+      readfirstmain(USr,1,true);
+      SGr.SGroupCode = USr.SalesGroup;
+			readfirstmain(SGr,1,true);
+			FRr.FileName = "IVVc";
+			FRr.SerNr = IVr.SerNr;
+			readfirstmain(FRr,2,true);
+   		
    		if(IVr.OKFlag==1)then begin
-   			//if(nonblank(IVr.DelAddr3) and nonblank(IVr.Phone2))then begin
+   		  if(blank(SGr.SGFisLogin) or nonblank(FRr.FiscalCode))then begin
 					SetExportCodePage("CP1251");
 					HandleIVReceiptPrinting(IVr,aFile);
 					AddAreaToArea(aFile,aFile);
@@ -2155,9 +2170,12 @@ begin
 					PutWindowRecord(wn,IVr);
 					RECORDSTORE(IVr,true);
 					UpdateBrowses("IVVc");
-				//end else begin
-				//	MessageBox(0,"Заповніть ФІБ та телефон");
-				//end;
+				end else begin
+				  if(nonblank(SGr.SGFisLogin) or blank(FRr.FiscalCode))then begin
+            RepSpec.long1 = IVr.SerNr;
+            OpenWindow("FiscalizeIVWClass",0,0,"","",RepSpec); 
+          end;
+				end;
      	end else begin
      		MessageBox(0,"Накладна має бути підтврджена Ок");
      	end;
@@ -2165,6 +2183,37 @@ begin
 		  MessageBox(1356,"");
 		end;
 end;
+
+
+global 
+updating procedure PrintIVReceiptAnyway()// Edit ************************** BPI Ukraine - KramarAlexandr - 05, 11 02 2022 y. at 12:02:10 PM
+begin
+	area aFile;
+	integer wn;
+	record IVVc IVr;
+	record RcVc RepSpec;
+
+  wn = CurWindow;
+  GetWindowRecord(wn,RepSpec);
+  IVr.SerNr = RepSpec.long1;
+  readfirstmain(IVr,1,true);
+  
+  if(IVr.OKFlag==1)then begin
+    SetExportCodePage("CP1251");
+    HandleIVReceiptPrinting(IVr,aFile);
+    AddAreaToArea(aFile,aFile);
+    PrintBixolonReceipt(aFile);
+    IVr.PrintedFlag = 1;
+    IVr.PrintedSum4 = IVr.Sum4;
+    RECORDSTORE(IVr,true);
+  end else begin
+    MessageBox(0,"Накладна має бути підтврджена Ок");
+  end;
+  closewindow(wn);
+    
+return;
+end;
+
 
 global //Edit***************************Sasha2,13:21 13.10.2016
 updating procedure PrintSVOReceiptDsm()
@@ -2280,6 +2329,42 @@ begin
   end; 
 
 lFiscalizeSVOr:;
+  
+return;
+end;
+
+
+global //Edit***************************Sasha2,13:21 13.10.2016
+updating procedure FiscalizeIVr()
+begin
+	area aFile;
+	integer wn;
+	record IVVc IVr;
+	longint svonr;
+	record SalesGroupVc SGr;
+	record FiscalReceiptsVc FRr;
+	record RcVc RepSpec;
+	record UserVc USr;
+	
+  wn = CurWindow;
+  getwindowrecord(wn,RepSpec);
+  closewindow(wn);
+  
+  USr.Code = currentuser;
+  readfirstmain(USr,1,true);
+  if(blank(USr.SalesGroup))then begin
+    messagebox(20171," " & USr.Code);
+    goto LFiscalizeIVr;
+  end;
+  
+  IVr.SerNr = RepSpec.long1;
+  if (readfirstmain(IVr,1,true))then begin
+    FiscalPrintAndSetRegDateInIVExecute(IVr);
+  end else begin
+    MessageBox(1356,"");
+  end; 
+
+LFiscalizeIVr:;
   
 return;
 end;
