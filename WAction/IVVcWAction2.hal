@@ -2160,7 +2160,7 @@ begin
 			readfirstmain(FRr,2,true);
    		
    		if(IVr.OKFlag==1)then begin
-   		  if(blank(SGr.SGFisLogin) or nonblank(FRr.FiscalCode))then begin
+   		  if(blank(SGr.SGFisLogin) or nonblank(FRr.FiscalCode) or IVr.FastTerm==0)then begin
 					SetExportCodePage("CP1251");
 					HandleIVReceiptPrinting(IVr,aFile);
 					AddAreaToArea(aFile,aFile);
