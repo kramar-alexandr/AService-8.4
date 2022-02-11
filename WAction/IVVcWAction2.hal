@@ -2257,10 +2257,18 @@ begin
 	record SalesGroupVc SGr;
 	record FiscalReceiptsVc FRr;
 	record RcVc RepSpec;
+	record UserVc USr;
 	
   wn = CurWindow;
   getwindowrecord(wn,RepSpec);
   closewindow(wn);
+  
+  USr.Code = currentuser;
+  readfirstmain(USr,1,true);
+  if(blank(USr.SalesGroup))then begin
+    messagebox(20171," " & USr.Code);
+    goto lFiscalizeSVOr;
+  end;
   
   SVOr.SerNr = RepSpec.long1;
   if (readfirstmain(SVOr,1,true))then begin
@@ -2268,6 +2276,9 @@ begin
   end else begin
     MessageBox(1356,"");
   end; 
+
+lFiscalizeSVOr:;
+  
 return;
 end;
 

@@ -28,12 +28,17 @@ BEGIN
 	val sumreb;
 	record SalesGroupVc SGr;
 	longint res;
+	record UserVc USr;
 	
   wn = CurWindow;
 	
 	blockload(FOPb);
 	rwcnt = matrowcnt(FOPb);
-	SGr.SGroupCode = SVOr.SalesGroup;
+	
+	
+	USr.Code = currentuser;
+	readfirstmain(USr,1,true);
+	SGr.SGroupCode = USr.SalesGroup;
 	if(readfirstmain(SGr,1,true))then begin
     for(i=0;i<matrowcnt(FOPb);i=i+1)begin
       matrowget(FOPb,i,FOPrw);

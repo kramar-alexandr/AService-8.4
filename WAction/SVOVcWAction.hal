@@ -126,6 +126,7 @@ begin
   Boolean testf;
   record RcVc RepSpec;
   val totpay;
+  record UserVc USr;
 	
 	logtext(0,6);
 	wn = curwindow;
@@ -150,6 +151,12 @@ begin
 					nwn = motherwindow(wn);
 					
 					if(RepSpec.flags[1]==1)then begin
+					  USr.Code = currentuser;
+					  readfirstmain(USr,1,true);
+					  if(blank(USr.SalesGroup))then begin
+					    messagebox(20171," " & USr.Code);
+              goto lDblConfirmPaymentManagerDsm;
+					  end;
 					  FiscalPrintAndSetRegDateInSVOExecute(SVOr);
 					end else begin
             PrintAndSetRegDateInSVOExecute(SVOr);
@@ -166,6 +173,8 @@ begin
 			messagebox(0,"Выберите способ оплаты");
 		end;
 	end;
+	
+lDblConfirmPaymentManagerDsm:;
 	
 return;
 end;
@@ -227,6 +236,7 @@ BEGIN
   Boolean testf;
   record RcVc RepSpec;
   record SalesGroupVc SGr;
+  record UserVc USr;
 	
 	
 	wn = CurWindow;
@@ -235,7 +245,9 @@ BEGIN
   	if(SVOr.DoneMark==0)then begin
 			RepSpec.long1 = SVOr.SerNr;
 			RepSpec.vals0 = SVOr.WSCost;
-			SGr.SGroupCode = SVOr.SalesGroup;
+			USr.Code = currentuser;
+      readfirstmain(USr,1,true);
+      SGr.SGroupCode = USr.SalesGroup;
 			if(readfirstmain(SGr,1,true))then begin
         if(nonblank(SGr.SGFisLogin))then begin
           RepSpec.flags[2] = 1;
