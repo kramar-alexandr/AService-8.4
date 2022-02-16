@@ -1243,6 +1243,33 @@ begin
   TLTOARR(cjecklength,"- Починаючи з 15-ї доби після завершення",aFile);
   TLTOARR(cjecklength,"ремонту вартість зберігання обладнання у ",aFile);
   TLTOARR(cjecklength,"сервісному центрі складає 30 грн. за добу.",aFile);
+  
+  addtexttoarea(chr(13) & chr(10),aFile);
+  
+  TLTOARR(cjecklength,"Якщо протягом Гарантійного періоду Ви",aFile);
+  TLTOARR(cjecklength,"звертаєтеся до компанії Apple на підставі",aFile);
+  TLTOARR(cjecklength,"цієї гарантії, компанія Apple на власний",aFile);
+  TLTOARR(cjecklength,"розсуд:",aFile);
+  
+  TLTOARR(cjecklength,"(I) Відремонтує Продукт Apple, застосував-",aFile);
+  TLTOARR(cjecklength,"ши нові деталі або деталі, що вже викори-",aFile);
+  TLTOARR(cjecklength,"стовувалися, якість і функціональність",aFile);
+  TLTOARR(cjecklength,"яких не поступається новим;",aFile);
+
+  TLTOARR(cjecklength,"(II) замінить Продукт Apple таким самим",aFile);
+  TLTOARR(cjecklength,"продуктом або продуктом зі схожою функціо-",aFile);
+  TLTOARR(cjecklength,"нальністю (лише з вашої згоди), зібраним",aFile);
+  TLTOARR(cjecklength,"із нових деталей і/або деталей, що вже ви-",aFile);
+  TLTOARR(cjecklength,"користовувалися, якість і функціональність",aFile);
+  TLTOARR(cjecklength,"яких не поступається новим; ",aFile);
+
+  
+  TLTOARR(cjecklength,"Зверніть увагу, що замінний продукт або",aFile);
+  TLTOARR(cjecklength,"замінні деталі переходять у вашу власність",aFile);
+  TLTOARR(cjecklength,"А несправний продукт, повернений до компа-",aFile);
+  TLTOARR(cjecklength,"нії Apple, або його несправні деталі, ",aFile);
+  TLTOARR(cjecklength,"стають її власністю.",aFile);
+  
   addtexttoarea(SetBoldOff,aFile);
   TLTOARR(cjecklength,"__________________________________________",aFile);
   TLTOARR(cjecklength,"\"З правилами обслуговування та тарифами ",aFile);
@@ -1395,6 +1422,32 @@ begin
   addtexttoarea(SetBoldOff,aFile);
   TLTOARR(0,SVOr.Comment3,aFile);
   TLTOARR(0,SVOr.Comment4,aFile);
+  
+  addtexttoarea(chr(13) & chr(10),aFile);
+  TLTOARR(cjecklength,"__________________________________________",aFile);
+  TLTOARR(cjecklength,"Якщо протягом Гарантійного періоду Ви",aFile);
+  TLTOARR(cjecklength,"звертаєтеся до компанії Apple на підставі",aFile);
+  TLTOARR(cjecklength,"цієї гарантії, компанія Apple на власний",aFile);
+  TLTOARR(cjecklength,"розсуд:",aFile);
+  
+  TLTOARR(cjecklength,"(I) Відремонтує Продукт Apple, застосував-",aFile);
+  TLTOARR(cjecklength,"ши нові деталі або деталі, що вже викори-",aFile);
+  TLTOARR(cjecklength,"стовувалися, якість і функціональність",aFile);
+  TLTOARR(cjecklength,"яких не поступається новим;",aFile);
+
+  TLTOARR(cjecklength,"(II) замінить Продукт Apple таким самим",aFile);
+  TLTOARR(cjecklength,"продуктом або продуктом зі схожою функціо-",aFile);
+  TLTOARR(cjecklength,"нальністю (лише з вашої згоди), зібраним",aFile);
+  TLTOARR(cjecklength,"із нових деталей і/або деталей, що вже ви-",aFile);
+  TLTOARR(cjecklength,"користовувалися, якість і функціональність",aFile);
+  TLTOARR(cjecklength,"яких не поступається новим; ",aFile);
+
+  
+  TLTOARR(cjecklength,"Зверніть увагу, що замінний продукт або",aFile);
+  TLTOARR(cjecklength,"замінні деталі переходять у вашу власність",aFile);
+  TLTOARR(cjecklength,"А несправний продукт, повернений до компа-",aFile);
+  TLTOARR(cjecklength,"нії Apple, або його несправні деталі, ",aFile);
+  TLTOARR(cjecklength,"стають її власністю.",aFile);
   
   addtexttoarea(chr(13) & chr(10),aFile);
   TLTOARR(cjecklength,"Обладнання до ремонту прийняв(ла):",aFile);
