@@ -37,6 +37,10 @@ BEGIN
 	blockload(FOPb);
 	rwcnt = matrowcnt(FOPb);
 	
+	if(SVOr.FastTerm==0)then begin
+	  res = 31109;
+    goto lFiscalPrintAndSetRegDateInSVOExecute;
+	end;
 	
 	USr.Code = currentuser;
 	readfirstmain(USr,1,true);
@@ -50,7 +54,7 @@ BEGIN
     end;
 	end;
 	
-	WSr.SVONr = SVOr.SerNr;
+	/*WSr.SVONr = SVOr.SerNr;
   TrHs = true;
   while(loopkey("SVONr",WSr,1,TrHs))begin
     testf = true;
@@ -69,8 +73,8 @@ BEGIN
         end;
       end;
     end;
-  end;
-	
+  end;*/
+	/*
 	
 	if(nonblank(SVOr.Kontinfo1))then begin
 		FindPhonePerson(Phoner,SVOr.Kontinfo1);
@@ -83,8 +87,8 @@ BEGIN
 			rebate = Phoner.PersonalRebCode;
 		end;
 	end;
-	
-	if(diagsum>0)then begin
+	*/
+	/*if(diagsum>0)then begin
     if(blank(rebate))then begin
       clearrow(IVr,IVrw,1);
       IVrw.ArtCode = "DIAGNOS";
@@ -104,44 +108,34 @@ BEGIN
       matrowput(IVr,matrowcnt(IVr),IVrw);
     end;
     SVOr.WSCost = SVOr.WSCost - diagsum;
-  end;
-  
-  if(SVOr.WSCost>0)then begin
-    if(blank(rebate))then begin
-      clearrow(IVr,IVrw,1);
-      IVrw.ArtCode = "SERVICE";
-      IVrw.Spec = "Сервісне обслуговування";
-      IVrw.Quant = 1;
-      IVrw.Price = SVOr.WSCost;
-      IVrw.Sum = SVOr.WSCost;
-      matrowput(IVr,matrowcnt(IVr),IVrw);
-    end else begin
-      sumreb = SVOr.WSCost/(1-stringtoval(rebate,M4Val)/100);
-      clearrow(IVr,IVrw,1);
-      IVrw.ArtCode = "SERVICE";
-      IVrw.Spec = "Сервісне обслуговування";
-      IVrw.Quant = 1;
-      IVrw.Price = sumreb;
-      IVrw.Sum = SVOr.WSCost;
-      matrowput(IVr,matrowcnt(IVr),IVrw);
-      
-    end;
+  end;*/
+    //--------------------------------------------------------Фискальный чек только на сумму терминала!
+    clearrow(IVr,IVrw,1);
+    IVrw.ArtCode = "SERVICE";
+    IVrw.Spec = "Сервісне обслуговування";
+    IVrw.Quant = 1;
+    IVrw.Price = SVOr.FastTerm;
+    IVrw.Sum = SVOr.FastTerm;
+    matrowput(IVr,matrowcnt(IVr),IVrw);
     
-	end;
-	SVOr.WSCost = SVOr.WSCost + diagsum;
-	
-	clearrow(IVr,IVrw,kInvoiceRowTypeCreditCardPayment);
+    clearrow(IVr,IVrw,kInvoiceRowTypeCreditCardPayment);
 	  IVrw.Sum = SVOr.FastTerm;
-	matrowput(IVr,matrowcnt(IVr),IVrw);
-	SVOr.WSCost = SVOr.WSCost - SVOr.FastTerm;
+	  matrowput(IVr,matrowcnt(IVr),IVrw);
+	  
+//	SVOr.WSCost = SVOr.WSCost + diagsum;
+	
+	
+	/*SVOr.WSCost = SVOr.WSCost - SVOr.FastTerm;
 	if(SVOr.WSCost>0)then begin
     clearrow(IVr,IVrw,kInvoiceRowTypeCashPayment);
       IVrw.Sum = SVOr.WSCost;
-    matrowput(IVr,matrowcnt(IVr),IVrw);
-	end;
+      matrowput(IVr,matrowcnt(IVr),IVrw);
+	end;*/
 	
 	res = FiscalizeDocument(login,"SVOVc",SVOr.SerNr,IVr,"SVOFiscalCallBack");
-	
+
+lFiscalPrintAndSetRegDateInSVOExecute:;
+
 	if(res!=0)then begin
 	  messagebox(res,"");
 	end;
