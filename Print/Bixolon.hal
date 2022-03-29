@@ -312,7 +312,7 @@ begin
           ftime = CurrentTime;
           if(nonblank(FRr.FiscalDate))then begin //==================== Время фискального чека
             ftime = stringtotime(mid(FRr.FiscalDate,11,8));
-            ftime = addhours(ftime,1);
+            ftime = addhours(ftime,3);
           end;
           
           fdate.day = stringtoint(mid(FRr.FiscalDate,8,2));
@@ -540,7 +540,7 @@ begin
           ftime = CurrentTime;
           if(nonblank(FRr.FiscalDate))then begin //==================== Время фискального чека
             ftime = stringtotime(mid(FRr.FiscalDate,11,8));
-            ftime = addhours(ftime,1);
+            ftime = addhours(ftime,3);
           end;
           
           fdate.day = stringtoint(mid(FRr.FiscalDate,8,2));
