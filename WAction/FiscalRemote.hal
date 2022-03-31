@@ -138,7 +138,7 @@ begin
         filename = lastinrange(tstr,20);
         FRr.FileName = filename;
         FRr.SerNr = stringtolongint(sernr);
-        if(readfirstmain(FRr,2,true)then begin
+        if(readfirstmain(FRr,2,true))then begin
           FRr.FiscalID = JSONGet(jobj,"id");
           FRr.FiscalNum = "CREATED";
           recordstore(FRr,true);
