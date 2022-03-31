@@ -102,7 +102,7 @@ begin
       recordstore(FRr,true);
     end;
 	end else begin
-    if(JSONGet(jobj,"status")=="CREATED")then begin
+    if(JSONGet(jobj,"status")=="CREATED" or JSONGet(jobj,"status")=="PENDING")then begin
       if (JSONNodeExists(jobj,"SerNr")) then begin
         tstr = stringtolongint(JSONGet(jobj,"SerNr"));
         sernr = firstinrange(tstr,20);
@@ -138,22 +138,23 @@ begin
         filename = lastinrange(tstr,20);
         FRr.FileName = filename;
         FRr.SerNr = stringtolongint(sernr);
-        readfirstmain(FRr,2,true);
-        FRr.FiscalID = JSONGet(jobj,"id");
-        FRr.FiscalNum = "CREATED";
-        recordstore(FRr,true);
+        if(readfirstmain(FRr,2,true)then begin
+          FRr.FiscalID = JSONGet(jobj,"id");
+          FRr.FiscalNum = "CREATED";
+          recordstore(FRr,true);
     
-        addtexttoarea("{",receipt);
-          addtexttoarea("\"SerNr\":" & "\"" & tstr & "\",",receipt);
-          addtexttoarea("\"User\":" & "\"" & JSONGet(jobj,"User") & "\",",receipt);
-          addtexttoarea("\"id\":" & "\"" & FRr.FiscalID & "\"",receipt);
-        addtexttoarea("}",receipt);
+          addtexttoarea("{",receipt);
+            addtexttoarea("\"SerNr\":" & "\"" & tstr & "\",",receipt);
+            addtexttoarea("\"User\":" & "\"" & JSONGet(jobj,"User") & "\",",receipt);
+            addtexttoarea("\"id\":" & "\"" & FRr.FiscalID & "\"",receipt);
+          addtexttoarea("}",receipt);
       
-        token = getFisToken(FRr.Login);
+          token = getFisToken(FRr.Login);
       
-        if(nonblank(token))then begin
-          SetWebHeaders("Authorization: Bearer " & token);//WEB HEADERS!
-          SendAsyncWebRequest("s.erpjs.biz",443,443,true,"POST","/checkbox/basic/shift-status","application/json","",receipt,"IVVc_PasteFiscalPrintTextReply",20);
+          if(nonblank(token))then begin
+            SetWebHeaders("Authorization: Bearer " & token);//WEB HEADERS!
+            SendAsyncWebRequest("s.erpjs.biz",443,443,true,"POST","/checkbox/basic/shift-status","application/json","",receipt,"IVVc_PasteFiscalPrintTextReply",20);
+          end;
         end;
       end;
     end;
