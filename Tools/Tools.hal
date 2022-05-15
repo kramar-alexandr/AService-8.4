@@ -743,7 +743,7 @@ begin
 	
 	setcompany(8,false);
 	GenRnForMail;
-	
+	DayToolsRn;
 return;
 end;
 
