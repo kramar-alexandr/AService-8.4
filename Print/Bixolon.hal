@@ -1194,7 +1194,7 @@ begin
   TLTOARR(cjecklength,"становить 14 днів.",aFile);
   TLTOARR(cjecklength,"У випадку відсутності запчастин на складі",aFile);
   TLTOARR(cjecklength,"сервісного центру термін ремонту може бути",aFile);
-  TLTOARR(cjecklength,"подовжено на 30 днів.",aFile);
+  TLTOARR(cjecklength,"подовжено на 180 днів.",aFile);
   addtexttoarea(chr(13) & chr(10),aFile);
   
   //addtexttoarea(SetBoldOn,aFile);
