@@ -1067,6 +1067,30 @@ begin
 return;
 end;
 
+global webpublic procedure WebTestMail()
+begin
+	area request,reply;
+							
+	setareazerosize(request);
+	addtexttoarea("{",request);
+	addtexttoarea("\"host\":\"smtp.gmail.com\",",request);
+	addtexttoarea("\"port\":465,",request);
+	addtexttoarea("\"secure\":true,",request);
+	addtexttoarea("\"user\":\"aservice.report@gmail.com\",",request);
+	addtexttoarea("\"pass\":\"arPassword123QWE@\",",request);
+	addtexttoarea("\"from\":\"kramar.alexandr@gmail.com\",",request);
+	addtexttoarea("\"to\":\"" & "kramar.alexandr@gmail.com" & "\",",request);
+	addtexttoarea("\"subject\":\"Report: Выполненые ремонты" & "\",",request);
+	addtexttoarea("\"message\":\"\",",request);
+							
+	addtexttoarea("\"filename\":\"FinishRemont.txt" & "\",",request);
+	addtexttoarea("\"path\":\"/usr/local/bin/StandardERPServer/Stock/FinishRemont.txt" & "\"",request);
+	addtexttoarea("}",request);
+
+	MySendWebRequest("127.0.0.1",1070,1070,false,"POST","/sendMail","application/json","",false,request,reply,5);
+return;
+end;
+
 // Edit Dima ************* 2018-03-02 02:33 PM
 
 global
