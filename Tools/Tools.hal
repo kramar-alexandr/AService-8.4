@@ -723,14 +723,17 @@ record IVVc IVr;
 	addtexttoarea("\"user\":\"aservice.report@gmail.com\",",request);
 	addtexttoarea("\"pass\":\"arPassword123QWE@\",",request);
 	addtexttoarea("\"from\":\"kramar.alexandr@gmail.com\",",request);
-	addtexttoarea("\"to\":\"" & "dv@a-service.in.ua,sg@a-service.in.ua,kramar.alexandr@gmail.com" & "\",",request);
+	//addtexttoarea("\"to\":\"" & "dv@a-service.in.ua,sg@a-service.in.ua,kramar.alexandr@gmail.com" & "\",",request);
+	addtexttoarea("\"to\":\"" & "kramar.alexandr@gmail.com" & "\",",request);
 	addtexttoarea("\"subject\":\"" & USetStr(31101) & " " & CurrentDate & "\",",request);
 	addtexttoarea("\"plaintext\":\"notblank\",",request);
 					
 	//addtexttoarea("\"filename\":\"SalesGroup" & keys[j] & ".txt"& "\",",request);
 	addtexttoarea("\"path\":\"/usr/local/bin/StandardERPServer/Stock/" & "SalesGroup.txt" & "\"",request);
 	addtexttoarea("}",request);
-
+  
+  writeareatofile(request,"mail_req.txt");
+  
 	MySendWebRequest("127.0.0.1",1072,1072,false,"POST","/sendMail","application/json","",false,request,reply,5);
 
 	
