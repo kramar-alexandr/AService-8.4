@@ -731,7 +731,7 @@ record IVVc IVr;
 	addtexttoarea("\"path\":\"/usr/local/bin/StandardERPServer/Stock/" & "SalesGroup.txt" & "\"",request);
 	addtexttoarea("}",request);
 
-	MySendWebRequest("127.0.0.1",1070,1070,false,"POST","/sendMail","application/json","",false,request,reply,5);
+	MySendWebRequest("127.0.0.1",1072,1072,false,"POST","/sendMail","application/json","",false,request,reply,5);
 
 	
 	setfileonserver(false);
