@@ -1081,7 +1081,7 @@ begin
 	addtexttoarea("\"from\":\"kramar.alexandr@gmail.com\",",request);
 	addtexttoarea("\"to\":\"" & "kramar.alexandr@gmail.com" & "\",",request);
 	addtexttoarea("\"subject\":\"Report: Выполненые ремонты" & "\",",request);
-	addtexttoarea("\"message\":\"\",",request);
+	addtexttoarea("\"message\":\"Выполненые ремонты\",",request);
 							
 	addtexttoarea("\"filename\":\"FinishRemont.txt" & "\",",request);
 	addtexttoarea("\"path\":\"/usr/local/bin/StandardERPServer/Stock/FinishRemont.txt" & "\"",request);
