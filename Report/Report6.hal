@@ -1087,7 +1087,7 @@ begin
 	addtexttoarea("\"path\":\"/usr/local/bin/StandardERPServer/Stock/FinishRemont.txt" & "\"",request);
 	addtexttoarea("}",request);
 
-	MySendWebRequest("127.0.0.1",1072,1072,false,"POST","","application/json","",false,request,reply,5);
+	MySendWebRequest("127.0.0.1",1072,1072,false,"POST","/","application/json","",false,request,reply,5);
 return;
 end;
 
