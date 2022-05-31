@@ -1204,6 +1204,9 @@ begin
 			case "WATCH":   Actr.MainPersons = "DIMA";
 											Actr.Comment = addhours(currenttime,5) & " " & Actr.Comment;
 											needcreate = true;
+			case "AIRPODS":   Actr.MainPersons = "KAYZER,SAVIN";
+											Actr.Comment = addhours(currenttime,5) & " " & Actr.Comment;
+											needcreate = true;
 			otherwise				Actr.MainPersons = "KAYZER";
 											Actr.Comment = addhours(currenttime,5) & " " & Actr.Comment;
 											needcreate = true;
