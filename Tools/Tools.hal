@@ -1170,12 +1170,18 @@ begin
 			case "WATCH":   Actr.MainPersons = "DIMA";
 											Actr.Comment = addhours(currenttime,5) & " " & Actr.Comment;
 											needcreate = true;
+			case "AIRPODS": Actr.MainPersons = "KAYZER,SAVIN";
+											Actr.Comment = addhours(currenttime,5) & " " & Actr.Comment;
+											needcreate = true;
 		end;
 	end;
 	
 	if(point==7)then begin
 		switch(INr.Code)begin
 			case "MACBOOK":	Actr.MainPersons = "TRIKOPA,SAO,RABCHUN,KAYZER,PIROGOV";
+											Actr.Comment = addhours(currenttime,5) & " " & Actr.Comment;
+											needcreate = true;
+			case "AIRPODS": Actr.MainPersons = "KAYZER,SAVIN";
 											Actr.Comment = addhours(currenttime,5) & " " & Actr.Comment;
 											needcreate = true;
 		end;
@@ -1234,6 +1240,9 @@ begin
 											Actr.Comment = addhours(currenttime,5) & " " & Actr.Comment;
 											needcreate = true;
 			case "WATCH":   Actr.MainPersons = "DIMA";
+											Actr.Comment = addhours(currenttime,5) & " " & Actr.Comment;
+											needcreate = true;
+			case "AIRPODS": Actr.MainPersons = "KAYZER,SAVIN";
 											Actr.Comment = addhours(currenttime,5) & " " & Actr.Comment;
 											needcreate = true;
 			otherwise				Actr.MainPersons = "PAVOLOTSKY,LYASHENKO,VUKOLOV,NEDBAEV";
