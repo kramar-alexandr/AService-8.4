@@ -604,7 +604,11 @@ begin
 					com = "IVUPDStock NOPU ";
 					PUr.SerNr = -1;
 					PUr.CurncyCode = "";
+					
 					NewCalcCostAndPrice(IVr,IVrw,cost,curcost,qty,ressize,cred,realcostbase,realcostuah,realpricebase,realpriceuah,realsumbase,realsumuah,PUr,uahpurate,uahcurrate,com,comment,BCb,vecode);
+				  if(realcostbase[ressize]==0)then begin
+					  realcostbase[ressize] = IHr.TotCostPrice;
+					end;
 				end;
 				ressize = ressize + 1;
 			end;
