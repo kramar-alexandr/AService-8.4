@@ -494,6 +494,13 @@ begin
   // Edit Start ---------------------------------------------- Edit Start
 	//Monday, 25 November 2013 10:10:41
 	  
+	if(transf and WSp.ASBISFlag==0)then begin
+	  if(WSp.FiscalFrom==0)then begin
+	    RecordCheckError(31033,"",-1,"FiscalFrom");      
+      res = -1;
+      goto LWSVcRecordCheck;
+	  end;
+	end;
 	  
 	if(transf)then begin
 		User.Code = CurrentUser;

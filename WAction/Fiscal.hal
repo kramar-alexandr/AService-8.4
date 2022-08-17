@@ -15,7 +15,7 @@ BEGIN
   record SVOVc SVO2r;
   Integer wn,nwn;
   area aFile;
-  record IVVc IVr;
+  record IVVc IVr,IV2r;
   row IVVc IVrw;
   string 100 login;
   record FOPDataBlock FOPb;
@@ -27,7 +27,7 @@ BEGIN
 	boolean TrHs,testf;	
 	string 10 rebate;
 	record Phone1Vc Phoner;
-	val sumreb;
+	val sumreb,fissum2,fissum;
 	record SalesGroupVc SGr;
 	longint res;
 	record UserVc USr;
@@ -109,18 +109,51 @@ BEGIN
     end;
     SVOr.WSCost = SVOr.WSCost - diagsum;
   end;*/
+  
+  
+  WSr.SVONr = SVOr.SerNr;
+  TrHs = true;
+  while(loopkey("SVONr",WSr,1,TrHs))begin
+    testf = true;
+    if(WSr.SVONr!=SVOr.SerNr)then begin testf = false; TrHs = false; end;
+    if(WSr.OKFlag==0)then begin testf = false; end;
+    
+    if(testf)then begin
+      if(WSr.FiscalFrom==2)then begin
+        rwcnt = matrowcnt(WSr);
+        for(i=0;i<matrowcnt(WSr);i=i+1)begin
+          matrowget(WSr,i,WSrw);
+          clearrow(IVr,IVrw,1);
+          IVrw.ArtCode = WSrw.ArtCode;
+          IVrw.Spec = WSrw.Spec;
+          IVrw.Quant = WSrw.Quant;
+          IVrw.Price = WSrw.Price;
+          IVrw.Sum = WSrw.Sum;
+          fissum2 = fissum2 + WSrw.Sum;
+          matrowput(IV2r,matrowcnt(IVr),IVrw);
+        end;
+      end else begin
+        fissum = fissum + WSr.Sum4;
+      end;
+    end;
+  end;
+  
     //--------------------------------------------------------Фискальный чек только на сумму терминала!
     clearrow(IVr,IVrw,1);
     IVrw.ArtCode = "SERVICE";
     IVrw.Spec = "Сервісне обслуговування";
     IVrw.Quant = 1;
-    IVrw.Price = SVOr.FastTerm;
-    IVrw.Sum = SVOr.FastTerm;
+    IVrw.Price = fissum;
+    IVrw.Sum = fissum;
     matrowput(IVr,matrowcnt(IVr),IVrw);
     
     clearrow(IVr,IVrw,kInvoiceRowTypeCreditCardPayment);
-	  IVrw.Sum = SVOr.FastTerm;
+	  IVrw.Sum = fissum;
 	  matrowput(IVr,matrowcnt(IVr),IVrw);
+	  
+	  clearrow(IV2r,IVrw,kInvoiceRowTypeCreditCardPayment);
+	  IVrw.Sum = fissum2;
+	  matrowput(IV2r,matrowcnt(IVr),IVrw);
 	  
 //	SVOr.WSCost = SVOr.WSCost + diagsum;
 	
@@ -133,6 +166,7 @@ BEGIN
 	end;*/
 	
 	res = FiscalizeDocument(login,"SVOVc",SVOr.SerNr,IVr,"SVOFiscalCallBack");
+	res = FiscalizeDocument(login,"SVOVc2",SVOr.SerNr,IV2r,"SVOFiscalCallBack");
 
 lFiscalPrintAndSetRegDateInSVOExecute:;
 

@@ -745,7 +745,7 @@ end;
 window WSDClass:1
   wtag("language","RUS"), wtag("product","*"), wtag("productcode","*"), wtag("device","computer")
 begin
-  real h,h1,h2,h3,h4,t,v,vm,vs;
+  real h,h1,h2,h3,h4,t,v,vm,vs,v2,h5;
   Integer rn,tilenr,flipnr,f;
   
   WindowBegin("Таблица работ",WSDClass,CGview,WSView);
@@ -758,11 +758,21 @@ begin
   EditField(75,vm=(v=6),95,"Номер",Normal,SerNr,false,TSerSClass);
   EditField(75,v+=20,95,"Клиент",Normal,CustCode,false,CUSClass);
   EditField(h=240,v=vm,-40,"Наименов.",Normal,Addr0,false,0);
+  
+  v2 = v+40;
+  h5 = 300;
+  ButtonFrame(h5,v2,120,3,"Фискальный чек"); 
+	RadioButton(h5,v2,0,0,"Не указано",FiscalFrom);
+	RadioButton(h5,v2+=16,1,0,"А-Сервис",FiscalFrom);
+	RadioButton(h5,v2+=16,2,0,"Мастер-М",FiscalFrom);
+  
+  
   v = v+vs;
   CheckBox(h4=-230,v,0,"Напечатано",PrintFlag);
   CheckBox(h4=-230,v+vs,0,"Работы приемки",SalesFlag);
   CheckBox(h4=-100,v,0,"OK",OKFlag);
   CheckBox(h4=-100,v+vs,0,"ASBIS гарантия",ASBISFlag);
+
   
   tilenr = 1;
   TileButton(tilenr,"Дата"); tilenr = tilenr + 1; 
