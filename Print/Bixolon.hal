@@ -1463,7 +1463,8 @@ begin
   TLTOARR(cjecklength,"стають її власністю.",aFile);
   
   
-  
+  addtexttoarea(SetMiddleAlignment,aFile);
+	
   tax_url = "https://docs.google.com/document/d/1RvaFkRlfTopb4U77VS0EtdVxyPzFG8dhlh8iqa0H0y0/edit?usp=sharing";
   getQRCode(tax_url,qrArea);
   alast = 0;
@@ -1477,9 +1478,8 @@ begin
   end;
   addtexttoarea(chr(10),aFile);
   
-  addtexttoarea(chr(13) & chr(10),aFile);
-  addtexttoarea(chr(13) & chr(10),aFile);
-	addtexttoarea(chr(13) & chr(10),aFile);
+  TLTOARR(cjecklength,"Правила обслуговування А-сервіс",aFile);
+  
 	addtexttoarea(chr(13) & chr(10),aFile);
 	addtexttoarea(chr(13) & chr(10),aFile);
 	
@@ -1497,8 +1497,9 @@ begin
     end;
   end;
   addtexttoarea(chr(10),aFile);
-
+  TLTOARR(cjecklength,"Обмежена гарантія Apple на один (1) рік",aFile);
   
+  addtexttoarea(SetLeftAlignment,aFile);
   
   addtexttoarea(chr(13) & chr(10),aFile);
   TLTOARR(cjecklength,"Обладнання до ремонту прийняв(ла):",aFile);
