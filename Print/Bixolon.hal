@@ -1168,9 +1168,9 @@ begin
   TLTOARR(cjecklength,"Правила обслуговування сервісного центру: ",aFile);
   addtexttoarea(SetUnderlineOff,aFile);
   TLTOARR(cjecklength,"- Вартість діагностики пристроїв (платных",aFile);
-  TLTOARR(cjecklength,"та гарантiйних): iPhone - 250грн.,",aFile);
-  TLTOARR(cjecklength,"iPad - 400грн., MacBook - 500грн., ",aFile);
-  TLTOARR(cjecklength,"iMac - 1000грн., моноблоків - 400грн.,",aFile);
+  TLTOARR(cjecklength,"та гарантiйних): iPhone - 350грн.,",aFile);
+  TLTOARR(cjecklength,"iPad - 400грн., MacBook - 600грн., ",aFile);
+  TLTOARR(cjecklength,"iMac - 1500грн., моноблоків - 400грн.,",aFile);
   TLTOARR(cjecklength,"смартфонів - 250грн., планшетів- 300грн.,",aFile);
   TLTOARR(cjecklength,"навушників- 250,00грн.",aFile);
   //addtexttoarea(SetBoldOff,aFile);
