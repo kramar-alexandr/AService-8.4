@@ -360,3 +360,27 @@ begin
   BlockStore(SMSb);
   return;
 end;
+
+
+global procedure SendDirectSMS(record SVOVc SVOr, record SVOVc SVO2r)
+begin
+  string 255 tstr,phone;
+  
+  if(SVOr.OrderStatus==8 and SVO2r.OrderStatus!=8)then begin
+    tstr = "На жаль, ми не змогли додзвонитися до Вас!";
+  end;
+  if(SVOr.OrderStatus==7 and SVO2r.OrderStatus!=7)then begin
+    tstr = "Ваше замовлення готове до видачі.";
+  end;
+  
+  phone = SVOr.Kontinfo1;
+  if(blank(phone))then begin
+    phone = SVOr.Phone2;
+  end;
+  
+  if(nonblank(tstr) and nonblank(phone))then begin
+    qupdating.EasySendTurboSMS(phone,tstr);
+  end;
+
+return;
+end;
