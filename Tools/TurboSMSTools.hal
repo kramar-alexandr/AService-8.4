@@ -370,7 +370,7 @@ begin
     tstr = "На жаль, ми не змогли додзвонитися до Вас!";
   end;
   if(SVOr.OrderStatus==7 and SVO2r.OrderStatus!=7)then begin
-    tstr = "Ваше замовлення готове до видачі.";
+    tstr = "Ваше замовлення " & SVOr.SerNr & " готове до видачі.";
   end;
   
   phone = SVOr.Kontinfo1;
