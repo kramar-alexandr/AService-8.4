@@ -882,7 +882,7 @@ begin
 	
 	addtexttoarea(" " & chr(13) & chr(10),aFile);
 	
-	TLTOARR(rowLength,"Я, " & SVOr.Priynato & " " & SVOr.Name & " " & SVOr.MiddleName & ", зобов'язуюсь повернути пристрій у тому стані в якому отримав",aFile);
+	TLTOARR(rowLength,"Я, " & trim(SVOr.Priynato & " " & SVOr.Name & " " & SVOr.MiddleName) & ", зобов'язуюсь повернути пристрій у тому стані в якому отримав",aFile);
 	addtexttoarea(" " & chr(13) & chr(10),aFile);
 	TLTOARR(rowLength,"__________________________",aFile);
 	addtexttoarea(" " & chr(13) & chr(10),aFile);
