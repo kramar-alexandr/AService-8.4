@@ -874,10 +874,10 @@ begin
   TLTOARR(rowLength,"__________________________________________",aFile);
   TLTOARR(rowLength,"На час очікування видано підмінний фонд повністю цілий та в робочому стані",aFile);
   if(nonblank(RepSpec.f2))then begin
-    TLTOARR(rowLength," виріб: " & RepSpec.f2,aFile);
+    TLTOARR(rowLength,"Виріб: " & RepSpec.f2,aFile);
   end;
   if(nonblank(RepSpec.f3))then begin
-    TLTOARR(rowLength," IMEI: " & RepSpec.f3,aFile);
+    TLTOARR(rowLength,"IMEI: " & RepSpec.f3,aFile);
   end;
 	
 	addtexttoarea(" " & chr(13) & chr(10),aFile);
@@ -999,8 +999,6 @@ begin
 
 	M4PadString(ValToString(SVOr.FastPrepay+SVOr.FastTermPrepay,M4Val,"",".",0),rowLength - Len(s3)," ",true,sPay);
 	sPay = s3 & sPay;
-	//addtexttoarea(sTot & chr(13) & chr(10) ,aFile);
-	//addtexttoarea(sVAT & chr(13) & chr(10) ,aFile);
 	addtexttoarea(SetBoldOn,aFile);
 	addtexttoarea(sPay & chr(13) & chr(10) ,aFile);
 	addtexttoarea(SetBoldOff,aFile);
@@ -1010,11 +1008,6 @@ begin
 	addtexttoarea(chr(13) & chr(10),aFile);
 	addtexttoarea(SetLeftAlignment,aFile);
 	addtexttoarea(SmallLetterOn,aFile);
-	//addtexttoarea("Гарантія на виконання робіт становить:" & chr(13) & chr(10) ,aFile);
-	//addtexttoarea("-для iPhone,iPod,iPad - 1 рік" & chr(13) & chr(10) ,aFile);
-	//addtexttoarea("-для Мас і ноутбуків - 3 місяці" & chr(13) & chr(10) ,aFile);	
-	//addtexttoarea("-заміна пристрою - 3 місяці" & chr(13) & chr(10) ,aFile);
-	//addtexttoarea(chr(13) & chr(10),aFile);		
 		
 	addtexttoarea(SetLeftAlignment,aFile);
 	addtexttoarea("Замовлення № " & SVOr.SerNr & chr(13) & chr(10) ,aFile);
