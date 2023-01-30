@@ -2601,6 +2601,70 @@ begin
 return;
 end;
 
+global procedure CreateChangeDsm()
+begin
+  record SVOVc SVOr;
+  record RcVc RepSpec;
+  integer wn;
+  
+  wn = curwindow;
+  deselectwindow(wn,true);
+  
+  //if(windowstate(wn)==0)then begin
+  if(true)then begin
+    getwindowrecord(wn,SVOr);
+    RepSpec.long1 = SVOr.SerNr;
+    OpenWindow("CreateChangeWClass",1,wn,"","",RepSpec);
+  end else begin
+    messagebox(0,"Сохраните изменения в окне");
+  end;
+
+return;
+end;
+
+global updating procedure CreateChangeWClassConfirm()
+begin
+  record SVOVc SVOr,oldSVOr;
+  record RcVc RepSpec;
+  integer wn,mwn;
+  
+  wn = curwindow;
+  deselectwindow(wn,true);
+  mwn = motherwindow(wn);
+  //if(windowstate(wn)==0)then begin
+    getwindowrecord(wn,RepSpec);
+    if(blank(RepSpec.f2) or blank(RepSpec.f3))then begin
+      messagebox(0,"Заповніть назву та IMEI");
+    end else begin
+      SVOr.SerNr = RepSpec.long1;
+      if(readfirstmain(SVOr,1,true))then begin
+        recordcopy(oldSVOr,SVOr);
+        AddToText(CurrentDate & " ",SVOr);
+        AddToText(CurrentTime & " ",SVOr);
+        AddToText(CurrentUser & ": ",SVOr);
+        AddToText("Видана підміна телефону",SVOr);
+        if(nonblank(RepSpec.f1))then begin
+          AddToText(" Код: " & RepSpec.f1,SVOr);
+        end;
+        if(nonblank(RepSpec.f2))then begin
+          AddToText(" Назва: " & RepSpec.f2,SVOr);
+        end;
+        if(nonblank(RepSpec.f3))then begin
+          AddToText(" IMEI: " & RepSpec.f3,SVOr);
+        end;
+        AddToText(chr(13) & chr(10),SVOr);
+        SVOr.SVOChatFlag = 1;
+		    recordupdate(oldSVOr,SVOr,true);
+		    putwindowrecord(mwn,SVOr);
+		    updatebrowses("SVODClass");
+      end;
+    end;
+
+return;
+end;
+
+
+
 
 
 global procedure ItemStockReportDsm()
