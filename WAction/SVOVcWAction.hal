@@ -43,6 +43,8 @@ remote procedure sendMessageToSergey(record SVOVc);
 remote procedure HandleSVOAct1(record SVOVc,var area);
 remote procedure HandleSVOAct2(record SVOVc,var area);
 external updating procedure  FiscalPrintAndSetRegDateInSVOExecute(record SVOVc);
+remote procedure HandleCreateChangeReceiptPrinting(record RcVc,var area);
+
 // Edit Start ---------------------------------------------- Edit Start
 	//Wednesday, 3 June 2015 16:58:34
 	
@@ -2627,6 +2629,7 @@ begin
   record SVOVc SVOr,oldSVOr;
   record RcVc RepSpec;
   integer wn,mwn;
+  area aFile;
   
   wn = curwindow;
   deselectwindow(wn,true);
@@ -2658,6 +2661,12 @@ begin
 		    putwindowrecord(mwn,SVOr);
 		    updatebrowses("SVODClass");
 		    closewindow(wn);
+		    
+		    SetExportCodePage("CP1251");
+				HandleCreateChangeReceiptPrinting(RepSpec,aFile);
+				AddAreaToArea(aFile,aFile);
+				PrintBixolonReceipt(aFile);
+		    
       end;
     end;
 
