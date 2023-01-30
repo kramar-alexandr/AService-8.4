@@ -2657,6 +2657,7 @@ begin
 		    recordupdate(oldSVOr,SVOr,true);
 		    putwindowrecord(mwn,SVOr);
 		    updatebrowses("SVODClass");
+		    closewindow(wn);
       end;
     end;
 
