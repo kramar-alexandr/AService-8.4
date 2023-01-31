@@ -2624,12 +2624,25 @@ begin
 return;
 end;
 
+
+updating procedure AddTextToNote(var record NotepadVc Noter,string tstr)
+BEGIN
+    AddToText(tstr,Noter);
+    AddToText(Chr(13) & Chr(10),Noter);
+    
+  RETURN;
+END;
+
 global updating procedure CreateChangeWClassConfirm()
 begin
   record SVOVc SVOr,oldSVOr;
   record RcVc RepSpec;
   integer wn,mwn;
   area aFile,aFile1;
+  record NotepadVc Noter;
+  string 255 tstr;
+  record RLinkVc RLinkr;
+  integer notenr;
   
   wn = curwindow;
   deselectwindow(wn,true);
@@ -2661,6 +2674,36 @@ begin
 		    putwindowrecord(mwn,SVOr);
 		    updatebrowses("SVODClass");
 		    closewindow(wn);
+		    
+		    recordNew(Noter);
+        AddTextToNote(Noter,CurrentDate & " ");// Edit ************************** Wednesday, 8 June 2011 11:45:46
+        AddTextToNote(Noter,CurrentTime & " ");// Edit ************************** Wednesday, 8 June 2011 11:45:46
+        AddTextToNote(Noter,CurrentUser & ": ");// Edit ************************** Wednesday, 8 June 2011 11:45:46
+        AddTextToNote(Noter,"‚идана пґдмґна телефону");// Edit ************************** Wednesday, 8 June 2011 11:45:46
+        
+        if(nonblank(RepSpec.f1))then begin
+          AddTextToNote(Noter," Љод: " & RepSpec.f1);// Edit ************************** Wednesday, 8 June 2011 11:45:46
+        end;
+        if(nonblank(RepSpec.f2))then begin
+          AddTextToNote(Noter," Ќазва: " & RepSpec.f2);// Edit ************************** Wednesday, 8 June 2011 11:45:46
+        end;
+        if(nonblank(RepSpec.f3))then begin
+          AddTextToNote(Noter," IMEI: " & RepSpec.f3);// Edit ************************** Wednesday, 8 June 2011 11:45:46
+        end;
+                
+        Noter.SerNr = NextSerNr("NotepadVc",CurrentDate,-1,false,"");
+        if (RecordStore(Noter,false)) then begin
+          CreateRecordLink(SVOr,CurrentCompany,Noter,CurrentCompany);  
+          notenr = 1;
+          while (ReadRecordLink(SVOr,notenr,Noter,RLinkr)) begin
+            notenr = notenr + 1;
+          end;
+          if (ReadRecordLink(SVOr,notenr-1,Noter,RLinkr)) then begin
+            RLinkr.Comment = "‚идана пґдмґна";//"Printed Docs";   
+            if (RecordStore(RLinkr,true)) then begin  end;
+          end;
+        end;
+		    
 		    
 		    SetExportCodePage("CP1251");
 				HandleCreateChangeReceiptPrinting(RepSpec,aFile);
