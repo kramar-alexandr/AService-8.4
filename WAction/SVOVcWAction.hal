@@ -2629,7 +2629,7 @@ begin
   record SVOVc SVOr,oldSVOr;
   record RcVc RepSpec;
   integer wn,mwn;
-  area aFile;
+  area aFile,aFile1;
   
   wn = curwindow;
   deselectwindow(wn,true);
@@ -2664,8 +2664,10 @@ begin
 		    
 		    SetExportCodePage("CP1251");
 				HandleCreateChangeReceiptPrinting(RepSpec,aFile);
-				AddAreaToArea(aFile,aFile);
-				PrintBixolonReceipt(aFile);
+				AddAreaToArea(aFile,aFile1);
+				AddAreaToArea(aFile,aFile1);
+				AddAreaToArea(aFile,aFile1);
+				PrintBixolonReceipt(aFile1);
 		    
       end;
     end;
