@@ -845,7 +845,6 @@ begin
 	addtexttoarea(chr(13) & chr(10),aFile);
 	
 	addtexttoarea(SetLeftAlignment,aFile);
-	addtexttoarea(SmallLetterOn,aFile);
 	addtexttoarea("Замовлення № " & SVOr.SerNr & chr(13) & chr(10) ,aFile);
 	addtexttoarea("Дата " & CurrentDate & chr(13) & chr(10) ,aFile);
 	addtexttoarea("Час " & CurrentTime & chr(13) & chr(10) ,aFile);	
@@ -895,7 +894,7 @@ begin
 	
 
 //Cut receipt  
-  addtexttoarea(chr(29) & chr(86) & "2",aFile);
+  addtexttoarea(chr(29) & chr(86) & "1",aFile);
   
 end;
 
