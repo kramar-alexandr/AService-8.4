@@ -21,7 +21,8 @@ begin
     if(FOPrw.FisLogin==login)then begin 
       if(nonblank(FOPrw.FisLogin) and nonblank(FOPrw.FisPasswd))then begin
         addtexttoarea("{\"login\":\"" & FOPrw.FisLogin & "\",\"password\":\"" & FOPrw.FisPasswd & "\"}",a_req);
-        if(SendWebRequest("s.erpjs.biz","443",-1,true,"POST","/checkbox/public/login","application/json","",false,a_req,replyarea,10))then begin  //WORK! 
+        //if(SendWebRequest("s.erpjs.biz","443",-1,true,"POST","/checkbox/public/login","application/json","",false,a_req,replyarea,10))then begin  //WORK! 
+        if(SendWebRequest("f4o.site","443",-1,true,"POST","/checkbox/public/login","application/json","",false,a_req,replyarea,10))then begin  //WORK! 
           jobj = parsejsonarea(replyarea);
           if(nonblank(JSONGet(jobj,"token")))then begin
             FOPrw.FisToken = JSONGet(jobj,"token");
@@ -130,7 +131,8 @@ begin
       
         if(nonblank(token))then begin
           SetWebHeaders("Authorization: Bearer " & token);//WEB HEADERS!
-          SendAsyncWebRequest("s.erpjs.biz",443,443,true,"POST","/checkbox/basic/shift-status","application/json","",receipt,"IVVc_PasteFiscalPrintTextReply",20);
+          //SendAsyncWebRequest("s.erpjs.biz",443,443,true,"POST","/checkbox/basic/shift-status","application/json","",receipt,"IVVc_PasteFiscalPrintTextReply",20);
+          SendAsyncWebRequest("f4o.site",443,443,true,"POST","/checkbox/basic/shift-status","application/json","",receipt,"IVVc_PasteFiscalPrintTextReply",20);
         end;
       end;
     end else begin
@@ -156,7 +158,8 @@ begin
       
           if(nonblank(token))then begin
             SetWebHeaders("Authorization: Bearer " & token);//WEB HEADERS!
-            SendAsyncWebRequest("s.erpjs.biz",443,443,true,"POST","/checkbox/basic/shift-status","application/json","",receipt,"IVVc_PasteFiscalPrintTextReply",20);
+            //SendAsyncWebRequest("s.erpjs.biz",443,443,true,"POST","/checkbox/basic/shift-status","application/json","",receipt,"IVVc_PasteFiscalPrintTextReply",20);
+            SendAsyncWebRequest("f4o.site",443,443,true,"POST","/checkbox/basic/shift-status","application/json","",receipt,"IVVc_PasteFiscalPrintTextReply",20);
           end;
         end;
       end;
@@ -391,7 +394,8 @@ begin
     recordstore(FRr,true);
      
     SetWebHeaders("Authorization: Bearer " & token);//WEB HEADERS!
-    SendAsyncWebRequest("s.erpjs.biz",443,443,true,"POST","/checkbox/basic/complete-sell","application/json","",receipt,callback,20);
+    //SendAsyncWebRequest("s.erpjs.biz",443,443,true,"POST","/checkbox/basic/complete-sell","application/json","",receipt,callback,20);
+    SendAsyncWebRequest("f4o.site",443,443,true,"POST","/checkbox/basic/complete-sell","application/json","",receipt,callback,20);
     writeareatofile(nl,"FiscalRequest.txt",1);
     writeareatofile(receipt,"FiscalRequest.txt",1);
     
@@ -435,13 +439,15 @@ begin
     input = -(sum * 100);
     addtexttoarea("{\"value\":\"-" & input & "\"}",a_req);
     SetWebHeaders("Authorization: Bearer " & token);//WEB HEADERS!
-    if(SendWebRequest("s.erpjs.biz","443",-1,true,"POST","/checkbox/basic/service-receipt","application/json","",false,a_req,replyarea,10))then begin  //WORK! 
+    //if(SendWebRequest("s.erpjs.biz","443",-1,true,"POST","/checkbox/basic/service-receipt","application/json","",false,a_req,replyarea,10))then begin  //WORK! 
+    if(SendWebRequest("f4o.site","443",-1,true,"POST","/checkbox/basic/service-receipt","application/json","",false,a_req,replyarea,10))then begin  //WORK! 
     end;
     setareazerosize(a_req);
     setareazerosize(replyarea);
 
     SetWebHeaders("Authorization: Bearer " & token);//WEB HEADERS!
-    if(SendWebRequest("s.erpjs.biz","443",-1,true,"GET","/checkbox/basic/cachier-shift","application/json","",false,a_req,replyarea,10))then begin  //WORK! 
+    if(SendWebRequest("f4o.site","443",-1,true,"GET","/checkbox/basic/cachier-shift","application/json","",false,a_req,replyarea,10))then begin  //WORK! 
+    //if(SendWebRequest("s.erpjs.biz","443",-1,true,"GET","/checkbox/basic/cachier-shift","application/json","",false,a_req,replyarea,10))then begin  //WORK! 
       jobj = parsejsonarea(replyarea);
       bal = stringtoval(JSONGet(jobj,"balance/balance"),m4val)/100;
     end;
@@ -479,13 +485,15 @@ begin
     input = -(sum * 100);
     addtexttoarea("{\"value\":\"-" & input & "\"}",a_req);
     SetWebHeaders("Authorization: Bearer " & token);//WEB HEADERS!
-    if(SendWebRequest("s.erpjs.biz","443",-1,true,"POST","/checkbox/basic/service-receipt","application/json","",false,a_req,replyarea,10))then begin  //WORK! 
+    //if(SendWebRequest("s.erpjs.biz","443",-1,true,"POST","/checkbox/basic/service-receipt","application/json","",false,a_req,replyarea,10))then begin  //WORK! 
+    if(SendWebRequest("f4o.site","443",-1,true,"POST","/checkbox/basic/service-receipt","application/json","",false,a_req,replyarea,10))then begin  //WORK! 
     end;
     setareazerosize(a_req);
     setareazerosize(replyarea);
 
     SetWebHeaders("Authorization: Bearer " & token);//WEB HEADERS!
-    if(SendWebRequest("s.erpjs.biz","443",-1,true,"GET","/checkbox/basic/cachier-shift","application/json","",false,a_req,replyarea,10))then begin  //WORK! 
+    //if(SendWebRequest("s.erpjs.biz","443",-1,true,"GET","/checkbox/basic/cachier-shift","application/json","",false,a_req,replyarea,10))then begin  //WORK! 
+    if(SendWebRequest("f4o.site","443",-1,true,"GET","/checkbox/basic/cachier-shift","application/json","",false,a_req,replyarea,10))then begin  //WORK! 
       jobj = parsejsonarea(replyarea);
       bal = stringtoval(JSONGet(jobj,"balance/balance"),m4val)/100;
     end;
