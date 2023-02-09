@@ -2407,6 +2407,25 @@ return;
 end;
 
 global
+updating procedure ChangeToStrelkovaDsm()
+begin
+
+record ActVc Actr;
+integer wn;	
+	
+	wn = curwindow;
+	deselectwindow(wn,true);
+	getwindowrecord(wn,Actr);
+	
+	Actr.Comment = "Заказ запчастей " & Actr.SVOSerNr;
+	Actr.MainPersons = "STRELKOVA";
+	putwindowrecord(wn,Actr);
+	windowdook(wn,0);
+	
+return;
+end;
+
+global
 procedure OpenSVOFromIntOrDsm()
 begin
 	record SVOVc SVOr;
