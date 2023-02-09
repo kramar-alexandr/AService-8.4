@@ -945,6 +945,7 @@ boolean TrHs,testf;
 								recordcopy(oldActr,Actr);
 								TrHs = false; 
 								Actr.OKFlag = 1;
+								Actr.EndTime = CurrentTime;
 								Actr.CCPersons = currentuser;
 								Actr.MainPersons = currentuser;
 								RecordUpdate(oldActr,Actr,true);

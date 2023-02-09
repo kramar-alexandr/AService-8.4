@@ -1342,6 +1342,11 @@ BEGIN
   Actr.LastChangedDate = CurrentDate;
   if (Act2r.OKFlag==0) then begin
     switch (Actr.TodoFlag) begin
+      if(Actr.OKFlag==1)then begin
+        if (blanktime(Actr.EndTime)) then begin
+          Actr.EndTime = CurrentTime;
+        end;
+      end;
       case kTodoFlagTimedTodo:
         if (blankdate(Actr.EndDate)) then begin
           Actr.EndDate = CurrentDate;

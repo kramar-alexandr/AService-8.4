@@ -1115,6 +1115,7 @@ begin
 				if(Actr.OKFlag==0)then begin
 					RecordCopy(oldActr,Actr);
 					Actr.OKFlag = 1;		
+					Actr.EndTime = CurrentTime;
 					RecordUpdate(oldActr,Actr,true);
 				end;
 			end;

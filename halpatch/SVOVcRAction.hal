@@ -188,6 +188,7 @@ begin
     if(recordupdate(lActr,Actr,true)!=0)then begin
     	Actr.ActResult = actResult;
 			Actr.OKFlag = 1;
+			Actr.EndTime = CurrentTime;
 			recordstore(Actr,true);
     end;
 end;
