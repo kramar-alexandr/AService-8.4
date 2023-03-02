@@ -46,7 +46,7 @@ external updating function Boolean UserLicensesExpired();
 external procedure LogoutHansaWorldID();
 external procedure SendHansaWorldIDUserTask2(string,string,Integer);
 external procedure GetUserAccessGroup(string,var string);// Edit ************************** Thursday, 30 March 2017 10:16:28
-remote  procedure MyBonusCurrentUserRemote(var val,var val,var boolean);
+remote  procedure MyBonusCurrentUserRemote(var val,var val,var val,var boolean);
 external procedure ExtractObjWithSeparator(string,string,Boolean,var Integer,var string);
 	SetLangMode(LangRussian,"RUS",0);
 
@@ -66,7 +66,7 @@ end;
 //***************************************************************************** function added by dima-f 13.09.17
 procedure  ShowUserInfo()
 BEGIN
-  val cnt, ttl;
+  val cnt, ttl,finsum;
   boolean showFlag;
   record UserVc USr;
   Record RcVc RepSpec;
@@ -74,9 +74,9 @@ BEGIN
   cnt=0;
   ttl=0;
   showFlag=false;
-  MyBonusCurrentUserRemote(cnt, ttl, showFlag);
+  MyBonusCurrentUserRemote(cnt, ttl, finsum, showFlag);
 	if(showFlag==true) begin
-			MessageBox(0,"Співробітник:" & CurrentUser & "   Кількість ремонтів:" & cnt & "   Прибуток:" & ttl);
+			MessageBox(0,"Співробітник:" & CurrentUser & "   Кількість ремонтів:" & cnt & "   Прибуток:" & ttl & " Согласование:" & finsum);
 	end;
 	
 	USr.Code = CurrentUser;

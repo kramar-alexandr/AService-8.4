@@ -1521,6 +1521,18 @@ begin
 									FindEnginer(IVrw.ArtCode,IVr,enginer,svonr);
 								end;
                 
+                
+                if (UtverjFinishUser==cusr) then begin// Edit ************************** BPI Ukraine - KramarAlexandr - 04, 02 03 2023 y. at 12:47:54 PM
+                  CollectCostMyInvoice(IVr,i,cost,curcost,curncyarr,rate,indate,vecode,serial,qty,ressize,cred,-1,realcostbase,realcostuah,realpricebase,realpriceuah,realsumbase,realsumuah,uahpurate,uahcurrate,comment,BCb); //Edit***************************Sasha2,15:53 23.04.2015
+                  For(j=0;j<ressize;j=j+1) begin
+                    quant = qty[j];
+                    sumorig = realsumbase[j];
+                    sumcostorig = realcostuah[j]*quant;
+                    gporig = sumorig - sumcostorig;
+                    RepSpec.vals2 = RepSpec.vals2 + gporig;
+                  end;
+                end;
+                
                if (enginer == cusr or (blank(enginer) and IVr.SalesMan==cusr) or ((currentuser=="SHILKIN" or currentuser=="SA") and UtverjFinishUser== "SHILKIN")) then begin  
                 CollectCostMyInvoice(IVr,i,cost,curcost,curncyarr,rate,indate,vecode,serial,qty,ressize,cred,-1,realcostbase,realcostuah,realpricebase,realpriceuah,realsumbase,realsumuah,uahpurate,uahcurrate,comment,BCb); //Edit***************************Sasha2,15:53 23.04.2015
       					foundqty = 0;
@@ -1888,6 +1900,17 @@ lsm1:;
 											if(blank(enginer) or CredNo>-1)then begin// Edit ************************** Wednesday, 1 February 2017 14:44:22
 												FindEnginer(newIVrw.ArtCode,newIVr,enginer,svonr);
 											end;
+											
+											if (UtverjFinishUser==cusr) then begin// Edit ************************** BPI Ukraine - KramarAlexandr - 04, 02 03 2023 y. at 12:47:54 PM
+											  CollectCostMyInvoice(newIVr,i,cost,curcost,curncyarr,rate,indate,vecode,serial,qty,ressize,cred,-1,realcostbase,realcostuah,realpricebase,realpriceuah,realsumbase,realsumuah,uahpurate,uahcurrate,comment,BCb); //Edit***************************Sasha2,15:53 23.04.2015
+												For(j=0;j<ressize;j=j+1) begin
+													quant = qty[j];
+                          sumorig = realsumbase[j];
+                          sumcostorig = realcostuah[j]*quant;
+                          gporig = sumorig - sumcostorig;
+													RepSpec.vals2 = RepSpec.vals2 + gporig;
+												end;
+											end;
                       if (enginer == cusr or (blank(enginer) and newIVr.SalesMan==cusr) or ((currentuser=="SHILKIN" or currentuser=="SA") and UtverjFinishUser=="SHILKIN")) then begin
 												CollectCostMyInvoice(newIVr,i,cost,curcost,curncyarr,rate,indate,vecode,serial,qty,ressize,cred,-1,realcostbase,realcostuah,realpricebase,realpriceuah,realsumbase,realsumuah,uahpurate,uahcurrate,comment,BCb); //Edit***************************Sasha2,15:53 23.04.2015
 												foundqty = 0;
@@ -2049,7 +2072,7 @@ return;
 end;
 //***************************************************************************** whole function added by dima-f 13.09.17
 global
-procedure MyBonusCurrentUserRemote(var val cnt, var val ttl, var boolean showFlag) begin
+procedure MyBonusCurrentUserRemote(var val cnt, var val ttl,var val finishsum, var boolean showFlag) begin
     record RcVc RepSpec;
     record UserVc Userr;
     Userr.Code = CurrentUser;
@@ -2064,6 +2087,7 @@ procedure MyBonusCurrentUserRemote(var val cnt, var val ttl, var boolean showFla
         MyBonusCurrentUserRn(RepSpec);
         cnt=RepSpec.vals3;//n distinct
         ttl = RepSpec.vals4;//totGP
+        finishsum = RepSpec.vals2;
         return;
     end;
 end;
