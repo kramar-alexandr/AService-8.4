@@ -251,10 +251,7 @@ begin
   
   if(password=="tehdfgvhbnjmk")then begin
     if(nonblank(phone))then begin
-      realphone = GetPhone1SerNrByPhone(phone);
-      if(nonblank(realphone))then begin
-        OutThisCustomer(realphone,order);
-      end;
+        OutThisCustomer(phone,order);
     end;
   end;
   
