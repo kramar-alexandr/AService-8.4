@@ -179,6 +179,7 @@ begin
   TrHs = true;
   SVOr.Phone2 = realphone;
   while(loopkey("Phone2",SVOr,1,TrHs))begin
+    logtext(0,"1 " & SVOr.SerNr);
     testf = true;
     if(SVOr.Phone2!=realphone)then begin
       TrHs = false;
@@ -203,6 +204,7 @@ begin
   TrHs = true;
   SVOr.Kontinfo1 = realphone;
   while(loopkey("Kontinfo1",SVOr,1,TrHs))begin
+    logtext(0,"2 " & SVOr.SerNr);
     testf = true;
     if(SVOr.Kontinfo1!=realphone)then begin
       TrHs = false;
@@ -236,13 +238,13 @@ return;
 end;
 
 
-global webpublic procedure WebHetServiceOrderByPhone()
+global webpublic procedure WebGetServiceOrderByPhone()
 begin
   record Phone1Vc Phoner;
   string 100 phone,password,order,realphone;
 
   setcompany(13,false);
-  logtext(0,"WebHetServiceOrderByPhone");
+  logtext(0,"WebGetServiceOrderByPhone");
   
   phone = WebGetArg("phone");
   password = WebGetArg("password");
@@ -251,7 +253,7 @@ begin
   
   if(password=="tehdfgvhbnjmk")then begin
     if(nonblank(phone))then begin
-        OutThisCustomer(phone,order);
+      OutThisCustomer(phone,order);
     end;
   end;
   
