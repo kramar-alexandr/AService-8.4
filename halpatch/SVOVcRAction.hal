@@ -37,6 +37,7 @@ external function boolean MySendRawWebRequest(string,longint,boolean,string,stri
 remote function boolean RemoteSendConfirmSMS(record SVOVc,string);
 external procedure DblConfirmPaymentManagerDsm();
 external procedure SendDirectSMS(record SVOVc,record SVOVc);
+external function string 50 GetPhone1SerNrByPhone(string); //Edit***************************Sasha2,13:52 10.03.2017
 
 SetLangMode(LangRussian,"RUS",0);
 
@@ -167,18 +168,19 @@ return;
 end;
 
 
-procedure OutThisCustomer(record CUVc CUr,string order)
+procedure OutThisCustomer(string realphone,string order)
 begin
   record SVOVc SVOr;
   boolean TrHs,testf;
   area resarea,orarea;
   
-  TrHs = true;
-  SVOr.CustCode = CUr.Code;
   addtexttoarea("[",resarea);
-  while(loopkey("CustCode",SVOr,1,TrHs))begin
+  
+  TrHs = true;
+  SVOr.Phone2 = realphone;
+  while(loopkey("Phone2",SVOr,1,TrHs))begin
     testf = true;
-    if(SVOr.CustCode!=CUr.Code)then begin
+    if(SVOr.Phone2!=realphone)then begin
       TrHs = false;
       testf = false;
     end;
@@ -195,6 +197,36 @@ begin
       addtexttoarea(",",resarea);
     end;
   end;
+  resetloop(SVOr);
+  
+  
+  TrHs = true;
+  SVOr.Kontinfo1 = realphone;
+  while(loopkey("Kontinfo1",SVOr,1,TrHs))begin
+    testf = true;
+    if(SVOr.Kontinfo1!=realphone)then begin
+      TrHs = false;
+      testf = false;
+    end;
+    if(nonblank(order))then begin
+      if(SVOr.SerNr!=stringtolongint(order) and SVOr.CustOrdNr!=order)then begin
+        testf = false;
+      end;
+    end;
+    
+    if(testf)then begin
+      setareazerosize(orarea);
+      CreateSVOJson(SVOr,orarea);
+      AddAreaToArea(orarea,resarea);   
+      addtexttoarea(",",resarea);
+    end;
+  end;
+  resetloop(SVOr);
+  
+  
+  
+  
+  
   delLastComaInArea(resarea);
   addtexttoarea("]",resarea);
   
@@ -206,8 +238,8 @@ end;
 
 global webpublic procedure WebHetServiceOrderByPhone()
 begin
-  record CUVc CUr;
-  string 100 phone,password,order;
+  record Phone1Vc Phoner;
+  string 100 phone,password,order,realphone;
 
   setcompany(13,false);
   logtext(0,"WebHetServiceOrderByPhone");
@@ -219,14 +251,9 @@ begin
   
   if(password=="tehdfgvhbnjmk")then begin
     if(nonblank(phone))then begin
-      CUr.Code = phone;
-      if(readfirstmain(CUr,1,true))then begin
-        OutThisCustomer(CUr,order);
-      end else begin
-        CUr.Code = right(phone,10);
-        if(readfirstmain(CUr,1,true))then begin
-          OutThisCustomer(CUr,order);
-        end;
+      realphone = GetPhone1SerNrByPhone(phone);
+      if(nonblank(realphone))then begin
+        OutThisCustomer(realphone,order);
       end;
     end;
   end;
