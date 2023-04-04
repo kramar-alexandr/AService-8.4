@@ -90,22 +90,12 @@ end;
 
 
 
-global procedure sendMessageToSergey(record SVOVc SVOr)
+procedure CreateSVOJson(record SVOVc SVOr, var area a_req)
 begin
-	string 255 LogPass,EncodedLogPass;
-	area a_req,replyarea;
-	row SVOVc SVOrw;
-	record FiscalReceiptsVc FRr;
-		
-	LogPass = "hansa-server" & ":" & "7s44wkjm7U8374N7o1mkJN2vM";
-	EncodedLogPass = "Authorization: Basic " & Base64Encode(LogPass);
-	
-	
-	//addtexttoarea("host: " & "api.a-service.ua" & chr(13) & chr(10),a_req);
-	//addtexttoarea("Content-Type: application/json" & chr(13) & chr(10),a_req);
-	addtexttoarea(EncodedLogPass & chr(13) & chr(10),a_req);
-	AddTextToArea("" & chr(13) & chr(10),a_req);
-	AddTextToArea("{",a_req);
+  row SVOVc SVOrw;
+  record FiscalReceiptsVc FRr;
+  
+  AddTextToArea("{",a_req);
 	
 	
 	addParamToJSONArea("OrderNumber",NormalizeStrToJson(SVOr.SerNr),a_req);
@@ -142,6 +132,30 @@ begin
 	delLastComaInArea(a_req);
 	
 	AddTextToArea("}",a_req);
+  
+return;
+end;
+
+
+global procedure sendMessageToSergey(record SVOVc SVOr)
+begin
+	string 255 LogPass,EncodedLogPass;
+	area a_req,replyarea;
+	row SVOVc SVOrw;
+	record FiscalReceiptsVc FRr;
+		
+	LogPass = "hansa-server" & ":" & "7s44wkjm7U8374N7o1mkJN2vM";
+	EncodedLogPass = "Authorization: Basic " & Base64Encode(LogPass);
+	
+	
+	//addtexttoarea("host: " & "api.a-service.ua" & chr(13) & chr(10),a_req);
+	//addtexttoarea("Content-Type: application/json" & chr(13) & chr(10),a_req);
+	addtexttoarea(EncodedLogPass & chr(13) & chr(10),a_req);
+	AddTextToArea("" & chr(13) & chr(10),a_req);
+	
+	CreateSVOJson(SVOr,a_req);
+	
+	
 	AddTextToArea("" & chr(13) & chr(10),a_req);
 	AddTextToArea("" & chr(13) & chr(10),a_req);
 	
@@ -151,6 +165,75 @@ begin
 
 return;
 end;
+
+
+procedure OutThisCustomer(record CUVc CUr,string order)
+begin
+  record SVOVc SVOr;
+  boolean TrHs,testf;
+  area resarea,orarea;
+  
+  TrHs = true;
+  SVOr.CustCode = CUr.Code;
+  addtexttoarea("[",resarea);
+  while(loopkey("CustCode",SVOr,1,TrHs))begin
+    testf = true;
+    if(SVOr.CustCode!=CUr.Code)then begin
+      TrHs = false;
+      testf = false;
+    end;
+    if(nonblank(order))then begin
+      if(SVOr.SerNr!=stringtolongint(order) and SVOr.CustOrdNr!=order)then begin
+        testf = false;
+      end;
+    end;
+    
+    if(testf)then begin
+      setareazerosize(orarea);
+      CreateSVOJson(SVOr,orarea);
+      AddAreaToArea(orarea,resarea);   
+      addtexttoarea(",",resarea);
+    end;
+  end;
+  delLastComaInArea(resarea);
+  addtexttoarea("]",resarea);
+  
+  weboutarea2(resarea);
+  
+return;
+end;
+
+
+global webpublic procedure WebHetServiceOrderByPhone()
+begin
+  record CUVc CUr;
+  string 100 phone,password,order;
+
+  setcompany(13,false);
+  logtext(0,"WebHetServiceOrderByPhone");
+  
+  phone = WebGetArg("phone");
+  password = WebGetArg("password");
+  order = WebGetArg("order");
+  logtext(0,"phone " & phone & " password " & password);
+  
+  if(password=="tehdfgvhbnjmk")then begin
+    if(nonblank(phone))then begin
+      CUr.Code = phone;
+      if(readfirstmain(CUr,1,true))then begin
+        OutThisCustomer(CUr,order);
+      end else begin
+        CUr.Code = right(phone,10);
+        if(readfirstmain(CUr,1,true))then begin
+          OutThisCustomer(CUr,order);
+        end;
+      end;
+    end;
+  end;
+  
+return;
+end;
+
 
 
 // Edit Start ---------------------------------------------- Edit Start
