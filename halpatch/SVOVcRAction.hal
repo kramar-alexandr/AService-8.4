@@ -242,7 +242,9 @@ global webpublic procedure WebGetServiceOrderByPhone()
 begin
   record Phone1Vc Phoner;
   string 100 phone,password,order,realphone;
-
+  
+  WebSetContentType("application/json");		
+  
   setcompany(8,false);
   logtext(0,"WebGetServiceOrderByPhone");
   
