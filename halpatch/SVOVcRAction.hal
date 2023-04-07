@@ -84,7 +84,7 @@ begin
 	end;
 	
 	
-	NormalizeStrToJson = NormStr;
+	NormalizeStrToJson = XmlEncode(NormStr,false);
 	
 	return;
 end;
