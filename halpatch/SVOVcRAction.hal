@@ -76,10 +76,10 @@ begin
 	NormStr = "";
 	strln = len(Str);
 	for (i=0;i<strln;i=i+1)begin
-		if(mid(Str,i,1)==chr(34))then begin
+		/*if(mid(Str,i,1)==chr(34))then begin
 			NormStr = NormStr & chr(92) & mid(Str,i,1);
 			goto lpass;
-		end;
+		end;*/
 		if(mid(Str,i,1)==chr(92))then begin
 			NormStr = NormStr & chr(92) & chr(92);
 			goto lpass;
