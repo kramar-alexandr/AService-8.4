@@ -91,7 +91,7 @@ lpass:;
 	end;
 	
 	
-	NormalizeStrToJson = XmlEncode(NormStr,false);
+	NormalizeStrToJson = NormStr;
 	
 	return;
 end;
