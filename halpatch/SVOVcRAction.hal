@@ -179,6 +179,24 @@ begin
 	MySendRawWebRequest("api.a-service.ua","443",true,"POST","/bot/sender.php","application/json","",false,a_req,replyarea,5);
 	writeareatofile(a_req,"sendMessageToSergeyRequest.txt",0);
 	writeareatofile(replyarea,"sendMessageToSergeyReply.txt",0);
+	
+	
+	setareazerosize(a_req);
+	setareazerosize(replyarea);
+	LogPass = "JHns4353jnqjkw" & ":" & "MNjnsG5jbsbsj";
+	EncodedLogPass = "Authorization: Basic " & Base64Encode(LogPass);
+	addtexttoarea(EncodedLogPass & chr(13) & chr(10),a_req);
+	AddTextToArea("" & chr(13) & chr(10),a_req);
+	
+	CreateSVOJson(SVOr,a_req);
+	
+	AddTextToArea("" & chr(13) & chr(10),a_req);
+	AddTextToArea("" & chr(13) & chr(10),a_req);
+		
+	MySendRawWebRequest("asrvbot.a-service.ua","443",true,"POST","/sender.php","application/json","",false,a_req,replyarea,5);
+	writeareatofile(a_req,"sendMessageToSergeyTelegramRequest.txt",0);
+	writeareatofile(replyarea,"sendMessageToSergeyTelegramReply.txt",0);
+	
 
 return;
 end;
