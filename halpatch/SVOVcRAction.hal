@@ -100,6 +100,15 @@ begin
 	
 	
 	addParamToJSONArea("OrderNumber",NormalizeStrToJson(SVOr.SerNr),a_req);
+	
+	
+	addParamToJSONArea("TransDate",NormalizeStrToJson(SVOr.TransDate),a_req);
+	addParamToJSONArea("EndDiagnDate",NormalizeStrToJson(SVOr.EndDiagnDate),a_req);
+	addParamToJSONArea("EndUtverjDate",NormalizeStrToJson(SVOr.EndUtverjDate),a_req);
+	addParamToJSONArea("PlanShipDate",NormalizeStrToJson(SVOr.PlanShipDate),a_req);
+	addParamToJSONArea("RegDate",NormalizeStrToJson(SVOr.RegDate),a_req);
+	
+	
 	addParamToJSONArea("Status",NormalizeStrToJson(SVOr.OrderStatus),a_req);
 	addParamToJSONArea("FirstName",NormalizeStrToJson(SVOr.Name),a_req);
 	addParamToJSONArea("LastName",NormalizeStrToJson(SVOr.Priynato),a_req);
