@@ -110,6 +110,8 @@ begin
 	
 	
 	addParamToJSONArea("TransDate",NormalizeStrToJson(SVOr.TransDate),a_req);
+	addParamToJSONArea("TransTime",NormalizeStrToJson(SVOr.RegTime),a_req);
+	
 	addParamToJSONArea("EndDiagnDate",NormalizeStrToJson(SVOr.EndDiagnDate),a_req);
 	addParamToJSONArea("EndUtverjDate",NormalizeStrToJson(SVOr.EndUtverjDate),a_req);
 	addParamToJSONArea("PlanShipDate",NormalizeStrToJson(SVOr.PlanShipDate),a_req);
