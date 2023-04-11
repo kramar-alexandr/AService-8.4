@@ -367,7 +367,7 @@ begin
   string 255 tstr,phone;
   
   if(SVOr.OrderStatus==8 and SVO2r.OrderStatus!=8)then begin
-    tstr = "На жаль, ми не змогли додзвонитися до Вас!";
+    tstr = "На жаль, ми не змогли додзвонитися до Вас! +380 (93) 170 45 00";
   end;
   if(SVOr.OrderStatus==7 and SVO2r.OrderStatus!=7)then begin
     tstr = "Ваше замовлення " & SVOr.SerNr & " готове до видачі.";
