@@ -19,9 +19,10 @@ external procedure addParamToJSONArea(string, string, var area);
 external procedure delLastComaInArea(var area);
 external function string 255 NormalizeStrToJson(string);
 external function boolean MySendRawWebRequest(string,longint,boolean,string,string,string,string,boolean,area,var area,integer);
+external updating procedure EasySendTurboSMS(string, string);
 
 
-global function boolean RemoteSendConfirmSMS(record SVOVc SVOr, string code)
+global function boolean RemoteSendConfirmSMSOld(record SVOVc SVOr, string code)
 begin
   boolean res;
   string 255 key,secret,host,keyNode,signatureNode,extNumNode,phoneNode,page;
@@ -84,7 +85,22 @@ begin
   
   WriteAreaToFile(req,"SendSVOrConfirmCode.txt",0);
   
-  RemoteSendConfirmSMS = res;
+  RemoteSendConfirmSMSOld = res;
+return;
+end;
+
+
+global function boolean RemoteSendConfirmSMS(record SVOVc SVOr, string code)
+begin
+  string 20 phone;
+	  
+  phone = SVOr.Kontinfo1;
+  if(blank(phone))then begin
+    phone = SVOr.Phone2;
+  end;
+	qupdating.EasySendTurboSMS(phone,code);  
+    
+  RemoteSendConfirmSMS = true;
 return;
 end;
 
