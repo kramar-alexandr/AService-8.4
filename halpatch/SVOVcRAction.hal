@@ -38,6 +38,7 @@ remote function boolean RemoteSendConfirmSMS(record SVOVc,string);
 external procedure DblConfirmPaymentManagerDsm();
 external procedure SendDirectSMS(record SVOVc,record SVOVc);
 external function string 50 GetPhone1SerNrByPhone(string); //Edit***************************Sasha2,13:52 10.03.2017
+external updating procedure EasySendTurboSMS(string, string);
 
 SetLangMode(LangRussian,"RUS",0);
 
@@ -162,10 +163,20 @@ begin
 	area a_req,replyarea;
 	row SVOVc SVOrw;
 	record FiscalReceiptsVc FRr;
+	string 20 phone;
 		
 	LogPass = "hansa-server" & ":" & "7s44wkjm7U8374N7o1mkJN2vM";
 	EncodedLogPass = "Authorization: Basic " & Base64Encode(LogPass);
 	
+	if(SVOr.OrderStatus==0)then begin
+    phone = SVOr.Kontinfo1;
+    if(blank(phone))then begin
+      phone = SVOr.Phone2;
+    end;
+    if(nonblank(phone))then begin
+      qupdating.EasySendTurboSMS(phone,"А-Сервіс #" & SVor.SerNr & " Слідкуй у Вайбер http://api.a-service.ua"); 
+    end;
+	end;
 	
 	//addtexttoarea("host: " & "api.a-service.ua" & chr(13) & chr(10),a_req);
 	//addtexttoarea("Content-Type: application/json" & chr(13) & chr(10),a_req);
