@@ -174,7 +174,7 @@ begin
       phone = SVOr.Phone2;
     end;
     if(nonblank(phone))then begin
-      qupdating.EasySendTurboSMS(phone,"А-Сервіс #" & SVor.SerNr & " Слідкуй у Вайбер http://api.a-service.ua"); 
+      qupdating.EasySendTurboSMS(phone,"А-Сервіс #" & SVor.SerNr & " Слідкуй у Телеграм https://t.me/AService_UA_bot"); 
     end;
 	end;
 	
