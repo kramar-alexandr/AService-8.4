@@ -1303,12 +1303,10 @@ begin
   addtexttoarea(SetUnderlineOn,aFile);
   TLTOARR(cjecklength,"Правила обслуговування сервісного центру: ",aFile);
   addtexttoarea(SetUnderlineOff,aFile);
-  TLTOARR(cjecklength,"- Вартість діагностики пристроїв (платных",aFile);
+  TLTOARR(cjecklength,"- Вартість діагностики пристроїв (платних",aFile);
   TLTOARR(cjecklength,"та гарантiйних): iPhone - 400грн.,",aFile);
-  TLTOARR(cjecklength,"iPad - 400грн., MacBook - 600грн., ",aFile);
-  TLTOARR(cjecklength,"iMac - 1500грн., моноблоків - 400грн.,",aFile);
-  TLTOARR(cjecklength,"смартфонів - 250грн., планшетів- 300грн.,",aFile);
-  TLTOARR(cjecklength,"навушників- 250,00грн.",aFile);
+  TLTOARR(cjecklength,"iPad - 400грн., MacBook - 600грн.,",aFile);
+  TLTOARR(cjecklength,"iMac - 1500грн., AirPods - 300 грн.",aFile);
   //addtexttoarea(SetBoldOff,aFile);
   TLTOARR(cjecklength,"__________________________________________",aFile);
   
@@ -1573,12 +1571,10 @@ begin
   TLTOARR(0,SVOr.Comment4,aFile);
   
   addtexttoarea(chr(13) & chr(10),aFile);
-  TLTOARR(cjecklength,"- Вартість діагностики пристроїв (платных",aFile);
+  TLTOARR(cjecklength,"- Вартість діагностики пристроїв (платних",aFile);
   TLTOARR(cjecklength,"та гарантiйних): iPhone - 400грн.,",aFile);
-  TLTOARR(cjecklength,"iPad - 400грн., MacBook - 600грн., ",aFile);
-  TLTOARR(cjecklength,"iMac - 1500грн., моноблоків - 400грн.,",aFile);
-  TLTOARR(cjecklength,"смартфонів - 250грн., планшетів- 300грн.,",aFile);
-  TLTOARR(cjecklength,"навушників- 250грн.",aFile);
+  TLTOARR(cjecklength,"iPad - 400грн., MacBook - 600грн.,",aFile);
+  TLTOARR(cjecklength,"iMac - 1500грн., AirPods - 300 грн.",aFile);
   
   addtexttoarea(chr(13) & chr(10),aFile);
   TLTOARR(cjecklength,"__________________________________________",aFile);
