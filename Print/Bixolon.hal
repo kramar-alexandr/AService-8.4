@@ -1284,7 +1284,7 @@ begin
   TLTOARR(cjecklength,"Батарея(з'ємна): " & SVOr.Batary,aFile);
   TLTOARR(cjecklength,"Зар.пристрій: " & SVOr.Zaryadka,aFile);
   TLTOARR(cjecklength,"Інше: " & SVOr.Inshe,aFile);
-  TLTOARR(cjecklength,"Гарантія: " & SVOr.Garanty,aFile);
+  //TLTOARR(cjecklength,"Гарантія: " & SVOr.Garanty,aFile);
   
   //nespravnost
   TLTOARR(cjecklength,"__________________________________________",aFile);
@@ -1555,7 +1555,7 @@ begin
   TLTOARR(cjecklength,"Батарея(з'ємна): " & SVOr.Batary,aFile);
   TLTOARR(cjecklength,"Зар.пристрій: " & SVOr.Zaryadka,aFile);
   TLTOARR(cjecklength,"Інше: " & SVOr.Inshe,aFile);
-  TLTOARR(cjecklength,"Гарантія: " & SVOr.Garanty,aFile);
+  //TLTOARR(cjecklength,"Гарантія: " & SVOr.Garanty,aFile);
   
   //nespravnost
   TLTOARR(cjecklength,"__________________________________________",aFile);
