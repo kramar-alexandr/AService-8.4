@@ -432,7 +432,7 @@ begin
   token = getFisToken(login);
   if(blank(token))then begin
     res = 20548;
-    goto lMakeCashOut;
+    goto lMakeCashIn;
   end;
   
   if(sum>0)then begin
@@ -453,7 +453,7 @@ begin
     end;
   end;
   
-  lMakeCashOut:;
+  lMakeCashIn:;
   
   MakeCashIn = res;
   return;
