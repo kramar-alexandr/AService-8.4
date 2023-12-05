@@ -8348,7 +8348,7 @@ begin
     																							 HalPushButton(h+80,v,h+190,v+20,"ChangeToMykolaDsm","На Николая");
     																							 HalPushButton(h+200,v,h+320,v+20,"ChangeToLEKHOLETOVDsm","На Шилкин М.");
     																							 HalPushButton(h+330,v,h+450,v+20,"ChangeToShilkinDsm","На Шилкина");
-    																							 HalPushButton(h+460,v,h+580,v+20,"ChangeToShkolarskyDsm","На Школярского");
+    																							 //HalPushButton(h+460,v,h+580,v+20,"ChangeToShkolarskyDsm","На Школярского");
     v = v + vs + 5;																							 
     																							 HalPushButton(h+80,v,h+290,v+20,"ChangeToStrelkovaDsm","Заказ запчаcтей");
     																							 //HalPushButton(h+200,v,h+320,v+20,"ChangeToMANKRSDsm","Менеджер КРС");
