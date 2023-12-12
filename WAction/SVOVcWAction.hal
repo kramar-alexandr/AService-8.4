@@ -60,7 +60,7 @@ BEGIN
   HandleSVOAct1(SVOr,aFile);//Для сервиса
   PrintBixolonReceipt(aFile);
 
-  millisleep(2000);
+  millisleep(4000);
   HandleSVOAct2(SVOr,aFile);//Для клиента
   PrintBixolonReceipt(aFile);
 		
