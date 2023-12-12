@@ -2099,7 +2099,7 @@ begin
     blockload(RPb);
     filename = "Bixolon.txt";
     WriteAreaToFile(aFile,filename,0);
-    millisleep(100);
+    millisleep(1000);
     if (WindowsMode==1) then begin
   			RunProgram("c:\\windows\\system32\\cmd.exe","/C \"" & "copy " & filename & " \\\\" & RPb.CompNameWin & "\\" & RPb.PrinterNameWin & "\"");
     end; 
