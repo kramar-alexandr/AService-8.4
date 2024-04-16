@@ -1410,7 +1410,7 @@ begin
   
   addtexttoarea(SetBoldOff,aFile);
   TLTOARR(cjecklength,"__________________________________________",aFile);
-  TLTOARR(cjecklength,"\"З правилами обслуговування та тарифами ",aFile);
+  TLTOARR(cjecklength,"З правилами обслуговування та тарифами ",aFile);
   TLTOARR(cjecklength,"ознайомлений і згоден. Прошу виконати ді-",aFile);
   TLTOARR(cjecklength,"агностику, а у випадку необхідності,",aFile);
   TLTOARR(cjecklength,"ремонт мого обладнання. Своїм підписом я",aFile);
@@ -1418,7 +1418,7 @@ begin
   TLTOARR(cjecklength,"моїх персональних даних, інформування мене",aFile);
   TLTOARR(cjecklength,"про новини та діючі акції сервісного цен-",aFile);
   TLTOARR(cjecklength,"тру шляхом смс-повідомлень, електронних",aFile);
-  TLTOARR(cjecklength,"повідомлень (e-mail) тощо.\"",aFile);
+  TLTOARR(cjecklength,"повідомлень (e-mail) тощо.",aFile);
   TLTOARR(cjecklength,"А також згоден надати свої дані (емейл) для",aFile);
   TLTOARR(cjecklength,"Apple, для проведення опитування щодо",aFile);
   TLTOARR(cjecklength,"якості проведеного ремонту.",aFile);
