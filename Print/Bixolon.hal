@@ -1420,8 +1420,8 @@ begin
   TLTOARR(cjecklength,"тру шляхом смс-повідомлень, електронних",aFile);
   TLTOARR(cjecklength,"повідомлень (e-mail) тощо.",aFile);
   TLTOARR(cjecklength,"А також згоден надати свої дані (емейл)",aFile);
-  TLTOARR(cjecklength,"для Apple, для проведення опитування",aFile);
-  TLTOARR(cjecklength,"щодо якості проведеного ремонту.",aFile);
+  TLTOARR(cjecklength,"для Apple, для проведення опитування щодо",aFile);
+  TLTOARR(cjecklength,"якості проведеного ремонту.",aFile);
   
   addtexttoarea(chr(13) & chr(10),aFile);
   TLTOARR(cjecklength,"Власник: " & SVOr.Vlastnik,aFile);
