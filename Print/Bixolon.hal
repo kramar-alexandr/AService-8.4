@@ -1148,28 +1148,28 @@ begin
   
   switch (SVOr.SalesGroup) begin
 		case "1GR":
-					Name = "СПД-ФО Форманчук Д.В. (ТМ \"А-Сервіс)\"";
+					Name = "СЦ \"А-Сервіс\"";
 					Address = "м.Київ, вул. М.Бойчука 1/2 " & chr(13) & chr(10) & "(Кіквідзе 1/2)";
 					Phone = "Телефон \(093\) 170-45-00";	
 		case "3GR":
-					Name = "СПД-ФО Іваненко В.І. (ТМ \"А-Сервіс)\"";
+					Name = "СЦ \"А-Сервіс\"";
 					Address = "Київ, вул. Білоруська, 8";
 					Phone = "Телефон \(044\) 222-57-74";
 		case "5GR":
-					Name = "ФОП Грицаєнко Б.Ф. (ТМ \"А-Сервіс)\"";
+					Name = "СЦ \"А-Сервіс\"";
 					Address = "м.Київ, вул. Велика Васильківська 72," & chr(13) & chr(10) & "ТЦ Олімпійський \"0 поверх\"";
 					Phone = "Телефон \(093\) 170-45-00";	
 		case "8GR":
-					Name = "СПД-ФО Моісеєв Д. А. (ТМ \"А-Сервіс)\"";
+					Name = "СЦ \"А-Сервіс\"";
 					Address = "Київ, просп. Московський, 6";
 					Phone = "Телефон \(044\) 222-92-93";		
 		case "9GR":
-					Name = "СПД-ФО Головізнін С. Г. (ТМ \"А-Сервіс)\"";
+					Name = "СЦ \"А-Сервіс\"";
 					Address = "Київ, вул. Червоноармійська,21";
 					Phone = "Телефон \(044\) 451-5-451";			
 		otherwise
-					Name = "СПД-ФО Форманчук Д.В.(ТМ \"А-Сервіс)\"";
-					Address = "Київ, вул. М.Бойчука 1/2";
+					Name = "СЦ \"А-Сервіс\"";
+					Address = "м.Київ, вул. М.Бойчука 1/2 " & chr(13) & chr(10) & "(Кіквідзе 1/2)";
 					Phone = "Телефон \(044\) 585 77 01";	
 	end;	
   
@@ -1303,10 +1303,10 @@ begin
   addtexttoarea(SetUnderlineOn,aFile);
   TLTOARR(cjecklength,"Правила обслуговування сервісного центру: ",aFile);
   addtexttoarea(SetUnderlineOff,aFile);
-  TLTOARR(cjecklength,"- Вартість діагностики пристроїв (платних",aFile);
-  TLTOARR(cjecklength,"та гарантiйних): iPhone - 400грн.,",aFile);
-  TLTOARR(cjecklength,"iPad - 400грн., MacBook - 600грн.,",aFile);
-  TLTOARR(cjecklength,"iMac - 1500грн., AirPods - 300 грн.",aFile);
+  TLTOARR(cjecklength,"- Вартість діагностики пристроїв: ",aFile);
+  TLTOARR(cjecklength,"iPhone,iPad,MacBook, Watch, AirPods",aFile);
+  TLTOARR(cjecklength,"- 600грн.,",aFile);
+  TLTOARR(cjecklength,"iMac, MacPro - 1500грн.",aFile);
   //addtexttoarea(SetBoldOff,aFile);
   TLTOARR(cjecklength,"__________________________________________",aFile);
   
@@ -1571,10 +1571,10 @@ begin
   TLTOARR(0,SVOr.Comment4,aFile);
   
   addtexttoarea(chr(13) & chr(10),aFile);
-  TLTOARR(cjecklength,"- Вартість діагностики пристроїв (платних",aFile);
-  TLTOARR(cjecklength,"та гарантiйних): iPhone - 400грн.,",aFile);
-  TLTOARR(cjecklength,"iPad - 400грн., MacBook - 600грн.,",aFile);
-  TLTOARR(cjecklength,"iMac - 1500грн., AirPods - 300 грн.",aFile);
+  TLTOARR(cjecklength,"- Вартість діагностики пристроїв: ",aFile);
+  TLTOARR(cjecklength,"iPhone,iPad,MacBook, Watch, AirPods",aFile);
+  TLTOARR(cjecklength,"- 600грн.,",aFile);
+  TLTOARR(cjecklength,"iMac, MacPro - 1500грн.",aFile);
   
   addtexttoarea(chr(13) & chr(10),aFile);
   TLTOARR(cjecklength,"__________________________________________",aFile);
