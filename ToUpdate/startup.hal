@@ -1,7 +1,7 @@
 event startup
 begin
 
-	SetLangMode(LangRussian,"RUS",0);
+	SetLangMode(LangUkrainian,"UKR",0);
 	
   Document("Замовлення на обслуговування(друк)",SVORClass,SVOForm1,SVOFClass,modSVO);
   Document("Рахунки клієнтам(друк)",ORRClass,OrdForm1,OrdFClass,modSO);

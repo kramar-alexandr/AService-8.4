@@ -5,7 +5,7 @@ external function Boolean PasteCustInOrder(var record ORVc,string,string,var str
 external procedure ORVc_PasteCurncyCode(var record ORVc,string);
 
 
-	SetLangMode(LangRussian,"RUS",0);
+	SetLangMode(LangUkrainian,"UKR",0);
 
 
 global //Edit***************************Sasha2,11:48 25.04.2016 { 

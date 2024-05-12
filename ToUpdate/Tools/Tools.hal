@@ -5,7 +5,7 @@ external function boolean MySendWebRequest(string,integer,longint,boolean,string
 external procedure 	DayTools1Rn(record RcVc);
 external procedure 	DayToolsRn();
 
-SetLangMode(LangRussian,"RUS",0);
+SetLangMode(LangUkrainian,"UKR",0);
 
 global
 updating procedure CleaningMn()

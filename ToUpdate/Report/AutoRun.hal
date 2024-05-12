@@ -3,7 +3,7 @@ external procedure ReportRegDateServAndInvEn(); // Edit Dima ************* 2018-
 external function LongInt DateDiff(Date,Date);
 external updating procedure CreateCustomActivityFromSVO(record SVOVc,string,string,date,string,string);// Edit ************************** BPI Ukraine - KramarAlexandr - Tuesday, 12 December 2017 11:56:41
 
-SetLangMode(LangRussian,"RUS",0);
+SetLangMode(LangUkrainian,"UKR",0);
 
 
 global updating procedure CreateTaskForEnginer()

@@ -28,7 +28,7 @@ external procedure GetFieldArgument(record DocVc,Integer,var string);
 external procedure CreateEAN128(var string);// Edit ************************** BPI Ukraine - KramarAlexandr - 04, 17 10 2019 y. at 2:26:45 PM
 
 
-SetLangMode(LangRussian,"RUS",0);
+SetLangMode(LangUkrainian,"UKR",0);
 
 procedure PrintWorksRows(record SVOVc SVOr)// Edit ************************** Tuesday, 10 February 2015 18:48:46
 begin

@@ -19,7 +19,7 @@ external function LongInt ItemInContract(string,string,Date);
 external procedure SVOGetRate(record SVOVc);
 external procedure ExtractObjWithSeparator(string,string,Boolean,var Integer,var string);// Edit ************************** Monday, 27 February 2017 15:43:57
 
-SetLangMode(LangRussian,"RUS",0);
+SetLangMode(LangUkrainian,"UKR",0);
 
 global
 function Boolean PasteCUInSVO(var record SVOVc SVOp,string oldcustcode,var string warntext)

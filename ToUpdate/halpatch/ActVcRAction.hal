@@ -39,7 +39,7 @@ external function Boolean DateLocked(Date,string);
 external function Boolean DateWarned(Date,string);
 external procedure  CreateSVOSerNoterForMove(record SVOVc,string);// Edit ************************** BPI Ukraine - KramarAlexandr - Thursday, 29 March 2018 11:27:11
 
-SetLangMode(LangRussian,"RUS",0);
+SetLangMode(LangUkrainian,"UKR",0);
 
 procedure ActNLTSer(Date td,var LongInt tserstart,var LongInt tserend)
 begin

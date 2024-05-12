@@ -40,7 +40,7 @@ external procedure SendDirectSMS(record SVOVc,record SVOVc);
 external function string 50 GetPhone1SerNrByPhone(string); //Edit***************************Sasha2,13:52 10.03.2017
 external updating procedure EasySendTurboSMS(string, string);
 
-SetLangMode(LangRussian,"RUS",0);
+SetLangMode(LangUkrainian,"UKR",0);
 
 
 global procedure addParamToJSONArea(string param, string value, var area req)

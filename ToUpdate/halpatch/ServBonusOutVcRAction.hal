@@ -2,7 +2,7 @@ external function roundmode SetRoundModeD(Integer);
 remote updating procedure HandleServBonusOutReceiptPrinting(record ServBonusOutVc,var area); // Edit ************************** BPI Ukraine - KramarAlexandr - 04, 26 09 2019 y. at 2:07:08 PM
 external procedure PrintBixolonReceipt(area);
 
-SetLangMode(LangRussian,"RUS",0);
+SetLangMode(LangUkrainian,"UKR",0);
 
 global
 function LongInt ServBonusOutVcRecordInIndex(record ServBonusOutVc SVOCr,string indexname)

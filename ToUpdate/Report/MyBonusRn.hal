@@ -9,7 +9,7 @@ external function val CalcSumForSales(val,val,val,val,val,integer, val,boolean);
 external procedure CurValToOtherCur(Date,string,val,string,var val,roundmode); //Edit***************************Sasha2,17:48 23.04.2015
 external function string 200 ValToMyString(val,integer); //Edit***************************Sasha2,11:32 27.04.2015
 	
-SetLangMode(LangRussian,"RUS",0);
+SetLangMode(LangUkrainian,"UKR",0);
 
 
 global function string 50 FindSVOPhone(longint svonum,record IVVc IVr)

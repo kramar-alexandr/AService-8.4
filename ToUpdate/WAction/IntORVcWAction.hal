@@ -27,7 +27,7 @@ external procedure GetRecepy(string,var string);
 external function Boolean UserCanChangePendingRecord(Integer);
 remote updating function boolean RA_CreateIntORfromSVOD(record SVOVc,var record IntORVc);// Edit ************************** BPI Ukraine - KramarAlexandr - 04, 25 03 2021 y. at 9:00:07 PM
 
-SetLangMode(LangRussian,"RUS",0);
+SetLangMode(LangUkrainian,"UKR",0);
 
 global
 procedure SumupIntOR(var record IntORVc IntORp,var val totp)

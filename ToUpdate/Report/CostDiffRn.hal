@@ -1,7 +1,7 @@
 external function val AbsoluteVal(val);
 external procedure GetLocationAcc(string,var string,var string);
 
-SetLangMode(LangRussian,"RUS",0);
+SetLangMode(LangUkrainian,"UKR",0);
 
 
 procedure CollectNonStockedItems(var vector boolean items)

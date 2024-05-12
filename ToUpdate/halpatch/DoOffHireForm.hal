@@ -16,7 +16,7 @@ external procedure PrintLocationInformation(string);
 external procedure CommonDocumentFields(record RcVc);
 external function Integer NumberofDocumentPages(string,Integer);
 
-SetLangMode(LangRussian,"RUS",0); //Edit***************************Sasha2,16:35 16.05.2017
+SetLangMode(LangUkrainian,"UKR",0); //Edit***************************Sasha2,16:35 16.05.2017
 
 procedure PrintOffHire(record OffHireVc OffHirer,string formcode)
 BEGIN

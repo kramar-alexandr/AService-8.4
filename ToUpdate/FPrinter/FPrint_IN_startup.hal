@@ -1,7 +1,7 @@
 event startup
 begin
 
-	SetLangMode(LangRussian,"RUS",0);
+	SetLangMode(LangUkrainian,"UKR",0);
   
 	Setting("Добавить товары в принтер",InsArtTClass,modPOS);
 	Setting("Z-Отчет",ZRepTClass,modPOS);

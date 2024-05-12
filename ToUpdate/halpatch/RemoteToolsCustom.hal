@@ -17,7 +17,7 @@ external function Boolean MySendWebRequest(string,longint,longint,boolean,string
 external function Boolean FindStringInString(string, string);
 remote updating procedure RA_POFromSH(record SHVc);
 
-SetLangMode(LangRussian,"RUS",0);
+SetLangMode(LangUkrainian,"UKR",0);
 
 global updating procedure ARRStock()
 begin

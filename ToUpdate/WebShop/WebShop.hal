@@ -6,7 +6,7 @@ external procedure  CreateSVOSerNoterForMove(record SVOVc,string);
 external procedure CallToClient( record SVOVc);
 external procedure CallToClient2( record SVOVc);
 external procedure RemoteUserFunction(string,string,string,string);
-SetLangMode(LangRussian,"RUS",0);
+SetLangMode(LangUkrainian,"UKR",0);
 
 procedure CR(var area areply)
 begin

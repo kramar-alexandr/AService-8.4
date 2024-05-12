@@ -6,7 +6,7 @@ external function Boolean MySendAsyncWebRequest(string,longint,boolean,string,st
 external updating procedure EasySendTurboSMS(string, string);
 remote procedure sendMessageToSergey(record SVOVc);
 
-SetLangMode(LangRussian,"RUS",0);
+SetLangMode(LangUkrainian,"UKR",0);
 
 
 global

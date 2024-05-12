@@ -48,7 +48,7 @@ remote procedure HandleCreateChangeReceiptPrinting(record RcVc,var area);
 // Edit Start ---------------------------------------------- Edit Start
 	//Wednesday, 3 June 2015 16:58:34
 	
-SetLangMode(LangRussian,"RUS",0);
+SetLangMode(LangUkrainian,"UKR",0);
 
 
 global procedure PrintSVOActExecute(record SVOVc SVOr)

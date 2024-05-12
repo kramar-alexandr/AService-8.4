@@ -1,7 +1,7 @@
 external function LongInt DateDiff(Date,Date);
 external procedure IPRn(record RcVc);
 
-SetLangMode(LangRussian,"RUS",0);
+SetLangMode(LangUkrainian,"UKR",0);
 
 global procedure  MyReservStstRn(record RcVc RepSpec)
 begin
