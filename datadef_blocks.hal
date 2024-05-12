@@ -1,0 +1,194 @@
+begin
+
+  BlockBegin(ZebraPrinterBlock,-,"");
+    BlockForAllCompanies;
+    RecordField(PrinterName,M4Str,200,0);
+    RecordField(ParamIn1,M4Int,0,0);
+    RecordField(ParamIn2,M4Int,0,0);
+    RecordField(ParamStr1,M4Str,200,0);
+    RecordField(ParamStr2,M4Str,200,0);
+    RecordField(ParamVal1,M4Val,0,0);
+    RecordField(ParamVal2,M4Val,0,0);
+  EndBlock;
+  
+  BlockBegin(LocalMachineAccBlock,-,""); //Edit***************************Sasha2,17:27 11.09.2014 {
+  	RecordField(Math,M4Matrix,0,0);
+  	ArrayBegin(Math,-,1);
+  	ArrayField(LocalMachine,M4Code,20,0);
+  	ArrayField(Name,M4Str,200,0);
+  	ArrayField(CustCode,M4UStr,60,CUVc);
+  	ArrayField(SaleAcc,M4Code,10,AccVc);
+  	ArrayField(RecAcc,M4Code,10,AccVc);
+  	ArrayField(RetAcc,M4Code,10,AccVc);
+  	ArrayField(StockAcc,M4Code,10,AccVc);
+  	ArrayField(ServAcc,M4Code,10,AccVc);
+  	ArrayField(CurDiffCred,M4Code,10,AccVc);
+  	ArrayField(CurDiffDeb,M4Code,10,AccVc);
+  	ArrayField(Objects,M4UStr,60,ObjVc);
+  	ArrayField(PayDeal,M4Code,2,0);
+  	ArrayField(Acc01,M4Code,10,AccVc);
+  	ArrayField(Acc02,M4Code,10,AccVc);
+  	ArrayField(Acc03,M4Code,10,AccVc);
+  	ArrayField(Acc04,M4Code,10,AccVc);
+  	ArrayField(Acc05,M4Code,10,AccVc);
+  	ArrayField(Str01,M4Str,100,0);//PriceCurant
+  	ArrayField(Str02,M4Str,100,0);
+  	ArrayField(Str03,M4Str,100,0);
+  	ArrayField(Str04,M4Str,100,0);
+  	ArrayField(Str05,M4Str,100,0);
+    ArrayField(ArInt1,M4int,0,0);
+    ArrayField(ArInt2,M4int,0,0);
+    ArrayField(ArInt3,M4int,0,0);
+    ArrayField(ArInt4,M4int,0,0);
+  	ArrayField(ArInt5,M4int,0,0);
+  	ArrayField(UserCode,M4Str,50,0);// Edit ************************** Wednesday, 6 June 2012 14:34:32
+  	ArrayField(DefLoc,M4Str,50,0);
+  	ArrayField(DefLocRet,M4Str,50,0);
+  	ArrayField(Drawer,M4Str,10,0);
+  	ArrayField(CashID,M4Str,10,0);
+  	ArrayField(TermID,M4Str,10,0);
+  	ArrayField(SertID,M4Str,10,0);
+  	ArrayField(Oth01ID,M4Str,10,0);
+  	ArrayField(Oth02ID,M4Str,10,0);
+  	ArrayField(Oth03ID,M4Str,10,0);
+  	ArrayField(Oth04ID,M4Str,10,0);
+  	ArrayField(Oth05ID,M4Str,10,0);
+  	EndArray;
+	EndBlock; //Edit***************************Sasha2,17:27 11.09.2014 }
+	
+	BlockBegin(POSCurncyBlock,-,""); //Edit***************************Sasha2,17:26 11.09.2014 {
+    RecordField(CurncyCode,M4Code,5,CurncyCodeVc);
+  EndBlock; //Edit***************************Sasha2,17:26 11.09.2014 }
+  
+  BlockBegin(WebSyncBlock,-,"");
+		RecordField(DateLastTime,M4Date,0,0);
+		RecordField(DefPriceList,M4Str,10,0);
+		RecordField(ParamIn1,M4Int,0,0);
+		RecordField(ParamIn2,M4Int,0,0);
+		RecordField(ParamStr1,M4Str,200,0);
+		RecordField(ParamStr2,M4Str,200,0);
+		RecordField(ParamVal1,M4Val,0,0);
+		RecordField(ParamVal2,M4Val,0,0);
+	EndBlock;
+
+	BlockBegin(WebSyncMatBlock,-,"");
+		RecordField(Math,M4Matrix,0,0);
+		ArrayBegin(Math,-,1);
+		ArrayField(Location,M4Str,200,0);
+		ArrayField(ID,M4INt,0,0);
+		ArrayField(LocPrice,M4Val,0,0);
+		ArrayField(MyVal,M4Val,0,0);
+		ArrayField(MyInt,M4Int,0,0);
+		ArrayField(MyStr,M4Str,200,0);
+		EndArray;
+	EndBlock;
+	
+	BlockBegin(ObjectsAccBlock,-,"");
+		RecordField(Math,M4Matrix,0,0);
+		ArrayBegin(Math,-,1);
+		ArrayField(Objects,M4UStr,60,ObjVc);
+		ArrayField(AccCode,M4Code,10,AccVc);
+		ArrayField(SaleAccCode,M4Code,10,AccVc);
+		EndArray;
+	EndBlock;	
+	
+	BlockBegin(TermoPrinterBlock,-,"");
+		RecordField(CompNameWin,M4Str,100,0);
+		RecordField(PrinterNameWin,M4Str,100,0);
+		RecordField(PrinterNameMac,M4Str,100,0);
+	EndBlock;
+	
+	BlockBegin(ReceiptPrinterBlock,-,"");		
+  BlockForAllCompanies;
+		RecordField(CompNameWin,M4Str,100,0);
+		RecordField(PrinterNameWin,M4Str,100,0);
+		RecordField(PrinterNameMac,M4Str,100,0);  
+	EndBlock;	
+	
+	
+	BlockBegin(ReceiptPrinterSBlock,-,"");		 
+		RecordField(DefName,M4Str,255,0);
+		RecordField(DefAddress,M4Str,255,0);
+		RecordField(DefPhone,M4Str,255,0);
+	EndBlock;	
+	
+	
+  BlockBegin(MyCashFlowBlock,-,"");
+		RecordField(Math,M4Matrix,0,0);
+		ArrayBegin(Math,-,1);
+		ArrayField(SerNr,M4Long,0,0);
+    ArrayField(FrAcc,M4Code,20,AccVc);
+    ArrayField(ToAcc,M4Code,20,AccVc);
+    ArrayField(DebCred,M4Int,0,0);
+    ArrayField(TurnBal,M4Int,0,0);
+    ArrayField(Comment,M4Str,200,0);
+    ArrayField(SumUp,M4Int,0,0);
+    ArrayField(CalcStr,M4Str,200,0);
+    ArrayField(ComCoord,M4Int,0,0);
+    ArrayField(ComAlign,M4Int,0,0);
+		EndArray;
+	EndBlock;
+	
+	BlockBegin(MyCashFlowDRBlock,-,"");
+		RecordField(Math,M4Matrix,0,0);
+		ArrayBegin(Math,-,1);
+		ArrayField(SerNr,M4Long,0,0);
+    ArrayField(FrAcc,M4Code,20,AccVc);
+    ArrayField(ToAcc,M4Code,20,AccVc);
+    ArrayField(DebCred,M4Int,0,0);
+    ArrayField(TurnBal,M4Int,0,0);
+    ArrayField(Comment,M4Str,200,0);
+    ArrayField(SumUp,M4Int,0,0);
+    ArrayField(CalcStr,M4Str,200,0);
+    ArrayField(ComCoord,M4Int,0,0);
+    ArrayField(ComAlign,M4Int,0,0);
+		EndArray;
+	EndBlock;	
+	
+  BlockBegin(BinotelUserBlock,-,"");
+    RecordField(Math,M4Matrix,0,0);
+    ArrayBegin(Math,-,1);
+    ArrayField(User,M4Code,20,UserVc);
+    ArrayField(Phone,M4Str,100,0);
+    ArrayField(Group,M4Str,100,0);
+    ArrayField(ActType,M4Code,100,0);
+    ArrayField(ActComment,M4Str,255,0);
+    ArrayField(CallGroup,M4Code,100,0);//----------------------------------------------- dima-f 23.10.17
+    EndArray;
+	EndBlock;
+	
+	BlockBegin(BinotelSettingsBlock,-,"");
+		RecordField(ApiKey,M4Str,100,0);
+		RecordField(ApiSecret,M4Str,100,0);
+	EndBlock;
+	
+	BlockBegin(DateRnBlock,-,"");
+		RecordField(DateRn,M4Date,0,0);
+	EndBlock;
+		
+	BlockBegin(SMSConfigBlock,-,"");//Edit-------------------Vitalii 11:44 25.03.2016
+    RecordField(Login,M4Str,255,0);
+    RecordField(Password,M4Str,255,0);
+    RecordField(Balance,M4Val,0,0);
+    RecordField(Host,M4Str,255,0);
+    RecordField(Page,M4Str,255,0);
+    RecordField(LastErr,M4Str,255,0);
+    RecordField(LEDate,M4Date,0,0);
+    RecordField(LETime,M4Time,0,0);
+    RecordField(Sign,M4Str,255,0);
+	EndBlock;
+		
+	BlockBegin(FOPDataBlock,-,"");
+    RecordField(Math,M4Matrix,0,0);
+    ArrayBegin(Math,-,1);
+      ArrayField(FisName,M4Str,255,0);
+      ArrayField(FisAddress,M4Str,255,0);
+      ArrayField(FisID,M4Str,255,0);
+      ArrayField(FisLogin,M4Str,255,0);
+      ArrayField(FisPasswd,M4Str,255,0);
+      ArrayField(FisToken,M4Str,255,0);
+    EndArray;
+  EndBlock;
+  
+  return;	
+end;

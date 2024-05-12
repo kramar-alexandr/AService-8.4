@@ -211,7 +211,7 @@ begin
           end;
           if(len(normphone[k])!=12)then begin
             messagebox(0,"ERROR PHONE");
-            goto LSENDSMS;
+            goto LSENDSMS1;
           end;
         end;
         subject = "9c7e332509201516 ";
@@ -274,7 +274,7 @@ begin
     end;
   end;
 	
-	LSENDSMS:;
+	LSENDSMS1:;
 return;
 end;
 
@@ -315,7 +315,7 @@ begin
 						end;
 						if(len(normphone[k])!=12)then begin
 							messagebox(0,"ERROR PHONE");
-							goto LSENDSMS;
+							goto LSENDSMS2;
 						end;
 					end;
 					subject = "9c7e332509201516 ";
@@ -373,7 +373,7 @@ begin
 
   end;
 	
-	LSENDSMS:;
+	LSENDSMS2:;
 return;
 end;
 

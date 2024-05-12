@@ -800,12 +800,12 @@ begin
       if (found) then begin        
         OPr.SerNr = OPrsr.TransNr;
         if (ReadFirstMain(OPr,1,true)) then begin
-          if (OPr.RejectedFlag==1) then begin goto L11; end;
-          if (OPr.TransDate!=OPrsr.TransDate) then begin goto L11; end;
-          if (OPr.OrderedFlag==0) then begin goto L11; end;
-          if (OPr.Invalid!=0) then begin goto L11; end;
+          if (OPr.RejectedFlag==1) then begin goto L111; end;
+          if (OPr.TransDate!=OPrsr.TransDate) then begin goto L111; end;
+          if (OPr.OrderedFlag==0) then begin goto L111; end;
+          if (OPr.Invalid!=0) then begin goto L111; end;
           if (RepSpec.flags[14]!=0) then begin
-            if (OPr.DoneFlag==0) then begin goto L11; end;
+            if (OPr.DoneFlag==0) then begin goto L111; end;
           end;
           rwcnt = MatRowCnt(OPr);
           for (i=0;i<rwcnt;i=i+1) begin
@@ -932,7 +932,7 @@ L10:;
         end;
       end;
     end;
-L11:;        
+L111:;        
   end;
   OPrsr.VINr = -1;
   OPrsr.TransType = kOPrsTransTypeNLTransaction;
@@ -1672,7 +1672,7 @@ begin
         if (ReadFirstMain(OPr,1,false)) then begin
           t = 0;
           if (RepSpec.flags[14]!=0) then begin
-            if (OPr.DoneFlag==0) then begin goto L11; end;
+            if (OPr.DoneFlag==0) then begin goto L112; end;
           end;
           if ((OPr.OrderedFlag!=0) and (OPr.RejectedFlag==0)) then begin
             rwcnt = MatRowCnt(OPr);
@@ -1751,7 +1751,7 @@ begin
               EndFormat;
             end;
           end;
-L11:;          
+L112:;          
         end;
       end;      
       if (OPrsr.TransType==kOPrsTransTypePurgeNLTransaction) then begin

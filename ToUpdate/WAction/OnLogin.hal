@@ -668,7 +668,6 @@ not ready yet
 */
   
 //  OnLogin2;
-LOnLogin:;
   OnLogin = res/* and (forcestockmaint==0)*/;//when offline records it should not open Master Control
   RETURN;
 END;

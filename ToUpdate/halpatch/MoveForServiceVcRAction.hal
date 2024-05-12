@@ -149,19 +149,6 @@ BEGIN
 END;
 
 global
-function LongInt MoveForServiceVcRecordRemoveTest(var record MoveForServiceVc MoveForServicer,record MoveForServiceVc MoveForService2r,LongInt long3,LongInt long4)
-BEGIN
-  LongInt res;
-  record DBLockBlock DBLockRec;
-
-  res = 1;
-  
-LMoveForServiceVcRecordRemoveTest:;
-  MoveForServiceVcRecordRemoveTest = res; 
-  RETURN;
-END;
-
-global
 updating function LongInt MoveForServiceVcRecordRemove(var record MoveForServiceVc MoveForServicer,record MoveForServiceVc MoveForService2r,LongInt long3,LongInt long4)
 BEGIN
   LongInt res;

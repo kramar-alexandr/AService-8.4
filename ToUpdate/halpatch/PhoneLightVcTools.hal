@@ -32,13 +32,13 @@ global updating procedure FillPhoneLightRegisterMn(record RcVc RepSpec) begin
     end;
 end;
 
-global updating procedure DeletePhoneLightRegisterMn(record RcVc RepSpec) begin
+/*global updating procedure DeletePhoneLightRegisterMn(record RcVc RepSpec) begin
 	record PhoneLightVc PhoneLightr;
 	while(LoopMain(PhoneLightr,1,true)) begin
 		recorddelete(PhoneLightr);
 		stepback(PhoneLightr);
 	end;
-end;
+end;*/
 
 //мейнтейненс для удаления всех записей из PhoneLightVc
 global updating procedure DeletePhoneLightRegisterMn(record RcVc RepSpec) begin

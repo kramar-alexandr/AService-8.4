@@ -1040,9 +1040,9 @@ LkInvoiceTypeCredit:;
   end;
   if ((IVr.OKFlag==0) and (IV2r.OKFlag!=0)) then begin//unok
       switch (IVr.InvType)  begin
-        case kInvoiceTypeCreditSpecialSales: goto LkInvoiceTypeCredit;
+        case kInvoiceTypeCreditSpecialSales: goto LkInvoiceTypeCredit1;
         case kInvoiceTypeCredit:
-          LkInvoiceTypeCredit:;
+          LkInvoiceTypeCredit1:;
           if (IVr.CredInv>0) then begin            
             UpdateLiqInfoFromCreditNote(IVr.CredInv,-IVr.Sum4,IVr.CurncyCode,-IVr.BaseSum4,IVr.SerNr,-1,true);
           end;
