@@ -1,259 +1,41 @@
-external function UUID GetServerUUIDRemote();
-external function string 255 RemainingEinvoicesQuantity;
-external function Boolean DisplayAdditionalFields();
-remote function Integer MailAcceptanceStatus(LongInt);
-external function Boolean IsMoveToCloud(record SetupStatusBlock);
-external function Boolean IsMoveToCloudB();
-external outer function Boolean IsCloudControllerClient();
-external function string 255 GetCurrentStoreName();
-external function Boolean CompaniesInClientMode();
-external function Boolean ProductInDemoMode();
-remote function string 255 GetCompanyShortCode(string);
-external function Boolean AnyModuleAvailable();
 external function Boolean AcceptanceStatusColumnTest(string);
-external function Integer FlipCharCode(Integer,Integer);
 external procedure RateField(real,real,real,string,integer,string,boolean,real,real,string,boolean);
-external function boolean AddBicToMasterWindow(integer,var real,var real,real,real,real,real);
-external function Boolean IsIntEnabActive(var string,var string,var Boolean,var string);
-external function Boolean TouchScreenLookVertical();
-external procedure SysEClass_Tool(Integer,var real,var real);
-external procedure GTransEClass_Tool(Integer,var real,var real);
-external procedure GTrans2EClass_Tool(Integer,var real,var real,var real);
-external procedure GBaseEClass_Tool(Integer,var real,var real);
-external procedure TransGenVClass_Tool(Integer,var real,var real);
-external procedure GetCurUser(var record UserVc);
 external function string 60 UserDefined(string,string);
-external outer function string 255 MasterBannerURL();
-external procedure ItemStatusUserSettings(string,var Boolean,var Boolean,var Boolean,var Boolean,var Boolean,var Boolean,var Boolean,var Boolean,var Boolean,var Boolean,var Boolean,var Boolean,var Boolean,var Boolean);
-external function Boolean AllowedInCountry(integer);
-external function Integer ResourceWindowResourceType();
-external function Boolean ResPlan_Rental();
-external function Boolean ResPlan_ProdOperations();
 external function Boolean TouchScreenLook();
-external procedure ExtractObj(string,var Integer,var string);
-external function Boolean IsSessionOpen(string,string,Date,Time);
-external procedure CntNPTSPaymentCurrencies(var Array string,var Array string,var Array Integer,var Array string,var Integer);
-remote procedure CntPOSCurrencies(var Array string,var Array Boolean,var Integer);
-external function Boolean CheckOffLineRecords(Boolean);
-external function string 60 TileUserDefined(string,Integer,var Integer);
-external function Boolean CUVATNrColumn;
-external function Integer GetInternetEnablerCountry();
-external function Integer CntVarietyCode(Integer,var Array string);
-external function Integer VarietyMatMax(Integer);
 external function Boolean UseTaxTemplatesforTaxCalc();
-remote procedure TablesViewWClassDo(record LocalMachineBlock,string,Array string,Array string,Array string,Array string,Array Integer,var Integer,var LongInt);
-external function string 20 GetMenuCode(string);
-external procedure DrawModifierButtons(var Integer);
-remote procedure ForkLiftQueueArray(string,string,var Array string,var Array string,var Array string,var Array string,var Array val,var Array Integer,var Array string,var Integer,Boolean,LongInt,LongInt,string);
 
-external function Boolean DisplayLoginButtons();
-external function Integer LoginShortcutsLines(Integer);
-external function Integer LoginShortcutsPos(Real,Integer);
-
-external procedure DefineTTRRowTypes(Integer);
-external function real ItemButtons(string,Integer);
-external procedure HWStoreWClassAddProducts(Integer);
 external function Boolean HasCharts();
-external function Boolean HasDetailedCharts();
-external function Boolean HasNewRegistration();
 external function Boolean ActivityIsForAcceptanceOrFYI(record ActVc,Boolean,Boolean);
-// TravelLog
-external function Integer LoginShortcuts();
-external function Boolean TestConfigurationEnabler(string);
-remote function Integer CustomerSalesPaymentTermType(string);
-// POS Standalone
-external function Boolean DefCustCodeSetup();
-// in-apps
-external function Boolean HasInAppsAvailable();
-external function Integer CountCountries();
-
-// Language functions ENG
-/*external function Boolean DisplayLoginKeyPad_ENG();
-external function string 255 VATZoneEditFieldLabelENG(Integer);
-external function real VATZoneButtonsLabelsENG(real,real,real,real);
-external procedure LoginButtons2_ENG(Real,Real);
-external procedure FORMDEF_ENG();
-external function string 255 DemoMsgWClassTitle_ENG(Boolean,Boolean);
-external procedure TBEClassDef_ENG();
-external function string 255 VATZoneNameENG();
-external procedure TSERW_ENG();
-external procedure TSERWNT_ENG();
-external procedure TSERWTouch_ENG();
-external procedure TSERWTEST_ENG();
-external procedure INVFORM_ENG(Boolean);
-external procedure DisplayRecordDetails_ENG(LongInt,LongInt,string,date,time,string,string,string,string,string,string,string,string,string,string,string,Integer,string,string,string,val,string,Boolean,string,string);
-external procedure DrawPOSInterface_ENG(string,string,record POSButtonsVc,Integer,string,Integer);
-external procedure DisplayRecordDetailsCustDisplay_ENG(LongInt,LongInt,string,date,time,string,string,string,string,string,string,Integer,string,string,string,val);
-external function string 255 ResDayWClassWindowTitle_ENG();
-external function string 255 ResMonWClassWindowTitle_ENG();
-external function string 255 RTMonWClassWindowTitle_ENG();
-external procedure SetupNightAuditWindowControls_ENG(Boolean);
-external procedure CURClassDefinitionENG();
-external function real DrawPaymentModesButtons_IV_ENG(real);
-external function real FunctionButtons_ENG(string);
-external procedure CreditCardWindowHeader_ENG(Boolean,Boolean,Real);
-external procedure CreditCardWindowButtons_ENG(string,string,real);
-external procedure CreditCardWindowInvoiceDetail_ENG(Real);
-external procedure CreditCardWindowDeliveryDetail_ENG(Real);
-external function real DrawPaymentModesButtons_ENG();
-external procedure DrawBarMenuTiles_ENG(string);
-external procedure DrawRestPMOtherPay_ENG();
-external procedure DisplayRecordDetailsRA_ENG(LongInt,LongInt,string,date,time,string,string,string,string,string,string,Integer,string,LongInt,Date,string,LongInt,string);
-external procedure DrawModifierButtons2_ENG(var integer,var integer);
-external procedure OKCancel_ENG();
-external procedure DefineElearningURLCacheLClass_ENG();
-external procedure DefineElearningURLCacheDClass_ENG();
-external function real TravelLogDeductions_ENG(real,real);
-external procedure LoginButtons_ENG(Real);
-external procedure FORMDEF2_ENG();
-external procedure FORMDEF3_ENG();
-external procedure ARS2RClass_ENG();
-external procedure ALLVATRClass_ENG();*/
 
 // Language functions RUS
-external function Boolean DisplayLoginKeyPad_RUS();
-external function real VATZoneButtonsLabelsRUS(real,real,real,real);
-external procedure LoginButtons2_RUS(Real,Real);
-external procedure FORMDEF_RUS();
-external function string 255 DemoMsgWClassTitle_RUS(Boolean,Boolean);
-external procedure TBEClassDef_RUS();
-external function string 255 VATZoneNameRUS();
-external procedure TSERW_RUS();
-external procedure TSERWNT_RUS();
-external procedure TSERWTouch_RUS();
-external procedure TSERWTEST_RUS();
-external procedure INVFORM_RUS(Boolean);
-external procedure DisplayRecordDetails_RUS(LongInt,LongInt,string,date,time,string,string,string,string,string,string,string,string,string,string,string,Integer,string,string,string,val,string,Boolean,string,string);
-external procedure DisplayRecordDetailsCustDisplay_RUS(LongInt,LongInt,string,date,time,string,string,string,string,string,string,Integer,string,string,string,val);
-external function string 255 ResDayWClassWindowTitle_RUS();
-external function string 255 ResMonWClassWindowTitle_RUS();
-external function string 255 RTMonWClassWindowTitle_RUS();
-external procedure SetupNightAuditWindowControls_RUS(Boolean);
-external procedure CURClassDefinitionRUS();
-external function real DrawPaymentModesButtons_IV_RUS(real);
-external function real FunctionButtons_RUS(string);
-external procedure CreditCardWindowHeader_RUS(Boolean,Boolean,Real);
-external procedure CreditCardWindowButtons_RUS(string,string,real);
-external procedure CreditCardWindowInvoiceDetail_RUS(Real);
-external procedure CreditCardWindowDeliveryDetail_RUS(Real);
-external function real DrawPaymentModesButtons_RUS();
-external procedure DrawBarMenuTiles_RUS(string);
-external procedure DrawRestPMOtherPay_RUS();
-external procedure DisplayRecordDetailsRA_RUS(LongInt,LongInt,string,date,time,string,string,string,string,string,string,Integer,string,LongInt,Date,string,LongInt,string);
-external procedure DrawModifierButtons2_RUS(var integer,var integer);
-external procedure OKCancel_RUS();
-external procedure DefineElearningURLCacheLClass_RUS();
-external procedure DefineElearningURLCacheDClass_RUS();
-external function real TravelLogDeductions_RUS(real,real);
-external procedure LoginButtons_RUS(Real);
-external procedure FORMDEF2_RUS();
-external procedure FORMDEF3_RUS();
-external procedure ARS2RClass_RUS();
-external procedure ALLVATRClass_RUS();
-
-// Language functions UKR
-/*external function Boolean DisplayLoginKeyPad_UKR();
-external function string 255 VATZoneEditFieldLabelUKR(Integer);
-external function real VATZoneButtonsLabelsUKR(real,real,real,real);
-external procedure LoginButtons2_UKR(Real,Real);
-external procedure FORMDEF_UKR();
-external function string 255 DemoMsgWClassTitle_UKR(Boolean,Boolean);
-external procedure TBEClassDef_UKR();
-external function string 255 VATZoneNameUKR();
-external procedure TSERW_UKR();
-external procedure TSERWNT_UKR();
-external procedure TSERWTouch_UKR();
-external procedure TSERWTEST_UKR();
-external procedure INVFORM_UKR(Boolean);
-external procedure DisplayRecordDetails_UKR(LongInt,LongInt,string,date,time,string,string,string,string,string,string,string,string,string,string,string,Integer,string,string,string,val,string,Boolean,string,string);
-external procedure DrawPOSInterface_UKR(string,string,record POSButtonsVc,Integer,string,Integer);
-external procedure DisplayRecordDetailsCustDisplay_UKR(LongInt,LongInt,string,date,time,string,string,string,string,string,string,Integer,string,string,string,val);
-external function string 255 ResDayWClassWindowTitle_UKR();
-external function string 255 ResMonWClassWindowTitle_UKR();
-external function string 255 RTMonWClassWindowTitle_UKR();
-external procedure SetupNightAuditWindowControls_UKR(Boolean);
-external procedure CURClassDefinitionUKR();
-external function real DrawPaymentModesButtons_IV_UKR(real);
-external function real FunctionButtons_UKR(string);
-external procedure CreditCardWindowHeader_UKR(Boolean,Boolean,Real);
-external procedure CreditCardWindowButtons_UKR(string,string,real);
-external procedure CreditCardWindowInvoiceDetail_UKR(Real);
-external procedure CreditCardWindowDeliveryDetail_UKR(Real);
-external function real DrawPaymentModesButtons_UKR();
-external procedure DrawBarMenuTiles_UKR(string);
-external procedure DrawRestPMOtherPay_UKR();
-external procedure DisplayRecordDetailsRA_UKR(LongInt,LongInt,string,date,time,string,string,string,string,string,string,Integer,string,LongInt,Date,string,LongInt,string);
-external procedure DrawModifierButtons2_UKR(var integer,var integer);
-external procedure OKCancel_UKR();
-external procedure DefineElearningURLCacheLClass_UKR();
-external procedure DefineElearningURLCacheDClass_UKR();
-external function real TravelLogDeductions_UKR(real,real);
-external procedure LoginButtons_UKR(Real);
-external procedure FORMDEF2_UKR();
-external procedure FORMDEF3_UKR();
-external procedure ARS2RClass_UKR();
-external procedure ALLVATRClass_UKR();*/
-
 external function Boolean IsStandardUnused();
 external function Boolean IsEnterprise();
 external function Boolean StandardHansa();
-external function Boolean HasATOL();
 
-external function Boolean HasAccPeriods();
-external function Boolean HasAccessGroups();
 external function Boolean HasAddFee();
 external function Boolean HasApprovals();
-external function Boolean HasCCPayments();
 external function Boolean HasAdvancedAccounting();
-external function Boolean HasAdvancedCRM();
 external function Boolean HasAdvancedPricing();
-external function Boolean HasAdvancedProduction();
 external function Boolean HasAdvancedStock();
-external function Boolean HasAged();
-external function Boolean HasBar();
 external function Boolean HasBase2();
 external function Boolean HasBranch();
 external function Boolean HasBuyBack();
 external function Boolean HasCategories();
-//external function Boolean HasConsigmentStock();
-external function Boolean HasCommunicator();
-external function Boolean HasConsignmentStock();
 external function Boolean HasContactClassification();
-external function Boolean HasContactRelations();
-external function Boolean HasConsolidation();
 external function Boolean HasCountryPerCustomer();
-external function Boolean HasCreditLimit();
 external function Boolean HasCustItem();
-external function Boolean HasCustomerSearchKey();
 external function Boolean HasCustomerStatusReport();
 external function Boolean HasDownpayments();
-external function Boolean HasDefineColumns();
-external function Boolean HasDeliveryAddress();
-external function Boolean HasDepartments();
 external function Boolean HasETaxDocuments();
 external function Boolean HasEInvoicing();
-external function Boolean HasEndorsedChecks();
 external function Boolean HasExtraNLComment();
 external function Boolean HasExtTax();
-external function Boolean HasFavouriteActTypes();
-external function Boolean HasFiscalPrinter();
-external function Boolean HasFormEditor();
-external function Boolean HasFreightAdvanced();
-external function Boolean HasHideCostPrice();
 external function Boolean HasHotelInterface();
-external function Boolean HasGuestUserDefined();
 external function Boolean HasJewelleryInterface();
-external function Boolean HasIncomeAndExpenseBook();
-external function Boolean HasIOUChecks();
 external function Boolean HasItemClassification();
 external function Boolean HasItemGroups();
-external function Boolean HasKPIs();
 external function Boolean HasLanguages();
 external function Boolean HasLimitedAccess();
-external function Boolean HasLocalMachines();
-external function Boolean HasLoyaltyCards();
-external function Boolean HasMailTags();
-external function Boolean HasMainPartner();
 external function Boolean HasMultiCurrency();
 external function Boolean HasMultiLocations();
 external function Boolean HasNLBudget();
@@ -264,38 +46,22 @@ external function Boolean HasOfficialSerNr();
 external function Boolean HasOrderClasses();
 external function Boolean HasPreferedOfficialSerNr();
 external function Boolean HasNumberSeries();
-external function Boolean HasPersons();
-external function Boolean HasPocketScreen();
 external function Boolean HasPositions();
 external function Boolean HasPrepayments();
-external function Boolean HasProjects();
 external function Boolean HasPriceLists();
 external function Boolean HasQualityControl();
-external function Boolean HasReconLevel2();
-external function Boolean HasReminderLevel();
-external function Boolean HasRemoteBackup();
-external function Boolean HasResourceDisplayGroups();
 external function Boolean HasRussianPrepayment();
 external function Boolean HasRetGoodsToSupp();
 external function Boolean HasReturnedGoods();
-external function Boolean HasRoomPackages();
-external function Boolean HasRoomTypes();
 external function Boolean HasRoute();
 external function Boolean HasSalesman();
 external function Boolean HasSalesmanBonus();
 external function Boolean HasSalesGroup();
-external function Boolean HasSecondQuantity();
 external function Boolean HasSerialNumbers();
-external function Boolean HasServerInCloud();
 external function Boolean HasSettlementDiscount();
 external function Boolean HasSimulations();
 external function Boolean hasSimAccruals();
-external function Boolean HasSkypeConnection();
-external function Boolean HasSIPServerConnection();
-external function Boolean HasStrAsSignFType();
-external function Boolean HasTouchScreenDevice();
 external function Boolean HasTaxMatrix();
-external function Boolean HasTestFeatures();
 external function Boolean HasMetroTestFeatures();
 external function Boolean HasWorkOrders();
 external function Boolean HasThrouLocation();
@@ -304,56 +70,32 @@ external function Boolean HasTREO();
 external function Boolean HasVarieties();
 external function Boolean HasVATZone();
 external function Boolean HasWithholdingTax();
-external function Boolean HasWithholdingTaxAdvanced();
-external function Boolean HasWorkOrders();
-external function Boolean HasWorkflowOverview();
 
 external function Boolean HasStandardCRM();
-external function Boolean HasStandardOrganizer();
-external function Boolean HasStandardCommunicator();
 
 external function Boolean HasEMail();
-external function Boolean HasExternalEMail();
 
 external function Boolean HasModAT2();
-external function Boolean HasModBA();
 external function Boolean HasModCheck();
 external function Boolean HasModCL();
-external function Boolean HasModCO();
-external function Boolean HasModCons();
-external function Boolean HasModCourses();
-external function Boolean HasModCredMan();
 external function Boolean HasModCRM();
-external function Boolean HasModEDI();
-external function Boolean HasModExp();
 external function Boolean HasModHotel();
 external function Boolean HasModHRM();
 external function Boolean HasModIN();
-external function Boolean HasModIntStock();
 external function Boolean HasModNL();
-external function Boolean HasPaymentGateway();
 external function Boolean HasModPO();
-external function Boolean HasModPOS();
 external function Boolean HasModPL();
-external function Boolean HasModPOProg();
-external function Boolean HasModPP();
 external function Boolean HasModProd();
-external function Boolean HasModQT();
 external function Boolean HasModRent();
-external function Boolean HasModRest();
-external function Boolean HasModRsrt();
 external function Boolean HasModSO();
 external function Boolean HasModSL();
 external function Boolean HasModSVO();
 external function Boolean HasModTS();
 external function Boolean HasModWHM();
-external function Boolean HasModDI();
-external function Boolean UsePostOKButton();
-external function Boolean HasBankImport();
-external function Boolean HasPLIntegratedWithNL();
-external function Boolean HasSLIntegratedWithNL();
 external function Boolean HasIntegratedNL();
 external function Boolean HasConsStockMoveInvoices();
+
+
 //##ii
 procedure dummy() //##ii
 begin //##ii
@@ -919,9 +661,6 @@ begin
     EditField(h,v+=vs,80,"Прейскурант",Normal,PriceList,false,PLDefSClass);
   end;
   EditField(h+120,v,80,"Гр.П.",Normal,SalesGroup,false,0);// Edit ************************** Monday, 22 February 2016 11:00:04
-  if (HasVATZone) then begin
-    v = VATZoneButtonsLabelsrus(h2,v=vm+vs,170,16);
-  end;
   Tile(tilenr,90,false,tilenr,Comment1); tilenr = tilenr + 1; 
   vs = 20;
   EditField(h=75,v=6,-20,"Комм.",Normal,Comment1,false,0);
@@ -1499,12 +1238,6 @@ begin
     width = 135;
   end;
   EditField(h5,v,width,"Банк",Normal,BankCode,false,BankSClass);
-  if (HasApprovals) then begin
-    SoftEditField(h3=h+4,v=(vm+=40),123,"Статус утверждения",ViewOnly,"AcceptanceStatusFlag",false,0,M4Str,255);
-    v = VATZoneButtonsLabelsrus(h3=290,v=vm,170,16);
-  end else begin
-    v = VATZoneButtonsLabelsrus(h3=290,v=vm+20,170,16);
-  end;
   EditField(h2=-170,v=vm,150,"Регион",Normal,Region,false,RegionSClass);
   EditField(h2,v+=vs,150,"ИНН",Normal,VATNr,false,0);
   EditField(h2,v+=vs,150,"GLN",ViewOnly,RecipientGLN,false,0);  
@@ -1614,7 +1347,6 @@ begin
     HalPushButton(300,5,360,25,"PrintDoInvFormButton","Друк");
   EndToolBar; //Edit***************************Sasha2,11:16 20.05.2015 }
 //if (HasTouchScreenLook==false) then begin  //no more TS interface in SL 
-if (true) then begin
   ActiveFieldOnNew("CustCode");
   SetWRect(20,80,850,210);
   CommunicateButton;
@@ -1627,13 +1359,8 @@ if (true) then begin
     if (HasLocalization("FIN")) then begin
       EditField(h,vm=(v+=20),180,"Оплата посил",ViewOnly,CalcFinRef,false,0);
     end else begin
-  /*EditField(h,vm=(v+=20),135,"Офіц. номер",Normal,OfficialSerNr,false,LegalInvNrSClass);
-  if (CurrentUser=="SA") then begin
-    EditField(h+200,v,100,"LocOKNr",Normal,LocOKNr,false,0); //Edit***************************Sasha2,14:56 15.02.2016
-  end;*/
-		//EditField(180,vm=(v+=20),220,"ФІБ",Normal,DelAddr3,false,0);// Edit ************************** BPI Ukraine - KramarAlexandr - Wednesday, 20 December 2017 11:34:08
-		//EditField(h+210,v,100,"Телефон",Normal,Phone2,false,0);// Edit ************************** BPI Ukraine - KramarAlexandr - Wednesday, 20 December 2017 11:34:06
-  end;
+    
+    end;
   end else begin
     v = v + 20;
     vm = v;
@@ -1882,13 +1609,7 @@ if (true) then begin
   MatCol(t,-235,"Счёт дебеторов",0,SalesAcc,false,0);
   MatCol(t,-135,"Сумма",0,Sum,true,0);
   MatCol(t,-30,"НДС",0,VATCode,false,0);
-  /*
-  MatText(t=kInvoiceRowTypePreviousDownpayment,32,"Prev. Down Payment",true);
-  MatColTL(t,152,"",0,-1,ViewOnly,0,CUPNr,true,0);
-  MatColTL(t,222,"",0,-1,ViewOnly,0,ServiceDelDate,true,0);
-  MatColTL(t,-200,"",0,-1,Normal,0,Price,true,0);
-  MatColTL(t,-100,"",0,-1,Normal,0,Sum,true,0);
-  */
+
   //t = 21 kInvoiceRowTypeChequePayment
   MatText(t=kInvoiceRowTypeActivationDate,32,"Дата активации:",true); 
   MatCol(t,130,"",0,ServiceDelDate,false,PasteCurDate); 
@@ -2166,165 +1887,7 @@ if (true) then begin
     EditField(h3,v+=vs,80,"Глоб. № трансп.",Normal,GlobalTransportNr,false,0);  
     EditField(h3,v+=vs,80,"Глоб. дата трансп.",Normal,GlobalTransportDate,false,PasteCurDate);  
   end;
-  /*Tile(5,170,false,"5",OrderNr);
-  EditField(h1,v=vm,80,"Номер счета",ViewOnly,OrderNr,false,0);
-  if (StandardHansa==false) then begin
-    EditField(h1,v+=vs,80,"Зак.на обсл.",ViewOnly,SVONr,false,0);
-    EditField(h1,v+=vs,80,"№ кред.договор.",ViewOnly ,CredManNr,false,0);
-  end;
-  EditField(h1,v+=vs,135,"Официальный № 2",Normal,OfficialSerNr2,false,0);         
-  if (HasLocalization("FIN")) then begin
-    EditField(h1,v+=vs,135,"Код места доставки",Normal,DeliverySiteCode,false,0);         
-    EditField(h1,v+=vs,135,"Код места работы",Normal,WorkSiteNumber,false,0);         
-  end;
-  if (HasLocalization("BRA")) then begin         
-    EditField(h1,v+=vs,80,"Federal Service",Normal,FedServCode,false,FederalSerSClass);
-  end;
-  if (HasLocalization("ARG,BOL")) then begin
-    EditField(h1,v+=vs,135,"CAE/CAEA",Normal,CAE,false,0); 
-    EditField(h1,v+=vs,135,"CAE Expiry",Normal,CAEExpiry,false,0); 
-    EditField(h1,v+=vs,70,"CAEA Start",ViewOnly,CAEAStartDate,false,0); 
-  end;
 
-  EditField(h2=350,v=vm,80,"Стат. стоимость",Normal,StatVal,true,0); 
-  EditField(h2,v+=vs,80,"Время трансп.",Normal,TransTime,false,SetSClass); 
-  EditField(h2,v+=vs,80,"Дата печати",ViewOnly,PrintDate,false,0); 
-  EditField(h2,v+=vs,80,"Oprt. Comment",ViewOnly,OYDescription,false,0); 
-  if (FileExists("hob/hmdatadef.hob")) then begin//??? why here and not it ahansamail ?  
-    EditField(h2,v+=vs,80,"ToBe Inv.Nr",ViewOnly,ToBeIVNr,false,0); 
-  end;
-  //  ColourPushButton(-100,v,-20,v+60,"TestIVDClassCardData","Test" & chr(10) & "CardData",4);
-  //  SoftEditField(h3+50,v,100,"Контрольный код"  ,ViewOnly ,"TaxAuthIDCC",false,0,M4Str,60);
-  if (StandardHansa==false) then begin
-  if (HasLocalization("ARG,BOL")) then begin
-      EditField(h2,v+=vs,135,"Налогов. орган",Normal,TaxAuthID,false,0);
-    EditField(h2,v+=vs,135,"Контрольн. код",ViewOnly ,TaxAuthIDCC,false,0);
-    end;
-    if (HasLocalization("PRT")) then begin
-    EditField(h2,v+=vs,135,"Статус",Normal,Status,false,SetSClass);
-    end;
-    if (HasLocalization("ARG,PRT")) then begin
-    EditField(h2,v+=vs,135,"Tax Type",Normal,TaxInvType,false,SetSClass); 
-    end;
-    if (HasLocalization("ARG")) then begin
-      EditField(h2,v+=vs,70,"CAEA Expiry",ViewOnly,CAEAExpiryDate,false,0);
-    end;
-    if (HasLocalization("SVN")) then begin
-      EditField(h2,v+=vs,180,"E-Inv. Conf. No.",ViewOnly,TaxAdminReceiptNr,false,0);
-      EditField(h2,v+=vs,180,"Tax Seal",ViewOnly,TaxAdminServSeal,false,0);
-    end;
-  end;
-  //  EditField(h2,v+=vs,135,"E-Inv Exp. Date",ViewOnly,EInvExpDate,false,0);//Tx server
-  //  EditField(h2,v+=vs,135,"E-Inv Exp. Qty",ViewOnly,EInvExpQty,false,0);
-  CheckBox(h3=450,v=vm,0,"Без напоминаний",NoRemndrFlag);
-  CheckBox(h3,v+=16,0,"Без пени",NoInterestFlag);
-  CheckBox(h3,v+=16,0,"Без сборов",NoColectionFlag);
-    CheckBox(h3,v+=16,0,"Фискальная сч/ф",FiscalFlag);
-  CheckBox(h3+130,v=vm,0,"Информация о клиенте",ARonTR);
-  CheckBox(h3+130,v+=16,0,"Не посылать как эл. сч/ф",NoEInvoice);
-  CheckBox(h3+130,v+=16,0,"Счёт себе",SelfBilling);
-  CheckBox(h3+130,v+=16,0,"Post Receipt #VAT#",IPBookVAT); 
-  if (HasLocalization("LTU")) then begin
-    CheckBox(h3+130,v+=16,0,"Exclude from Exports",ExcludeFromExports); 
-  end;
-//    CheckBox(h3,v+=16,0,"Including VAT",InclVAT);
-  //  CheckBox(h3,v+=16,0,"E-Invoice Exported",EInvExpFlag);
-  Tile(6,150,false,"6",PriceList); vs = 20; h3=550;
-  EditField(h1,v=vm,80,"Прайс-лист",Normal,PriceList,false,PLDefSClass);
-  EditField(h1,v+=vs,80,"Таблица сидок",Normal,RebCode,false,0);
-  //  EditField(h1,v+=vs,80,"Disc. %",ViewOnly,DiscPerc,false,0);
-  //  EditField(h1,v+=vs,80,"Disc. Amount",ViewOnly,DiscSum,false,0);
-  EditField(h1,v+=vs,80,"Грузо-чатель",ViewOnly,OrgCust,false,0);
-  if (StandardHansa==false) then begin
-    EditField(h1,v+=vs,80,"Кредитная карта",Normal,CreditCard,false,CreditCardSClass);
-    EditField(h1,v+=vs,80,"Авторизация",Normal,AuthorizationCode,false,0);
-  end;
-  EditField(h1,v+=vs,80,"Счёт дебиторов",Normal,ARAcc,false,AccSClass);
-  EditField(h1,v+=vs,-20,"Комментарий",Normal,InvComment,false,0);
-  if (HasSalesGroup) then begin
-    EditField(h2=310,v=vm,80,"Группа продаж",ViewOnly,SalesGroup,true,0);
-    EditField(h2,v+=vs,80,"Язык",Normal,LangCode,false,LangSClass);
-  end else begin
-    EditField(h2,v=vm,80,"Язык",Normal,LangCode,false,LangSClass);
-  end;
-  EditField(h2,v+=vs,80,"Комиссия",Normal,Commision,true,0);
-  EditField(h2,v+=vs,80,"Итого вкл. ком.",ViewOnly,SumIncCom,true,0);
-  EditField(h2,v+=vs,80,"Пеня",Normal,IntCode,true,IntSClass);
-  if (StandardHansa==false) then begin
-    EditField(h2,v+=vs,80,"Ориг №",Normal,CredInv,false,0);
-    EditField(h3,v=vm,80,"Уровень напоминания",Normal,LastRemndr,false,0);
-  end else begin
-    EditField(h3,v=vm,80,"Org. No.",Normal,CredInv,false,0);   // From dict
-    EditField(h3,v+=vs,80,"Уровень напоминания",Normal,LastRemndr,false,0);   // From dict
-  end;
-  EditField(h3,v+=vs,80,"Дата посл. напомин.",Normal,LastRemDate,false,PasteCurDate);
-  if (StandardHansa==false) then begin
-    EditField(h3,v+=vs,80,"Накопительная карта",Normal,LoyaltyCardNr,false,LoyaltyCardSClass);
-  end;
-  EnterSkip(Math);
-  if (StandardHansa==false) then begin
-    EditField(h3,v+=vs,80,"Прогр. лояльности",ViewOnly,LCMLevel,false,LCMemberLevelSClass);
-    EditField(h3,v+=vs,80,"Накопительные баллы",ViewOnly,Points,true,0);
-  end;
-  if (HasTREO) then begin
-    EditField(h3,v+=vs,80,"№ TREO",Normal,TREONr,false,0);
-  end;
-  Tile(7,250,false,"7",Addr1); vs = 20;
-  label = UserDefined("CUVc","InvAddr0");
-  if (blank(label)) then begin label = "Счёт-фактура"; end;
-  EditField(h=110,v=6,-20,label,Normal,Addr1,false,0);
-  label = UserDefined("CUVc","InvAddr1");
-  if (blank(label)) then begin label = "Адрес"; end;
-  EditField(h,v+=vs, -20,label,Normal,Addr2,false,0);
-  label = UserDefined("CUVc","InvAddr2");
-  EditField(h,v+=vs, -20,label,Normal,Addr3,false,0);
-  label = UserDefined("CUVc","InvAddr3");
-  EditField(h,v+=vs, -20,label,Normal,InvAddr3,false,0);
-  label = UserDefined("CUVc","InvAddr4");
-  EditField(h,v+=vs, -20,label,Normal,InvAddr4,false,0);
-  EditField(h,vm=(v+=vs),80,"Страна",Normal,InvCountry,false,CountrySClass);
-  if (HasLocalization("BRA")) then begin 
-    EditField(h2-89,v,232,"",ViewOnly,InvCountryName,false,0);
-    h5 = -170;
-    width = 150;
-  end else begin
-    h5 = -270;
-    width = 135;
-  end;
-  EditField(h5,v,width,"Банк",Normal,BankCode,false,BankSClass);
-  if (StandardHansa==false) then begin
-    if (HasApprovals) then begin
-      SoftEditField(h3=h+4,v=(vm+=40),123,"Статус утверждения",ViewOnly,"AcceptanceStatusFlag",false,0,M4Str,255);
-    end;
-  
-    v = VATZoneButtonsLabelsrus(h3=290,v=vm,170,16);
-  end else begin
-    v = VATZoneButtonsLabelsrus(h3=290,v=vm+40,170,16);
-  end;
-  EditField(h2=-170,v=vm,150,"Регион",Normal,Region,false,RegionSClass);
-  EditField(h2,v+=vs,150,"ИНН",Normal,VATNr,false,0);
-  EditField(h2,v+=vs,150,"#Reg. No.# 1",Normal,RegNr1,false,0); 
-  EditField(h2,v+=vs,150,"GLN",ViewOnly,RecipientGLN,false,0);  
-  EditField(h2,v+=vs,150,"Телефон",Normal,Phone,false,0);
-  EditField(h2,v+=vs,150,"Факс",Normal,Fax,false,0);
-  Tile(8,170,false,"8",ShipAddr0); vs = 20;
-  if (StandardHansa==false) then begin
-    EditField(h1,v=6,80,"Код адреса",Normal,DelAddrCode,false,DelAddr3SClass);
-    EditField(h1,v+=vs,-20,"Отгрузка",Normal,ShipAddr0,false,0);
-  end else begin
-    EditField(h1,v=6,-20,"Отгрузка",Normal,ShipAddr0,false,0);   // From dict
-  end;
-  EditField(h1,v+=vs,-20,"Адрес",Normal,ShipAddr1,false,0);
-  EditField(h1,v+=vs,-20,"",Normal,ShipAddr2,false,0);
-  EditField(h1,v+=vs,-20,"",Normal,ShipAddr3,false,0);
-  EditField(h1,v+=vs,-20,"",Normal,DelAddr3,false,0);
-  EditField(h1,v+=vs,-20,"",Normal,DelAddr4,false,0);
-  EditField(h1,v+=vs,80,"Страна",Normal,DelCountry,false,CountrySClass);
-  if (HasLocalization("BRA")) then begin 
-    EditField(h1+91,v,232,"",ViewOnly,DelCountryName,false,0);
-  end;  
-  EditField(h2,v,150,"GLN доставки",ViewOnly,DelRecipientGLN,false,0);  
-  EnterSkip(InvDate);*/
   if (GuiType==kGuiMetro) then begin // Temporarily disabled on Windows 8
     SpecialMenu("Статус счета-фактуры",'r',2,"IVInfoIVDsm");
     SpecialMenu("Статус товара",'I',0,"ItemStatusIVDsm");
@@ -2429,204 +1992,7 @@ if (true) then begin
     end;
     SpecialMenu("Добавить клиента",' ',0,"AddCustomerIVDsm");         
     SpecialMenu("Добавить товар",' ',0,"AddItemIVDsm");           
-  end;
-
-end else begin
-  date td;
-  integer acnt,wn;
-  longint bm,lt,rt,tp,page;
-  real h,h2,h3,h4,v;
-  record IVVc IVr;
-  record LocalMachineBlock LMb;
-  record POSButtonsVc POSBr;
-  string 255 bc1,bc2,compname,lmc,nr,sessdesc,sm;
-  time tt;
-
-  BlockLoad(LMb);
-
-    //StopAlert(LMb.POSButtonGroup);
-
-    wn = CurWindow;
-    GetScreenSize(wn,tp,lt,bm,rt);
-    switch (GuiType) begin
-      case kGuiCocoa:
-        bm = bm - 80;
-      case kGuiWindowsDesktop:
-        tp = tp + 30;
-        bm = bm - 40;
-        rt = rt - 55;
-        lt = lt - 45;
-      case kGuiGDI:
-        tp = tp + 30;
-        bm = bm - 40;
-        rt = rt - 55;
-        lt = lt - 45;
-      case kGuiWPF:
-        tp = tp + 30;
-        bm = bm - 40;
-        rt = rt - 55;
-        lt = lt - 45;
-    end;
-
-    page = StringToInt(GetWindowString(wn,"touchscreenwindowpage"));
-    if (page<1) then begin
-      page = 1;
-    end;
-    //stopalert("about to call ReadPOSButtons, page:" & page);
-    //ReadPOSButtons("IVDClass",LMb.POSButtonGroup,page,bc1,bc2,compname,POSBr,acnt);
-    SetWRect(lt,tp,rt,bm);
-      AbsoluteWindowSize;
-    if (TestEnablerFile("EnNoFullscreenWindow")==false) then begin
-      FullscreenWindow;
-    end;
-    BrowseButtons(false);
-    BrowseButtons(false);
-    DynamicWindow;
-    UseView(IVVc);
-    ActiveFieldOnNew("ivcashcommand");
-    if (GuiType!=kGuiiPhone) then begin
-    ToolBar;
-//    PushButton(-340,5,-340 + 34,5+18,ToolPasteSpec,"v");
-    EndToolBar;
-    end;
-
-    v = 20;
-    h = -300; h2 = -150; h3 = -70; h4 = -10;
-
-    wn = CurWindow;
-    if (wn>0) then begin
-      switch (GetWindowClass(wn)) begin
-        case "IVDClass":
-          GetWindowRecord(wn,IVr);
-      end;
-    end;
-    if (GuiType==kGuiiPhone) then begin
-      if (TouchScreenLookVertical) then begin
-        v = 20;
-        h = -300; h2 = -150; h3 = -70; h4 = -10;
-
-        td = IVr.TransDate;
-        if (blankdate(td)) then begin td = CurrentDate; end;
-        tt = IVr.TransTime;
-        if (blanktime(tt)) then begin tt = CurrentTime; end;
-        lmc = IVr.MachineName;
-        if (blank(lmc)) then begin lmc = LMb.LocalMachineCode; end;
-        sm = IVr.SalesMan;
-        if (blank(sm)) then begin sm = CurrentUser; end;
-        nr = "Invoice: ";         
-        if (IVr.SerNr>0) then begin
-          nr = nr & IVr.SerNr;
-        end;
-
-        if (IsEnterprise) then begin
-          if (IsSessionOpen(IVr.MachineName,IVr.DrawerCode,CurrentDate,CurrentTime)) then begin
-            sessdesc = "Сессия POS открыта";         
-          end else begin
-            sessdesc = "*** POS закрыта ***";         
-          end;
-        end;
-
-        DisplayRecordDetails_RUS(10,-100,compname,td,tt,lmc,sm,nr,IVr.CustCode,IVr.Addr0,
-          IVr.Addr1,IVr.Addr2,IVr.Addr3,IVr.Phone,IVr.Objects,
-          IVr.LoyaltyCardNr,LMb.ShowBaggerSupervisor,"","",         
-          "",blankval,sessdesc,true,IVr.OfficialSerNr,         
-          IVr.TaxAdminServSeal);
-
-        SoftEditFieldTLX(360,-120,h4,"",M4Str,ViewOnly,100,30,patM4black,"CustomerDisplayData_Line1",true,0);         
-        SoftEditFieldTLX(360,-80,h4,"",M4Str,ViewOnly,100,50,patM4black,"CustomerDisplayData_Line2",true,0);         
-
-        SoftEditField(2000,-22,200,""  ,Normal ,"ivcashcommandlastitemsernrf",false,0,M4Str,255);         
-
-        //DrawPOSInterface_RUS(bc1,bc2,POSBr,acnt,"",100);         
-      end else begin
-
-        v = 20;
-        h = -300; h2 = -150; h3 = -70; h4 = -10;
-
-        td = IVr.TransDate;
-        if (blankdate(td)) then begin td = CurrentDate; end;
-        tt = IVr.TransTime;
-        if (blanktime(tt)) then begin tt = CurrentTime; end;
-        lmc = IVr.MachineName;
-        if (blank(lmc)) then begin lmc = LMb.LocalMachineCode; end;
-        sm = IVr.SalesMan;
-        if (blank(sm)) then begin sm = CurrentUser; end;
-        nr = "Invoice: ";         
-        if (IVr.SerNr>0) then begin
-          nr = nr & IVr.SerNr;
-        end;
-
-        if (IsEnterprise) then begin
-          if (IsSessionOpen(IVr.MachineName,IVr.DrawerCode,CurrentDate,CurrentTime)) then begin
-            sessdesc = "Сессия POS открыта";         
-          end else begin
-            sessdesc = "*** Сессия POS закрыта ***";         
-          end;
-        end;
-
-        DisplayRecordDetails_RUS(10,26,compname,td,tt,lmc,sm,nr,IVr.CustCode,IVr.Addr0,
-          IVr.Addr1,IVr.Addr2,IVr.Addr3,IVr.Phone,IVr.Objects,
-          IVr.LoyaltyCardNr,LMb.ShowBaggerSupervisor,"","",         
-          "",blankval,sessdesc,true,IVr.OfficialSerNr,         
-          IVr.TaxAdminServSeal);
-
-
-        if (bm<650) then begin
-          SoftEditFieldTLX(360,6,h4,"",M4Str,ViewOnly,100,20,patM4black,"CustomerDisplayData_Line1",true,0);         
-          SoftEditFieldTLX(360,36,h4,"",M4Str,ViewOnly,100,30,patM4black,"CustomerDisplayData_Line2",true,0);         
-        end else begin
-          SoftEditFieldTLX(360,6,h4,"",M4Str,ViewOnly,100,30,patM4black,"CustomerDisplayData_Line1",true,0);         
-          SoftEditFieldTLX(360,46,h4,"",M4Str,ViewOnly,100,50,patM4black,"CustomerDisplayData_Line2",true,0);         
-        end;
-
-        SoftEditField(2000,-22,200,""  ,Normal ,"ivcashcommandlastitemsernrf",false,0,M4Str,255);         
-
-        //DrawPOSInterface_RUS(bc1,bc2,POSBr,acnt,"",100);         
-      end;
-      BottomBar;
-    end else begin
-    td = IVr.TransDate;
-    if (blankdate(td)) then begin td = CurrentDate; end;
-    tt = IVr.TransTime;
-    if (blanktime(tt)) then begin tt = CurrentTime; end;
-    lmc = IVr.MachineName;
-      if (blank(lmc)) then begin lmc = LMb.LocalMachineCode; end;
-      sm = IVr.SalesMan;
-      if (blank(sm)) then begin sm = CurrentUser; end;
-    nr = "Invoice: ";
-    if (IVr.SerNr>0) then begin
-      nr = nr & IVr.SerNr;
-    end;
-
-    if (IsSessionOpen(IVr.MachineName,IVr.DrawerCode,CurrentDate,CurrentTime)) then begin
-      sessdesc = "Сессия POS открыта";
-    end else begin
-      sessdesc = "*** Сессия POS закрыта ***";
-    end;
-
-    // StopAlert("IsSessionOpen(" & IVr.MachineName & "," & IVr.DrawerCode & "," & IVr.TransDate & "," & IVr.TransTime & "); -> " & sessdesc);
-
-    DisplayRecordDetails_RUS(10,26,compname,td,tt,lmc,sm,nr,IVr.CustCode,IVr.Addr0,IVr.Addr1,IVr.Addr2,IVr.Addr3,IVr.Phone,IVr.Objects,IVr.LoyaltyCardNr,LMb.ShowBaggerSupervisor,"","","",blankval,sessdesc,true,IVr.OfficialSerNr,IVr.TaxAdminServSeal);
-
-    if (bm<650) then begin
-      SoftEditFieldTLX(420,6,h4,"",M4Str,ViewOnly,100,20,patM4black,"CustomerDisplayData_Line1",true,0);
-      SoftEditFieldTLX(420,36,h4,"",M4Str,ViewOnly,100,30,patM4black,"CustomerDisplayData_Line2",true,0);
-    end else begin
-      SoftEditFieldTLX(520,6,h4,"",M4Str,ViewOnly,100,30,patM4black,"CustomerDisplayData_Line1",true,0);
-      SoftEditFieldTLX(520,46,h4,"",M4Str,ViewOnly,100,50,patM4black,"CustomerDisplayData_Line2",true,0);
-    end;
-
-    switch (LMb.POSButtonsPosition) begin
-      case kPOSButtonsPositionLeft:
-        SoftEditField(110,-22,200,"Товар/Команда"  ,Normal ,"ivcashcommand",false,0,M4Str,255);
-      case kPOSButtonsPositionRight:
-        SoftEditField(-260,-22,200,"Товар/Команда"  ,Normal ,"ivcashcommand",false,0,M4Str,255);
-    end;
-    SoftEditField(2000,-22,200,""  ,Normal ,"ivcashcommandlastitemsernrf",false,0,M4Str,255);
-    //DrawPOSInterface_RUS(bc1,bc2,POSBr,acnt,"",100);
-    BottomBar;
-  end;
-end;
+  end;  
   EndWindow;
 end;
 
@@ -5137,7 +4503,7 @@ begin
   EndWindow;
 end;
 
-window IPDClass:2
+/*window IPDClass:2
   wtag("language","UKR"), wtag("product","*"), wtag("productcode","*"), wtag("device","computer")
 begin
   real h,h2,h3,h4,t,v,vm,vs,fl,v2;
@@ -5386,7 +4752,7 @@ begin
     MatCol(t,-280,"К осн. в.1",0,ToRateB1BankVal,true,0);
     MatCol(t,-210,"Сум.осн. в вал.1",0,B1BankVal,true,0);
     MatCol(t,-105,"Сум.осн. в вал.2",0,B2BankVal,true,0);
-  //  MatCol(t,-200,"Fee %",0,BankFeePrc,true,0); /* What was this ?? */
+  //  MatCol(t,-200,"Fee %",0,BankFeePrc,true,0); 
   //  MatCol(t,-70,"Coef. Value",0,Coef,true,0);
     MatCol(t=kReceiptRowTypeWriteoff,-390,"Вал.",0,InvCurncy,true,0);
     MatCol(t,-350,"Сумма сч/ф",0,InvVal,true,0);
@@ -5530,7 +4896,7 @@ begin
     end;
   end;
   EndWindow;
-end;
+end;*/
 
 window IVLClass:8
   wtag("language","UKR"), wtag("product","*"), wtag("productcode","*"), wtag("device","computer")
@@ -5923,8 +5289,6 @@ begin
       end;
       if (HasVATZone) then begin
         Tile(tilenr,120,false,tilenr,InvoiceNr); tilenr = tilenr + 1;
-        v = 20;
-        v = VATZoneButtonsLabelsrus(h,v,170,16);
       end;
       SpecialMenu("Баланс",'=',0,"BalanceVIDsm");
       SpecialMenu("Статус счёта-фактуры",'r',2,"VIInfoVIDsm"); 
@@ -6329,21 +5693,7 @@ begin
       label = UserDefined("CUVc","InvAddr4");
       EditField(h,v+=vs, -20,label,Normal,InvAddr4,false,0);
       EditField(h,vm=(v+=vs),80,"Страна",Normal,InvCountry,false,CountrySClass);
-      if (HasApprovals) then begin
-        SoftEditField(h3=h+4,v=(vm+=40),123,"Статус утверждения",ViewOnly,"AcceptanceStatusFlag",false,0,M4Str,255);
-/*      
-        ButtonFrame(h3=h+4,v=(vm+=40),123,6,"Статус утверждения");
-        RadioButton(h3,v,kAcceptanceStateNotRequired,0,"не обязательно",AcceptanceStatus);
-        RadioButton(h3,v+=16,kAcceptanceStateNotStarted,0,"не начато",AcceptanceStatus);
-        RadioButton(h3,v+=16,kAcceptanceStateNotRequested,0,"не запрошено",AcceptanceStatus);
-        RadioButton(h3,v+=16,kAcceptanceStatePending,0,"в ожидании",AcceptanceStatus);
-        RadioButton(h3,v+=16,kAcceptanceStateApproved,0,"утверждено",AcceptanceStatus);
-        RadioButton(h3,v+=16,kAcceptanceStateRejected,0,"отклонено",AcceptanceStatus);
-*/        
-        v = VATZoneButtonsLabelsrus(h3=290,v=vm,170,16);
-      end else begin
-        v = VATZoneButtonsLabelsrus(h3=290,v=vm+20,170,16);
-      end;
+      
       EditField(h2=-170,v=vm,150,"Регион",Normal,Region,false,RegionSClass);
       EditField(h2,v+=vs,150,"ИНН",Normal,VATNr,false,0);
       if (HasLocalization("HRV,SVN")) then begin          
@@ -6921,7 +6271,6 @@ begin
   end;
 //  EditField(h,v+=vs,120,"Channel",Normal,WebServiceChannel,false,SetSClass);
   v = 130;
-  v = VATZoneButtonsLabelsrus(h5+30,v,170,16);
   Tile(tilenr,130,false,tilenr,AccAP); tilenr = tilenr + 1;
   EditField(h,v=6,80,"Счёт кредиторов",Normal,AccAP,false,AccSClass);
   EditField(h,v+=vs,80,"Контрольный счет",Normal,AccCost,false,AccSClass);
@@ -7340,7 +6689,7 @@ end;
   EndWindow;
 end;
 
-window TRDClass:2
+/*window TRDClass:2
   wtag("language","UKR"), wtag("product","*"), wtag("productcode","*"), wtag("device","computer")
 begin
   real h,v,vm,vs,ve,hpos;
@@ -7668,7 +7017,7 @@ begin
     SpecialMenu("Добавить счёт",' ',0,"AddAccountQTDsm");         
   end;
   EndWindow;
-end;
+end;*/
 
 window PointsHistLClass:1
   wtag("language","UKR"), wtag("product","*"), wtag("productcode","*"), wtag("device","computer")
@@ -8230,7 +7579,7 @@ begin
   EndWindow;
 end;
 
-window TRLClass:3
+/*window TRLClass:3
   wtag("language","UKR"), wtag("product","*"), wtag("productcode","*"), wtag("device","computer")
 begin
   WindowBegin("Записи операций",TRLClass,CGmlist,TRView);
@@ -8247,9 +7596,9 @@ begin
   SearchField("Поиск");
   SpecialMenu("Создать списание с вал. счетом",' ',0,"CreateUSDRemTRLsm"); //Edit***************************Sasha2,14:59 15.05.2017
   EndWindow;
-end;
+end;*/
 
-window FormDefDClass:1
+/*window FormDefDClass:1
   wtag("language","UKR"), wtag("product","*"), wtag("productcode","*"), wtag("device","computer")
 begin
   real h,v,vs;
@@ -8282,7 +7631,7 @@ begin
   end;
   MatCol(1,h,"Форма",0,FPCode,false,DocSClass);
   h = h + 200;
-/* No code behind this */
+
   MatCol(1,324,"E-Form",0,EformCode,false,0); //Edit***************************Sasha2,15:04 15.05.2017
   if (IsEnterprise) then begin
     MatCol(1,h,"Принтер",0,PrintGroupCode,false,PrintGroupSClass);
@@ -8290,7 +7639,7 @@ begin
   MatCol(1,-60,"Статус",0,Typ,false,SetSClass);
   EndMatrix;
   EndWindow;
-end;
+end;*/
 
 
 window WebNavLinkDClass:1
@@ -8371,38 +7720,17 @@ begin
     EditField(h2,v+=vs,140,"Особи",Normal,MainPersons,false,UserSClass);
     EditField(h4,v,-40,"Копія",Normal,CCPersons,false,UserSClass);
     EditField(h2+200,v+=vs,80,"Керівник",Normal,Supervisor,false,UserSClass);
-		
 		halpushbutton(h2+10,v,h2+110,v+vs,"ActBackDsm","Відповісти");
-		
-    //EditField(h4,v,-40,"Перенапр.затв.",Normal,ApprovalFwdPersons,false,UserSClass);
-    //EditField(h4,v+=vs,60,"Результат",Normal,ActResult,false,ActTypeSClass);
     tilenr = 1;
     if (showapprovaltile) then begin
       TileButton(tilenr,"Затверждення"); tilenr = tilenr + 1;
     end;
     TileButton(tilenr,"Час"); tilenr = tilenr + 1;
-    //TileButton(tilenr,"Клієнт"); tilenr = tilenr + 1;
-    //TileButton(tilenr,"Текст"); tilenr = tilenr + 1;
-    //TileButton(tilenr,"Під -завдання"); tilenr = tilenr + 1;
-    //TileButton(tilenr,"Нагадування"); tilenr = tilenr + 1;
-    if (StandardHansa==false) then begin
-      //TileButton(tilenr,"Ресурси"); tilenr = tilenr + 1;
-      //TileButton(tilenr,"Послуг."); tilenr = tilenr + 1;
-      //TileButton(tilenr,"Визначено кор-чем"); tilenr = tilenr + 1;
-    end;
-    //CheckBox(-170,v,0,"Приватне",PrivateFlag); //##cc
+
     CheckBox(-100,v,0,"Виконано",OKFlag); //##cc
     tilenr = 1;
-   /* if (showapprovaltile) then begin
-      Tile(tilenr,130,false,"",-); tilenr = tilenr + 1;
-      ButtonFrame(h=100,v=18,440,2,"Затвердження");
-      HalPushButton(h+=5,v+=5,h+100,v+20,"ActDClassApproveActivity","Затверджено");
-      HalPushButton(h+=110,v,h+100,v+20,"ActDClassForwardActivity","Перенаправити");
-      HalPushButton(h+=110,v,h+100,v+20,"ActDClassRejectActivity","Відхилити");
-      HalPushButton(h+=110,v,h+100,v+20,"ActDClassSendFYI","Відправити для інф.");
-      HalPushButton(h=105,v+=40,h+100,v+20,"ActDClassOpenApprovalRecord","Відкрити запист");
-      HalPushButton(h+=110,v,h+120,v+20,"ActDClassOpenApprovalAttach","Відкрити вкладені файли");
-    end;*/
+
+
     Tile(tilenr,90,false,"1",StartTime); tilenr = tilenr + 1;
     h = 100; h2 = 270;
     EditField(h,v=6,60,"Час початку",Normal,StartTime,false,PasteCurTime);
@@ -8433,124 +7761,7 @@ begin
     RadioButton(h3,v,kCalTimeFlagTime,0,"Час",CalTimeFlag);
     RadioButton(h3,v+=16,kCalTimeFlagProfile,0,"Профіль",CalTimeFlag);
     RadioButton(h3,v+=16,kCalTimeFlagNoshow,0,"Не показувати",CalTimeFlag);
-    /*EnterSkip(PRCode);
-    Tile(tilenr,70,false,"2",PRCode); tilenr = tilenr + 1;
-    vm = 6;
-    v = 6;
-    if (HasProjects) then begin
-      EditField(h,v,80,"Проект",Normal,PRCode,false,PRSClass);
-      v = v+vs;
-    end;
-    EditField(h,v,80,"Клієнт",Normal,CUCode,false,AllCUSClass);
-    if (StandardHansa==false) then begin
-      EditField(h,v+=vs,80,"Товар накл.",Normal,ItemCode,false,INSClass);
-    end;
-    EnterSkip(Math);
-    EditField(h2,v=vm,-40,"Назва",Normal,CUName,false,0);
-    EditField(h2,v+=vs,-40,"Телефон",Normal,Phone,false,0);
-    EditField(h2,v+=vs,-40,"Контакт",Normal,Contact,false,ContactSClass);
-    EnterSkip(Math);
-    Tile(tilenr,100,true,"3",Math); tilenr = tilenr + 1;
-    MatrixBegin(4,v=24,-32,-30,ActRowType,199);
-    MatCol(1,32,"Код",0,TextCode,false,TextTypeSClass);
-    MatCol(1,84,"Текст",0,Text,false,0);
-  //  MatColMLT(1,84,"Text",0,Text,false,0);
-    EndMatrix;
-    if (GuiType!=kGuiiPhone and GuiType!=kGuiAndroid) then begin
-      HalPushButton(-140,-30,-40,-10,"ActDEndActivity","ActDEndActivity");
-    end else begin
-      HalPushButton(600,500,700,520,"ActDEndActivity","ActDEndActivity");
-    end;
-    Tile(tilenr,200,true,"4",Comment); tilenr = tilenr + 1; 
-    v = 10;
-    HalPushButton(h,v,h+100,v+20,"ActDClassCreateSubTask","Нове під-завдання");
-    HalPushButton(h2,v,h2+100,v+20,"ActDClassDeleteSubTask","Знищити під-завдання");
-    v = v + vs;
-    RecordList2(10,v+=vs,-30,-39,"ActVc");
-    RlColKey(4,4,"Завдання",Comment,false,ActComment);
-    RlColKey(-50,-50,"Усі",Comment,false,Comment);*/
-    /*Tile(tilenr,140,false,"5",-); tilenr = tilenr + 1;
-    h3 = 40;
-    ButtonFrame(h3,v=18,130,4,"Вид оповіщ.");
-    RadioButton(h3,v,0,0,"Немає",AlarmType);
-    RadioButton(h3,v+=16,1,0,"Повідомлення",AlarmType);
-    RadioButton(h3,v+=16,2,0,"SMS",AlarmType);
-    RadioButton(h3,v+=16,3,0,"E-mail",AlarmType);
-    ButtonFrame(h3+=160,v=18,130,7,"Оповіщення");
-    RadioButton(h3,v,0,0,"Хвилинин до",AlarmWhen);
-    RadioButton(h3,v+=16,1,0,"Годин до",AlarmWhen);
-    RadioButton(h3,v+=16,2,0,"Днів до",AlarmWhen);
-    RadioButton(h3,v+=16,3,0,"Хвилинин після",AlarmWhen);
-    RadioButton(h3,v+=16,4,0,"Годин після",AlarmWhen);
-    RadioButton(h3,v+=16,5,0,"Днів після",AlarmWhen);
-    EditField(h3+75,v+=17,50,"Одиниць",Normal,AlarmUnits,false,0);
-    ButtonFrame(h4=h3+160,v=18,130,4,"Символ");
-    RadioButton(h4,v,1,0,"Виклик",SymbNr);
-    RadioButton(h4,v+=16,2,0,"Зустріч",SymbNr);
-    RadioButton(h4,v+=16,3,0,"Робота в офісі",SymbNr);
-    RadioButton(h4,v+=16,0,0,"Інше",SymbNr);*/
-    /*if (StandardHansa==false) then begin
-      Tile(tilenr,30,false,"6",Resources); tilenr = tilenr + 1;
-    EditField(h,v=6,300,"Ресурси",Normal,Resources,false,ResSClass);
-    EditField(h+400,v, fs,"Актив",Normal,InventoryNr,false,AT2UnitSClass);
-      Tile(tilenr,70,false,"7",SVOSerNr); tilenr = tilenr + 1;
-    EditField(h,v=6, fs,"Сер. №",Normal,SerialNr,false,SVOSerSClass);
-    EditField(h+200,v,fs,"Товар",Normal,ArtCode,false,INSClass);
-    EditField(h+400,v, fs,"Виробн. опер.",Normal,ProdOpSerNr,false,0);
-    EditField(h,v+=vs, fs,"Замовл. на обсл.",Normal,SVOSerNr,false,SVOSClass);
-    EditField(h+200,v,fs,"Товар акту",Normal,ItemCode,false,INSClass);
-    EditField(h+400,v, fs,"Виробництво",Normal,ProdSerNr,false,0);
-    EditField(h,v+=vs, fs,"З наймен. файла",ViewOnly,FromFileName,false,0);
-    EditField(h+200,v, fs,"З №",ViewOnly,FromSerNr,false,0);
-    EditField(h+400,v, fs,"Подія відпочинку",ViewOnly,RsrtEventSerNr,false,0);
-      Tile(tilenr,240,false,"8",-); tilenr = tilenr + 1;
-    fs = 80;
-    h = 180;
-    label = UserDefined("ActVc","UserStr1");
-    if (nonblank(label)) then begin
-      EditField(h,v=6 ,-20,label,Normal,UserStr1,false,0);
-    end;
-    label = UserDefined("ActVc","UserStr2");
-    if (nonblank(label)) then begin
-      EditField(h,v+=vs,-20,label,Normal,UserStr2,false,0);
-    end;
-    label = UserDefined("ActVc","UserStr3");
-    if (nonblank(label)) then begin
-      EditField(h,v+=vs,-20,label,Normal,UserStr3,false,0);
-    end;
-    label = UserDefined("ActVc","UserStr4");
-    if (nonblank(label)) then begin
-      EditField(h,v+=vs,-20,label,Normal,UserStr4,false,0);
-    end;
-    label = UserDefined("ActVc","UserStr5");
-    if (nonblank(label)) then begin
-      EditField(h,v+=vs,-20,label,Normal,UserStr5,false,0);
-    end;
-    label = UserDefined("ActVc","UserVal1");
-    if (nonblank(label)) then begin
-      EditField(h,v+=vs,50,label,Normal,UserVal1,true,0);
-    end;
-    label = UserDefined("ActVc","UserVal2");
-    if (nonblank(label)) then begin
-      EditField(h,v+=vs,50,label,Normal,UserVal2,true,0);
-    end;
-    label = UserDefined("ActVc","UserVal3");
-    if (nonblank(label)) then begin
-      EditField(h,v+=vs,50,label,Normal,UserVal3,true,0);
-    end;
-    label = UserDefined("ActVc","UserDate1");
-    if (nonblank(label)) then begin
-      EditField(h,v+=vs,80,label,Normal,UserDate1,true,PasteCurDate);
-    end;
-    label = UserDefined("ActVc","UserDate2");
-    if (nonblank(label)) then begin
-      EditField(h,v+=vs,80,label,Normal,UserDate2,true,PasteCurDate);
-    end;
-    label = UserDefined("ActVc","UserDate3");
-    if (nonblank(label)) then begin
-      EditField(h,v+=vs,80,label,Normal,UserDate3,true,PasteCurDate);
-    end;
-    end;*/
+
     SpecialMenu("Створити E-mail",'m',1,"MailFromActDsm");
     SpecialMenu("Створити лист",'l',2,"LetFromActDsm");
     SpecialMenu("Створити лист з комерц. пропоз.",' ',2,"LetWithQuoteFromActDsm");
@@ -8620,7 +7831,7 @@ begin
 end;
 
 
-window WorkflowWClass:4
+/*window WorkflowWClass:4
   wtag("language","UKR"), wtag("product","*"), wtag("productcode","*"), wtag("device","computer,iPhone,iPad,android,android_tab")
 begin
   WindowBegin("Управление рабочими процессами_",WorkflowWClass,CGother,RcType); //SP
@@ -8647,7 +7858,7 @@ begin
 
   end;
   EndWindow;
-end;
+end;*/
 
 
 window IntORLClass:1
