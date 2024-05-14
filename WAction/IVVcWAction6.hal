@@ -13,6 +13,9 @@ external function Boolean IVVc_PasteQuantity(var record IVVc,Integer);
 external procedure DisplayIVItem(record IVVc,Integer);
 external procedure IVPasteItem(string,Integer,LongInt);
 external function Integer ArgEInvLock(record IVVc,integer);
+external function Boolean FindStringInString(string,string);
+remote function Integer GetInvoicePaidFlag(string);
+
 
 global
 function Boolean IVDClassExportFlagButtonAfter(Integer wn,Boolean changedf)
@@ -113,7 +116,7 @@ begin
       end;
       if (res==false) then begin goto LIVDClassDeleteRowTest; end;
       if (res) then begin
-        if (IVrw.stp==kInvoiceRowTypeCreditCardPayment) then begin
+        if (IVrw.stp==kInvoiceRowTypeCreditCardPayment or IVrw.stp==kInvoiceRowTypeSwishPayment or IVrw.stp==kInvoiceRowTypeMPesaPayment or IVrw.stp==kInvoiceRowTypeQRPayment) then begin
           //BlockLoad(Rahaxib);
           //res = (Rahaxib.TerminalType==kLocalCCTerminalNone) or blank(IVrw.AuthorizationCode);
           res = blank(IVrw.AuthorizationCode);
@@ -182,7 +185,7 @@ begin
       end;
       if (res==false) then begin goto LIVDClassDeleteRowTest; end;
       if (res) then begin
-        if (IVrw.stp==kInvoiceRowTypeCreditCardPayment) then begin
+        if (IVrw.stp==kInvoiceRowTypeCreditCardPayment or IVrw.stp==kInvoiceRowTypeSwishPayment or IVrw.stp==kInvoiceRowTypeMPesaPayment or IVrw.stp==kInvoiceRowTypeQRPayment) then begin
           //BlockLoad(Rahaxib);          
           //res = (Rahaxib.TerminalType==kLocalCCTerminalNone) or blank(IVrw.AuthorizationCode);
           res = blank(IVrw.AuthorizationCode);
@@ -394,11 +397,13 @@ begin
       res = kRowcolorGreen;
     end;
   end;
-  
+  if (GetInvoicePaidFlag(IVr.SerNr)==-1) then begin 
+    res = kRowcolorYellow; 
+  end;
+
   IVLClassRowColor = res;
   return;
 end;
-
 
 global
 function Boolean IVDClassOKFlagButtonAction(Integer wn,Integer value)
@@ -420,7 +425,9 @@ BEGIN
     if (IVr.OKFlag!=0) then begin
       res = false;
       if (UserCanAction("UnOKAll",false)) then begin
-        res = true;
+        if (HasLocalization("CAN,USA")==false) then begin
+          res = true;
+        end;
       end;
     end;
   end;  
@@ -589,4 +596,35 @@ begin
   end;  
 LCalculateIVVcPoints:;  
   return;
-end; 
+end;
+
+// global
+// function Boolean IVDClassSplitVATFlagButtonAction(Integer wn,Integer value)
+// begin
+//   Boolean res;
+//   record IVVc IVr;
+
+//   res = true;
+  
+//   if (WindowState(wn)==Rs_normal) then begin
+//     GetWindowRecord(wn,IVr);
+//   end;
+//   if (WindowState(wn)==Rs_update) then begin
+//     GetPrevWindowRecord(wn,IVr);
+//   end;
+
+//   if (IVr.SplitVATFlag!=0) then begin
+//     res = false;
+//   end;
+
+//   IVDClassSplitVATFlagButtonAction = res;
+//   return;
+// end;
+
+
+global
+function boolean IVDClassEInvReceiverFlagButtonAction(Integer wn,Integer value)
+begin
+  IVDClassEInvReceiverFlagButtonAction = false;
+  return;
+end;

@@ -19,6 +19,7 @@ remote procedure SetDelAddr(string,string,var string,var string,var string,var s
 remote updating procedure OkAllStockMovementsSHr(record RcVc);
 remote function string 20 FindCustRoute(string,string,string);
 
+
 procedure SHChangeShip(record SHVc SHr,Integer rownr)
 BEGIN
   SHVc_PasteShip(SHr,rownr);
@@ -326,9 +327,27 @@ begin
     SHr.TruckInfo = FCr.TruckInfo;
     SHr.Driver = FCr.Driver;
     SHr.CMRText = FCr.CMRText;
+    SHr.ServiceType = -1;
   end else begin
     Beep;
   end;
+  return;
+end;
+
+global
+function Boolean FreightCompanyIsFedex(string freightcode)
+begin
+  Boolean res;
+  record FreightCompanyVc FCr;
+  
+  FCr.Code = freightcode;
+  if (ReadFirstMain(FCr,1,true)) then begin
+    if (FCr.WebService==1) then begin
+      res = true;
+    end;
+  end;
+
+  FreightCompanyIsFedex = res;
   return;
 end;
 
@@ -344,6 +363,7 @@ BEGIN
     if (nonblank(SHr.FreightCode)) then begin
       FillFreightInfo(SHr);
       PutWindowRecord(wn,SHr);
+      ReRunWindowDef(wn);
     end;
   end;
   SHDClassFreightCodeEFAfter = res;
@@ -699,10 +719,7 @@ begin
   if (WindowState(wn)==normalmode) then begin
     GetWindowRecord(wn,SHr);
     if (SHr.OKFlag!=0) then begin
-      res = false;
-      if (UserCanAction("UnOKAll",false)) then begin
-        res = true;
-      end;
+      res = UserCanAction("UnOKAll",false);
     end;
   end;  
   if (WindowState(wn)==updatemode) then begin

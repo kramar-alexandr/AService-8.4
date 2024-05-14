@@ -1,3 +1,4 @@
+remote procedure ORVc_PasteRebCode(var record ORVc);
 external function LongInt DateDiff(Date,Date);
 external procedure AutomatedSalesOrderly(string);
 external procedure CalcVATBaseVAT2(record SMVc,Integer,Integer,Integer,Boolean,var val,var val);
@@ -16,7 +17,7 @@ remote function string 255 FindPositionWithSerialNr(string,string,string,string)
 remote procedure ORVc_PasteSalesMan(var record ORVc,string);
 external function roundmode SetRoundModeD(Integer);
 external function roundmode DefaultRoundMode();
-remote procedure ORVc_PasteLocation(var record ORVc,Integer);
+remote function LongInt ORVc_PasteLocation2(var record ORVc,Integer,var string);
 remote function Boolean CostPriceForGP(string,string,string,string,var val);
 external procedure RecalcORSubtotal(var record ORVc);
 external procedure CalcSum(val,val,val,val,var val,Integer);
@@ -64,6 +65,7 @@ remote function val CalculateSerialNrQuantity(string,string,string,Boolean,val,v
 remote function Boolean SerialNrForOneItem(string,var record SerBalVc);
 remote procedure ORVc_GetPriceList2(var record ORVc,Boolean);
 external function Boolean OpenContactRecord(string,string);
+external function Boolean HasAvalara();
 external procedure ExtractObjWithSeparator(string,string,Boolean,var Integer,var string);// Edit ************************** Vas-P	13/08/2021
 remote procedure FindPhonePerson(var record Phone1Vc,string);	//Edit **********************************************Vas-P	13/08/2021
 remote procedure CountNumberRepeatPhone(string,var array longint,var integer );	//Edit **********************************************Vas-P	13/08/2021
@@ -76,7 +78,7 @@ begin
   record TaxMatrixVc TMr;
   record TaxMatrixVc sumTMr;
   roundmode roundlines,rndtotal,rndvat;
-  val t;
+  val t,temp,s2;
 
   ORp.Sum1 = blankval; //Subtotal
   ORp.Sum3 = blankval; //VAT
@@ -102,6 +104,8 @@ LkInvoiceRowTypeNormal:;
         end;
         ORp.Sum1 = ORp.Sum1 + ORrw.Sum;
         ORp.TotGP = ORp.TotGP + ORrw.rowGP;
+        temp = MulRateToBase1(ORp.CurncyCode,ORrw.Sum,ORp.FrRate,ORp.ToRateB1,ORp.ToRateB2,ORp.BaseRate1,ORp.BaseRate2,DefaultCurRoundOff);        
+        s2 = s2 + temp;
       case kInvoiceRowTypeCorrection:
         if ((ORp.ExportFlag==0) or (ORp.ExportFlag==3) or (ORp.ExportFlag==4)) then begin
           UnpackRowFieldMatrix(ORrw,"TaxMatrix",TMr);
@@ -109,6 +113,8 @@ LkInvoiceRowTypeNormal:;
         end;
         ORp.Sum1 = ORp.Sum1 + ORrw.Sum;
         ORp.TotGP = ORp.TotGP + ORrw.rowGP;
+        temp = MulRateToBase1(ORp.CurncyCode,ORrw.Sum,ORp.FrRate,ORp.ToRateB1,ORp.ToRateB2,ORp.BaseRate1,ORp.BaseRate2,DefaultCurRoundOff);        
+        s2 = s2 + temp;
       case kInvoiceRowTypeGiftVoucherSold:
         if ((ORp.ExportFlag==0) or (ORp.ExportFlag==3) or (ORp.ExportFlag==4)) then begin
           UnpackRowFieldMatrix(ORrw,"TaxMatrix",TMr);
@@ -123,12 +129,16 @@ LkInvoiceRowTypeNormal:;
           case kBasePriceInclVAT:
             ORp.Sum1 = ORp.Sum1 + ORrw.Sum;
         end;
+        temp = MulRateToBase1(ORp.CurncyCode,ORrw.Sum,ORp.FrRate,ORp.ToRateB1,ORp.ToRateB2,ORp.BaseRate1,ORp.BaseRate2,DefaultCurRoundOff);        
+        s2 = s2 + temp;
       case kInvoiceRowTypeDownpayment:
         if ((ORp.ExportFlag==0) or (ORp.ExportFlag==3) or (ORp.ExportFlag==4)) then begin
           UnpackRowFieldMatrix(ORrw,"TaxMatrix",TMr);
           AddRowTaxMatrixToSumTaxMatrix(TMr,sumTMr,ORp.InclVAT);
         end;
         ORp.Sum1 = ORp.Sum1 + ORrw.Sum;      
+        temp = MulRateToBase1(ORp.CurncyCode,ORrw.Sum,ORp.FrRate,ORp.ToRateB1,ORp.ToRateB2,ORp.BaseRate1,ORp.BaseRate2,DefaultCurRoundOff);        
+        s2 = s2 + temp;
       
 //  kInvoiceRowTypePrepayment = 6,
 //  kInvoiceRowTypeLoan = 7,
@@ -148,6 +158,14 @@ LkInvoiceRowTypeNormal:;
   if (ORp.FrPrice!=0) then begin
     if (ORp.InclVAT==0) then begin
       ORp.Sum1 = ORp.FrPrice + ORp.Sum1;
+      if ((ORp.ExportFlag==0) or (ORp.ExportFlag==3) or (ORp.ExportFlag==4)) then begin
+        t = FindVAT(ORp.FrVATCode,ORp.FrPrice,ORp.InclVAT,ORp.NoTAXonVAT);
+        if (t==0) then begin
+          s2 = ORp.FrPrice + s2;
+        end;  
+      end else begin
+        s2 = ORp.FrPrice + s2;
+      end;
 /*      
       if ((ORp.ExportFlag==0) or (ORp.ExportFlag==3) or (ORp.ExportFlag==4)) then begin
         t = FindVAT (ORp.FrVATCode,ORp.FrPrice,ORp.InclVAT,ORp.NoTAXonVAT);
@@ -185,6 +203,10 @@ LkInvoiceRowTypeNormal:;
         end;  
 */        
       end;
+      t = FindVAT(ORp.FrVATCode,ORp.FrPrice,ORp.InclVAT,ORp.NoTAXonVAT);
+      if (t==0) then begin
+        s2 = ORp.FrPrice + s2;
+      end;
     end;
 //Freight VAT needs  to be added as well
   end;
@@ -211,6 +233,15 @@ LkInvoiceRowTypeNormal:;
   ORp.Sum4 = Round(ORp.Sum4,rndtotal);
   ORp.BaseSum4 = MulRateToBase1(ORp.CurncyCode,ORp.Sum4,ORp.FrRate,ORp.ToRateB1,ORp.ToRateB2,ORp.BaseRate1,ORp.BaseRate2,DefaultCurRoundOff);
   ORp.TotGP = Round(ORp.TotGP,rndtotal);
+  if (ORp.InclVAT==0) then begin
+    temp = ORp.TotGP/s2;
+  end else begin
+    temp = s2-MulRateToBase1(ORp.CurncyCode,ORp.Sum3,ORp.FrRate,ORp.ToRateB1,ORp.ToRateB2,ORp.BaseRate1,ORp.BaseRate2,DefaultCurRoundOff);
+    if (temp!=0) then begin
+      temp = ORp.TotGP/temp;
+    end;
+  end;
+  ORp.GPProc = temp*100;
   return;
 end;
 
@@ -291,7 +322,7 @@ global
 procedure ORSumup(var record ORVc ORp)
 begin
   row ORVc ORrw;
-  val s,ms,ms2,temp,s2,tax1sum,tax2sum,t;
+  val s,ms,ms2,temp,s2,tax1sum,tax2sum,t,pr;
   Integer i,rwcnt;
   roundmode roundlines,rndtotal,roundvat;
   record SMVc VATr;/*VATBaseRowType*/
@@ -304,17 +335,27 @@ begin
   record RPCUTaxVc RPCUTaxr;
   Boolean calcperceppercuf;
   record CUVc CUr;
+  record GeneralOptionBlock GOb;
+  record FreightBlock FreightRec;
+  val costs;
+  record INVc INr;
+  Boolean goodsf;
 
   if (UseTaxTemplatesforTaxCalc) then begin
     ORSumup_TaxTemplate(ORp);
     goto LORSumup;
   end;
+  BlockLoad(FreightRec);
+  BlockLoad(GOb);
   CUr.Code = ORp.CustCode;
   ReadFirstMain(CUr,1,true);
   calcperceppercuf = FindRPCUTax(ORp.CustCode,ORp.OrdDate,RPCUTaxr);
   SetupVATBase(VATr,vatcnt);
   SetupVATBase(RvrsVATr,vatcnt);
-  ORp.TotGP = 0;
+  pr = 100 - FreightRec.FrGPPercent;
+  CalcSum(1,ORp.FrBase,0,pr,t,GOb.UseDiscount);
+  ORp.TotGP = t;
+  t = blankval;
   rwcnt = MatRowCnt(ORp);
   for (i=0;i<rwcnt;i=i+1) begin
     MatRowGet(ORp,i,ORrw);
@@ -481,7 +522,26 @@ begin
     ORp.BaseSum4 = MulRateToBase1(ORp.CurncyCode,ORp.Sum4,ORp.FrRate,ORp.ToRateB1,ORp.ToRateB2,ORp.BaseRate1,ORp.BaseRate2,DefaultCurRoundOff);
   end;  
   ORp.SumIncCom = ORp.Sum4 + ORp.Commision;
+  if (HasLocalization("BRA") and HasAvalara) then begin
+    goodsf = true;
+    rwcnt = MatRowCnt(ORp);
+    for (i=0;i<rwcnt;i=i+1) begin
+      MatRowGet(ORp,i,ORrw);
+      INr.Code = ORrw.ArtCode;
+      ReadFirstMain(INr,1,true);
+      if (INr.ItemType==kItemTypeService) then begin goodsf = false; end;
+      if (goodsf) then begin
+        costs = costs + ORrw.OtherCost + ORrw.FreightCost + ORrw.Insurance + ORrw.UntaxedOtherCost;
+      end;
+    end;
+    if (goodsf) then begin
+      ORp.Sum4 = ms2 +  ORp.AddedTax + costs - ORp.SubstractedTax;
+    end else begin
+      ORp.Sum4 = ms2 - ORp.WithholdingTax;
+    end;
+  end;
   RecalcORSubtotal(ORp);
+  
 LORSumup:;  
   RETURN;
 END;
@@ -692,6 +752,7 @@ BEGIN
   record SerBalVc SBr;
   string 255 warning;
   string 30 serial;
+  integer serstat;
   
   res = true;
   if ((changed!=0) and (rownr>=0)) then begin
@@ -718,8 +779,15 @@ BEGIN
     ORrw.UnitXval = UnitXval;
     ORrw.UnitYval = UnitYval;
     ORrw.UnitZval = UnitZval;
-    if (CheckSerialStatus(ORrw.ArtCode,ORrw.SerialNr,tstr)==1) then begin
-      MessageBox(0,tstr);
+    serstat = CheckSerialStatus(ORrw.ArtCode,ORrw.SerialNr,tstr);
+    switch (serstat) begin
+      case 1:
+        MessageBox(0,tstr);
+      case 2:
+        if (nonblank(tstr)) then begin
+          tstr = " " & tstr;
+        end;
+        MessageBox(27361,tstr);
     end;
     t = ORrw.BasePrice;
     chsum = CostPriceForGP(ORrw.ArtCode,ORrw.SerialNr,ORr.PriceList,ORr.CustCode,t);
@@ -821,7 +889,7 @@ begin
   Boolean chsum;
   record ModuleBlock OptFeature;
 
-  if (changedf!=0) then begin 
+  if (changedf!=0) then begin
     GetWindowRecord(wn,ORr);
     BlockLoad(OptFeature);
     if (OptFeature.NoQtyDepPrices==0) then begin
@@ -832,7 +900,7 @@ begin
     if (chsum) then begin
       ORDchsum(ORr,rownr);
       ORSumup(ORr);
-    end;    
+    end; 
     PutWindowRecord(wn,ORr);
   end;
   ORDClassQuantEFAfter = true;
@@ -873,6 +941,20 @@ begin
     PutWindowRecord(wn,ORr);
   end;  
   ORDClassFrPriceEFAfter = true;
+  return;
+end;
+
+function Boolean ORDClassFrVATCodeEFAfter(Integer wn,Integer changed)
+begin  
+  record ORVc ORr;
+  val t;
+
+  if (changed!=0) then begin  
+    GetWindowRecord(wn,ORr);
+    ORSumup(ORr);
+    PutWindowRecord(wn,ORr);
+  end;  
+  ORDClassFrVATCodeEFAfter = true;
   return;
 end;
 
@@ -1358,11 +1440,17 @@ end;
 function Boolean ORDClassLocationEFAfter(Integer wn,Integer rownr,Boolean changedf)
 begin
   record ORVc ORr;
+  string 255 errlocation;
+  LongInt err;
   
   if (changedf) then begin
     GetWindowRecord(wn,ORr);
-    ORVc_PasteLocation(ORr,rownr);
-    PutWindowRecord(wn,ORr);
+    err = ORVc_PasteLocation2(ORr,rownr,errlocation);
+    if (err!=0) then begin
+      MessageBox(err," " & errlocation);
+    end else begin
+      PutWindowRecord(wn,ORr);
+    end;
   end;
   ORDClassLocationEFAfter = true;
   return;
@@ -1380,7 +1468,18 @@ begin
   ORDClassDespatchDateEFAfter = true;
 end;
 
+function Boolean ORDClassRebCodeEFAfter(Integer wn,Boolean changedf)
+begin  
+  record ORVc ORr;
 
+  if (changedf) then begin  
+    GetWindowRecord(wn,ORr);
+    ORVc_PasteRebCode(ORr);
+    PutWindowRecord(wn,ORr);
+  end;  
+  ORDClassRebCodeEFAfter = true;
+  return;
+end;
 
 //Copy from SVVc WAction **********************************************Vas-P	13/08/2021
 global
@@ -1539,7 +1638,6 @@ begin
 return;
 end; 
 
-
 global
 function Boolean ORDClassAfterEditField(Integer wn,string fieldname,Integer fn, Integer rownr,Integer changed)
 BEGIN
@@ -1587,9 +1685,12 @@ BEGIN
     case "DelCountry": res = ORDClassDelCountryEFAfter(wn,changed!=0);
     case "OrderType": res = ORDClassOrderTypeEFAfter(wn,rownr,changed!=0);
     case "DespatchDate": res = ORDClassDespatchDateEFAfter(wn,changed);
-    case "OrderContName": res = ORDClassOrderContNameEFAfter(wn,changed); 
-    case "OrderContPhone1": res = ORDClassOrderContPhone1EFAfter(wn,changed);
-    case "OrderContPhone2": res = ORDClassOrderContPhone2EFAfter(wn,changed);
+    case "FrVATCode": res = ORDClassFrPriceEFAfter(wn,changed);
+    case "RebCode": res = ORDClassRebCodeEFAfter(wn,changed!=0);
+    case "OrderContName": res = ORDClassOrderContNameEFAfter(wn,changed); // Edit ************************** BPI Ukraine - KramarAlexandr - Tuesday, 14 May 2024 at 10:54:24
+    case "OrderContPhone1": res = ORDClassOrderContPhone1EFAfter(wn,changed);// Edit ************************** BPI Ukraine - KramarAlexandr - Tuesday, 14 May 2024 at 10:54:26
+    case "OrderContPhone2": res = ORDClassOrderContPhone2EFAfter(wn,changed);// Edit ************************** BPI Ukraine - KramarAlexandr - Tuesday, 14 May 2024 at 10:54:27
+
   end;
   ORDClassAfterEditField = res;
   RETURN;
@@ -2221,4 +2322,18 @@ begin
   end;
   
   ORDClassOpenRecord = res;
+end;
+
+global
+function Boolean ORDClassOnCloseWindow(integer wn)
+begin
+  Integer nwn;
+  record IVCashVc IVCashr;
+
+  if (GetWindowString(wn,"touchscreenwindowFrom")=="NPTSIVCashDClass") then begin
+    RecordNew(IVCashr);
+    nwn = OpenWindow("NPTSIVCashDClass",0,0,"","",IVCashr);
+  end;
+  ORDClassOnCloseWindow = true;
+  return;
 end;

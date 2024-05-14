@@ -28,7 +28,7 @@ remote procedure IVVc_PasteTaxTemplateCode(var record IVVc,Integer,var Boolean);
 remote procedure IVVc_PasteLoyaltyCardNr(var record IVVc,record LocalMachineBlock);
 remote procedure IVVc_PasteRegion(var record IVVc,string);
 remote procedure IVVc_PasteSalesMan(var record IVVc,string);
-remote procedure IVVc_PasteLocation(var record IVVc,Integer);
+remote function LongInt IVVc_PasteLocation2(var record IVVc,Integer,var string);
 //external function string 255 FindTaxAuthIDControlCode(string,record IVVc);
 external function Boolean IVDClassCreditedRowEFAfter(Integer,Integer,Boolean);
 //external function string 255 FindTaxAuthID(string,LongInt,Date);
@@ -53,7 +53,7 @@ external function Boolean IVDClassPriceEFAfter(Integer,Integer,Integer,Integer);
 remote procedure IVVc_PasteCUPNr(var record IVVc,Integer );
 remote procedure IVVc_PasteCuAccCode(var record IVVc,Integer);
 remote procedure IVVc_PastePriceList(var record IVVc);
-remote procedure IVVc_PastePayDeal(var record IVVc,string,string);
+remote procedure IVVc_PastePayDeal2(var record IVVc,string,string,Boolean);
 remote procedure IVVc_PasteCurncyCode(var record IVVc,string,Integer,Boolean,Boolean);
 external procedure IVVc_PasteLangCode(Integer,var record IVVc);
 remote procedure IVVc_PasteInvDate(var record IVVc,record LocalMachineBlock,var Integer,var Integer);
@@ -493,7 +493,6 @@ begin
   record IVVc IVr;
 
   if (changedf) then begin  
-    DeselectWindow(wn,false);    
     GetWindowRecord(wn,IVr);
     IVVc_PasteSalesMan(IVr,WindEFstr(wn));    
     PutWindowRecord(wn,IVr);
@@ -535,6 +534,9 @@ begin
       MessageBox(0,invdatewarn);
     end;
 //          ChangeIVSerialNr(wn,IVp);//what is it?
+    if (IVr.PayLinkFlag) then begin
+      ReloadUserInterface(true);
+    end;
   end;
   IVDClassCustCodeEFAfter = true;
   return;
@@ -599,7 +601,6 @@ begin
   val t;
 
   if (changed!=0) then begin  
-    DeselectWindow(wn,false);
     GetWindowRecord(wn,IVr);
     IVVc_PasteFrPrice(IVr);
     PutWindowRecord(wn,IVr);
@@ -641,7 +642,6 @@ begin
   Integer err1,err2;
 
   if (changed!=0) then begin  
-    DeselectWindow(wn,false);
     GetWindowRecord(wn,IVr);
     IVVc_PasteTransDate(IVr,err1,err2);
     if (err1!=0) then begin
@@ -663,7 +663,6 @@ begin
   record LocalMachineBlock LMb;
   
   if (changed!=0) then begin
-    DeselectWindow(wn,false);
     GetWindowRecord(wn,IVr);
     IVVc_PasteInvDate(IVr,LMb,err1,err2);
     if (err1!=0) then begin
@@ -683,7 +682,6 @@ begin
   record IVVc IVr;
 
   if (changed!=0) then begin  
-    DeselectWindow(wn,false);
     GetWindowRecord(wn,IVr);
     IVVc_PasteLangCode(WindowState(wn),IVr);
     PutWindowRecord(wn,IVr);
@@ -697,7 +695,6 @@ begin
   record IVVc IVr;
 
   if (changed!=0) then begin  
-    DeselectWindow(wn,false);
     GetWindowRecord(wn,IVr);
     IVr.BaseSum4 = MulRateToBase1(IVr.CurncyCode,IVr.Sum4,IVr.FrRate,IVr.ToRateB1,IVr.ToRateB2,IVr.BaseRate1,IVr.BaseRate2,DefaultCurRoundOff);
     IVDchsum(IVr,rownr);
@@ -712,7 +709,6 @@ begin
   record IVVc IVr;
 
   if (changed!=0) then begin  
-    DeselectWindow(wn,false);
     GetWindowRecord(wn,IVr);
     IVDchsum(IVr,rownr);
     IVr.BaseSum4 = MulRateToBase1(IVr.CurncyCode,IVr.Sum4,IVr.FrRate,IVr.ToRateB1,IVr.ToRateB2,IVr.BaseRate1,IVr.BaseRate2,DefaultCurRoundOff);
@@ -727,7 +723,6 @@ begin
   record IVVc IVr;
 
   if (changed!=0) then begin  
-    DeselectWindow(wn,false);
     GetWindowRecord(wn,IVr);
     IVr.BaseSum4 = MulRateToBase1(IVr.CurncyCode,IVr.Sum4,IVr.FrRate,IVr.ToRateB1,IVr.ToRateB2,IVr.BaseRate1,IVr.BaseRate2,DefaultCurRoundOff);
     IVDchsum(IVr,rownr);
@@ -742,7 +737,6 @@ begin
   record IVVc IVr;
 
   if (changed!=0) then begin  
-    DeselectWindow(wn,false);
     GetWindowRecord(wn,IVr);
     IVr.BaseSum4 = MulRateToBase1(IVr.CurncyCode,IVr.Sum4,IVr.FrRate,IVr.ToRateB1,IVr.ToRateB2,IVr.BaseRate1,IVr.BaseRate2,DefaultCurRoundOff);
     IVDchsum(IVr,rownr);
@@ -757,7 +751,6 @@ begin
   record IVVc IVr;
 
   if (changed!=0) then begin  
-    DeselectWindow(wn,false);
     GetWindowRecord(wn,IVr);
     IVr.BaseSum4 = MulRateToBase1(IVr.CurncyCode,IVr.Sum4,IVr.FrRate,IVr.ToRateB1,IVr.ToRateB2,IVr.BaseRate1,IVr.BaseRate2,DefaultCurRoundOff);
     IVDchsum(IVr,rownr);
@@ -774,7 +767,6 @@ begin
   string 10 oldcurncy;
 
   if (changed!=0) then begin  
-    DeselectWindow(wn,false);
     GetWindowRecord(wn,IVr);
     IVVc_PasteCurncyCode(IVr,WindEFstr(wn),rownr,false,true);
     PutWindowRecord(wn,IVr);
@@ -789,18 +781,26 @@ begin
   record IVVc IV2r;
   Integer preinvtype;
   record LocalMachineBlock LMb;
+  Boolean serf;
 
   if (changed!=0) then begin  
     GetWindowRecord(wn,IVr);
+    if (IVr.SerNr>-1) then begin
+      serf = true;
+    end;
     if (WindowState(wn)==Rs_update) then begin
       GetPrevWindowRecord(wn,IV2r);
       if (IV2r.InvType==kInvoiceTypeCredit or IV2r.InvType==kInvoiceTypeCreditSpecialSales) then begin
         IVr.DisputedFlag = 0;
       end;
       preinvtype = IV2r.InvType;
+      serf = false;
+      if (IV2r.SerNr>-1) then begin
+        serf = true;
+      end;
     end;
     BlockLoad(LMb);
-    IVVc_PastePayDeal(IVr,WindEFstr(wn),LMb.DefReturnLocation);
+    IVVc_PastePayDeal2(IVr,WindEFstr(wn),LMb.DefReturnLocation,serf);
     PutWindowRecord(wn,IVr);
   end;  
   IVDClassPayDealEFAfter = true;
@@ -828,7 +828,6 @@ begin
   record IVVc IVr;
 
   if (changed!=0) then begin  
-    DeselectWindow(wn,false);
     GetWindowRecord(wn,IVr);
     IVDchsum(IVr,rownr);
     PutWindowRecord(wn,IVr);
@@ -842,7 +841,6 @@ begin
   record IVVc IVr;
 
   if (changedf) then begin  
-    DeselectWindow(wn,false);
     GetWindowRecord(wn,IVr);
     IVVc_PastePriceList(IVr);
     PutWindowRecord(wn,IVr);
@@ -856,7 +854,6 @@ begin
   record IVVc IVr;
 
   if (changedf) then begin  
-    DeselectWindow(wn,false);
     GetWindowRecord(wn,IVr);
     IVVc_PasteRebCode(IVr);
     PutWindowRecord(wn,IVr);
@@ -892,7 +889,6 @@ begin
   record IVVc IVr;
 
   if (changed!=0) and (rownr>=0) then begin  
-    DeselectWindow(wn,false);
     GetWindowRecord(wn,IVr);
     IVVc_PasteCuAccCode(IVr,rownr);
     PutWindowRecord(wn,IVr);
@@ -952,12 +948,17 @@ end;
 function Boolean IVDClassLocationEFAfter(Integer wn,Integer rownr,Boolean changedf)
 begin
   record IVVc IVr;
+  LongInt err;
+  string 255 errlocation;
   
   if (changedf) then begin
-    DeselectWindow(wn,false);
     GetWindowRecord(wn,IVr);
-    IVVc_PasteLocation(IVr,rownr);
-    PutWindowRecord(wn,IVr);
+    err = IVVc_PasteLocation2(IVr,rownr,errlocation);
+    if (err!=0) then begin
+      MessageBox(err," " & errlocation);
+    end else begin
+      PutWindowRecord(wn,IVr);
+    end;
   end;
   IVDClassLocationEFAfter = true;
   return;
@@ -969,7 +970,6 @@ begin
   record LocalMachineBlock LMb;
   
   if (changedf) then begin
-    DeselectWindow(wn,false);
     GetWindowRecord(wn,IVr);
     IVVc_PasteLoyaltyCardNr(IVr,LMb);
     PutWindowRecord(wn,IVr);
@@ -1453,7 +1453,7 @@ begin
   return;
 end;
 
-function Boolean IVDClassPhone2EFAfter(Integer wn,Boolean changedf)
+function Boolean IVDClassPhone2EFAfter(Integer wn,Boolean changedf)// Edit ************************** BPI Ukraine - KramarAlexandr - Monday, 13 May 2024 at 15:30:51
 begin
   Boolean res;
   record CUVc CUr;
@@ -2123,7 +2123,7 @@ begin
   IVVc_PasteQuantity(IVr,rwn);
   IVSumup(IVr,true);
   PutWindowRecord(mwn,IVr);
-  if (IVrw.stp==kInvoiceRowTypeCashPayment) or (IVrw.stp==kInvoiceRowTypeCreditCardPayment) or (IVrw.stp==kInvoiceRowTypeSwishPayment) or (IVrw.stp==kInvoiceRowTypeChequePayment) or (IVrw.stp==kInvoiceRowTypeGiftVoucherPayment) begin
+  if (IVrw.stp==kInvoiceRowTypeCashPayment) or (IVrw.stp==kInvoiceRowTypeCreditCardPayment) or (IVrw.stp==kInvoiceRowTypeSwishPayment) or (IVrw.stp==kInvoiceRowTypeMPesaPayment) or (IVrw.stp==kInvoiceRowTypeQRPayment) or (IVrw.stp==kInvoiceRowTypeCashWithdrawal) or (IVrw.stp==kInvoiceRowTypeChequePayment) or (IVrw.stp==kInvoiceRowTypeGiftVoucherPayment) begin
     IVDClassSumEFAfter(mwn,0,rwn,1);
   end;  
   IVRowDClassOnOKWindow = true;

@@ -1,3 +1,6 @@
+external function Boolean HasCharts();
+external procedure AutomatedSales(string,Integer);
+remote procedure INDCLass_remote_BIChartAsync(Integer,record ITVc);
 remote procedure FindStockValue(string,string,var record ItemStatusVc);
 remote procedure INDCLass_BIChart_Tool(record INVc,var val,var Array val,var Array Integer);
 external function Integer OpenArtStat(Integer,record RcVc,Boolean);
@@ -5,11 +8,20 @@ remote function string 255 UpWindDI_IN2SClass(string,Integer);
 remote function string 255 GetSelDI_IN2SClass(string,LongInt,var Array string,var Integer);
 remote procedure IN2SClassOnOKWindowExecute(string,var Array string,var Integer);
 external procedure OrderStockRClassRD(var record RcVc);
-external procedure RecSumup(record RecVc);
+external procedure RecSumup(var record RecVc);
 external procedure FindMotherWindowLocation(Integer,var string,var Date);
 external procedure INrsRClassReportDef(var record RcVc);
 external procedure SendArtStat(string,string,string,val,val,val,Date,Integer);
+remote procedure AmazonMWSUpdStockSingleItem(string,Integer);
+remote procedure AmazonMWSUpdPriceSingleItem(string,val);
+remote procedure AmazonMWSUpdateStockAllItemsRemote();
+remote procedure AmazonMWSUpdatePriceAllItemsRemote();
+remote procedure AmazonMWSSendItem(string);
+remote updating procedure UpdateItemFlag(string,Integer);
+remote updating procedure UpdateAmazonSKU(string,string);
+external procedure FindStockValue(string,string,var record ItemStatusVc);
 external procedure PasteFromSysList(Integer,Integer); //Edit***************************Sasha2,14:52 14.12.2015
+
 
 procedure CalcVolume(val w,val h,val d,var val vol)
 begin
@@ -181,6 +193,26 @@ begin
   return;
 end;
 
+function Boolean INDClassFiscalDepEFAfter(Integer wn,Boolean changedf)
+begin
+  Boolean res;
+  record INVc INr;
+  record FiscalDepVc FDr;
+  
+  if (changedf) then begin
+    res = true;
+    GetWindowRecord(wn,INr);
+    FDr.Code = INr.FiscalDep;
+    if (ReadFirstMain(FDr,1,true)) then begin
+      INr.VATCode = FDr.VATCode;
+      INr.Unittext = FDr.Unittext;
+      PutWindowRecord(wn,INr);        
+    end;
+  end;
+  INDClassFiscalDepEFAfter = res;
+  return;
+end;
+
 global
 function Boolean INDClassAfterEditField(Integer wn,string fieldname,Integer fn, Integer rownr,Integer changed)
 begin
@@ -193,6 +225,7 @@ begin
     case "Density": res = INDClassDensityEFAfter(wn,changed);
     case "NetWeight": res = INDClassNetWeightEFAfter(wn,changed);
     case "VARMask": res = INDClassVARMaskEFAfter(wn,changed!=0);
+    case "FiscalDep": res = INDClassFiscalDepEFAfter(wn,changed!=0);
   end;
   INDClassAfterEditField = res;
   return;
@@ -319,6 +352,74 @@ begin
 end;
 
 global
+procedure StockTakeFromINsm()
+begin
+  record INVc INr;
+  row INVc INrw;
+  record StockTakeVc StockTaker;
+  row StockTakeVc StockTakerw;
+  Integer wn,nwn;
+  record MainStockBlock MSb;
+
+  wn = CurWindow;
+  DeselectWindow(wn,true);
+  GetWindowRecord(wn,INr);
+  RecordNew(StockTaker);
+
+  if (INr.ItemType==kItemTypeStocked)then begin
+    StockTakerw.Location = MSb.MainStock;
+    StockTakerw.ArtCode = INr.Code;
+    StockTakerw.Spec = INr.Name;
+    StockTakerw.Coefficient = INr.UnitCoefficient;
+    StockTakerw.BasePrice = INr.UPrice1;
+    StockTakerw.UnitXval = INr.Width;
+    StockTakerw.UnitYval =INr.Height;
+    StockTakerw.UnitZval= INr.Depth;
+    MatRowPut(StockTaker,0,StockTakerw);
+    nwn = OpenWindow("StockTakeDClass",1,0,"","",StockTaker);
+    WindowFieldGoto(nwn,StockTaker,0,"ArtCode",true);
+    SetWindowState(nwn,Rs_insert);
+  end else begin
+    MessageBox(0,USetStr(27355));
+  end;
+  return;
+end;
+
+global
+procedure PUFromINsm()
+begin
+  record INVc INr;
+  row INVc INrw;
+  record PUVc PUr;
+  row PUVc PUrw;
+  Integer wn,nwn;
+  record MainStockBlock MSb;
+  
+  wn = CurWindow;
+  DeselectWindow(wn,true);
+  GetWindowRecord(wn,INr);
+  RecordNew(PUr);
+
+  if (INr.ItemType==kItemTypeStocked) then begin
+    PUrw.Location = MSb.MainStock;
+    PUrw.ArtCode = INr.Code;
+    PUrw.Spec = INr.Name;
+    PUrw.Coefficient = INr.UnitCoefficient;
+    PUrw.CostPrice = INr.InPrice;
+    PUrw.BasePrice = INr.UPrice1;
+    PUrw.UPrice = INr.UPrice1;
+    MatRowPut(PUr,0,PUrw);
+    nwn = OpenWindow("PUDClass",1,0,"","",PUr);
+    WindowFieldGoto(nwn,PUr,-1,"VECode",true);
+    //TODO TRV: Should move to Quant after VECode has been entered
+    SetWindowState(nwn,Rs_insert);
+  end else begin
+    MessageBox(0,USetStr(27355));
+  end;
+  return;
+end;
+
+global
 procedure RecFromINDsm()
 begin
   record INVc INr;
@@ -420,13 +521,26 @@ begin
 end;
 
 global
+function Boolean ShouldSendArtStat()
+begin
+  Boolean res;
+  
+  if (FindWindow("ArtStatIClass")!=0 or FindWindow("ItemPictureOClass")!=0) then begin
+    res = true;
+  end;
+
+  ShouldSendArtStat = res;
+  return;
+end;
+
+global
 function Boolean INLClassSwitchRow(Integer wn,Integer rownr)
 begin
   record INVc INr;
   val t,tproc,unitprdisc;
   Date td;
 
-  if (FindWindow("ArtStatIClass")!=0) then begin
+  if (ShouldSendArtStat) then begin
     if (ReadMarkedRecord(wn,INr)) then begin
       SendArtStat(INr.Code,"",INr.Recepy,t,tproc,unitprdisc,td,0);
     end;
@@ -443,7 +557,7 @@ begin
   string 20 location;
   Date td;
 
-  if (FindWindow("ArtStatIClass")!=0) then begin
+  if (ShouldSendArtStat) then begin
     if (ReadMarkedRecord(wn,INr)) then begin
       FindMotherWindowLocation(wn,location,td);
       SendArtStat(INr.Code,location,INr.Recepy,t,tproc,unitprdisc,td,0);
@@ -459,10 +573,12 @@ begin
   record INVc INr;
   val t,tproc,unitprdisc;
   Date td;
+  string 20 location;
 
-  if (FindWindow("ArtStatIClass")!=0) then begin
+  if (ShouldSendArtStat) then begin
     if (ReadMarkedRecord(wn,INr)) then begin
-      SendArtStat(INr.Code,"",INr.Recepy,t,tproc,unitprdisc,td,0);
+      FindMotherWindowLocation(wn,location,td);
+      SendArtStat(INr.Code,location,INr.Recepy,t,tproc,unitprdisc,td,0);
     end;
   end;
   IN2SClassSwitchRow = true;
@@ -475,10 +591,12 @@ begin
   record INVc INr;
   val t,tproc,unitprdisc;
   Date td;
+  string 20 location;
 
-  if (FindWindow("ArtStatIClass")!=0) then begin
+  if (ShouldSendArtStat) then begin
     if (ReadMarkedRecord(wn,INr)) then begin
-      SendArtStat(INr.Code,"",INr.Recepy,t,tproc,unitprdisc,td,0);
+      FindMotherWindowLocation(wn,location,td);
+      SendArtStat(INr.Code,location,INr.Recepy,t,tproc,unitprdisc,td,0);
     end;
   end;
   IN3SClassSwitchRow = true;
@@ -553,7 +671,7 @@ begin
   end;
   GetWindowRecord(wn,INr);
   if (INr.ItemType!=kItemTypeStocked) then begin
-    MessageBox(21443,"");
+    MessageBox(21454,"");
     goto LINDClassSerNrfButtonAction;
   end;
   switch (WindowState(wn)) begin
@@ -567,13 +685,13 @@ LButtonActionSerNrfRs_normal:;
             case 1:
               FindStockValue(INr.Code,"",ISr);
               if (ISr.Instock!=0) then begin
-                MessageBox(21442,"");
+                MessageBox(21443,"");
                 goto LINDClassSerNrfButtonAction;
               end;                          
             case 2:
               FindStockValue(INr.Code,"",ISr);
               if (ISr.Instock!=0) then begin
-                MessageBox(21442,"");
+                MessageBox(21443,"");
                 goto LINDClassSerNrfButtonAction;
               end;                          
           end;
@@ -646,6 +764,7 @@ LButtonActionkItemTypePlain:;
                 MessageBox(21440,"");
                 goto LINDClassItemTypeButtonAction;
               end;                          
+              AutomatedSales("HasModIN+Edit_INVc",kAutomatedSalesTagRandom);
             case kItemTypeStructured:      
               MessageBox(21441,"");
               goto LINDClassItemTypeButtonAction;
@@ -725,7 +844,7 @@ LINDClassSerNrfButtonAfter:;
 end;
 
 global
-procedure INSearchLsm()
+procedure SearchItemRn_Lsm()
 begin
   Integer wn,nwn;
   record RcVc RepSpec;
@@ -740,6 +859,13 @@ begin
   RepSpec.Media = 6;
   PutWindowRecord(nwn,RepSpec);  
   WindowFieldGoto(nwn,RepSpec,-1,"f1",true);
+  return;
+end;
+
+global
+procedure INSearchLsm()
+begin
+  SearchItemRn_Lsm;
   return;
 end;
 
@@ -832,7 +958,14 @@ begin
   RepSpec.f5 = curRepSpec.f6;
   RepSpec.flags[10] = 1;
   RepSpec.flags[15] = 2;
-  RepSpec.ArtMode = 2;
+  RepSpec.sStartDate = "";
+  RepSpec.sEndDate = "";
+  switch (curRepSpec.AccSpec) begin
+    case kItemTypeStructured:
+      RepSpec.ArtMode = 3;
+    otherwise
+      RepSpec.ArtMode = 2;
+  end;
   RepSpec.flags[4] = 0;
   RepSpec.flags[6] = 0;
   RepSpec.f7 = StringFromSet(433,kOrderTypeNormal);
@@ -1131,6 +1264,7 @@ begin
   return;
 end;
 
+/*
 procedure INDCLass_BIChart(Integer wn,record INVc INr)
 begin
   Integer i;
@@ -1152,6 +1286,36 @@ begin
   EndChart;
   return;
 end;
+*/
+
+procedure INDCLass_BIChart(Integer wn,record INVc INr)
+begin  
+  if (HasCharts==false) then begin goto LINDCLass_BIChart; end;
+
+  threadremoteasync.INDCLass_remote_BIChartAsync(wn,INr);
+  
+LINDCLass_BIChart:;
+  return;
+end;
+
+global
+procedure INDCLass_remote_BIChartAsyncCallback(Integer wn,val maxv,Array val vsales,Array Integer vmonth)
+begin
+  Integer i;
+
+  ChartBegin(wn,"$INDCLass_BIChart",kChartTypeColumn,kChartLegendTypeNone,0,-1);
+  ChartXAxis(0,12.5,UsetStr(21371));
+  ChartYAxis(0,maxv,UsetStr(21370));  
+
+  ChartDataSeriesBegin("INDCLass_BIChartSales");
+  for (i=1;i<=12;i=i+1) begin
+    ChartXAxisLabel(i,USetStr(2870+vmonth[i]));
+    ChartDatum(vsales[i],"");  
+  end;
+  EndChartDataSeries;
+  EndChart;
+  return;
+end;
 
 global
 function Boolean INDCLassOnOpenWindow(Integer wn)
@@ -1162,20 +1326,6 @@ begin
   INDCLass_BIChart(wn,INr);
   INDCLassOnOpenWindow = false;
   return;
-end;
-
-global
- procedure PriceRecalcVClassReportDefaults(integer wn)
-begin
-
-record RcVc RepSpec;
-
-  DeselectWindow(wn,false);
-  GetWindowRecord(wn,RepSpec);
-	RepSpec.f1 = "RRP";
-  PutWindowRecord(wn,RepSpec);
-	SelectWindow(wn);
-return;
 end;
 
 global
@@ -1209,33 +1359,23 @@ LINDCLassBarcodeData:;
 end;
 
 global
-procedure LocationClassificationSClassArrayOnOpen(var Array string astr,var Integer acnt)
-BEGIN
-  record UserVc Userr;
-  record LocationVc Locationr;
-  Boolean testf;
-  string 200 classif;
-  
-    Userr.Code = CurrentUser;
-    if (ReadFirstMain(Userr,1,true) and NonBlank(Userr.Location)) then begin
-      Locationr.Code = Userr.Location;
-      if (ReadFirstMain(Locationr,1,true) and NonBlank(Locationr.Classification)) then begin
-        classif = Locationr.Classification;
-        Locationr.Code = "";
-        while (LoopMain(Locationr,1,true)) begin
-          testf = true;
-          if (classif!=Locationr.Classification) then begin testf = false; end;
-          if (testf) then begin 
-            astr[acnt] = Left(Locationr.Code & "    ",14);
-            astr[acnt] = astr[acnt] & Locationr.Name;
-            acnt = acnt + 1;
-          end;
-        end;
-      end;
-    end; 
- 
-  RETURN;
-END;
+procedure AmazonMWSUpdateStockSingleItemDsm()
+begin
+  record INVc INr;
+  record ItemStatusVc ISr;
+  LongInt wn;
+  string 255 itemcode;
+
+  wn = CurWindow;
+  GetWindowRecord(wn,INr);
+
+  FindStockValue(INr.Code,"",ISr);
+  if (nonblank(INr.AmazonSKU) and INr.SyncToAmazon) then begin
+    AmazonMWSUpdStockSingleItem(INr.AmazonSKU,ISr.Instock);
+  end;
+
+  return;
+end;
 
 global //Edit***************************Sasha2,14:20 14.12.2015 {
 function Boolean LocationClassificationSClassOnOpenWindow(Integer wn)
@@ -1250,7 +1390,6 @@ begin
   LocationClassificationSClassOnOpenWindow = false;
   return;
 end; //Edit***************************Sasha2,14:20 14.12.2015 }
-
 
 global //Edit***************************Sasha2,14:51 14.12.2015 {
 function Boolean LocationClassificationSClassOnOKWindow(Integer wn)
@@ -1281,3 +1420,106 @@ begin
   LocationSClassOnOpenWindow = false;
   return;
 end; //Edit***************************Sasha2,13:21 14.12.2015 ]
+
+global
+procedure AmazonMWSUpdatePriceSingleItemDsm()
+begin
+  record INVc INr;
+  LongInt wn;
+
+  wn = CurWindow;
+  GetWindowRecord(wn,INr);
+
+  if (nonblank(INr.AmazonSKU) and INr.SyncToAmazon) then begin
+    AmazonMWSUpdPriceSingleItem(INr.AmazonSKU,INr.UPrice1);
+  end;
+
+  return;
+end;
+
+global
+procedure AmazonMWSUpdateStockAllItemsDsm()
+begin
+  AmazonMWSUpdateStockAllItemsRemote;
+  return;
+end;
+
+global
+procedure AmazonMWSUpdatePriceAllItemsDsm()
+begin
+  AmazonMWSUpdatePriceAllItemsRemote;
+  return;
+end;
+
+global
+updating procedure ProceedAmazonMWSSendItemDClass()
+begin
+  Integer wn,mwn;
+  record RcVc RepSpec;
+  record INVc INr;
+  string 255 itemcode;
+  Boolean testf;
+  
+  wn = CurWindow;
+  DeselectWindow(wn,true)
+  GetWindowRecord(wn,RepSpec);
+
+  mwn = MotherWindow(wn);
+  GetWindowRecord(mwn,INr);
+
+  if (blank(INr.Code)) then begin
+    MessageBox(0,"Invalid Item Code"); //todo translateable message
+    goto LProceedAmazonMWSSendItemDClass;
+  end;
+  if (RepSpec.flags[0]==1 and blank(RepSpec.f1)) then begin
+    MessageBox(0,"Amazon SKU may not be blank");  //todo translateable message
+    goto LProceedAmazonMWSSendItemDClass;
+  end;
+
+  switch (RepSpec.flags[0]) begin
+    case 0: 
+      testf = true;
+      itemcode = INr.Code;
+    case 1:
+      UpdateAmazonSKU(INr.Code,RepSpec.f1);
+      UpdateItemFlag(INr.Code,1);
+      CloseWindow(wn);
+      CheckmarkBox(15092,"");
+  end;
+  if (testf) then begin
+    AmazonMWSSendItem(itemcode);
+    CloseWindow(wn);
+  end;
+LProceedAmazonMWSSendItemDClass:;
+  return;
+end;
+
+global 
+procedure CancelAmazonMWSSendItemDClass()
+begin
+  CloseWindow(CurWindow);
+  return;
+end;
+
+global
+function Boolean INDClassSyncToAmazonButtonAction(Integer wn,Integer value)
+begin
+  INDClassSyncToAmazonButtonAction = false;
+  return;
+end;
+
+global
+procedure AmazonMWSSendItemLsm()
+begin
+  Integer wn,nwn;
+  record INVc INr;
+  record RcVc RepSpec;
+
+  wn = CurWindow;
+  GetWindowRecord(wn,INr);
+
+  if (WindowState(wn)==Rs_normal) then begin
+    nwn = OpenWindow("AmazonMWSSendItemDClass",0,wn,"","",RepSpec);
+  end;
+return;
+end;

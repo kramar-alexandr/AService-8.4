@@ -1,4 +1,4 @@
-SetLangMode(LangUkrainian,"RUS",0);
+SetLangMode(LangUkrainian,"UKR",0);
 
 external function boolean MySendRawWebRequest(string, string, boolean, string, string, string, string, boolean, area, var area, integer);
 

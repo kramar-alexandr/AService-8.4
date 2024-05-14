@@ -3,6 +3,7 @@ external function Boolean HasModIN();
 external function Boolean HasModPO();
 external function Boolean HasModSL();
 external function Boolean HasModTS();
+external function Boolean HasModProd();
 remote procedure ORPasteRvrsVATCode(var record ORVc,Boolean);
 external function Boolean GetFirstItem(var string,var record INVc);
 remote procedure ORDClassOnOpenWindowRemote(var record ORVc,var Integer);
@@ -23,7 +24,7 @@ external function roundmode DefaultRoundMode();
 external procedure CalcPrice(val,val,val,var val,Integer);
 external procedure RecalcORSubtotal(var record ORVc);
 remote procedure GetCurUser(var record UserVc);
-//remote updating function Boolean BA_ORMinMarkupWarning(record ORVc,var Integer);
+remote function Boolean BA_ORMinMarkupWarning(record ORVc,var Integer);
 remote function Boolean ORDelWithTBIV(record ORVc);
 external procedure CustMessages(string,string);
 remote function Boolean ReadFirstItem(string,var record INVc,Boolean,Boolean);
@@ -36,7 +37,8 @@ external function string 40 SerialNrSClassSpecPName(string);
 external function string 40 DelAddrSClassSpecPName(string);
 external function val MulRateToBase1(var string,val,val,val,val,val,val,roundmode);
 remote procedure ORDUpdatePrices(var record ORVc,Boolean);
-remote updating function Integer RecordAction_raPasteOrdInRet(var record RetVc,string,LongInt);
+//remote updating function Integer RecordAction_raPasteOrdInRet(var record RetVc,string,LongInt);
+remote updating function LongInt RecordAction_raPasteOrdInRet2(var record RetVc,string,LongInt);
 remote updating function Integer RecordAction_raPasteOrdInStockMov(var record StockMovVc,LongInt);
 external procedure GetRecepy(string,var string);
 external procedure CalcProc(val,val,var val);
@@ -52,6 +54,7 @@ remote updating function Integer CreateMailFromORD(record ORVc,var record MailVc
 remote updating function Boolean RecordAction_rlSetORToInv(var record ORVc);
 remote updating procedure MakeActFromSubSys_ORVc(var record ORVc,Boolean,Boolean);
 remote updating function Integer RecordAction_rlOrderToPO(var record ORVc,var string);
+remote updating function Integer RecordAction_rlOrderToProdOrder(var record ORVc,var record ProdOrderVc,var string);
 remote updating function LongInt RecordAction_raPasteOrdInShip2(var record SHVc,LongInt,var string);
 remote updating function Integer RecordAction_raPasteOrdInInv(var record IVVc,LongInt,Boolean,var Integer);
 remote updating function Integer RecordAction_raOrdDownPay(LongInt,val,val,var record IVVc,var string,integer);
@@ -60,6 +63,8 @@ external procedure GetCurncyRoundoff(string,string,string,var roundmode,var roun
 remote function Boolean ORVc_AllowSales(record ORVc,var Integer,var LongInt);
 external function Boolean UserCanChangePendingRecord(Integer);
 external procedure RoundBelCash(string,var val);
+remote updating function Integer RecordAction_raPasteORInIVCash(var record IVCashVc,var record ORVc,var Integer,Boolean);
+remote function LongInt DoUpdORCstFromProdOrd(var record ORVc,var string);
 remote procedure ORtoExcel1Remote(record ORVc,var string,var string);// Edit ************************** Thursday, 11 February 2016 10:23:08
 remote function boolean GetPartFileToArea(string,var area); // Edit ************************** Thursday, 11 February 2016 10:23:08
 remote procedure DeleteXLSXJunk(string); // Edit ************************** Thursday, 11 February 2016 10:23:08
@@ -67,7 +72,7 @@ remote procedure BackupXLSX(string); // Edit ************************** Thursday
 remote procedure RecoverXLSX(string,string); // Edit ************************** Thursday, 11 February 2016 10:23:08
 
 	SetLangMode(LangUkrainian,"UKR",0); // Edit ************************** Thursday, 11 February 2016 10:23:08
- 
+
 
 global
 procedure RoundRowSum(string curncycode,string paymode,string filename,var val rsum)
@@ -232,35 +237,39 @@ BEGIN
   DeselectWindow(wn,false);
   BlockLoad(DPb);
   if (DPb.DetailsOnIV==0 and HasModSL) then begin
-    if (WindowState(wn)==0) then begin
-      GetWindowRecord(wn,ORr);
-      testf = true;
-      r = ORTestApprovalStatus(ORr);
-      if (r!=0) then begin
-        MessageBox(r,"");
-        testf = false;
-      end;
-      if (testf) then begin
-        r = RecordAction_raOrdDownPay(ORr.SerNr,blankval,blankval,IVr,errstr,0);
-        if (r!=-1) then begin
-           if (MatRowCnt(IVr)!=0) then begin
-            nwn = OpenWindow("IVDClass",1,0,"","",IVr);
+    if (UserCanAction("ORToDownPay",true)) then begin
+      if (WindowState(wn)==Rs_normal) then begin
+        GetWindowRecord(wn,ORr);
+        testf = true;
+        r = ORTestApprovalStatus(ORr);
+        if (r!=0) then begin
+          MessageBox(r,"");
+          testf = false;
+        end;
+        if (testf) then begin
+          r = RecordAction_raOrdDownPay(ORr.SerNr,blankval,blankval,IVr,errstr,0);
+          if (r!=-1) then begin
+             if (MatRowCnt(IVr)!=0) then begin
+              nwn = OpenWindow("IVDClass",1,0,"","",IVr);
+            end else begin
+              MessageBox(r,"");
+            end;
           end else begin
-            MessageBox(r,"");
-          end;
-        end else begin
-          if (nonblank(errstr)) then begin
-            MessageBox(0,errstr);
-          end else begin
-            MessageBox(1274,"");
+            if (nonblank(errstr)) then begin
+              MessageBox(0,errstr);
+            end else begin
+              MessageBox(1274,"");
+            end;
           end;
         end;
+      end else begin
+        Beep;
       end;
     end else begin
-      Beep;
+      MessageBox(1274,StringFromStringSet(3,"ORToDownPay"));
     end;
   end else begin
-    if (WindowState(wn)==0) then begin//Rs_normal
+    if (WindowState(wn)==Rs_normal) then begin
       if (UserCanAction("ORToDownPay",true)) then begin
         testf = true;
         GetWindowRecord(wn,ORr);
@@ -273,6 +282,7 @@ BEGIN
           ReportDefaults(RepSpec,"DownPayFromORVClass");
           RepSpec.FirstVer = ORr.SerNr;
           RepSpec.vals0 = DPb.Percentage;
+          RepSpec.vals1 = ((ORr.Sum4*DPb.Percentage)/100);
           nwn = OpenWindow("DownPayFromORVClass",1,0,"","",RepSpec);
           PutWindowRecord(nwn,RepSpec);
           SelectWindow(nwn);
@@ -322,16 +332,58 @@ LDownPayFromORVClassOnOKWindow:;
 END;
 
 global
-procedure IVOpenPrepExists(string custcode)
+procedure IVOpenPrepExists2(string custcode,Boolean invf,record IVVc IVr)
 begin
   record ARPayVc ARPayr;
-  
+  Boolean TrHs,testf;
+  Integer i,rwcnt;
+  row IVVc IVrw;
+  vector Boolean v_cupnr;
+
+  testf = false;
   if (ProgramType!=typStdAccounts) then begin
+    if (invf) then begin
+      rwcnt = MatRowCnt(IVr);
+      for (i=0;i<rwcnt;i=i+1) begin
+        MatRowGet(IVr,i,IVrw);
+        if (IVrw.ovst==0 and IVrw.stp==kInvoiceRowTypePrepayment and IVrw.CUPNr>0) then begin
+          v_cupnr[IVrw.CUPNr] = true;
+        end;
+      end;
+      TrHs = true;
+      ARPayr.CustCode = custcode;
+      while (LoopKey("CustCode",ARPayr,1,TrHs)) begin
+        if (ARPayr.CustCode!=custcode) then begin
+          TrHs = false;
+        end else begin
+          if (!v_cupnr[ARPayr.CUPNr]) then begin
+            testf = true;
+            TrHs = false;
+          end;
+        end;
+      end;
+    end;
+  end else begin
     ARPayr.CustCode = custcode;
     if (ReadFirstKey("CustCode",ARPayr,1,true)) then begin
-      ///MessageBox(0,USetStr(2025));
-    end;           
-  end;           
+      testf = true;
+    end;
+  end;
+
+  if (testf) then begin
+    MessageBox(0,USetStr(2025));
+  end;
+
+  return;
+end;
+
+global
+procedure IVOpenPrepExists(string custcode)
+begin
+  record IVVc IVr;
+
+  IVOpenPrepExists2(custcode,false,IVr);
+
   return;
 end;
 
@@ -365,7 +417,6 @@ BEGIN
   DeselectWindow(wn,false);
   if (WindowState(wn)==Rs_normal and HasModSL) then begin
     GetWindowRecord(wn,ORr);
-    if (ORr.OKFlag!=0) then begin
 //    if (ORr.Closed==0) then begin
       if (UserCanAction("ORToInv",true)) then begin
         testf = true;
@@ -385,7 +436,8 @@ BEGIN
             if (MatRowCnt(IVr)!=0) then begin
               nwn = OpenWindow("IVDClass",1,0,"","",IVr);
               UpdateBrowses("ORVc");
-              IVOpenPrepExists(IVr.CustCode);
+              IVOpenPrepExists2(IVr.CustCode,true,IVr);
+              CustMessages("ORVc",IVr.CustCode);
               if (errcode>0) then begin
                 MessageBox(errcode,"");
               end;
@@ -409,9 +461,6 @@ BEGIN
       end else begin
         MessageBox(1274,StringFromStringSet(3,"ORToInv"));
       end;
-    end else begin
-      MessageBox(1794,"");
-    end;
 //    end else begin
 //      MessageBox(1274,"");
 //    end;
@@ -445,14 +494,14 @@ BEGIN
               testf = false;
             end; 
           end;
-          /*if (testf) then begin
+          if (testf) then begin
             if (BA_ORMinMarkupWarning(ORr,i)==true) then begin
               if (UserCanAction("DisallowSaleBelowGP",false)) then begin
                 testf = false;
                 MessageBox(1274,StringFromStringSet(3,"DisallowSaleBelowGP"));
               end;
             end;
-          end;*/
+          end;
           r = ORTestApprovalStatus(ORr);
           if (r!=0) then begin
             MessageBox(r,"");
@@ -487,7 +536,7 @@ BEGIN
       end; 
     end else begin
       MessageBox(0,USetStr(1794)); //Edit***************************Sasha2,14:51 19.09.2014
-	  end;        
+	  end;
   end else begin
     Beep;
   end;
@@ -499,7 +548,7 @@ updating procedure SHFromORLsm()
 BEGIN
   record ORVc ORr;
   record SHVc SHr;
-  Integer wn,nwn;
+  Integer wn,nwn,i;
   LongInt r;
   string 60 warning;
   Boolean testf;
@@ -514,6 +563,14 @@ BEGIN
           if (UserCanAction("NotOKORToSH",false)) then begin
             MessageBox(20054,"");
             testf = false;
+          end;
+        end;
+        if (testf) then begin
+          if (BA_ORMinMarkupWarning(ORr,i)==true) then begin
+            if (UserCanAction("DisallowSaleBelowGP",false)) then begin
+              MessageBox(1274,StringFromStringSet(3,"DisallowSaleBelowGP"));
+              testf = false;
+            end;
           end;
         end;
         r = ORTestApprovalStatus(ORr);
@@ -550,6 +607,47 @@ BEGIN
 END;
 
 global
+updating procedure IVCashFromORDsm()
+begin
+  record IVCashVc IVCashr;
+  record ORVc ORr;
+  Integer nwn,wn;
+  Integer errcode;
+  LongInt r;
+  Boolean testf;
+
+  wn = CurWindow;
+  if (WindowState(wn)==0) then begin
+    GetWindowRecord(wn,ORr);
+    if (UserCanAction("ORToIVCash",true)) then begin
+      if (ORr.Closed==0) then begin
+        testf = true;
+        if (testf) then begin
+          r = RecordAction_raPasteORInIVCash(IVCashr,ORr,errcode,true);
+          if (r!=-1) then begin
+            PutWindowRecord(wn,ORr);
+            nwn = OpenWindow("IVCashDClass",1,0,"","",IVCashr);
+            UpdateBrowses("IVCashVc");
+            UpdateBrowses("ORVc");
+            CustMessages("ORVc",ORr.CustCode);
+            if (errcode>0) then begin 
+              MessageBox(errcode,"");
+            end;
+         end else begin
+           Beep;
+         end;
+        end;
+      end;  
+    end else begin
+      MessageBox(1274,StringFromStringSet(3,"ORToIVCash"));
+    end;
+  end else begin
+    Beep;
+  end;
+  return;
+end;
+
+global
 updating procedure IVFromORLsm()
 BEGIN
   record ORVc ORr;
@@ -584,7 +682,7 @@ BEGIN
               MessageBox(0,USetStr(1096));
             end;
             if (r!=-1) then begin
-              MessageBox(2210,"");
+              MessageBox(r,"");
             end else begin
               Beep;
             end;          
@@ -607,24 +705,21 @@ BEGIN
   record DownPayBlock DownPayRec;
 
   wn = CurWindow;
-  if (WindowState(wn)==0) then begin//Rs_normal
-    if (UserCanAction("ORToDownPay",true)) then begin
-      if (ReadMarkedRecord(wn,ORr)) then begin
-        if (ORr.Closed==0) then begin
-          BlockLoad(DownPayRec);
-          ReportDefaults(RepSpec,"DownPayFromORVClass");
-          RepSpec.FirstVer = ORr.SerNr;
-          RepSpec.vals0 = DownPayRec.Percentage;
-          nwn = OpenWindow("DownPayFromORVClass",1,0,"","",RepSpec);
-          PutWindowRecord(nwn,RepSpec);
-          SelectWindow(nwn);
-        end;
+  if (UserCanAction("ORToDownPay",true)) then begin
+    if (ReadMarkedRecord(wn,ORr)) then begin
+      if (ORr.Closed==0) then begin
+        BlockLoad(DownPayRec);
+        ReportDefaults(RepSpec,"DownPayFromORVClass");
+        RepSpec.FirstVer = ORr.SerNr;
+        RepSpec.vals0 = DownPayRec.Percentage;
+        RepSpec.vals1 = ((ORr.Sum4*DownPayRec.Percentage)/100);
+        nwn = OpenWindow("DownPayFromORVClass",1,0,"","",RepSpec);
+        PutWindowRecord(nwn,RepSpec);
+        SelectWindow(nwn);
       end;
-    end else begin
-      MessageBox(1274,StringFromStringSet(3,"ORToDownPay"));
     end;
   end else begin
-    Beep;
+    MessageBox(1274,StringFromStringSet(3,"ORToDownPay"));
   end;
   RETURN;
 END;
@@ -663,6 +758,13 @@ BEGIN
   end;
   RETURN;
 END;
+
+global
+procedure OpenPurchaseOrder(var record POVc POr)
+begin
+  OpenWindow("PODClass",1,0,"","",POr);
+  return;
+end;
 
 global
 updating procedure POFromORDsm()
@@ -1219,6 +1321,7 @@ BEGIN
   record INVc INr;
   Integer nwn;
   record StockMovVc StockMovr; //Edit***************************Sasha2,11:19 11.02.2016
+  record POVc POr;// Edit ************************** BPI Ukraine - KramarAlexandr - Tuesday, 14 May 2024 at 11:14:44
   
   nwn = FindWindow("SelectApproverWClass");
   if (nwn>0) then begin
@@ -1230,7 +1333,14 @@ BEGIN
   if (wnst!=Rs_insert) then begin
     if (fieldname=="SerNr") then begin
       res = false;
-      goto LORDClassActiveEditField;
+      switch (wnst) begin
+        case Rs_update:
+           if (OR2r.OKFlag==0) then begin
+             res = UserCanAction("AllowORSerNrChange",true)==true;
+            end;
+        otherwise
+           res = UserCanAction("AllowORSerNrChange",true)==true;
+      end;
     end;
     if (ORApprovalStarted(ORr) and UserCanChangePendingRecord(rownr)==false) then begin 
       res = false; 
@@ -1246,9 +1356,13 @@ BEGIN
   switch (wnst) begin
     case Rs_insert:
     otherwise
-      if (ORr.OKFlag!=0) then begin
+      if (OR2r.OKFlag!=0) then begin
         switch (fieldname) begin
           case "LangCode": ;
+          case "Comment": res = UserCanAction("ChangingCommentOnOrder",false);
+          case "Comment2": res = UserCanAction("ChangingCommentOnOrder",false);
+          case "Comment3": res = UserCanAction("ChangingCommentOnOrder",false);
+          case "Comment4": res = UserCanAction("ChangingCommentOnOrder",false);
           otherwise
             res = false;
             goto LORDClassActiveEditField;
@@ -1274,6 +1388,10 @@ BEGIN
     case "InvAddr3": res = HasLocalization("PRT")==false;
     case "InvAddr4": res = HasLocalization("PRT")==false;
     case "InvCountry": res = HasLocalization("PRT")==false;
+    case "Comment": res = UserCanAction("ChangingCommentOnOrder",true);
+    case "Comment2": res = UserCanAction("ChangingCommentOnOrder",true);
+    case "Comment3": res = UserCanAction("ChangingCommentOnOrder",true);
+    case "Comment4": res = UserCanAction("ChangingCommentOnOrder",true);
     case "BasePrice": 
       if (UserCanAction("ChangingCostOnORRow",true)==false) then begin res = false; end;
     case "PRCode": 
@@ -1347,11 +1465,24 @@ BEGIN
         end;  
       end; //Edit***************************Sasha2,10:43 11.02.2016 }
   end;
+  if (res) then begin
+    if (OR2r.OrderType==kOrderTypeDropShip) then begin
+      POr.OrdNr = ORr.SerNr;
+      if (ReadFirstKey("OrdNr",POr,1,true)) then begin
+        MessageBox(20848,"");
+        res = false;
+      end;
+    end;
+  end;
   if (ORShipdTest(ORr)==false) then begin goto LORDClassActiveEditField; end;
   if (wnst==Rs_update) then begin
     if (OR2r.OKFlag!=0) then begin
       switch (fieldname) begin
         case "PlanShip": res = true;
+        case "Comment": res = UserCanAction("ChangingCommentOnOrder",false);
+        case "Comment2": res = UserCanAction("ChangingCommentOnOrder",false);
+        case "Comment3": res = UserCanAction("ChangingCommentOnOrder",false);
+        case "Comment4": res = UserCanAction("ChangingCommentOnOrder",false);
         otherwise res = false;
       end;
       if (rownr>=0) then begin
@@ -1509,7 +1640,8 @@ updating procedure RetFromORsm()
 BEGIN
   record ORVc ORr;
   record RetVc Retr;
-  Integer wn,r,nwn;
+  Integer wn,nwn;
+  LongInt r;
   record OrdSettBlock OSb;
   record CostAccBlock CAb;
   record LocalMachineBlock LMb;
@@ -1526,9 +1658,9 @@ BEGIN
         r = 20100;
         if (CAb.RetCostPriceFromSH==0) then begin 
           if (CAb.RetFIFOQue!=0) then begin
-            r = 20558;
+            r = 40762;
           end else begin
-            r = RecordAction_raPasteOrdInRet(Retr,LMb.DefReturnLocation,ORr.SerNr);
+            r = RecordAction_raPasteOrdInRet2(Retr,LMb.DefReturnLocation,ORr.SerNr);
           end;
         end;
         switch (r) begin
@@ -1564,6 +1696,7 @@ BEGIN
   RepSpec.Media = mtScreen;
   RepSpec.critname = "ORInfoRClass";
   RepSpec.repname = "ORInfoRn";
+  RepSpec.flags[12] = 1;
   RunReport(RepSpec,0);
   RETURN;
 END;
@@ -1993,7 +2126,7 @@ begin
         if (WindowDoOK(wn,0)) then begin
           nwn = OpenWindow("PRDClass",1,0,"","",PRr);
           UpdateBrowses("PRVc");
-          CloseWindow(wn);
+//          CloseWindow(wn);
         end else begin
           cancelf = true;
           RecordDelete(PRr);
@@ -2150,7 +2283,7 @@ begin
     UnpackFieldMatrix(ORr,"TaxMatrix",TMr);
   end;
   
-  nwn = OpenWindow("TaxMatrixVClass",0,wn,"","",TMr);
+  nwn = OpenWindow("TaxMatrixVClass",1,wn,"","",TMr);
   PutWindowString(nwn,"TaxMatrixActiveRow",rowno);
   
   PutWindowRecord(nwn,TMr);
@@ -2316,6 +2449,96 @@ begin
   GetWindowRecord(wn,ORr);
   ORDClassOnOpenWindowRemote(ORr,AcceptanceStatusFlag);
   PutWindowString(wn,"AcceptanceStatusFlag",StringFromSet(443,AcceptanceStatusFlag));  
+  return;
+end;
+
+global
+updating procedure ProdOrderFromORDsm()
+begin
+  record ORVc ORr;
+  record ProdOrderVc ProdOrderr;
+  Integer wn,nwn;
+  LongInt r;
+  Boolean testf;
+  string 255 errstr;
+
+  wn = CurWindow;
+  if (WindowState(wn)==Rs_normal and HasModProd) then begin
+    GetWindowRecord(wn,ORr);  
+    if (UserCanAction("ORToProdOrder",true)) then begin
+      testf = true;
+      r = ORTestApprovalStatus(ORr);
+      if (r!=0) then begin
+        MessageBox(r,"");
+        testf = false;
+      end;
+      if (testf) then begin
+        r = RecordAction_rlOrderToProdOrder(ORr,ProdOrderr,errstr);
+        if (r!=0) then begin
+          MessageBox(r," " & errstr);
+          testf = false;
+        end;
+        nwn = OpenWindow("ProdOrderDClass",1,wn,"","",ProdOrderr);
+      end;
+    end else begin
+      MessageBox(1274,StringFromStringSet(3,"ORToProdOrder"));
+    end;
+  end;
+  return;
+end;
+
+global
+updating procedure UpdORCstFromProdOrdDsm()
+begin
+  LongInt err;
+  Integer wn;
+  record ORVc ORr;
+  Boolean testf;
+  string 255 errmsg;
+
+  wn = CurWindow;
+  if (WindowState(wn)==Rs_normal) then begin
+    DeselectWindow(wn,false);
+    GetWindowRecord(wn,ORr);
+    if ((ORr.Closed==0)) then begin
+      testf = true;
+      err = DoUpdORCstFromProdOrd(ORr,errmsg);
+      if (err==0) then begin
+        PutWindowRecord(wn,ORr);
+        if (WindowDoOK(wn,0)) then begin end;
+        CheckMarkBox(43201,"");
+      end else begin
+        MessageBox(err,errmsg);
+      end;
+    end else begin
+      Beep;
+    end;
+  end;
+
+  return;
+end;
+
+global
+function Boolean DownPayFromORVClassAfterEditField(Integer wn,string fieldname,Integer fn,Integer rownr,Integer changed)
+begin
+  Boolean res;
+  record RcVc RepSpec;
+  record ORVc ORr;
+  
+  res = true;
+  GetWindowRecord(wn,RepSpec);
+  switch (fieldname) begin
+    case "vals1":
+      ORr.SerNr = RepSpec.FirstVer;
+      if (ReadFirstMain(ORr,1,true)) then begin end;
+      RepSpec.vals0 = ((RepSpec.vals1*100)/ORr.Sum4);
+    case "vals0":
+      ORr.SerNr = RepSpec.FirstVer;
+      if (ReadFirstMain(ORr,1,true)) then begin end;
+      RepSpec.vals1 = ((RepSpec.vals0*ORr.Sum4)/100);
+  end;
+  PutWindowRecord(wn,RepSpec);
+  DownPayFromORVClassAfterEditField = res;
   return;
 end;
 

@@ -20,7 +20,7 @@ external function Boolean WarnOldRecords(Date,string,LongInt);
 external function Boolean DateLocked(Date,string);
 external function Boolean DateWarned(Date,string);
 remote procedure SetTRObjectRows(var record TRVc);
-
+remote function Boolean GetNextItemNr(var string);
 
 procedure TRUpdateCurDebValRows(var row TRVc TRrp,Date trdat)
 BEGIN
@@ -812,7 +812,9 @@ BEGIN
             if (TRrw.CurCredVal!=0) then begin
               TRVc_PasteCurCredVal(TRr,i);
             end else begin
-              TRVc_PasteCredVal(TRr,i);
+              if (TRrw.CredVal!=0) then begin//in case we have 0 un Debit value
+                TRVc_PasteCredVal(TRr,i);
+              end;
             end;
           end;
         end;
@@ -824,6 +826,28 @@ BEGIN
 //JJCS    
   end; 
   TRDClassTransDateEFAfter = true;
+  return;
+end;
+
+function Boolean TRDClassSAFTTypeEFAfter(Integer wn,Integer rownr,Boolean changedf)
+begin
+  record TRVc TRr;
+  row TRVc TRrw;
+  integer i,safttype;
+  
+  if (changedf) then begin
+    GetWindowRecord(wn,TRr);
+    MatRowGet(TRr,rownr,TRrw);
+    safttype = TRrw.SAFTType;
+    for (i=0;i<MatRowCnt(TRr);i=i+1) begin
+      MatRowGet(TRr,i,TRrw);
+      TRrw.SAFTType = safttype;
+      MatRowPut(TRr,i,TRrw);
+    end;
+    PutWindowRecord(wn,TRr);
+  end;
+  TRDClassSAFTTypeEFAfter = true;
+  
   return;
 end;
 
@@ -847,6 +871,7 @@ BEGIN
     case "CurDebVal": res = TRDClassCurDebValEFAfter(wn,rownr,changed!=0);
     case "CurCredVal": res = TRDClassCurCredValEFAfter(wn,rownr,changed!=0);
     case "Curncy": res = TRDClassCurncyEFAfter(wn,rownr,changed!=0);
+    case "SAFTType": res = TRDClassSAFTTypeEFAfter(wn,rownr,changed!=0);
   end;
   TRDClassAfterEditField = res;
   RETURN;
@@ -1137,7 +1162,7 @@ BEGIN
                 (blank(TRrw.CredVal))) then begin
               TRDDefault(TRp,rownr,fieldname);
 /*              
-ašready calulated in TRDDefault 
+already calulated in TRDDefault 
               MatRowGet(TRp,rownr,TRrw);
               if (TRrw.CredVal!=0) then begin
                 TRVc_PasteCredVal(TRp,rownr);
@@ -1360,10 +1385,30 @@ global
 procedure AddAccountQTDsm()
 begin
   record AccVc Accr;
-  Integer nwn;
-  
+  record TRVc TRr;
+  row TRVc TRrw;
+  Integer nwn,wn,rownr;
+
   RecordNew(Accr);
-  nwn = OpenWindow("AccDClass",0,0,"","",Accr);
+  wn = CurWindow;
+  rownr = WindowActiveRow(wn);
+  DeselectWindow(wn,true);
+  GetWindowRecord(wn,TRr);
+  nwn = OpenWindow("AccDClass",0,CurWindow,"","",Accr);
+  PutWindowString(nwn,"OperationMenuAction","AddAccount");
+  DeselectWindow(nwn,true);
+  if (rownr>=0) then begin
+    MatRowGet(TRr,rownr,TRrw);
+    Accr.AccNumber = TRrw.AccNumber;
+    Accr.Comment = TRrw.Comment;
+    Accr.Curncy = TRrw.Curncy;
+  end;
+  /* Setting next free item code for account is not useful at all
+  if (blank(Accr.AccNumber)) then begin
+    GetNextItemNr(Accr.AccNumber);
+  end;
+  */
+  PutWindowRecord(nwn,Accr);
   return;
 end;
 

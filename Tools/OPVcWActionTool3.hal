@@ -29,6 +29,7 @@ external function Boolean GetPMCurrency(string,var string);
 external procedure MatchOPRowSums(string,string,Date,string,var val,var string,var val,string,var val,Boolean,Boolean,Boolean);
 external procedure CurValToOtherCur(Date,string,val,string,var val,roundmode);
 external procedure OPSumup(var record OPVc,Boolean);
+external function Boolean IsEnterprise();
 
 forward function Boolean VIHasWHTaxAccNumber(LongInt,string);
 
@@ -106,9 +107,15 @@ BEGIN
   ChangeOPInvVal(OPrw,tdp);
   if (OPrw.BankCurncy==OPrw.PInvCurncy) then begin
     OPrw.BankVal = OPrw.PInvVal;
+    if (blank(OPrw.B1BankVal)==false) then begin
+      OPrw.B1BankVal = OPrw.BankVal;
+    end;
   end else begin
     if (OPrw.BankCurncy==OPrw.RecCurncy) then begin
       OPrw.BankVal = OPrw.RecVal;
+      if (blank(OPrw.B1BankVal)==false) then begin
+        OPrw.B1BankVal = OPrw.BankVal;
+      end;
     end else begin
       if (OPrw.VISerNr>0) then begin
         if (OPrw.PInvVal==APr.RVal) then begin
@@ -285,12 +292,19 @@ BEGIN
   if (nonblank(crncy)) then begin
     OPrw.BankCurncy = crncy;
   end;
+  if (HasLocalization("SWE,NOR")) then begin
+    if (OPrw.VISerNr<0) then begin
+      OPrw.PayChannel = VEr.PayChannel;
+    end;
+  end;
+  OPrw.rkPayNumber = "";
+  OPrw.rkPayNumberDate = "";
   MatRowPut(OPp,rownr,OPrw);
   RETURN;
 END;
 
 procedure ChangeOPRecCur(Integer rownr,row OPVc oprp,Date tdp)
-BEGIN
+begin
   Boolean copytobank;
   val t;
 
@@ -299,8 +313,13 @@ BEGIN
     oprp.RecVal = oprp.PInvVal;
   end else begin
     if (oprp.RecVal!=oprp.BankVal) then begin copytobank = true; end;
-    CurValToOtherCur(tdp,oprp.PInvCurncy,oprp.PInvVal,oprp.RecCurncy,t,DefaultCurRoundOff);
-    oprp.RecVal = t;
+    if (nonblank(oprp.ToRateB1BankVal)) then begin 
+      oprp.BankVal = oprp.BankVal*oprp.ToRateB1BankVal;
+      oprp.RecVal = oprp.RecVal*oprp.ToRateB1BankVal;
+    end else begin
+      CurValToOtherCur(tdp,oprp.PInvCurncy,oprp.PInvVal,oprp.RecCurncy,t,DefaultCurRoundOff);
+      oprp.RecVal = t;
+    end;
   end;
   oprp.RecVal = oprp.RecVal;
   oprp.PInvVal = oprp.PInvVal;
@@ -314,8 +333,9 @@ BEGIN
     oprp.PInvCurncy = oprp.RecCurncy;
     oprp.PInvVal = oprp.RecVal;
   end;  
-  RETURN;
-END;
+
+  return;
+end;
 
 global
 procedure OPVc_PasteRecCurncy(var record OPVc OPp,Integer rownr)
@@ -335,7 +355,7 @@ end;
 global
 function Boolean OPVc_PasteToRateB1BankVal(var record OPVc OPp,Integer rownr)
 begin
-  Boolean res,apf,calculatedf;
+  Boolean res,apf,calculatedf,testf;
   row OPVc OPrw;
   record BaseCurBlock BCb;
   val fr,to1,to2,br1,br2;
@@ -345,6 +365,7 @@ begin
   BlockLoad(BCb);  
   MatRowGet(OPp,rownr,OPrw);
 //  if (nonblank(OPrw.B1BankVal)) then begin
+
   if (true) then begin
     APr.SerNr = OPrw.VISerNr; 
     apf = ReadFirstMain(APr,1,true);
@@ -365,11 +386,17 @@ begin
         res = true;
       end;
     end else begin
+      testf = true;
+/*
+this is a bit odd       
       if (OPrw.PInvVal==APr.RVal) then begin
         if (HasLocalization("POL") or nonblank(OPrw.B1BankVal)) then begin
           OPrw.B1BankVal = APr.BookRVal;
+          testf = false;
         end;
-      end else begin
+      end;
+*/      
+      if (testf) then begin
         calculatedf = false;
         if (OPrw.PrepayNr>0) then begin
           OPPr.SerNr = OPrw.PrepayNr;
@@ -415,8 +442,8 @@ begin
     OPSumup(OPp,false);
   end;
   OPVc_PasteToRateB1BankVal = res;
-  RETURN;
-END;
+  return;
+end;
 
 global
 function Boolean OPVc_RecalcRecVal(var record OPVc OPp,Integer rownr) //Edit***************************Sasha2,16:17 18.08.2014 {
@@ -488,9 +515,66 @@ BEGIN
   RETURN;
 END; //Edit***************************Sasha2,16:17 18.08.2014 }
 
+
+global
+function val GetOPVATVal2(LongInt invoicenr,row OPVc OPrw,record OPVc OPr,Boolean forcef)
+begin
+  val res;
+  record VIVc VIr;
+  val opb1,vib1,diff,vatval;
+  record BaseCurBlock BCb;
+  
+  res = blankval;
+
+  BlockLoad(BCb);
+  VIr.SerNr = invoicenr;
+  if (ReadFirstMain(VIr,1,true)) then begin
+    if (VIr.SplitVATFlag!=0 or forcef) then begin
+      if (VIr.CurncyCode==BCb.BaseCur1) then begin
+        vib1 = VIr.PayVal;
+      end else begin
+        vib1 = MulRateToBase1(VIr.CurncyCode,VIr.PayVal,VIr.FrRate,VIr.ToRateB1,VIr.ToRateB2,VIr.BaseRate1,VIr.BaseRate2,DefaultCurRoundOff);
+      end;
+      if (OPrw.RecCurncy==BCb.BaseCur1) then begin
+        opb1 = OPrw.RecVal;
+      end else begin
+        opb1 = MulWithRateToBase1(OPrw.RecCurncy,OPr.PayDate,OPrw.RecVal,DefaultCurRoundOff);
+      end;
+      diff = opb1/vib1;
+      if (diff>1) then begin
+        diff = 1;
+      end;
+      if (VIr.SplitVAT!=0) then begin
+        vatval = VIr.SplitVAT;
+      end else begin
+        if (VIr.VATVal!=0) then begin
+          vatval = VIr.VATVal;
+        end else begin
+          vatval = VIr.CalcVATVal;
+        end;
+      end;
+      res = vatval * diff;
+    end;
+  end;
+
+  GetOPVATVal2 = res;
+  return;
+end;
+
+global
+function val GetOPVATVal(LongInt invoicenr,row OPVc OPrw,record OPVc OPr)
+begin
+  val res;
+
+  res = GetOPVATVal2(invoicenr,OPrw,OPr,false);
+
+  GetOPVATVal = res;
+  return;
+end;
+
 global
 procedure OPVc_PasteRecVal(var record OPVc OPp,Integer rownr)
-BEGIN
+begin
   row OPVc OPrw;
   val t,rs,t1,v;
   record AccBlock Accb;
@@ -536,17 +620,21 @@ BEGIN
   end else begin
     OPrw.VATVal = blankval;
     OPrw.TAX1Sum = blankval;
-  end; 
-  MatRowPut(OPp,rownr,OPrw);
-  if (HasLocalization("POL")) then begin// Edit ************************** Wednesday, 22 June 2016 11:15:41
-		OPVc_PasteToRateB1BankVal(OPp,rownr);
   end;
+  if (HasLocalization("POL") and (IsEnterprise or Left(BuildProductCode,16)=="StandardAccounts" or Left(BuildProductCode,23)=="StandardBookkeepingLite")) then begin
+    if (OPrw.SplitVAT!=blankval and OPrw.VISerNr>0 and OPrw.ovst==0 and OPrw.stp==kPaymentRowTypeNormal) then begin
+      OPrw.SplitVAT = blankval;
+      OPrw.SplitVAT = GetOPVATVal(OPrw.VISerNr,OPrw,OPp);
+    end;
+  end;
+  MatRowPut(OPp,rownr,OPrw);
+  OPVc_PasteToRateB1BankVal(OPp,rownr);
   OPSumup(OPp,true);
-  RETURN;
-END;
+  return;
+end;
 
 procedure ChangeOPBankVal(Integer rownr,row OPVc oprp,Date tdp)
-BEGIN
+begin
   val t;
   
   if (oprp.RecVal==0) then begin
@@ -567,12 +655,12 @@ BEGIN
       oprp.RecVal = t;
     end;
   end;  
-  RETURN;
-END;
+  return;
+end;
 
 global
 procedure OPVc_PasteBankVal(var record OPVc OPp,Integer rownr)
-BEGIN
+begin
   row OPVc OPrw;
   record BaseCurBlock BCb;
   
@@ -598,8 +686,8 @@ BEGIN
   end;
   OPVc_RecalcRecVal(OPp,rownr); //Edit***************************Sasha2,15:56 18.08.2014
   OPSumup(OPp,true);
-  RETURN;
-END;
+  return;
+end;
 
 global
 procedure OPVc_PasteBankFeeVal(var record OPVc OPp,Integer rownr)
@@ -1213,7 +1301,7 @@ END;
 function Boolean WHTaxApplyAccNumberinVI(LongInt VISerNr,string whtaxaccnumbers)
 begin
   Boolean res;
-  Integer i,rwcnt;
+  Integer i,rwcnt,vt;
   record VIVc VIr;
   row VIVc VIrw;
   
@@ -1222,7 +1310,8 @@ begin
     rwcnt = MatRowCnt(VIr);
     for (i=0;i<rwcnt;i=i+1) begin
       MatRowGet(VIr,i,VIrw);
-      if (VATType(VIrw.VATCode)==kVATTypeNormal) then begin
+      vt = VATType(VIrw.VATCode);
+      if (vt==kVATTypeNormal or vt==kVATTypeExempt) then begin
       if (AccountInRange(VIrw.AccNumber,whtaxaccnumbers)) then begin
         res = true;
         goto LWHTaxApplyAccNumberinVI;
@@ -1242,7 +1331,7 @@ BEGIN
   Boolean found;
   record VIVc VIr;
   row VIVc VIrw;
-  Integer i,rwcnt;
+  Integer i,rwcnt,vt;
   val vatv,t1,tmp;
   
   found = true;
@@ -1258,7 +1347,8 @@ BEGIN
           rwcnt = MatRowCnt(VIr);
           for (i=0;i<rwcnt;i=i+1) begin
             MatRowGet(VIr,i,VIrw);
-            if (VATType(VIrw.VATCode)==kVATTypeNormal) then begin
+            vt = VATType(VIrw.VATCode);            
+            if (vt==kVATTypeNormal or vt==kVATTypeExempt) then begin
               if (AccountInRange(VIrw.AccNumber,accnumbers)) then begin
                 tmp =  VIrw.Sum;
                 tmp = MulRateToBase1(VIr.CurncyCode,tmp,VIr.FrRate,VIr.ToRateB1,VIr.ToRateB2,VIr.BaseRate1,VIr.BaseRate2,DefaultCurRoundOff);                    
@@ -1299,7 +1389,7 @@ begin
   Boolean found;
   record VIVc VIr;
   row VIVc VIrw;
-  Integer i,rwcnt;
+  Integer i,rwcnt,vt;
   
   found = true;
   OPrsr.VINr = VISerNr;
@@ -1314,7 +1404,8 @@ begin
           rwcnt = MatRowCnt(VIr);
           for (i=0;i<rwcnt;i=i+1) begin
             MatRowGet(VIr,i,VIrw);
-            if (VATType(VIrw.VATCode)==kVATTypeNormal) then begin
+            vt = VATType(VIrw.VATCode);            
+            if (vt==kVATTypeNormal or vt==kVATTypeExempt) then begin
               if (AccountInRange(VIrw.AccNumber,accnumbers)) then begin
                 res = res + VIrw.Sum;
               end;
@@ -1335,7 +1426,7 @@ begin
   Boolean found;
   record VIVc VIr;
   row VIVc VIrw;
-  Integer i,rwcnt;
+  Integer i,rwcnt,vt;
   
   found = true;
   OPrsr.VINr = VISerNr;
@@ -1351,7 +1442,8 @@ begin
           rwcnt = MatRowCnt(VIr);
           for (i=0;i<rwcnt;i=i+1) begin
             MatRowGet(VIr,i,VIrw);
-            if (VATType(VIrw.VATCode)==kVATTypeNormal) then begin
+            vt = VATType(VIrw.VATCode);            
+            if (vt==kVATTypeNormal or vt==kVATTypeExempt) then begin
               vcrednotesaccamounts[VIrw.AccNumber] = vcrednotesaccamounts[VIrw.AccNumber] + VIrw.Sum;
             end;
           end;
@@ -1368,7 +1460,7 @@ procedure ThisInvoiceAmounts(LongInt VISerNr,string whtax,string accnumbers,var 
 BEGIN
   record VIVc VIr;
   row VIVc VIrw;
-  Integer i,rwcnt;
+  Integer i,rwcnt,vt;
   val vatv,t1,tmp,tmp2;
   record APVc APr;
   vector val vcrednotesaccamounts;
@@ -1390,7 +1482,8 @@ BEGIN
       switch (VIrw.stp) begin
         case kInvoiceRowTypePrepayment:
         otherwise
-          if (VATType(VIrw.VATCode)==kVATTypeNormal) then begin
+          vt = VATType(VIrw.VATCode);        
+          if (vt==kVATTypeNormal or vt==kVATTypeExempt) then begin
             if (AccountInRange(VIrw.AccNumber,accnumbers)) then begin
 //              VIrw.Sum = VIrw.Sum - ThisInvoiceDeductCreditNotesFromRowSum(VIr.SerNr,VIrw.AccNumber);
               VIrw.Sum = VIrw.Sum - vcrednotesaccamounts[VIrw.AccNumber];
@@ -1449,6 +1542,32 @@ begin
 end;
 
 global
+function string 255 GetWHTaxRowAcc(string whtax)
+begin
+  string 255 res;
+  Integer i,rwcnt;
+  record WHTaxBlock WHTaxRec;
+  row WHTaxBlock WHTaxrw;
+  
+  BlockLoad(WHTaxRec);
+  rwcnt = MatRowCnt(WHTaxRec);
+  for (i=0 ;i<rwcnt;i=i+1) begin
+    MatRowGet(WHTaxRec,i,WHTaxrw);
+    if (WHTaxrw.Code==whtax) then begin
+      if (HasLocalization("MEX")) then begin
+        res = WHTaxrw.TmpAccNumber;
+      end else begin
+        res = WHTaxrw.AccNumber;
+      end;
+      i = rwcnt;
+    end;
+  end;
+
+  GetWHTaxRowAcc = res;
+  return;
+end;
+
+global
 function Boolean GetWHTaxRow(string whtax,var row WHTaxBlock WHTaxrw)
 begin
   Boolean res;
@@ -1500,7 +1619,7 @@ procedure ThisInvoiceCreditNotesAmount(Integer TaxCalc,Date optransdate,string r
 begin
   record VIVc credVIr;
   Boolean found;
-  Integer vi,virwcnt;
+  Integer vi,virwcnt,vt;
   row VIVc VIrw;
   val vatv,t1;
   
@@ -1519,7 +1638,8 @@ begin
       for (vi=0;vi<virwcnt;vi=vi+1) begin
         MatRowGet(credVIr,vi,VIrw);
         if (CheckVERegion(whtax,region,vecode,optransdate)) then begin 
-          if (VATType(VIrw.VATCode)==kVATTypeNormal) then begin
+          vt = VATType(VIrw.VATCode);        
+          if (vt==kVATTypeNormal or vt==kVATTypeExempt) then begin
             if (AccountInRange(VIrw.AccNumber,accnumbers)) then begin
               vicnnetaccnumbers = vicnnetaccnumbers + VIrw.Sum;
               MulVATIV(VIrw.VATCode,VIrw.Sum,vatv,t1,0,credVIr.NoTAXonVAT);
@@ -1547,7 +1667,7 @@ BEGIN
   val vinetaccnumbers,vivataccnumbers,vipayaccnumbers;
   val vicnnetaccnumbers,vicnvataccnumbers,vicnpayaccnumbers,vicred;
   record APVc APr;
-  Integer TaxCalc;
+  Integer TaxCalc,vt;
   val rowsum,rowvat,finalpayval;
   val invoicebase;
 
@@ -1572,7 +1692,8 @@ LThisSupplierPaymentAmountMonthly:;
               MatRowGet(VIr,vi,VIrw);
               if (VIrw.stp==kInvoiceRowTypeNormal) then begin
                 if (CheckVERegion(whtax,VIr.Region,vecode,OPp.TransDate)) then begin 
-                  if (VATType(VIrw.VATCode)==kVATTypeNormal) then begin
+                  vt = VATType(VIrw.VATCode);
+                  if (vt==kVATTypeNormal or vt==kVATTypeExempt) then begin
                     if (AccountInRange(VIrw.AccNumber,accnumbers)) then begin
                       if (VISerNr<0) or (VISerNr==VIr.SerNr) then begin
                         test = true;
@@ -1609,7 +1730,8 @@ LThisSupplierPaymentAmountMonthly:;
             for (vi=0;vi<virwcnt;vi=vi+1) begin
               MatRowGet(VIr,vi,VIrw);
               if (CheckVERegion(whtax,VIr.Region,vecode,OPp.TransDate)) then begin 
-                if (VATType(VIrw.VATCode)==kVATTypeNormal) then begin
+                vt = VATType(VIrw.VATCode);
+                if (vt==kVATTypeNormal or vt==kVATTypeExempt) then begin
                   if (VIHasWHTaxAccNumber(VIr.SerNr,accnumbers)) then begin
                     if (AccountInRange(VIrw.AccNumber,accnumbers)) then begin
                       if (VISerNr<0) or (VISerNr==VIr.SerNr) then begin
@@ -1653,7 +1775,8 @@ LThisSupplierPaymentAmountMonthly:;
             for (vi=0;vi<virwcnt;vi=vi+1) begin
               MatRowGet(VIr,vi,VIrw);
               if (CheckVERegion(whtax,VIr.Region,vecode,OPp.TransDate)) then begin 
-                if (VATType(VIrw.VATCode)==kVATTypeNormal) then begin
+                vt = VATType(VIrw.VATCode);                
+                if (vt==kVATTypeNormal or vt==kVATTypeExempt) then begin
                   if (VIHasWHTaxAccNumber(VIr.SerNr,accnumbers)) then begin
                     if (AccountInRange(VIrw.AccNumber,accnumbers)) then begin
                       if (VISerNr<0) or (VISerNr==VIr.SerNr) then begin
@@ -1706,7 +1829,7 @@ begin
   Boolean res;
   record VIVc VIr;
   row VIVc VIrw;
-  Integer i,rwcnt;
+  Integer i,rwcnt,vt;
   
   res = false;
   VIr.SerNr = VISerNr;
@@ -1715,7 +1838,8 @@ begin
   rwcnt = MatRowCnt(VIr);
   for (i = 0; i<rwcnt; i = i + 1) begin
     MatRowGet(VIr,i,VIrw);
-    if (VATType(VIrw.VATCode)==kVATTypeNormal) then begin
+    vt = VATType(VIrw.VATCode);
+    if (vt==kVATTypeNormal or vt==kVATTypeExempt) then begin
       if (AccountInRange(VIrw.AccNumber,accnumbers)) then begin
         res = true;
         goto LVIHasWHTaxAccNumber;
@@ -1955,7 +2079,7 @@ BEGIN
   row OPVc OPrw;
   record VIVc VIr;
   row VIVc VIrw;
-  Integer i,rwcnt;
+  Integer i,rwcnt,vt;
   Integer opi,oprwcnt;
   val vatv,t1;
   record APVc APr;
@@ -2010,7 +2134,8 @@ BEGIN
                         rwcnt = MatRowCnt(VIr);
                         for (i=0;i<rwcnt;i=i+1) begin
                           MatRowGet(VIr,i,VIrw);
-                          if (VATType(VIrw.VATCode)==kVATTypeNormal) then begin
+                          vt = VATType(VIrw.VATCode);                          
+                          if (vt==kVATTypeNormal or vt==kVATTypeExempt) then begin
                             if (AccountInRange(VIrw.AccNumber,accnumbers)) then begin
                               vinetaccnumbers = vinetaccnumbers + VIrw.Sum;
                               MulVATIV(VIrw.VATCode,VIrw.Sum,vatv,t1,0,VIr.NoTAXonVAT);
@@ -2059,7 +2184,7 @@ begin
   row OPVc OPrw;
   record VIVc VIr;
   row VIVc VIrw;
-  Integer vi,vrwcnt;
+  Integer vi,vrwcnt,vt;
   val vatv,t1;
   Integer oi,orwcnt;
   record APVc APr;
@@ -2078,7 +2203,8 @@ begin
       vrwcnt = MatRowCnt(VIr);
       for (vi=0;vi<vrwcnt;vi=vi+1) begin
         MatRowGet(VIr,vi,VIrw);
-        if (VATType(VIrw.VATCode)==kVATTypeNormal) then begin
+        vt = VATType(VIrw.VATCode);        
+        if (vt==kVATTypeNormal or vt==kVATTypeExempt) then begin
           if (AccountInRange(VIrw.AccNumber,accnumbers)) then begin
             vinetval = vinetval + VIrw.Sum;
             MulVATIV(VIrw.VATCode,VIrw.Sum,vatv,t1,0,VIr.NoTAXonVAT);
@@ -2570,10 +2696,10 @@ begin
     end;
     ClearRow(VIr,VIrw,kInvoiceRowTypePrepayment);
     VIrw.Comment = USetStr(1288);
-    VIrw.VEPNr = OPrw.PrepayNr;
+    VIrw.PrepayNr = OPrw.PrepayNr;
     rownr = MatRowCnt(VIr);
     MatRowPut(VIr,rownr,VIrw);
-    VIVc_PastePrepayNr(VIr,rownr)
+    VIVc_PastePrepayNr(VIr,rownr);
     if (vifound==false) then begin
       BlockLoad(SRb);
       if (VIr.SerNr<0) then begin

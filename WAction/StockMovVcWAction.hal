@@ -36,6 +36,7 @@ remote function string 20 FindCustRouteByLocation(string,string,string);
 remote updating procedure HandleUpdatePricesInORFromStockMov(record StockMovVc,var string); //Edit***************************Sasha2,14:32 28.07.2015
 remote updating procedure CreateMoveForServiceFromStockMov(var record MoveForServiceVc,record StockMovVc,var string); //Edit***************************Sasha2,9:47 05.05.2016
 
+
 global
 procedure CalcNewPrice(val oldprice,string extra,var val newprice)
 BEGIN
@@ -47,7 +48,7 @@ BEGIN
     newprice = oldprice;
     goto LCalcNewPrice;
   end;
-  if (oldprice==blankval) then begin
+  if (blank(oldprice)) then begin
     goto LCalcNewPrice;
   end;
   tstr = extra;
@@ -663,18 +664,6 @@ BEGIN
 end;
 
 global
-updating procedure DeleteDsm()
-BEGIN
-  Integer wn;
-  record StockMovVc StockMovr;
-
-  wn = CurWindow;
-  GetWindowRecord(wn,StockMovr);
-  RecordDelete(StockMovr);
-  return;
-end;
-
-global
 procedure ItemStatusStockMovDsm()
 BEGIN
   Integer wn,nwn;
@@ -830,8 +819,11 @@ BEGIN
       if (StockMovr.OKFlag!=0) then begin res = false; end;
       if (StockMovr.SentOKFlag!=0) then begin res = false; end;
       if (blank(StockMovr.ThrouLocation)) then begin
-        MessageBox(20080,"");
-        res = false;
+        MatRowGet(StockMovr,rownr,StockMovrw);
+        if (blank(StockMovrw.SentQuant)==false) then begin
+          MessageBox(20080,"");
+          res = false;
+        end;
       end;
     case "OldPrice": 
       if (res) then begin res = UserCanAction("ChangingCostOnStockMov",true); end;
@@ -942,8 +934,6 @@ begin
   normalmode = 0;//Rs_normal
   insertmode = 1;//Rs_insert
   updatemode = 2;//Rs_update
-  
-  
   if (WindowState(wn)==normalmode) then begin
     GetWindowRecord(wn,StockMovr);
     if (StockMovr.OKFlag!=0) then begin
@@ -1061,19 +1051,18 @@ begin
       res = false;
     end;
     if (StockMov2r.OrdFlag!=0) then begin
-      //res = false;
+      //res = false;// Edit ************************** BPI Ukraine - KramarAlexandr - Tuesday, 14 May 2024 at 11:10:32
     end;
   end;  
   if (StockMovr.OrdFlag!=0) then begin
-    if (UserCanAction("StockMovOrdFlag",false)==false) then begin
-      //res = false;
+    if (UserCanAction("StockMovOrdFlagOff",true)==false) then begin
+      res = false;
+    end;   
+  end else begin
+    if (UserCanAction("StockMovOrdFlag",true)==false) then begin
+      res = false;
     end;   
   end;
-  
-  if(currentuser=="SA")then begin
-  	res = true;
-  end;
-  
   StockMovDClassOrdFlagButtonAction = res;
   return;
 end;

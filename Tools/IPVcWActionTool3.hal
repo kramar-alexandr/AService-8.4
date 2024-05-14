@@ -1,3 +1,4 @@
+external function Boolean GetPMRow(string,var row PMBlock);
 external function string 60 UpdatedeRowObject(string,string,string);
 external function string 60 GetPayModeObjectsStr(string);
 external function Boolean PasteCust2InInv(var record IVVc,record LocalMachineBlock,string,Boolean,var string,var string,var string,var string,var string);
@@ -31,7 +32,11 @@ external procedure IPSumup(var record IPVc);
 external procedure Base1ToOther(var string,val,val,val,val,val,val,var val,roundmode);
 external function Boolean GetFullCurncyRateDate(var string,Date,var val,var val,var val,var val,var val,var Date);
 external procedure CurValToOtherCur(Date,string,val,string,var val,roundmode);
+external function Boolean IsEnterprise();
+external procedure PasteIPVATOR(record AccBlock,record ORVc,record IPVc,Integer,row IPVc);
+external procedure GetUserDefActTypes(string,string,var string,var Integer,var Integer);
 forward function Boolean IPVc_RecalcRecVal(var record IPVc,Integer);//Edit***************************Sasha2,12:01 18.08.2014
+
 
 function string 255 ActContactFromIP(longint InvNr,longint OrderNr,string CustCode)
 begin
@@ -93,6 +98,19 @@ begin
   return;
 end;
 
+global 
+updating procedure AddBankTRRecordLinkToIP(var record IPVc IPr,record BankTRVc BTRr)
+begin
+  
+  if ((MatRowCnt(IPr)>0) and (IPr.SerNr!=-1)) then begin
+    if (RecordStore(IPr,false)) then begin
+      CreateRecordLink(IPr,CurrentCompany,BTRr,CurrentCompany);
+      CreateRecordLink(BTRr,CurrentCompany,IPr,CurrentCompany);
+    end;
+  end;
+  return;
+end;
+
 global
 procedure IPVc_PasteVATCode(var record IPVc IPp,Integer rownr)
 begin
@@ -144,16 +162,26 @@ end;
 global
 procedure ChangeIPInvVal(row IPVc IPrw,Date tdp)
 begin
-  val fr,to1,to2,br1,br2,t;
+  val fr,to1,to2,br1,br2,t,recval,inval;
 
   if (IPrw.InvCurncy==IPrw.RecCurncy) then begin
     IPrw.InvVal = IPrw.RecVal;
   end else begin
     if (IPrw.CUPNr==-1) then begin
-      CurValToOtherCurWithRate(tdp,IPrw.RecCurncy,IPrw.RecVal,IPrw.InvCurncy,IPrw.ToRateB1BankVal,t,DefaultCurRoundOff);
+    if (nonblank(IPrw.ToRateB1BankVal)) then begin
+      CurValToOtherCurWithRate(tdp,IPrw.InvCurncy,IPrw.InvVal,IPrw.InvCurncy,IPrw.ToRateB1BankVal,inval,DefaultCurRoundOff);
+      IPrw.InvVal = inval;
+      CurValToOtherCurWithRate(tdp,IPrw.RecCurncy,IPrw.RecVal,IPrw.RecCurncy,IPrw.ToRateB1BankVal,recval,DefaultCurRoundOff);
+      IPrw.RecVal = recval; 
+      if (IPrw.BankCurncy==IPrw.RecCurncy) then begin
+        IPrw.InvVal = IPrw.RecVal/IPrw.ToRateB1BankVal;
+      end;
+    end else begin
+      CurValToOtherCurWithRate(tdp,IPrw.RecCurncy,IPrw.RecVal,IPrw.RecCurncy,IPrw.ToRateB1BankVal,t,DefaultCurRoundOff);
       IPrw.InvVal = t;
+    end;
     end else begin      
-      if (GetORRate(IPrw.OrderNr,fr,to1,to2,br1,br2)) then begin//CUPNr
+      if (GetORRate(IPrw.OrderNr,fr,to1,to2,br1,br2)) then begin
         t = MulRateToBase1(IPrw.RecCurncy,IPrw.RecVal,fr,to1,to2,br1,br2,DefaultCurRoundOff);      
       end else begin
         t = MulWithRateToBase1(IPrw.RecCurncy,tdp,IPrw.RecVal,DefaultCurRoundOff);
@@ -190,7 +218,7 @@ begin
             CurValToOtherCur(tdp,IPrw.RecCurncy,IPrw.RecVal,IPrw.BankCurncy,IPrw.BankVal,DefaultCurRoundOff);
           otherwise
             if (GetORRate(IPrw.OrderNr,fr,to1,to2,br1,br2)) then begin//CUPNr        
-              t = MulRateToBase1(IPrw.RecCurncy,IPrw.RecVal,fr,to1,to2,br1,br2,DefaultCurRoundOff);      
+              t = MulRateToBase1(IPrw.RecCurncy,IPrw.RecVal,fr,to1,to2,br1,br2,DefaultCurRoundOff);   
             end else begin
               t = MulWithRateToBase1(IPrw.RecCurncy,tdp,IPrw.RecVal,DefaultCurRoundOff);
             end;
@@ -524,13 +552,18 @@ L33PasteORIn2IPr:;
     end else begin
       MulVATIV(IPrwp.VATCode,IPrwp.InvVal,vatval,t1,Accb.BasePriceInclVAT,Accb.NoTAXonVAT);
     end;
-    vatval = vatval - ARPayr.VATVal;
+    //the above lines get vatval from total sum
+    //vatval = vatval - ARPayr.VATVal;
   end else begin
     vatval = ORr.Sum3 - ARPayr.VATVal;
   end;
   IPrwp.VATVal = vatval - vatused;
   vatval = ORr.TAX1Sum - ARPayr.TAX1Sum;
   IPrwp.TAX1Sum = vatval - taxused;
+  MatRowPut(IPp,rownr,IPrwp);
+  if (Accb.PreIPBookVAT!=0) then begin
+    PasteIPVATOR(Accb,ORr,IPp,rownr,IPrwp);
+  end;
 LPasteORIn2IPr:;
   return;
 end;
@@ -573,7 +606,6 @@ begin
     end;  
   end;
   PasteORIn2IPr(IPp,IPrw,rownr,IPp.TransDate,t);
-  MatRowPut(IPp,rownr,IPrw);
   IPSumup(IPp);
   return;
 end;
@@ -836,6 +868,40 @@ begin
 end;
 
 global
+function val GetIPVATVal(LongInt invoicenr,row IPVc IPrw,record IPVc IPr)
+begin
+  val res;
+  record IVVc IVr;
+  val ipb1,ivb1,diff;
+  record BaseCurBlock BCb;
+  
+  res = blankval;
+
+  BlockLoad(BCb);
+  IVr.SerNr = invoicenr;
+  if (ReadFirstMain(IVr,1,true)) then begin
+    if (IVr.CurncyCode==BCb.BaseCur1) then begin
+      ivb1 = IVr.Sum4;
+    end else begin
+      ivb1 = MulRateToBase1(IVr.CurncyCode,IVr.Sum4,IVr.FrRate,IVr.ToRateB1,IVr.ToRateB2,IVr.BaseRate1,IVr.BaseRate2,DefaultCurRoundOff);
+    end;
+    if (IPrw.RecCurncy==BCb.BaseCur1) then begin
+      ipb1 = IPrw.RecVal;
+    end else begin
+      ipb1 = MulWithRateToBase1(IPrw.RecCurncy,IPr.TransDate,IPrw.RecVal,DefaultCurRoundOff);
+    end;
+    diff = ipb1/ivb1;
+    if (diff>1) then begin
+      diff = 1;
+    end;
+    res = IVr.Sum3 * diff;
+  end;
+
+  GetIPVATVal = res;
+  return;
+end;
+
+global
 procedure IPVc_PasteRecVal(var record IPVc IPp,Integer rownr)
 begin
   row IPVc IPrw;
@@ -912,6 +978,13 @@ do many vat rates on same invoice and many recipts!
       IPrw.TAX1Sum = blankval;
       MatRowPut(IPp,rownr,IPrw);
    end;
+  end;
+  if (HasLocalization("POL") and (IsEnterprise or Left(BuildProductCode,16)=="StandardAccounts" or Left(BuildProductCode,23)=="StandardBookkeepingLite")) then begin
+    if (IPrw.SplitVAT!=blankval and IPrw.InvoiceNr>0 and IPrw.ovst==0 and IPrw.stp==kReceiptRowTypeNormal) then begin
+      IPrw.SplitVAT = blankval;
+      IPrw.SplitVAT = GetIPVATVal(IPrw.InvoiceNr,IPrw,IPp);
+    end;
+    MatRowPut(IPp,rownr,IPrw);
   end;
   IPVc_PasteToRateB1BankVal(IPp,rownr);  
   IPSumup(IPp);
@@ -1017,7 +1090,7 @@ begin
         iprp.RecCurncy = Checkr.CurncyCode;
         MatRowPut(IPp,rownr,iprp);        
         IPVc_PasteRecVal(IPp,rownr);
-        MatRowGet(IPp,rownr,iprp);        
+        MatRowGet(IPp,rownr,iprp);     
       end;
       if (true) then begin
         CurValToOtherCur(IPp.TransDate,Checkr.CurncyCode,checkamount,iprp.RecCurncy,recamount,DefaultCurRoundOff);
@@ -1051,11 +1124,10 @@ begin
 
               CurValToOtherCur(IPp.TransDate,IP2rw.RecCurncy,IP2rw.RecVal,Checkr.CurncyCode,recamount,DefaultCurRoundOff);
               checkamount = checkamount - recamount;
-              rowfound = true; 
             end;
           end;  
           temp = checkamount;      
-          if (rowfound==false) then begin            
+          if (checkamount>0) then begin            
             ClearRow(IPp,IP2rw,1);
             IP2rw.CustCode = IPrw.CustCode;
             MatRowInsert(IPp,rownr+1,IP2rw);
@@ -1227,12 +1299,18 @@ begin
   Integer i,rwcnt;
   LongInt lastchnr;
   val chval;
+  row PMBlock PMrw;
+  string 255 pm;
 
   if (currow>=0) then begin
     MatRowGet(IPp,currow,curIPrw);
     rwcnt = MatRowCnt(IPp);
     for (i=currow;i<rwcnt;i=i+1) begin
       MatRowGet(IPp,i,IPrw);
+      pm = IPrw.PayMode;
+      if (blank(pm)) then begin pm = IPp.PayMode; end;
+      GetPMRow(pm,PMrw);
+      if (PMrw.CheckType==kPayModeTypeCheque and IPrw.stp==1) then begin
       if (IPrw.ChequeNr<0) and (IPrw.CustCode==curIPrw.CustCode) then begin
         if (FindChequenr(IPrw.CustCode,chval,lastchnr)) then begin
           chval = chval - ThisCheuqeAmount(IPp,i,lastchnr);
@@ -1252,7 +1330,7 @@ begin
               if ((i+1)<rwcnt) then begin
                 MatRowGet(IPp,i+1,nextIPrw); 
               end;                                   
-              if (nextIPrw.CustCode!=newIPrw.CustCode) then begin
+              if (nextIPrw.CustCode!=newIPrw.CustCode or nextIPrw.stp!=newIPrw.stp) then begin
                 newIPrw.InvoiceNr = -1;
                 newIPrw.PayMode = "";
                 MatRowInsert(IPp,i+1,newIPrw);
@@ -1280,6 +1358,7 @@ begin
           end;
         end;
       end;
+      end;
     end;
     IPSumup(IPp);
   end;
@@ -1294,9 +1373,11 @@ begin
   record CUVc CUr;
   Integer curcomp;
   record ASTBlock ASTb;
+  Integer tmp;
 
   if (rownr>=0) then begin
     BlockLoad(ASTb);
+    GetUserDefActTypes(CurrentUser,"Receipts",ASTb.Receipts,tmp,ASTb.ReceiptsDone);
     MatRowGet(IPr,rownr,IPrw);
     curcomp = CurrentCompany;
     Actr.MainPersons = CurrentUser;
@@ -1535,8 +1616,6 @@ begin
         if (blank(IPrw.ToRateB2BankVal)==false) then begin to2 = IPrw.ToRateB2BankVal; end;
         if (blank(IPrw.BaseRate1BankVal)==false) then begin br1 = IPrw.BaseRate1BankVal; end;
         if (blank(IPrw.BaseRate2BankVal)==false) then begin br2 = IPrw.BaseRate2BankVal; end;      
-//      IPrw.B1BankVal = IPrw.ToRateB1BankVal*IPrw.BankVal;//must be very wrong
-//      IPrw.B1BankVal = Round(IPrw.B1BankVal,DefaultRoundMode);
         if (blank(fr)) and ((nonblank(to1)) or (nonblank(to2))) then begin fr = 1; end;
         IPrw.B1BankVal = MulRateToBase1(IPrw.BankCurncy,IPrw.BankVal,fr,to1,to2,br1,br2,DefaultCurRoundOff);
         if (IPrw.B1BankVal==0) then begin IPrw.B1BankVal = blankval; end;
@@ -1550,16 +1629,30 @@ begin
       if (blank(IPrw.ToRateB2BankVal)==false) then begin to2 = IPrw.ToRateB2BankVal; end;
       if (blank(IPrw.BaseRate1BankVal)==false) then begin br1 = IPrw.BaseRate1BankVal; end;
       if (blank(IPrw.BaseRate2BankVal)==false) then begin br2 = IPrw.BaseRate2BankVal; end;      
-//      IPrw.B1BankVal = IPrw.ToRateB1BankVal*IPrw.InvVal;
-//      IPrw.B1BankVal = Round(IPrw.B1BankVal,DefaultRoundMode);
       if (blank(fr)) and ((nonblank(to1)) or (nonblank(to2))) then begin fr = 1; end;
       if (HasLocalization("POL") or nonblank(IPrw.B1BankVal) or nonblank(IPrw.FrRateBankVal) or nonblank(IPrw.ToRateB1BankVal) or nonblank(IPrw.ToRateB2BankVal) or nonblank(IPrw.BaseRate1BankVal) or nonblank(IPrw.BaseRate2BankVal)) then begin
         IPrw.B1BankVal = MulRateToBase1(IPrw.InvCurncy,IPrw.InvVal,fr,to1,to2,br1,br2,DefaultCurRoundOff);
         if (IPrw.B1BankVal==0) then begin IPrw.B1BankVal = blankval; end;
       end;
       if (HasLocalization("POL") or nonblank(IPrw.B1BankVal)) then begin
-        IPrw.BankVal = IPrw.B1BankVal;
-      end;
+        if (IPrw.BankCurncy==IPrw.RecCurncy) then begin
+          if (nonblank(IPrw.ToRateB1BankVal)) then begin
+            IPrw.RecVal = MulRateToBase1(IPrw.RecCurncy,IPrw.RecVal,fr,to1,to2,br1,br2,DefaultCurRoundOff);
+            IPrw.BankVal = IPrw.RecVal;
+          end;
+        end else begin
+          IPrw.BankVal = IPrw.B1BankVal;
+        end;
+        if (IPrw.RecCurncy==BCb.BaseCur1) then begin
+          if (nonblank(IPrw.ToRateB1BankVal)) then begin
+          //  IPrw.RecVal = MulRateToBase1(IPrw.RecCurncy,IPrw.RecVal,fr,to1,to2,br1,br2,DefaultCurRoundOff);
+            IPrw.RecVal = IPrw.InvVal*IPrw.ToRateB1BankVal;
+            IPrw.BankVal = IPrw.RecVal;
+          end else begin
+            IPrw.RecVal = MulRateToBase1(IPrw.InvCurncy,IPrw.InvVal,fr,to1,to2,br1,br2,DefaultCurRoundOff);
+          end;
+        end;
+      end;  
       MatRowPut(IPp,rownr,IPrw);
       res = true;
     end;

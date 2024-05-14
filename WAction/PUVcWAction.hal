@@ -11,7 +11,7 @@ remote function Integer PUVc_PasteSerialNr(record PUVc,Integer);
 remote procedure PUVc_PasteStockType(var record PUVc,Integer);
 remote procedure PUVc_PasteVEQuant(var record PuVc,Integer);
 remote function Boolean PUCheckifOverstrikeAllowed(record PUVc,Integer);
-remote procedure PUVc_PasteLocation(var record PUVc,Integer);
+remote function LongInt PUVc_PasteLocation2(var record PUVc,Integer,var string);
 external function Boolean TestForMATVARINS(Integer);
 external function Boolean PUDClassToPosCodeEFAfter(Integer,Integer,Boolean);
 external function Boolean PUDClassPosCodeEFAfter(Integer,Integer,Boolean);
@@ -70,6 +70,7 @@ remote updating procedure HandleSetEAN13PU(var record PUVc); //Edit*************
 remote procedure HandlePrintEAN13PU(record PUVc); //Edit***************************Sasha2,16:15 26.01.2015
 
 forward function Boolean PUDClassSwitchRow(Integer,Integer);
+
 
 function val UnitCalcQty(string Unittext,val UnitXval,val UnitYval,val UnitZval,val defqty)
 BEGIN
@@ -501,6 +502,7 @@ begin
       Beep;
     end;
   end;
+  
   PUDClassVECodeEFAfter = true;
   return;
 end;
@@ -634,12 +636,18 @@ global
 function Boolean PUDClassLocationEFAfter(Integer wn,Integer rownr,Boolean changedf)
 begin
   record PUVc PUr;
+  string 255 errlocation;
+  LongInt err;
   
   if (changedf) then begin
     GetWindowRecord(wn,PUr);
     DeselectWindow(wn,false);
-    PUVc_PasteLocation(PUr,rownr);
-    PutWindowRecord(wn,PUr);
+    err = PUVc_PasteLocation2(PUr,rownr,errlocation);
+    if (err!=0) then begin
+      MessageBox(err," " & errlocation);
+    end else begin
+      PutWindowRecord(wn,PUr);
+    end;
   end;
   PUDClassLocationEFAfter = true;
   return;
@@ -963,7 +971,9 @@ begin
   switch (WindowState(wn)) begin
     case Rs_normal:
       GetWindowRecord(wn,PUr);
-      if (PUr.OKFlag!=0) then begin res = false; end;
+      if (PUr.OKFlag!=0) then begin
+        res = UserCanAction("UnOKAll",false);
+      end;
       if (res) then begin
         err = PUTestApprovalStatus(PUr);
         if (err!=0) then begin
@@ -971,9 +981,6 @@ begin
           res = false;
           goto LPUDClassOKFlagButtonAction;
         end;
-      end;
-      if (UserCanAction("UnOKAll",false)) then begin
-        res = true;
       end;
     case Rs_update:
       GetPrevWindowRecord(wn,PUr);
@@ -1003,7 +1010,9 @@ begin
   switch (WindowState(wn)) begin
     case Rs_normal:
       GetWindowRecord(wn,PUr);
-      if (PUr.OKFlag!=0) then begin res = false; end;
+      if (PUr.OKFlag!=0) then begin
+        res = UserCanAction("UnOKAll",false);
+      end;
       if (PUr.PONr>0) then begin res = false; end;
       if (res) then begin
         err = PUTestApprovalStatus(PUr);
@@ -1012,9 +1021,6 @@ begin
           res = false;
           goto LPUDClassExtraCostsCalculationButtonAction;
         end;
-      end;
-      if (UserCanAction("UnOKAll",false)) then begin
-        res = true;
       end;
     case Rs_update:
       GetPrevWindowRecord(wn,PUr);
@@ -1117,6 +1123,9 @@ BEGIN
   
   DeselectWindow(wn,false);
   BarCodeStr = GetWindowString(wn,"scanbarcode");
+  if (blank(BarCodeStr)) then begin 
+    goto LPUDClassBarCodeOnEnterKey;
+  end;
   PutWindowString(wn,"scanbarcode","");
   if (nonblank(BarCodeStr)) then begin 
     ItemCodeStr = ReturnItemCodeFromBarCode(BarCodeStr);
@@ -1158,6 +1167,7 @@ BEGIN
     GetWindowRecord(wn,PUr);
     WindowFieldGoto(wn,PUr,-1,"scanbarcode",false);
   end;
+LPUDClassBarCodeOnEnterKey:;
   res = false;
   PUDClassBarCodeOnEnterKey = res;
   return;

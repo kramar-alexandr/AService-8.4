@@ -106,8 +106,9 @@ begin
   Integer Sel;
 
   Sel = SelectedListLine(wn);
+  
   if (Sel>-1) then begin
-      PasteFromWn(wn,GetListTag(wn,Sel));
+    PasteFromWn(wn,GetListTag(wn,Sel));
   end else begin
     CloseWindow(wn);
   end;
@@ -161,7 +162,7 @@ begin
   end else begin
     sepstr = ".";
   end; 
-  tstr = tstr &  sepstr;
+  tstr = tstr & sepstr;
   if (nonblank(RepSpec.f1)) then begin
     tstr2 = "";
     if (nonblank((maskvar[1]))) then begin
@@ -534,6 +535,14 @@ begin
 end;
 
 global
+function Boolean OYClassSClassOnOKWindow(Integer wn)
+begin
+  PasteFromSysList(wn,5);
+  OYClassSClassOnOKWindow = false;
+  return;
+end;
+
+global
 function Boolean BudgetClassSClassOnOKWindow(Integer wn)
 begin
   PasteFromSysList(wn,-2);
@@ -624,8 +633,16 @@ end;
 global
 function Boolean LegalCLInNrSClassOnOKWindow(Integer wn)
 begin
-  PasteFromSysList(wn,-1);
+  PasteFromSysList(wn,-2);
   LegalCLInNrSClassOnOKWindow = false;
+  return;
+end;
+
+global
+function Boolean LegalCLOutNrSClassOnOKWindow(Integer wn)
+begin
+  PasteFromSysList(wn,-2);
+  LegalCLOutNrSClassOnOKWindow = false;
   return;
 end;
 
@@ -635,6 +652,14 @@ begin
 //  PasteFromSysList(wn,2);
   PasteFromWn(wn,GetListTag(wn,SelectedListLine(wn)));
   PMSClassOnOKWindow = false;
+  return;
+end;
+
+global
+function Boolean YodleeAccountIdSClassOnOKWindow(Integer wn)
+begin
+  PasteFromWn(wn,GetListTag(wn,SelectedListLine(wn)));
+  YodleeAccountIdSClassOnOKWindow = false;
   return;
 end;
 
@@ -664,10 +689,26 @@ begin
 end;
 
 global
+function Boolean NPTSPagesSClassOnOKWindow(Integer wn)
+begin
+  PasteFromSysList(wn,-1);
+  NPTSPagesSClassOnOKWindow = false;
+  return;
+end;
+
+global
 function Boolean UnoccupTableSClassOnOKWindow(Integer wn)
 begin
   PasteFromSysList(wn,-1);
   UnoccupTableSClassOnOKWindow = false;
+  return;
+end;
+
+global
+function Boolean OccupTableSClassOnOKWindow(Integer wn)
+begin
+  PasteFromSysList(wn,-1);
+  OccupTableSClassOnOKWindow = false;
   return;
 end;
 
@@ -716,6 +757,22 @@ function Boolean VATCodeSClassOnOKWindow(Integer wn)
 begin
   PasteFromSysList(wn,-2);
   VATCodeSClassOnOKWindow = false;
+  return;
+end;
+
+global
+function Boolean ChemicalTaxCodeSClassOnOKWindow(Integer wn)
+begin
+  PasteFromSysList(wn,-2);
+  ChemicalTaxCodeSClassOnOKWindow = false;
+  return;
+end;
+
+global
+function Boolean TaxExemptionsSClassOnOKWindow(Integer wn)
+begin
+  PasteFromSysList(wn,-2);
+  TaxExemptionsSClassOnOKWindow = false;
   return;
 end;
 
@@ -1649,7 +1706,8 @@ begin
       (wclass=="VARMaskTClass") or 
       (wclass=="AvailVarsRClass")) then begin goto LTestForMATVARINS; end;//list of all windows where paste variety should not work, C - code!
   BlockLoad(VBr);  
-  if (UpdateExistingVarietyRowsf) then begin   
+  if (VBr.UseInfoFromRow!=0) then begin   
+    checkvarf = true;
     if (wclass=="NPTSIVCashDClass" or ((wclass=="IVDClass" or wclass=="IVCashDClass") and TouchScreenLook)) then begin 
       checkvarf = true;
     end;
@@ -1658,7 +1716,7 @@ begin
       if (FindStringInString(varsitemcode,".")) then begin goto LTestForMATVARINS; end;
     end;  
   end else begin
-    if (ReadFirstItem(varsitemcode,INr,true,true)) then begin goto LTestForMATVARINS; end;
+    if (ReadFirstItem(varsitemcode,INr,true,true)) then begin  goto LTestForMATVARINS; end;
     if (FindStringInString(varsitemcode,".")) then begin goto LTestForMATVARINS; end;
   end;
   if (VBr.OpenVarPaste==0) then begin goto LTestForMATVARINS; end;
@@ -1685,22 +1743,25 @@ BEGIN
   wclass = GetWindowClass(wn);
   if ((blank(varsitemcode)) or 
       (wclass=="VARMaskTClass") or 
-      (wclass=="AvailVarsRClass")) then begin goto LTestForMATVARINS; end;//list of all windows where paste variety should not work, C - code!
+      (wclass=="AvailVarsRClass")) then begin goto LTestForMATVARINSLocal; end;//list of all windows where paste variety should not work, C - code!
   if (UpdateExistingVarietyRowsf) then begin 
     if (wclass=="NPTSIVCashDClass" or ((wclass=="IVDClass" or wclass=="IVCashDClass") and WindowActiveField(wn)!="Quant")) then begin 
-      if (ReadFirstItem(varsitemcode,INr,true,true)) then begin goto LTestForMATVARINS; end;
-      //if (FindStringInString(varsitemcode,".")) then begin goto LTestForMATVARINS; end;
+      if (ReadFirstItem(varsitemcode,INr,true,true)) then begin goto LTestForMATVARINSLocal; end;
+      //if (FindStringInString(varsitemcode,".")) then begin goto LTestForMATVARINSLocal; end;
     end;  
+  end else begin
+    if (ReadFirstItem(varsitemcode,INr,true,true)) then begin  goto LTestForMATVARINSLocal; end;
+    if (FindStringInString(varsitemcode,".")) then begin goto LTestForMATVARINSLocal; end;
   end;
-  if (FindItemVAR2(varsitemcode,itemsize,mask,subsets)==false) then begin goto LTestForMATVARINS; end;
+  if (FindItemVAR2(varsitemcode,itemsize,mask,subsets)==false) then begin goto LTestForMATVARINSLocal; end;
   if (GetFirstItem(varsitemcode,INr)) then begin end;
   if (ReadFirstItem(varsitemcode,INr,true,false)==false) then begin //*** ReadFirstItem(varsitemcode,INr,true,true)
-    goto LTestForMATVARINS; 
+    goto LTestForMATVARINSLocal; 
   end else begin
     SetWindowNameArg(wn,INr.Code & ":" & location);
     res = PrepareAndOpenMatVARWind(wn,INr.Code,location,itemsize,mask,subsets);
   end;
-LTestForMATVARINS:;  
+LTestForMATVARINSLocal:;  
   TestForMATVARINSLocal = res;
   RETURN;
 END;
@@ -1827,35 +1888,48 @@ begin
 end;
 
 global
-function Boolean SynkAutoSerFileNameSClassOnOKWindow(Integer wn)
-begin
-  PasteTagFromSysList(wn);
-  SynkAutoSerFileNameSClassOnOKWindow = false;
-  return;
-end;
-
-global
 function Boolean RemoteCloudServerSClassOnOKWindow(Integer wn)
 begin
   Boolean res;
   record RemoteCloudServerVc RCSr,RCS2r;
   row RemoteCloudServerVc RCSrw;
   record CloudWatchpointVc CWr;
+  record ASPPlannedUpdatesVc APUr;
+  row ASPPlannedUpdatesVc APUrw;
   Integer mwn,rownr;
   record RCVc RepSpec;
+  UUID tuuid;
   
   res = true;
   mwn = MotherWindow(wn);
   switch (GetWindowFileName(mwn)) begin
+    case "ASPPlannedUpdatesVc":
+      if (WindowState(wn)!=Rs_search) then begin
+        if (ReadMarkedRecord(wn,RCSr)) then begin
+          rownr = WindowActiveRow(mwn);
+          CloseWindow(wn);
+          PasteString(mwn,RCSr.Name);
+          DeSelectWindow(mwn,true);
+          GetWindowRecord(mwn,APUr);
+          MatRowGet(APUr,rownr,APUrw);
+          APUrw.ExcludeServer = RCSr.UUID;
+          MatRowPut(APUr,rownr,APUrw);
+          PutWindowRecord(mwn,APUr);
+          SelectWindow(mwn);
+          res = false;
+        end;
+      end;
     case "CloudWatchpointVc":
       if (WindowState(wn)!=Rs_search) then begin
         if (ReadMarkedRecord(wn,RCSr)) then begin
           CloseWindow(wn);
           PasteString(mwn,RCSr.Name);
+          DeSelectWindow(mwn,true);
           GetWindowRecord(mwn,CWr);
           CWr.RemoteCloudServer = RCSr.UUID;
           CWr.ServerName = RCSr.Name;
           PutWindowRecord(mwn,CWr);
+          SelectWindow(mwn);
           res = false;
         end;
       end;
@@ -1867,11 +1941,13 @@ begin
             CloseWindow(wn);
             PasteString(mwn,RCSr.UUID);
             if (rownr>=0) then begin
+              DeSelectWindow(mwn,true);
               GetWindowRecord(mwn,RCS2r);
               MatRowGet(RCS2r,rownr,RCSrw);
               RCSrw.Desc = RCSr.Name;
               MatRowPut(RCS2r,rownr,RCSrw);
               PutWindowRecord(mwn,RCS2r);
+              SelectWindow(mwn);
             end;
             res = false;
           end;
@@ -1882,10 +1958,36 @@ begin
         if (ReadMarkedRecord(wn,RCSr)) then begin
           CloseWindow(wn);
           PasteString(mwn,RCSr.Name);
+          DeSelectWindow(mwn,true);
           GetWindowRecord(mwn,RepSpec);
           RepSpec.RecordUUID = RCSr.UUID;
           RepSpec.f1 = RCSr.Name;
           PutWindowRecord(mwn,RepSpec);
+          SelectWindow(mwn);
+          res = false;
+        end;
+      end;
+      if (GetWindowClass(mwn)=="ASPServerActivityLogRClass") then begin
+        if (ReadMarkedRecord(wn,RCSr)) then begin
+          CloseWindow(wn);
+          PasteString(mwn,RCSr.UUID);
+          DeSelectWindow(mwn,true);
+          GetWindowRecord(mwn,RepSpec);
+          RepSpec.f1 = RCSr.UUID;
+          PutWindowRecord(mwn,RepSpec);
+          SelectWindow(mwn);
+          res = false;
+        end;
+      end;
+      if (GetWindowClass(mwn)=="ASPFileManagerCopyWClass") then begin
+        if (ReadMarkedRecord(wn,RCSr)) then begin
+          CloseWindow(wn);
+          PasteString(mwn,RCSr.Name);
+          DeSelectWindow(mwn,true);
+          GetWindowRecord(mwn,RepSpec);
+          RepSpec.f10 = RCSr.UUID;
+          PutWindowRecord(mwn,RepSpec);
+          SelectWindow(mwn);
           res = false;
         end;
       end;
@@ -1908,6 +2010,102 @@ function Boolean TaxAuthIDBlockSClassOnOKWindow(Integer wn)
 begin
   PasteFromSysList(wn,-2);
   TaxAuthIDBlockSClassOnOKWindow = false;
+  return;
+end;
+
+global
+function Boolean PrevEntitySClassOnOKWindow(Integer wn)
+begin
+  PasteFromSysList(wn,-2);
+  PrevEntitySClassOnOKWindow = false;
+  return;
+end;
+
+global
+function Boolean HotelShiftsSClassOnOKWindow(Integer wn)
+begin
+  PasteFromSysList(wn,20);
+  HotelShiftsSClassOnOKWindow = false;
+  return;
+end;
+
+global
+function Boolean POSOpenSHSClassOnOKWindow(Integer wn)
+begin
+  PasteFromSysList(wn,10);
+  POSOpenSHSClassOnOKWindow = false;
+  return;
+end;
+
+global
+function Boolean POSOpenORSClassOnOKWindow(Integer wn)
+begin
+  PasteFromSysList(wn,10);
+  POSOpenORSClassOnOKWindow = false;
+  return;
+end;
+
+global
+function Boolean POSOpenSVOSClassOnOKWindow(Integer wn)
+begin
+  PasteFromSysList(wn,10);
+  POSOpenSVOSClassOnOKWindow = false;
+  return;
+end;
+
+global
+function Boolean TalkBotTTSVoiceSClassOnOKWindow(Integer wn)
+begin
+  PasteFromSysList(wn,100);
+  TalkBotTTSVoiceSClassOnOKWindow = false;
+  return;
+end;
+
+global
+function Boolean TalkBotSTTLanguageSClassOnOKWindow(Integer wn)
+begin
+  PasteFromSysList(wn,100);
+  TalkBotSTTLanguageSClassOnOKWindow = false;
+  return;
+end;
+
+
+global
+function Boolean TalkBotEntitySClassOnOKWindow(Integer wn)
+begin
+  Boolean res;
+  record TalkBotEntityVc TBEr,TBE2r;
+  row TalkBotEntityVc TBErw;
+  Integer mwn,rownr;
+  record RCVc RepSpec;
+  UUID tuuid;
+  
+  res = true;
+  mwn = MotherWindow(wn);
+  switch (GetWindowClass(mwn)) begin
+    case "TalkBotIntentDClass":
+        if (ReadMarkedRecord(wn,TBEr)) then begin
+          CloseWindow(wn);
+          PasteString(mwn,TBEr.Code);
+//          DeSelectWindow(mwn,true);
+//          GetWindowRecord(mwn,RepSpec);
+//          RepSpec.RecordUUID = RCSr.UUID;
+//          RepSpec.f1 = RCSr.Name;
+//          PutWindowRecord(mwn,RepSpec);
+//          SelectWindow(mwn);
+          res = false;
+        end;
+  end;
+
+  TalkBotEntitySClassOnOKWindow = res;
+  return;
+end;
+
+global
+function Boolean LeadRatingSClassOnOKWindow(Integer wn)
+begin
+  PasteFromSysList(wn,0);
+  LeadRatingSClassOnOKWindow = false;
   return;
 end;
 

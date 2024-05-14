@@ -1,14 +1,22 @@
+external updating procedure LogCashDrawerAction(string,string,string,string,Integer);
+external procedure SendLogAction3(Integer,Integer,Integer,LongInt,string,string,string);
+external function Integer CheckFM32State(Integer);
+external function Boolean FindLocalSerialPortDevice(Integer,LongInt,string,var record LSerialPortDeviceVc);
+external procedure FisUSBSetClerkdll(record LSerialPortDeviceVc,string,Boolean);
 external procedure SendLogAction(Integer,Integer,Integer,string,string);
 external procedure AutomatedSales(string,Integer);
-external procedure OnLoginAutomatedSales();
+external procedure OnLoginAutomatedSales2(string,string);
 external updating procedure LiveDBBlessWClass();
 external procedure OpenHWStore();
 external updating function Integer MarketplacePaymentFailed();
 external function string 60 AddObjectToObjectList(string,string);
 remote updating function Boolean OnLoginRemote2(var Boolean,var Boolean,var Boolean,Boolean,Date,Time,string,var Integer,var Integer,
                                                 var array LongInt,var array LongInt,var string,var Boolean,var record RcVc,var string,var string);
+remote updating function Boolean OnLoginRemote3(var Boolean,var Boolean,var Boolean,Boolean,Date,Time,string,var Integer,var Integer,
+                                                var array LongInt,var array LongInt,var string,var Boolean,var record RcVc,var string,var string,
+                                                string,var array record SerialPortDeviceVc);
 external function Boolean HasModCRM();
-external procedure UpdateLicenseStatusNow();
+external updating procedure UpdateLicenseStatusNow();
 remote updating procedure SetServerBuildProductCode();
 external function Boolean ProductInDemoMode();
 external updating procedure WelcomeWClassNewInstallClient();
@@ -45,6 +53,12 @@ external updating procedure InitMarketPlaceLicenseCopytoClient();
 external updating function Boolean UserLicensesExpired();
 external procedure LogoutHansaWorldID();
 external procedure SendHansaWorldIDUserTask2(string,string,Integer);
+external procedure LoadStdIDSecondaryServers();
+external function Boolean ShowStateTaxWindow();
+external procedure InitLogActions();
+external updating procedure SyncDisplayLoginKeypadSingleTokenAfterLogin();
+external function Boolean ShowCompanyTypeWindow();
+external procedure CloudCommands();
 external procedure GetUserAccessGroup(string,var string);// Edit ************************** Thursday, 30 March 2017 10:16:28
 remote  procedure MyBonusCurrentUserRemote(var val,var val,var val,var boolean);
 external procedure ExtractObjWithSeparator(string,string,Boolean,var Integer,var string);
@@ -203,7 +217,136 @@ begin
         linknr = linknr + 1;
       end;
   end;
+end;
+
+/*
+this is a messed up reason to have this -
+auditors said that we should add this if we want certification for pos in Latvia
+*/
+global
+procedure CheckFisUSBMBufferFolder()
+begin
+  string 255 folder,fn;
+  Integer cnt,i;
+
+  folder = "FiscalJournal/FMB";
+  cnt = CountFilesInDir(folder);
+  for (i=cnt-1;i>=0;i=i-1) begin
+    fn = GetFileNameInDir(folder,i);
+    Delete_File(folder & "/" & fn);
+  end;
+
+  return;
+end;
+
+procedure SetClerkAtFiscalPrinter(string usercode,Boolean loginf)
+begin
+  record LocalMachineBlock LMb;
+  record LSerialPortDeviceVc LSPDr;
+    
+  BlockLoad(LMb);  
+  if (FindLocalSerialPortDevice(kSerialPortDeviceClassFiscalPrinter,-1,LMb.LocalMachineCode,LSPDr)==false) then begin  
+    goto LSetClerkAtFiscalPrinter;
+  end;
+  switch (LSPDr.Printer) begin
+    case kSerialPortDeviceModelFiscPrinterFisUSBMDLL:
+      CheckFisUSBMBufferFolder;
+      if (loginf==false) then begin
+      switch (CheckFM32State(LSPDr.Printer)) begin
+        case kFiscalPrinterStateZIDLE:
+        case kFiscalPrinterStateIDLE:
+        case kFiscalPrinterStateFIS:
+          FiscalPrinterReset(LSPDr.Printer);
+      end;
+      end;
+      FisUSBSetClerkdll(LSPDr,usercode,loginf);
+  end;
+LSetClerkAtFiscalPrinter:;  
+  return;
+end;
+
+procedure CopySerialPortDevice(record SerialPortDeviceVc SPDr,var record LSerialPortDeviceVc LSPDr)
+begin
+  LSPDr.Code = SPDr.Code;
+  LSPDr.DeviceType = SPDr.DeviceType;
+  LSPDr.LocalMachineCode = SPDr.LocalMachineCode;
+  LSPDr.Printer = SPDr.Printer;
+  LSPDr.Port = SPDr.Port;
+  LSPDr.BaudRate = SPDr.BaudRate;
+  LSPDr.ByteSize = SPDr.ByteSize;
+  LSPDr.Parity = SPDr.Parity;
+  LSPDr.StopBits = SPDr.StopBits;
+  LSPDr.Codepage = SPDr.Codepage;
+  LSPDr.FlowControl = SPDr.FlowControl;
+  LSPDr.EscSeqBefore = SPDr.EscSeqBefore;
+  LSPDr.EscSeqAfter = SPDr.EscSeqAfter;
+  LSPDr.FailureCode = SPDr.FailureCode;
+  LSPDr.LogCommunication = SPDr.LogCommunication;
+  LSPDr.DeviceID = SPDr.DeviceID;
+  return;
+end;
+
+updating procedure UpdateSerialPortDevices(string lm,array record SerialPortDeviceVc aSPDr)
+begin
+  Integer i;
+  record LSerialPortDeviceVc LSPDr;
+  record LSerialPortDeviceVc oldLSPDr;
+  record SerialPortDeviceVc SPDr;
   
+  for (i=0;i<aSPDr.length;i=i+1) begin
+    SPDr = aSPDr[i];
+    LSPDr.Code = SPDr.Code;
+    if (ReadFirstMain(LSPDr,1,true)) then begin
+      RecordCopy(oldLSPDr,LSPDr);
+      CopySerialPortDevice(SPDr,LSPDr);
+      RecordUpdate(oldLSPDr,LSPDr,false);
+    end else begin
+      CopySerialPortDevice(SPDr,LSPDr);
+      RecordStore(LSPDr,false);
+    end;
+  end;
+  return;
+end;
+
+global
+updating procedure UpdateLocalCCTerminalSet(string lm)
+begin
+  record RahaxiBlock Rahaxib; 
+  record LocalMachineBlock LMb;
+
+  BlockLoad(Rahaxib);
+  LMb.LocalMachineCode = lm;
+  BlockLoad(LMb);
+
+  if (Rahaxib.TerminalType==kLocalCCTerminalNone) begin
+    Rahaxib.RahaxiServerIP = LMb.RahaxiServerIP; 
+    Rahaxib.RahaxiServerPort = LMb.RahaxiServerPort; 
+    Rahaxib.TerminalType = LMb.TerminalType; 
+    Rahaxib.TerminalBaudRate = LMb.TerminalBaudRate; 
+    Rahaxib.PrintRetailer = LMb.PrintRetailer; 
+    Rahaxib.NoSignature = LMb.NoSignature; 
+    Rahaxib.LogComm = LMb.LogComm; 
+    Rahaxib.PrintReceipt = LMb.PrintReceipt; 
+    Rahaxib.CutReceipt = LMb.CutReceipt; 
+    BlockStore(Rahaxib);
+  end;
+end;
+
+global
+updating function Boolean OnLoginRemote3_compat(var Boolean newf,var Boolean resve,var Boolean rescont,Boolean cleanmail,Date clientdate,Time clienttime,string user,var Integer forcestockmaint,var Integer DBStatus,
+                                         var array LongInt aVEIVNr,var array LongInt aVEIVComp,var string clockinaction,
+                                         var Boolean accpetancef,var record RcVc acptRepSpec,var string mailboxnr,var string mailboxname,
+                                         string locmach,var array record SerialPortDeviceVc aSPDr)
+begin
+  Boolean res;
+
+  if (UseAppstoreEnabler) then begin
+    res = OnLoginRemote2(newf,resve,rescont,cleanmail,clientdate,clienttime,user,forcestockmaint,DBStatus,aVEIVNr,aVEIVComp,clockinaction,accpetancef,acptRepSpec,mailboxnr,mailboxname);
+  end else begin
+    res = OnLoginRemote3(newf,resve,rescont,cleanmail,clientdate,clienttime,user,forcestockmaint,DBStatus,aVEIVNr,aVEIVComp,clockinaction,accpetancef,acptRepSpec,mailboxnr,mailboxname,locmach,aSPDr);
+  end;
+
+  OnLoginRemote3_compat = res;
 end;
 
 global
@@ -241,11 +384,14 @@ begin
   record CYBlock CYb;
   record SelCountryBlock SCb;
   record StandardServerBlock StdSrvb;
-  Boolean SetServerBuildProductCodef;
+  Boolean SetServerBuildProductCodef,clerksetf;
   record CurLicensesBlock CLb;
   record AprvlActMaintBlock AAMb;
+  record StdIDClientBlock StdIDClientb;
+  array record SerialPortDeviceVc aSPDr;
+  record HotelBlock Hb;
   string 255 accessgroup;// Edit ************************** Thursday, 30 March 2017 10:23:07
-  
+
   if (IsStandardProduct) then begin
     if (ClientMode) then begin
       BlockLoad(StdSrvb);
@@ -292,7 +438,7 @@ begin
 // but OnLogin is called Before OnApplicationStartupComplete so that code below is never executed
 //and CurrentUser is blank in OnApplicationStartupComplete
 //so i swapped that around 
-      asyncremote.RegisterAtPresenceServer(CurrentUser,1,1,DeviceOperatingSystem,false);
+      threadremoteasync.RegisterAtPresenceServer(CurrentUser,1,1,DeviceOperatingSystem,false);
     end;
 */
     /*asyncremote.RegisterAtPresenceServer(CurrentUser,1,1,DeviceOperatingSystem,true);// Edit ************************** BPI Ukraine - KramarAlexandr - Friday, 9 March 2018 15:28:29
@@ -328,39 +474,49 @@ begin
     UpdateLicenseStatusNow;
     DoUpdateLicenseStatus(CLb);
   end;
+  
+  if (SingleUserMode) then begin
+    threadasync.CloudCommands;
+  end;
+
   if (ClientMode) then begin
     InitMarketPlaceLicenseCopytoClient;
     if (LicenseMode==kLicenseModeServer) then begin
       if (SetServerBuildProductCodef) then begin
         SetServerBuildProductCode;
       end;
-      asyncremote.OnLoginReadCurLicenses;
+      //asyncremote.OnLoginReadCurLicenses;
     end else begin    
       UpdateLocalUserChargeFields;
       UserLicensesExpired;
       UpdateLocalCompaniesChargeFields;
     end;
   end;
-  DBStatus = 1;
-
-  if (IsDoingManagerOverride==false) then begin
-  switch (onloginaction) begin  
+  DBStatus = kDBStatusLive;
+  if (!ServerMode) then begin
+    LogCashDrawerAction(CurrentUser,LMb.LocalMachineCode,"",LMb.TerminalID,kPOSActionLogin);
+  end;
+if (IsDoingManagerOverride==false) then begin
+  switch (onloginaction) begin
     case 1:
       reshot = OnLoginRemote_RestAcc(RestAccr,newf,resve,rescont,cleanmail,CurrentDate,CurrentTime,CurrentUser,forcestockmaint,DBStatus,VEIVNr,clockinaction,mailboxnr,mailboxname);
+//      SetMasterWindow("RestAccDClass");
+      
       if (newf) then begin
         nwn = OpenWindow("RestAccDClass",1,0,"","",RestAccr);    
         RestAccVcRecordDefaultsClient(nwn,RestAccr,RestAcc2r,0,0);
         DeselectWindow(nwn,false);
-        WindowFieldGoto(nwn,RestAccr,-1,"CustCode",true);
+//        WindowFieldGoto(nwn,RestAccr,-1,"CustCode",true);
       end else begin
         nwn = OpenWindow("RestAccDClass",1,0,"","",RestAccr);    
         RestAccVcRecordDefaultsClient(nwn,RestAccr,RestAcc2r,0,0);
-        WindowFieldGoto(nwn,RestAccr,-1,"CustCode",true);
+//        WindowFieldGoto(nwn,RestAccr,-1,"CustCode",true);
       end;
+      
       reshot = false;      
-    case 2:
+    case 2://Resource Month
       accpetancef = false;
-      reshot = OnLoginRemote2(newf,resve,rescont,cleanmail,CurrentDate,CurrentTime,CurrentUser,forcestockmaint,DBStatus,aVEIVNr,aVEIVComp,clockinaction,accpetancef,acptRepSpec,mailboxnr,mailboxname);
+      reshot = OnLoginRemote3_compat(newf,resve,rescont,cleanmail,CurrentDate,CurrentTime,CurrentUser,forcestockmaint,DBStatus,aVEIVNr,aVEIVComp,clockinaction,accpetancef,acptRepSpec,mailboxnr,mailboxname,LMb.LocalMachineCode,aSPDr);
       if ((UserModuleAccess("modHotel")) or (UserModuleAccess("modPP"))) then begin
         RepSpec.d1 = CurrentDate;
         RepSpec.sStartDate = RepSpec.d1;
@@ -369,15 +525,6 @@ begin
         RepSpec.f3 = LMb.ResLoc;
         RepSpec.f6 = LMb.ResClass;
         nwn = OpenWindow("ResHotelWClass",1,0,"","",RepSpec);
-        if (nwn==0) then begin
-          RepSpec.d1 = CurrentDate;
-          RepSpec.sStartDate = RepSpec.d1;
-          RepSpec.LastVer = 1;
-          RepSpec.f1 = "";
-          RepSpec.f3 = LMb.ResLoc;
-          RepSpec.f6 = LMb.ResClass;
-          nwn = OpenWindow("RTMonWClass",1,0,"","",RepSpec);
-        end;
         if (nwn!=0) then begin
           reshot = true;
         end;
@@ -385,7 +532,7 @@ begin
       DeselectWindow(nwn,false);
       reshot = false;      
     case 3:
-      if (TouchScreenLook) then begin    
+      if (TouchScreenLook) then begin
         reshot = OnLoginRemote_IV(TouchScreenLook,IVr,newf,resve,rescont,cleanmail,CurrentDate,CurrentTime,CurrentUser,forcestockmaint,DBStatus,VEIVNr,clockinaction,mailboxnr,mailboxname);
         if (newf) then begin
           RecordNew(IVr);
@@ -411,13 +558,13 @@ begin
       reshot = false;      
     case 4:
       accpetancef = false;
-      reshot = OnLoginRemote2(newf,resve,rescont,cleanmail,CurrentDate,CurrentTime,CurrentUser,forcestockmaint,DBStatus,aVEIVNr,aVEIVComp,clockinaction,accpetancef,acptRepSpec,mailboxnr,mailboxname);
+      reshot = OnLoginRemote3_compat(newf,resve,rescont,cleanmail,CurrentDate,CurrentTime,CurrentUser,forcestockmaint,DBStatus,aVEIVNr,aVEIVComp,clockinaction,accpetancef,acptRepSpec,mailboxnr,mailboxname,LMb.LocalMachineCode,aSPDr);
       OpenTableLayoutCLass(0,"",-1,0);
 //      nwn = OpenWindow("TableLayoutClass",1,0,"","",RepSpec);    
       reshot = false;      
     case 5:
       accpetancef = false;
-      reshot = OnLoginRemote2(newf,resve,rescont,cleanmail,CurrentDate,CurrentTime,CurrentUser,forcestockmaint,DBStatus,aVEIVNr,aVEIVComp,clockinaction,accpetancef,acptRepSpec,mailboxnr,mailboxname);
+      reshot = OnLoginRemote3_compat(newf,resve,rescont,cleanmail,CurrentDate,CurrentTime,CurrentUser,forcestockmaint,DBStatus,aVEIVNr,aVEIVComp,clockinaction,accpetancef,acptRepSpec,mailboxnr,mailboxname,LMb.LocalMachineCode,aSPDr);
       RepSpec.AccStr = CurrentUser;
       nwn = OpenWindow("ProdRegTimeOClass",1,0,"","",RepSpec);    
       DeselectWindow(nwn,false);
@@ -427,7 +574,7 @@ begin
         reshot = false;
       end else begin
         accpetancef = false;
-        reshot = OnLoginRemote2(newf,resve,rescont,cleanmail,CurrentDate,CurrentTime,CurrentUser,forcestockmaint,DBStatus,aVEIVNr,aVEIVComp,clockinaction,accpetancef,acptRepSpec,mailboxnr,mailboxname);
+        reshot = OnLoginRemote3_compat(newf,resve,rescont,cleanmail,CurrentDate,CurrentTime,CurrentUser,forcestockmaint,DBStatus,aVEIVNr,aVEIVComp,clockinaction,accpetancef,acptRepSpec,mailboxnr,mailboxname,LMb.LocalMachineCode,aSPDr);
         BlockLoad(LMb);
         RecordNew(IVCashr);
 //      IVCashr.CustCode = LMb.DefCustCode;
@@ -439,16 +586,20 @@ begin
       end;
     case 7:
       accpetancef = false;
-      reshot = OnLoginRemote2(newf,resve,rescont,cleanmail,CurrentDate,CurrentTime,CurrentUser,forcestockmaint,DBStatus,aVEIVNr,aVEIVComp,clockinaction,accpetancef,acptRepSpec,mailboxnr,mailboxname);
+      reshot = OnLoginRemote3_compat(newf,resve,rescont,cleanmail,CurrentDate,CurrentTime,CurrentUser,forcestockmaint,DBStatus,aVEIVNr,aVEIVComp,clockinaction,accpetancef,acptRepSpec,mailboxnr,mailboxname,LMb.LocalMachineCode,aSPDr);
 //      nwn = OpenWindow("TablesViewWClass",1,0,"","",RepSpec);    
       OpenTableLayoutCLass(0,"",-1,0);
       reshot = false;      
     case 8:
       if (ReopenSavedWindows) then begin
         reshot = false;
+        resve = true;
+        rescont = true;
       end else begin
         accpetancef = false;
-        reshot = OnLoginRemote2(newf,resve,rescont,cleanmail,CurrentDate,CurrentTime,CurrentUser,forcestockmaint,DBStatus,aVEIVNr,aVEIVComp,clockinaction,accpetancef,acptRepSpec,mailboxnr,mailboxname);
+        reshot = OnLoginRemote3_compat(newf,resve,rescont,cleanmail,CurrentDate,CurrentTime,CurrentUser,forcestockmaint,DBStatus,aVEIVNr,aVEIVComp,clockinaction,accpetancef,acptRepSpec,mailboxnr,mailboxname,LMb.LocalMachineCode,aSPDr);
+        SetClerkAtFiscalPrinter(CurrentUser,true);
+        clerksetf = true;
         RecordNew(IVCashr);
         BlockLoad(LMb);
         IVCashVcRecordDefaultsClientRemote(IVCashr,LMb);
@@ -456,6 +607,8 @@ begin
 //        IVCashr.CustCode = LMb.DefCustCode;
 //        if (PasteCustInCashInv(IVCashr,LMb.DefLocation,LMb.PLCode,warning)) then begin end;
 //      end;
+//        SetMasterWindow("NPTSIVCashDClass");
+        
         nwn = OpenWindow("NPTSIVCashDClass",1,0,"","",IVCashr);    
         if (nwn>0) then begin
           DeselectWindow(nwn,false);
@@ -464,10 +617,11 @@ begin
         end else begin
           reshot = true;
         end;
+        
       end;
     case 9:
       accpetancef = false;
-      reshot = OnLoginRemote2(newf,resve,rescont,cleanmail,CurrentDate,CurrentTime,CurrentUser,forcestockmaint,DBStatus,aVEIVNr,aVEIVComp,clockinaction,accpetancef,acptRepSpec,mailboxnr,mailboxname);
+      reshot = OnLoginRemote3_compat(newf,resve,rescont,cleanmail,CurrentDate,CurrentTime,CurrentUser,forcestockmaint,DBStatus,aVEIVNr,aVEIVComp,clockinaction,accpetancef,acptRepSpec,mailboxnr,mailboxname,LMb.LocalMachineCode,aSPDr);
       RecordNew(Actr);
       ActVcRecordDefClient(Actr);
       nwn = OpenWindow("ActDClass",1,0,"","",Actr);    
@@ -475,30 +629,58 @@ begin
       WindowFieldGoto(nwn,Actr,-1,"Comment",false);
     case 10:
       accpetancef = false;
-      reshot = OnLoginRemote2(newf,resve,rescont,cleanmail,CurrentDate,CurrentTime,CurrentUser,forcestockmaint,DBStatus,aVEIVNr,aVEIVComp,clockinaction,accpetancef,acptRepSpec,mailboxnr,mailboxname);
+      reshot = OnLoginRemote3_compat(newf,resve,rescont,cleanmail,CurrentDate,CurrentTime,CurrentUser,forcestockmaint,DBStatus,aVEIVNr,aVEIVComp,clockinaction,accpetancef,acptRepSpec,mailboxnr,mailboxname,LMb.LocalMachineCode,aSPDr);
       nwn = OpenWindow("CULClass",1,0,"","",CUr);    
     case 11:
       accpetancef = false;
-      reshot = OnLoginRemote2(newf,resve,rescont,cleanmail,CurrentDate,CurrentTime,CurrentUser,forcestockmaint,DBStatus,aVEIVNr,aVEIVComp,clockinaction,accpetancef,acptRepSpec,mailboxnr,mailboxname);
+      reshot = OnLoginRemote3_compat(newf,resve,rescont,cleanmail,CurrentDate,CurrentTime,CurrentUser,forcestockmaint,DBStatus,aVEIVNr,aVEIVComp,clockinaction,accpetancef,acptRepSpec,mailboxnr,mailboxname,LMb.LocalMachineCode,aSPDr);
       nwn = OpenMasterWClass2(mailboxnr,mailboxname);
       nwn = OpenWindow("ToDoWClass",1,0,"",mailboxname,RepSpec);
       acptRepSpec.f1 = CurrentUser;
       PutWindowRecord(nwn,acptRepSpec);
     case 12:   
       accpetancef = false;
-      reshot = OnLoginRemote2(newf,resve,rescont,cleanmail,CurrentDate,CurrentTime,CurrentUser,forcestockmaint,DBStatus,aVEIVNr,aVEIVComp,clockinaction,accpetancef,acptRepSpec,mailboxnr,mailboxname);
+      reshot = OnLoginRemote3_compat(newf,resve,rescont,cleanmail,CurrentDate,CurrentTime,CurrentUser,forcestockmaint,DBStatus,aVEIVNr,aVEIVComp,clockinaction,accpetancef,acptRepSpec,mailboxnr,mailboxname,LMb.LocalMachineCode,aSPDr);
       nwn = OpenMasterWClass2(mailboxnr,mailboxname);
       nwn = OpenWindow("BusinessPhoneWClass",1,0,"","",CUr);
       PutWindowString(nwn,"AddressBook",";Company");
       DeselectWindow(nwn,false);  
+    case 13:
+      accpetancef = false;
+      reshot = OnLoginRemote3_compat(newf,resve,rescont,cleanmail,CurrentDate,CurrentTime,CurrentUser,forcestockmaint,DBStatus,aVEIVNr,aVEIVComp,clockinaction,accpetancef,acptRepSpec,mailboxnr,mailboxname,LMb.LocalMachineCode,aSPDr);
+      nwn = OpenWindow("PipelineWClass",1,0,"","",RepSpec);
+      DeselectWindow(nwn,false);  
+    case 14: //Resource Type Month Overview
+      accpetancef = false;
+      reshot = OnLoginRemote3_compat(newf,resve,rescont,cleanmail,CurrentDate,CurrentTime,CurrentUser,forcestockmaint,DBStatus,aVEIVNr,aVEIVComp,clockinaction,accpetancef,acptRepSpec,mailboxnr,mailboxname,LMb.LocalMachineCode,aSPDr);
+      if ((UserModuleAccess("modHotel")) or (UserModuleAccess("modPP"))) then begin
+        nwn = 0;
+        if (nwn==0) then begin
+          BlockLoad(Hb);
+          RepSpec.d1 = CurrentDate;
+          RepSpec.sStartDate = RepSpec.d1;
+          RepSpec.LastVer = 1;
+          RepSpec.f1 = "";
+          RepSpec.f3 = LMb.ResLoc;
+          RepSpec.f6 = LMb.ResClass;
+          RepSpec.AccStr = Hb.DefResUsage;
+          RepSpec.FirstAcc = Hb.DefaultPLCode;
+          nwn = OpenWindow("RTMonWClass",1,0,"","",RepSpec);
+        end;
+        if (nwn!=0) then begin
+          reshot = true;
+        end;
+      end;
+      DeselectWindow(nwn,false);
+      reshot = false;  
     otherwise
 LOtherwise01:;    
       accpetancef = true;
-      reshot = OnLoginRemote2(newf,resve,rescont,cleanmail,CurrentDate,CurrentTime,CurrentUser,forcestockmaint,DBStatus,aVEIVNr,aVEIVComp,clockinaction,accpetancef,acptRepSpec,mailboxnr,mailboxname);
+      reshot = OnLoginRemote3_compat(newf,resve,rescont,cleanmail,CurrentDate,CurrentTime,CurrentUser,forcestockmaint,DBStatus,aVEIVNr,aVEIVComp,clockinaction,accpetancef,acptRepSpec,mailboxnr,mailboxname,LMb.LocalMachineCode,aSPDr);
       reshot = true;      
       if (accpetancef) then begin
         nwn = OpenMasterWClass2(mailboxnr,mailboxname);
-        //nwn = OpenToDoWClass(mailboxnr,mailboxname,acptRepSpec);    // Edit ************************** Thursday, 13 October 2016 10:49:36
+        nwn = OpenToDoWClass(mailboxnr,mailboxname,acptRepSpec);    
       end;
      GetUserAccessGroup(currentuser,accessgroup);
       if(accessgroup!="FIN+" and accessgroup!="ADMIN" and accessgroup!="ISTUD" and accessgroup!="OBOLO")then begin
@@ -516,11 +698,11 @@ LOtherwise01:;
   end;
   end else begin
     accpetancef = true;
-    reshot = OnLoginRemote2(newf,resve,rescont,cleanmail,CurrentDate,CurrentTime,CurrentUser,forcestockmaint,DBStatus,aVEIVNr,aVEIVComp,clockinaction,accpetancef,acptRepSpec,mailboxnr,mailboxname);
+    reshot = OnLoginRemote3_compat(newf,resve,rescont,cleanmail,CurrentDate,CurrentTime,CurrentUser,forcestockmaint,DBStatus,aVEIVNr,aVEIVComp,clockinaction,accpetancef,acptRepSpec,mailboxnr,mailboxname,LMb.LocalMachineCode,aSPDr);
     reshot = true;      
     if (accpetancef) then begin
       nwn = OpenMasterWClass2(mailboxnr,mailboxname);
-       //nwn = OpenToDoWClass(mailboxnr,mailboxname,acptRepSpec);  // Edit ************************** Thursday, 13 October 2016 10:51:13  
+      nwn = OpenToDoWClass(mailboxnr,mailboxname,acptRepSpec);    
     end;
     GetUserAccessGroup(currentuser,accessgroup);
       if(accessgroup!="FIN+" and accessgroup!="ADMIN" and accessgroup!="ISTUD" and accessgroup!="OBOLO")then begin
@@ -537,6 +719,11 @@ LOtherwise01:;
     ShowUserInfo;//***************************************************************************** function added by dima-f 13.09.17
 
   end;
+  if (aSPDr.length>0) then begin
+    UpdateSerialPortDevices(LMb.LocalMachineCode,aSPDr);
+  end;
+  UpdateLocalCCTerminalSet(LMb.LocalMachineCode);
+
   if (CurrentUser=="$MASTER") then begin
     RecordNew(Userr);
     Userr.Closed = 1;
@@ -556,7 +743,8 @@ LOtherwise01:;
   if (rescont==false) then begin
     MessageBox(1764,"");
   end;
-  if (DBStatus==0) then begin
+  //LogText(0,"DEBUG DBStatus=" & DBStatus & ", CurrentUserIsAdmin=" & CurrentUserIsAdmin & ", CurrentUser=" & CurrentUser & ", IsStandardProduct=" & IsStandardProduct & ", ProductInDemoMode=" & ProductInDemoMode);
+  if (DBStatus==kDBStatusUnknown) then begin
     if (CurrentUserIsAdmin) then begin
       if (nonblank(CurrentUser) and IsStandardProduct==false and ProductInDemoMode==false) then begin
         nwn = OpenWindow("DBBlessWClass",1,0,"","",RepSpec);
@@ -601,6 +789,9 @@ LOtherwise01:;
     if (nonblank(CurrentUser)) then begin
       BlockLoad(LLOb);
       LLOb.LastUserLoggedIn = CurrentUser;
+      if (DoGetCurUser(Userr)) then begin
+        LLOb.LastEmailUserLoggedIn = Userr.LoginEmailAddr;
+      end;
       BlockStore(LLOb);
     end;
   end;
@@ -622,7 +813,7 @@ LOtherwise01:;
       reshot = false; resoffl = false;
     case "clockinactivitycreated":
       if (UserCanAction("AllowNoClockInOut",true)==false) then begin
-        LogoutUser(CurWindow,true);
+       // LogoutUser(CurWindow,true); //why??
         reshot = false; resoffl = false;
         goto LOnLogin;
       end else begin
@@ -666,8 +857,19 @@ not ready yet
     end;
   end;
 */
+
+  BlockLoad(StdIDClientb);
+  if (StdIDClientb.Enabled) then begin
+    //threadasync.LoadStdIDSecondaryServers;
+  end;
   
 //  OnLogin2;
+  if (clerksetf==false) then begin
+    SetClerkAtFiscalPrinter(CurrentUser,true);
+  end;
+  
+  SyncDisplayLoginKeypadSingleTokenAfterLogin;
+  
   OnLogin = res/* and (forcestockmaint==0)*/;//when offline records it should not open Master Control
   RETURN;
 END;
@@ -684,9 +886,19 @@ begin
 end;
 
 global
+procedure AutSalesAccessGroupsIfEnoughUsers()
+begin
+  if (CountRecords("UserVc")>=2) then begin
+    ClientRemoteAsync.AutomatedSales("HasAccessGroups",kAutomatedSalesTagRandom);
+  end;
+end;
+
+global
 procedure OnLoginAfterMaster()
 begin
   record LoginActionVc LAr;
+  record RcVc RepSpec;
+  Integer nwn;
   
   if (HasModCRM) then begin
     if (OpenToDoWasSUCCESSFUL==false) then begin
@@ -696,7 +908,10 @@ begin
       end;
     end;
   end;
-  
+  if (ShowCompanyTypeWindow) then begin
+    nwn = OpenWindow("CompanyTypeOClass",0,0,"","",RepSpec);
+    SelectWindow(nwn);
+  end;
   switch (GuiType) begin
     case kGuiWindowsMobile:
     case kGuiiPhone:
@@ -716,22 +931,31 @@ begin
   end;
   
 LOnLoginAfterMaster99:;
-  OnLoginAutomatedSales;
+  threadasync.OnLoginAutomatedSales2(CurrentUser,CurrentLanguage);
   if (IsStandardProduct) then begin
-    if (CountRecords("UserVc")>=2) then begin
-      queued.AutomatedSales("HasAccessGroups",kAutomatedSalesTagRandom);
+    AsyncRemote.AutSalesAccessGroupsIfEnoughUsers;
+    if (ShowStateTaxWindow) then begin
+      nwn = OpenWindow("StateTaxOClass",0,0,"","",RepSpec);
+      SelectWindow(nwn);
     end;
   end;
+  
+  InitLogActions;
+  
+  RemoveTask("UpdateMasterBanner");
+  NewPeriodicTask2("UpdateMasterBanner","Update Master Control Banner","UpdateMasterBanner","",600,CurrentUser);
 end;
 
 global
 updating function Boolean OnLogout(string user)
-BEGIN
+begin
   Boolean res;
   string 255 userstr;
   record SyncStatusBlock SSb;
+  record LocalMachineBlock LMb;
 // called on CLIENT
    
+  BlockLoad(LMb);
   if (PresenceWasSuccessful) then begin
     userstr = user;
     if (blank(userstr)) then begin
@@ -745,6 +969,7 @@ BEGIN
   if (ClientMode) then begin
     asyncremote.LogoutHansaWorldID;
   end;
+  LogCashDrawerAction(CurrentUser,LMb.LocalMachineCode,"",LMb.TerminalID,kPOSActionLogout);
   
   if (IsLiveSyncPOS and CompanyProgramMode==kProgramModeLiveSync) then begin
     BlockLoad(SSb);
@@ -752,10 +977,10 @@ BEGIN
       SynchronizeWithServer;
     end;
   end;
-  
+  SetClerkAtFiscalPrinter(user,false);
   OnLogout = true;
-  RETURN;  
-END;
+  return;  
+end;
 
 global
 updating procedure ClockOutMasterWsm()
@@ -863,6 +1088,21 @@ begin
 end;
 
 global
+procedure OnLocalizationsMayHaveChanged()
+begin
+  Integer nwn;
+  record RcVc RepSpec;
+
+  if (IsStandardProduct) then begin
+    if (ShowStateTaxWindow) then begin
+      nwn = OpenWindow("StateTaxOClass",0,0,"","",RepSpec);
+      SelectWindow(nwn);
+    end;
+  end;
+end;
+
+
+global
 function Boolean ToDoWClassOnClose(Integer wn,Integer wn2)
 begin
 
@@ -928,7 +1168,7 @@ begin
 		recordcopy(newCUr,CUr);
 		newCUr.Code = param;
 		newCUr.UUID = blankCUr.UUID;
-		newCUr.Name = "Новый клиент";
+		newCUr.Name = "Ќовий клґент";
 		OpenWindow("CUDClass",0,CurWindow,"","",newCUr);
 	end;
 

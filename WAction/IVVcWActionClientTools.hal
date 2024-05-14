@@ -61,7 +61,21 @@ begin
     
     if (PasteCust2InInv(IVr,LMb,"",false,tstr,tstr,tstr,tstr,tstr)) then begin
     end;
-
+  //end;
+  if (HasLocalization("HRV")) then begin
+    IVr.FiscalFlag = LMb.SendFiscalInvoice;
+    if (LMb.SendFiscalInvoice==0 and IVr.FiscalFlag!=0) then begin
+      IVr.NoEInvoice = 1; //??
+    end;
+  end;
+  if (IsStandardProduct) then begin
+    BlockLoad(EIb);  
+    if (EIb.OutEInvoices!=0) then begin
+      if (HasEInvoiceExpired or HasEInvoicing==false) then begin
+        MessageBox(20678," " & USetStr(37008) & " " & USetStr(37009));
+      end;
+    end;
+  end;
   IVDefaultsClient = res;
   return;
 end;

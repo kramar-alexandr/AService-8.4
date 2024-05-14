@@ -15,6 +15,8 @@ external function Integer GetWeekNr(Date,string,var LongInt);
 external procedure ExtractObj(string,var Integer,var string);
 external function LongInt DateDiff(Date,Date);
 external function Integer CheckTodoAcess(string,record ActVc,string);
+external procedure AddAlignedStringToArea(string,Area);
+external function string 255 GetAlignedPStrFromArea(area,var LongInt);
 
 global
 procedure CalcResMonDays(Integer calsystem,LongInt maxdays,Date sdp,Area ddhp)
@@ -214,7 +216,7 @@ L33Do_ActsInDay1:;
           AddLongToArea(adractlen,adhp);
           AddLongToArea(adrcolnr,adhp);
           AddLongToArea(compno,adhp);
-          AddStringToArea(Actr.Comment,adhp);
+          AddAlignedStringToArea(Actr.Comment,adhp);
           adcnt = adcnt + 1;
         end else begin
           AddLongToArea(adractsernr,ppadhp);
@@ -223,12 +225,12 @@ L33Do_ActsInDay1:;
           AddLongToArea(adractlen,ppadhp);
           AddLongToArea(adrcolnr,ppadhp);
           AddLongToArea(compno,ppadhp);
-          AddStringToArea(Actr.Comment,ppadhp);
+          AddAlignedStringToArea(Actr.Comment,ppadhp);
           ppadcnt = ppadcnt + 1;
         end;
         if (textf) then begin
           AddLongToArea(adrStartPos,thp);
-          AddStringToArea(Actr.Comment,thp);
+          AddAlignedStringToArea(Actr.Comment,thp);
           textcnt = textcnt + 1;
         end;
       end;
@@ -271,19 +273,19 @@ end;
 
 global
 procedure AddActToThp(record ActVc Actp,Area thp)
-BEGIN
+begin
 //when changing, change SortToDo pls
   string 255 tstr;
   LongInt i,rwcnt;
   row ActVc Actrw;
   LongInt compno;
   Boolean newdrawingf;
-      
+  
   if (GuiType==kGuiiPhone or CurClientType==kClientiPhone) then begin
     newdrawingf = true;
   end;
   
-  if (GuiType==kGuiCocoa or CurClientType==kClientOSXCocoa) then begin
+  if (GuiType==kGuiCocoa or CurClientType==kClientOSXCocoa or CurClientType==kClientOSXCocoaARM) then begin
     newdrawingf = true;
   end;
   
@@ -296,12 +298,12 @@ BEGIN
     AddLongToArea(0,thp);    
     AddLongToArea(Actp.SerNr,thp);    
     AddLongToArea(Actp.PrioLevel,thp);    
-    switch(Actp.ActType)begin
+    switch(Actp.ActType)begin// Edit ************************** BPI Ukraine - KramarAlexandr - Monday, 13 May 2024 at 09:20:41
       case "CHAT":AddLongToArea(2,thp);    
       case "SERV":AddLongToArea(3,thp);    
       otherwise 
         AddLongToArea(-1,thp);    
-    end;
+    end;// Edit ************************** BPI Ukraine - KramarAlexandr - Monday, 13 May 2024 at 09:20:43
     AddLongToArea(Actp.OKFlag,thp);    
     AddLongToArea(0,thp);    
     
@@ -318,8 +320,8 @@ BEGIN
         end;
       end;
     end;
-    AddStringToArea(tstr,thp);
-//    tstr = Actp.Contact;    
+    AddAlignedStringToArea(tstr,thp);
+//    tstr = Actp.Contact;
 //    if (blank(tstr)) then begin tstr = Actp.CUName; end;
     if (newdrawingf) then begin
       tstr = Actp.CUName;
@@ -329,22 +331,23 @@ BEGIN
         tstr = tstr & "...";
       end;
     end;
-    AddStringToArea(tstr,thp);
-    AddStringToArea(Actp.Phone,thp);    
-    AddDateToArea(Actp.TransDate,thp);    
-    AddStringToArea(Actp.Supervisor,thp);
-    AddStringToArea(Actp.PRCode,thp);
-    AddLongToArea(compno,thp);    
-    AddStringToArea(Actp.ActType,thp);
-    
+    AddAlignedStringToArea(tstr,thp);
+    AddAlignedStringToArea(Actp.Phone,thp);
+    AddDateToArea(Actp.TransDate,thp);
+    AddAlignedStringToArea(Actp.Supervisor,thp);
+    AddAlignedStringToArea(Actp.PRCode,thp);
+    AddLongToArea(compno,thp);
+    AddAlignedStringToArea(Actp.ActType,thp);
+
     AddTimeToArea(Actp.PlannedTime,thp);    
     AddLongToArea(Actp.TodoFlag,thp);    
+    AddDateToArea(Actp.DeadlineDate,thp);    
     rwcnt = MatRowCnt(Actp);
     AddLongToArea(rwcnt,thp);    
-    for (i=0;i<rwcnt;i=i+1) begin
+    for (i = 0; i<rwcnt; i = i + 1) begin
       MatRowGet(Actp,i,Actrw);
-      AddStringToArea(Actrw.TextCode,thp);    
-      AddStringToArea(Actrw.Text,thp);    
+      AddAlignedStringToArea(Actrw.TextCode,thp);
+      AddAlignedStringToArea(Actrw.Text,thp);
     end;
   end;
   return;
@@ -364,21 +367,21 @@ begin
     AddLongToArea(Actp.OKFlag,thp);    
     AddLongToArea(0,thp);    // triang    
     tstr = Left(Actp.Comment,30);
-    AddStringToArea(tstr,thp);    
+    AddAlignedStringToArea(tstr,thp);
     tstr = Actp.StartTime;
     tstr = Left(tstr,5);
-    AddStringToArea(tstr,thp);     
+    AddAlignedStringToArea(tstr,thp);
     tstr = Actp.Contact;
     if (blank(tstr)) then begin tstr = Actp.CUName; end;
-    AddStringToArea(tstr,thp);     
-    AddStringToArea(Actp.Phone,thp);
+    AddAlignedStringToArea(tstr,thp);
+    AddAlignedStringToArea(Actp.Phone,thp);
     AddLongToArea(compno,thp);
     rwcnt = MatRowCnt(Actp);
     AddLongToArea(rwcnt,thp);    
     for (i=0;i<rwcnt;i=i+1) begin
       MatRowGet(Actp,i,Actrw);
-      AddStringToArea(Actrw.TextCode,thp);    
-      AddStringToArea(Actrw.Text,thp);    
+      AddAlignedStringToArea(Actrw.TextCode,thp);
+      AddAlignedStringToArea(Actrw.Text,thp);
     end;
   end;
   return;
@@ -441,7 +444,7 @@ begin
   TrHs = true;  
   while (LoopKey(ckey,Actr,segs,TrHs)) begin
     if (Actr.TodoFlag!=todoflag) then begin TrHs = false; end;    
-    if (todoflag!=kTodoFlagRecurring and Actr.TodoFlag!=kTodoFlagProject) then begin
+    if (todoflag!=kTodoFlagRecurring and (Actr.TodoFlag!=kTodoFlagProject or Actr.TodoFlag!=kTodoFlagCleanTask or Actr.TodoFlag!=kTodoFlagRoomMaintenance)) then begin
       if (DateInRange(Actr.TransDate,sdp,edp)==false) then begin TrHs = false; end;
     end;
     testf = false;
@@ -503,10 +506,6 @@ begin
 //        if (Actr.OKFlag!=0) then
 //          if (DateComp(&Actr.TransDate,ddp)<0) then begin testf = false; end;
       end;
-      if (Actr.PrivateFlag!=0) then begin
-        tstr = curuser;
-        if (SetInSet(tstr,Actr.MainPersons)==false) then begin testf = false; end;
-      end;
       if (nonblank(prcode)) then begin
         if (Actr.PRCode!=prcode) then begin testf = false; end;
       end;
@@ -514,10 +513,14 @@ begin
         if (FilterSymbs(symbnr,Actr.SymbNr)==false) then begin testf = false; end;
       end;
       if (persons==0) then begin
-        if (SetInSet(user,Actr.MainPersons)==false) then begin testf = false; end;
+        if (SetIntersect(user,Actr.MainPersons)==false) then begin testf = false; end;
+      end;
+      if (Actr.PrivateFlag!=0) then begin
+        tstr = curuser;
+        if (SetInSet(tstr,Actr.MainPersons)==false) then begin testf = false; end;
       end;
       if (persons==1) then begin
-        if (SetInSet(user,Actr.CCPersons)==false) then begin testf = false; end;
+        if (SetIntersect(user,Actr.CCPersons)==false) then begin testf = false; end;
       end;
       if (nonblank(prios)) then begin
         if (Actr.PrioLevel<frprio) then begin testf = false; end;
@@ -638,10 +641,11 @@ LDo_BannersInMonth3:;
   
   if (((dmode==1) or (dmode==3)) and (acttype==1)) then begin
     tstr = "";
-    AddStringToArea(tstr,adhp);
+    AddAlignedStringToArea(tstr,adhp);
   end else begin
-    AddStringToArea(uscode,adhp);
+    AddAlignedStringToArea(uscode,adhp);
   end;
+  AddLongToArea(patM4black,adhp);
   lenclass = 4;
   ckey = "CalUserMain:" & user;
   Actr.TodoFlag = 3;
@@ -717,7 +721,7 @@ LDo_BannersInMonth3:;
             AddLongToArea(adractlen,adhp);
             AddLongToArea(adrcolnr,adhp);
             AddLongToArea(compno,adhp);
-            AddStringToArea(Actr.Comment,adhp);
+            AddAlignedStringToArea(Actr.Comment,adhp);
           adcnt = adcnt + 1;
         end else begin
         end;
@@ -725,11 +729,11 @@ LDo_BannersInMonth3:;
     end;
   end;
   lenclass = lenclass - 1;
-  if (lenclass>=0) then begin goto LDo_BannersInMonth31; end;
+  if (lenclass>=0) then begin goto LDo_BannersInMonth3_out; end;
   
   PutLongInArea(adcnt,adhp,adoff);
   uscnt = uscnt + 1;
-LDo_BannersInMonth31:;
+LDo_BannersInMonth3_out:;
   ResetCompany(oldcomp);
   Do_BannersInMonth3 = uscnt;
   RETURN;
@@ -843,7 +847,7 @@ begin
   Integer sz,hundreds;
   string 255 tstr;
   Boolean setokf,recurringf;
-  Date td;
+  Date td,dd;
   Time pt;
   record ActVc Actr;
   record ActVc oldActr;
@@ -860,26 +864,30 @@ begin
     l = GetLongFromArea(thp,off); off = off + 4;
     okflag = GetLongFromArea(thp,off); off = off + 4;
     l = GetLongFromArea(thp,off); off = off + 4;      
-    tstr = GetPStrFromArea(thp,off);
-    tstr = GetPStrFromArea(thp,off);
-    tstr = GetPStrFromArea(thp,off);
+    tstr = GetAlignedPStrFromArea(thp,off);
+    tstr = GetAlignedPStrFromArea(thp,off);
+    tstr = GetAlignedPStrFromArea(thp,off);
     td.day = GetIntFromArea(thp,off); off = off + 2;
     td.month = GetIntFromArea(thp,off); off = off + 2;
     td.year = GetIntFromArea(thp,off); off = off + 2;
     off = off + 2;
-    tstr = GetPStrFromArea(thp,off);
-    tstr = GetPStrFromArea(thp,off);
-    compno = GetLongFromArea(thp,off); off = off + 4;      
-    tstr = GetPStrFromArea(thp,off);
+    tstr = GetAlignedPStrFromArea(thp,off);
+    tstr = GetAlignedPStrFromArea(thp,off);
+    compno = GetLongFromArea(thp,off); off = off + 4;
+    tstr = GetAlignedPStrFromArea(thp,off);
     pt.hour = GetByteFromArea(thp,off); off = off + 1;
     pt.minute = GetByteFromArea(thp,off); off = off + 1;
     pt.second = GetByteFromArea(thp,off); off = off + 1;
     hundreds = GetByteFromArea(thp,off); off = off + 1;
     todoflag = GetLongFromArea(thp,off); off = off + 4;      
+    dd.day = GetIntFromArea(thp,off); off = off + 2;
+    dd.month = GetIntFromArea(thp,off); off = off + 2;
+    dd.year = GetIntFromArea(thp,off); off = off + 2;
+    off = off + 2;
     l = GetLongFromArea(thp,off); off = off + 4;      
     for (j=0;j<l;j=j+1) begin
-      tstr = GetPStrFromArea(thp,off);
-      tstr = GetPStrFromArea(thp,off);
+      tstr = GetAlignedPStrFromArea(thp,off);
+      tstr = GetAlignedPStrFromArea(thp,off);
     end;
     if (okflag==65536) then begin
       oldcomp = CurrentCompany;  
@@ -930,7 +938,7 @@ begin
   Integer sz,hundreds;
   string 255 tstr;
   Boolean setokf;
-  Date td;
+  Date td,dd;
   record ActVc Actr;
   record ActVc oldActr;
   Time pt;
@@ -944,26 +952,30 @@ begin
     l = GetLongFromArea(thp,off); off = off + 4;
     okflag = GetLongFromArea(thp,off); off = off + 4;
     l = GetLongFromArea(thp,off); off = off + 4;      
-    tstr = GetPStrFromArea(thp,off);
-    tstr = GetPStrFromArea(thp,off);
-    tstr = GetPStrFromArea(thp,off);
+    tstr = GetAlignedPStrFromArea(thp,off);
+    tstr = GetAlignedPStrFromArea(thp,off);
+    tstr = GetAlignedPStrFromArea(thp,off);
     td.day = GetIntFromArea(thp,off); off = off + 2;
     td.month = GetIntFromArea(thp,off); off = off + 2;
     td.year = GetIntFromArea(thp,off); off = off + 2;
     off = off + 2;
-    tstr = GetPStrFromArea(thp,off);
-    tstr = GetPStrFromArea(thp,off);
-    compno = GetLongFromArea(thp,off); off = off + 4;      
-    tstr = GetPStrFromArea(thp,off);
+    tstr = GetAlignedPStrFromArea(thp,off);
+    tstr = GetAlignedPStrFromArea(thp,off);
+    compno = GetLongFromArea(thp,off); off = off + 4;
+    tstr = GetAlignedPStrFromArea(thp,off);
     pt.hour = GetByteFromArea(thp,off); off = off + 1;
     pt.minute = GetByteFromArea(thp,off); off = off + 1;
     pt.second = GetByteFromArea(thp,off); off = off + 1;
     hundreds = GetByteFromArea(thp,off); off = off + 1;
     todoflag = GetLongFromArea(thp,off); off = off + 4;      
+    dd.day = GetIntFromArea(thp,off); off = off + 2;
+    dd.month = GetIntFromArea(thp,off); off = off + 2;
+    dd.year = GetIntFromArea(thp,off); off = off + 2;
+    off = off + 2;
     l = GetLongFromArea(thp,off); off = off + 4;      
     for (j=0;j<l;j=j+1) begin
-      tstr = GetPStrFromArea(thp,off);
-      tstr = GetPStrFromArea(thp,off);
+      tstr = GetAlignedPStrFromArea(thp,off);
+      tstr = GetAlignedPStrFromArea(thp,off);
     end;
     if (okflag==65536) then begin
       oldcomp = CurrentCompany;  
@@ -996,7 +1008,7 @@ begin
   Integer sz,hundreds;
   string 255 tstr;
   Boolean setokf;
-  Date td;
+  Date td,dd;
   record ActVc Actr;
   record ActVc oldActr;
   Time pt;
@@ -1010,26 +1022,30 @@ begin
     l = GetLongFromArea(thp,off); off = off + 4;
     okflag = GetLongFromArea(thp,off); off = off + 4;
     l = GetLongFromArea(thp,off); off = off + 4;      
-    tstr = GetPStrFromArea(thp,off);
-    tstr = GetPStrFromArea(thp,off);
-    tstr = GetPStrFromArea(thp,off);
+    tstr = GetAlignedPStrFromArea(thp,off);
+    tstr = GetAlignedPStrFromArea(thp,off);
+    tstr = GetAlignedPStrFromArea(thp,off);
     td.day = GetIntFromArea(thp,off); off = off + 2;
     td.month = GetIntFromArea(thp,off); off = off + 2;
     td.year = GetIntFromArea(thp,off); off = off + 2;
     off = off + 2;
-    tstr = GetPStrFromArea(thp,off);
-    tstr = GetPStrFromArea(thp,off);
-    compno = GetLongFromArea(thp,off); off = off + 4;      
-    tstr = GetPStrFromArea(thp,off);
+    tstr = GetAlignedPStrFromArea(thp,off);
+    tstr = GetAlignedPStrFromArea(thp,off);
+    compno = GetLongFromArea(thp,off); off = off + 4;
+    tstr = GetAlignedPStrFromArea(thp,off);
     pt.hour = GetByteFromArea(thp,off); off = off + 1;
     pt.minute = GetByteFromArea(thp,off); off = off + 1;
     pt.second = GetByteFromArea(thp,off); off = off + 1;
     hundreds = GetByteFromArea(thp,off); off = off + 1;
     todoflag = GetLongFromArea(thp,off); off = off + 4;      
+    dd.day = GetIntFromArea(thp,off); off = off + 2;
+    dd.month = GetIntFromArea(thp,off); off = off + 2;
+    dd.year = GetIntFromArea(thp,off); off = off + 2;
+    off = off + 2;
     l = GetLongFromArea(thp,off); off = off + 4;      
     for (j=0;j<l;j=j+1) begin
-      tstr = GetPStrFromArea(thp,off);
-      tstr = GetPStrFromArea(thp,off);
+      tstr = GetAlignedPStrFromArea(thp,off);
+      tstr = GetAlignedPStrFromArea(thp,off);
     end;
 
     if (okflag==65536) then begin
@@ -1085,7 +1101,7 @@ begin
   Integer sz,hundreds;
   string 255 tstr;
   Boolean setokf;
-  Date td;
+  Date td,dd;
   record ActVc Actr;
   record ActVc oldActr;
   Boolean testf;
@@ -1100,26 +1116,30 @@ begin
     l = GetLongFromArea(thp,off); off = off + 4;
     okflag = GetLongFromArea(thp,off); off = off + 4;
     l = GetLongFromArea(thp,off); off = off + 4;      
-    tstr = GetPStrFromArea(thp,off);
-    tstr = GetPStrFromArea(thp,off);
-    tstr = GetPStrFromArea(thp,off);
+    tstr = GetAlignedPStrFromArea(thp,off);
+    tstr = GetAlignedPStrFromArea(thp,off);
+    tstr = GetAlignedPStrFromArea(thp,off);
     td.day = GetIntFromArea(thp,off); off = off + 2;
     td.month = GetIntFromArea(thp,off); off = off + 2;
     td.year = GetIntFromArea(thp,off); off = off + 2;
     off = off + 2;
-    tstr = GetPStrFromArea(thp,off);
-    tstr = GetPStrFromArea(thp,off);
-    compno = GetLongFromArea(thp,off); off = off + 4;      
-    tstr = GetPStrFromArea(thp,off);
+    tstr = GetAlignedPStrFromArea(thp,off);
+    tstr = GetAlignedPStrFromArea(thp,off);
+    compno = GetLongFromArea(thp,off); off = off + 4;
+    tstr = GetAlignedPStrFromArea(thp,off);
     pt.hour = GetByteFromArea(thp,off); off = off + 1;
     pt.minute = GetByteFromArea(thp,off); off = off + 1;
     pt.second = GetByteFromArea(thp,off); off = off + 1;
     hundreds = GetByteFromArea(thp,off); off = off + 1;
     todoflag = GetLongFromArea(thp,off); off = off + 4;      
+    dd.day = GetIntFromArea(thp,off); off = off + 2;
+    dd.month = GetIntFromArea(thp,off); off = off + 2;
+    dd.year = GetIntFromArea(thp,off); off = off + 2;
+    off = off + 2;
     l = GetLongFromArea(thp,off); off = off + 4;      
     for (j=0;j<l;j=j+1) begin
-      tstr = GetPStrFromArea(thp,off);
-      tstr = GetPStrFromArea(thp,off);
+      tstr = GetAlignedPStrFromArea(thp,off);
+      tstr = GetAlignedPStrFromArea(thp,off);
     end;
     if (okflag==65536) then begin
       oldcomp = CurrentCompany;  
@@ -1160,7 +1180,7 @@ begin
   string 255 tstr;
   LongInt triangflag,i,nritms,j,rwcnt,symbnr,off,tl,todoflag;
   Boolean testf;
-  Date td;
+  Date td,dd;
   Integer compno,sz,hundreds;
   Time pt;
   LongInt pnr;
@@ -1178,29 +1198,31 @@ begin
     tl = GetLongFromArea(thp,off); off = off + 4;
     triangflag = GetLongFromArea(thp,off); off = off + 4;
     
-    tstr = GetPStrFromArea(thp,off);
-    
-    tstr = GetPStrFromArea(thp,off);
-    
-    tstr = GetPStrFromArea(thp,off);
-    
+    tstr = GetAlignedPStrFromArea(thp,off);
+    tstr = GetAlignedPStrFromArea(thp,off);
+    tstr = GetAlignedPStrFromArea(thp,off);
+
     td.day = GetIntFromArea(thp,off); off = off + 2;
     td.month = GetIntFromArea(thp,off); off = off + 2;
     td.year = GetIntFromArea(thp,off); off = off + 2;
     off = off + 2;
     
-    tstr = GetPStrFromArea(thp,off);
-    
-    tstr = GetPStrFromArea(thp,off);
+    tstr = GetAlignedPStrFromArea(thp,off);
+    tstr = GetAlignedPStrFromArea(thp,off);
     
     compno = GetLongFromArea(thp,off); off = off + 4;
     
-    tstr = GetPStrFromArea(thp,off);
+    tstr = GetAlignedPStrFromArea(thp,off);
     pt.hour = GetByteFromArea(thp,off); off = off + 1;
     pt.minute = GetByteFromArea(thp,off); off = off + 1;
     pt.second = GetByteFromArea(thp,off); off = off + 1;
     hundreds = GetByteFromArea(thp,off); off = off + 1;
     todoflag = GetLongFromArea(thp,off); off = off + 4;      
+
+    dd.day = GetIntFromArea(thp,off); off = off + 2;
+    dd.month = GetIntFromArea(thp,off); off = off + 2;
+    dd.year = GetIntFromArea(thp,off); off = off + 2;
+    off = off + 2;
 
     rwcnt = GetLongFromArea(thp,off); off = off + 4;
     
@@ -1208,13 +1230,156 @@ begin
     if (testf) then begin res = res + 1; end;
     
     for (j=0;j<rwcnt;j=j+1) begin
-      tstr = GetPStrFromArea(thp,off);
-      tstr = GetPStrFromArea(thp,off);
+      tstr = GetAlignedPStrFromArea(thp,off);
+      tstr = GetAlignedPStrFromArea(thp,off);
       if (triangflag and testf) then begin res = res + 1; end;
     end;
   end;
   
   ToDoWRowCnt = res;
+  return;
+end;
+
+global
+procedure ActsInDayNew2(string uscode,Date adp,LongInt maxdays,LongInt maxuser,Integer calsystem,
+                       var Array record ActDisp2Vc aADr)
+begin
+  record CompaniesBlock Compb;
+  row CompaniesBlock Comprw;
+  Integer rwcnt,i;
+  LongInt uscnt;
+  record ActVc Actr;
+  string 255 ckey,tstr,user;
+  Boolean TrHs,testf;
+  record ActTypeVc ATr;
+  record ActTypeGrVc atgr;
+  LongInt daycnt;
+  Integer pos;
+  Integer lenclass;
+  Date blankd;
+  Integer oldcomp;
+  record ActDisp2Vc ADr;
+  Date dp,td;
+  vector Boolean v_testf;
+  
+  oldcomp = CurrentCompany;  
+
+  pos = 0;
+  ExtractObj(uscode,pos,user);
+  if (blank(user)) then begin goto LActsInDayNew2; end;
+
+  BlockLoad(Compb);
+  rwcnt = MatRowCnt(Compb);
+  
+LActsInDayNewNextUser:;
+  daycnt = 0; 
+  dp = adp;
+LActsInDayNewNextDay:;
+  uscnt = 0;
+   
+  for (i=0;i<rwcnt;i=i+1) begin
+    MatRowGet(Compb,i,Comprw);
+    if (SetCompanyCode(Comprw.CompCode,false)) then begin
+      lenclass = 4;
+LActsInDayNewNextLenclass:;
+      ResetLoop(Actr);
+      ckey = "CalUserMain:";
+      ckey = ckey & user;
+
+      Actr.TodoFlag = 0;
+      Actr.TransDate = dp;
+      switch (lenclass) begin
+        case 4: Actr.TransDate = blankd;
+        case 3: Actr.TransDate = AddDay(Actr.TransDate,-366);
+        case 2: Actr.TransDate = AddDay(Actr.TransDate,-31);
+        case 1: Actr.TransDate = AddDay(Actr.TransDate,-7);
+        case 0: ;
+      end;
+      Actr.LengthClass = lenclass;
+      TrHs = true;
+      while (LoopKey(ckey,Actr,3,TrHs)) begin
+        if (Actr.TodoFlag!=0) then begin TrHs = false; end;
+        if (Actr.LengthClass!=lenclass) then begin TrHs = false; end;
+        if (Actr.TransDate>dp) then begin TrHs = false; end;
+        if (TrHs) then begin
+          testf = true;
+          if (nonblankdate(Actr.EndDate)) then begin
+            if (DateInRange(dp,Actr.TransDate,Actr.EndDate)==false) then begin testf = false; end;
+          end else begin
+            if (dp!=Actr.TransDate) then begin testf = false; end;
+          end;
+          if (Actr.CalTimeFlag==0) then begin testf = false; end;
+          if (Actr.Invalid!=0) then begin testf = false; end;
+          if (Actr.PrivateFlag!=0) then begin
+            tstr = CurrentUser;
+            if (SetInSet(tstr,Actr.MainPersons)==false) then begin testf = false; end;
+          end;  
+          if (testf) then begin
+            testf = CheckTodoAcess(uscode,Actr,CurrentUser)!=kAccessLevelNone;
+          end;
+          if (testf and !v_testf[Actr.SerNr]) then begin
+            v_testf[Actr.SerNr] = true;
+            RecordClear(ADr);
+            ADr.RecSerNr = Actr.SerNr;
+            ADr.VcNr = kResourceActVc;
+            ADr.Compnr = CurrentCompany;
+            ADr.CalTimeFlag = Actr.CalTimeFlag;
+            ADr.FromDate = Actr.TransDate;
+            ADr.FromTime = Actr.StartTime;
+            ADr.ToDate = Actr.EndDate;
+            if (Actr.EndDate>Actr.TransDate) then begin
+              ADr.ToTime = "23:59:59";
+            end else begin
+              ADr.ToTime = Actr.EndTime;
+            end;
+            ADr.Label = Actr.Comment; 
+            switch (ADr.CalTimeFlag) begin
+              case kCalTimeFlagProfile:
+                ADr.Color = 5;
+              otherwise
+                ADr.Color = 1;
+            end;
+            ATr.Code = Actr.ActType;
+            if (ReadFirstMain(ATr,1,true)) then begin
+              ATgr.Code = ATr.ActTypeGr;
+              if (ReadFirstMain(ATgr,1,true)) then begin
+                ADr.Color = atgr.CalColNr;
+              end;
+            end;        
+            ADr.Column = user;
+            aADr[aADr.length] = ADr;
+            if (Actr.EndDate>Actr.TransDate) then begin
+              td = AddDay(Actr.TransDate,1);
+              while (td<=Actr.EndDate) begin
+                ADr.FromDate = td;
+                ADr.FromTime = "00:00:00";
+                ADr.ToDate = td;
+                if (Actr.EndDate>td) then begin
+                  ADr.ToTime = "23:59:59";
+                end else begin
+                  ADr.ToTime = Actr.EndTime;
+                end;
+                aADr[aADr.length] = ADr;
+                td = AddDay(td,1);
+              end;
+            end;
+          end;
+        end;
+      end;
+      lenclass = lenclass - 1;
+      if (lenclass>=0) then begin goto LActsInDayNewNextLenclass; end;  
+    end;
+  end;
+
+  daycnt = daycnt + 1;
+  dp = AddDay(dp,1);
+  if (daycnt<maxdays) then begin goto LActsInDayNewNextDay; end;
+  ExtractObj(uscode,pos,user);
+  if (nonblank(user)) then begin goto LActsInDayNewNextUser; end;
+  
+LActsInDayNew2:;
+  ResetCompany(oldcomp);     
+
   return;
 end;
 
@@ -1238,6 +1403,7 @@ begin
   string 255 maincrmcompanies;
   record ActDisp2Vc ADr;
   Date dp,td;
+  vector Boolean v_testf;
   
   dp = adp;
 //  CalcResMonDays(calsystem,maxdays,dp,ddhp);// week nrs ? bank holidays ? 
@@ -1304,7 +1470,8 @@ LActsInDayNewNextLenclass:;
       if (testf) then begin
         testf = CheckTodoAcess(uscode,Actr,CurrentUser)!=kAccessLevelNone;
       end;
-      if (testf) then begin
+      if (testf and !v_testf[Actr.SerNr]) then begin
+        v_testf[Actr.SerNr] = true;
         RecordClear(ADr);
         ADr.RecSerNr = Actr.SerNr;
         ADr.VcNr = kResourceActVc;
@@ -1312,13 +1479,14 @@ LActsInDayNewNextLenclass:;
         ADr.CalTimeFlag = Actr.CalTimeFlag;
         ADr.FromDate = Actr.TransDate;
         ADr.FromTime = Actr.StartTime;
-        ADr.ToDate = Actr.EndDate;
         if (Actr.EndDate>Actr.TransDate) then begin
           ADr.ToTime = "23:59:59";
+          ADr.ToDate = Actr.TransDate;
         end else begin
           ADr.ToTime = Actr.EndTime;
+          ADr.ToDate = Actr.EndDate;
         end;
-        ADr.Label = Actr.Comment; 
+        ADr.Label = Actr.Comment;
         switch (ADr.CalTimeFlag) begin
           case kCalTimeFlagProfile:
             ADr.Color = 5;
@@ -1381,15 +1549,10 @@ L77Do_ActsInDayNew:;
   end;
   
 LActsInDayNew:;
-
   ResetCompany(oldcomp);     
-/*??
-  if (textf) then begin
-    l = TODODo_TimedToDos(uscode,"","","","","",3,0,0,2,sd,sd,ttdhp,0,2,CurrentUser);
-  end;  
-*/  
   return;
 end;
+
 
 global
 procedure FillCalendarRemote(record RcVc RepSpec,Integer maxdays,Integer calsys,var Array record ActDisp2Vc aADr)

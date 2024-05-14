@@ -5,8 +5,7 @@ remote updating procedure ForwardActivity(var record ActVc,Boolean);
 remote updating procedure ApproveActivity(var record ActVc,Boolean);
 remote function Boolean ApprovalActvityAttachments(record ActVc,var Array record RLinkVc);
 remote external function Boolean ReadAcceptanceRules(Integer,string,var record AcceptanceRulesVc);
-remote updating function Boolean CreateInvitationAndSend(longint,var longint,var string);
-remote procedure CreateInvitationAndSendRemote(longint);
+remote function Boolean CreateInvitationAndSendRemote(LongInt,val,var record MailVc);
 external function string 255 GetGlobalUserMainCompanies(string);
 external function Time TimeDiff(Time,Time);
 remote procedure ActDEndActivityServer(var record ActVc);
@@ -26,7 +25,13 @@ remote updating function LongInt MailFromActDsmRemote(record ActVc,var record Ma
 external procedure FindUserMailboxName(string,var string,var string);
 external function Boolean OpenContactRecord(string,string);
 external outer function Boolean OuterActDClassOpenFromSerNrRecord(record ActVc);
+remote procedure AttachAsteriskRecordingToActivity(string,string,LongInt,Integer);
+remote function Integer LATestApprovalStatus(record LeaveApplicationVc);
+remote function Integer DateIsBankHoliDay(Integer,Date);
+remote procedure DoCreateActFromLA(record ActVc,record LeaveApplicationVc,Date,Boolean);
+remote updating procedure UpdateCleaningActFinishedState(var record ActVc);
 remote updating procedure CreareActReply(var record ActVc,record ActVc);// Edit ************************** BPI Ukraine - KramarAlexandr - Thursday, 25 October 2018 14:13:42
+
 
 procedure DoNewActivity(Integer wn,string username,LongInt mother,Integer atodoflag)
 begin
@@ -129,7 +134,12 @@ begin
   if (GetWindowClass(wn)=="RecActDClass") then begin
     todoflag = kTodoFlagProject; 
   end;
-  
+  if (GetWindowClass(wn)=="CleanActDClass") then begin
+    todoflag = kTodoFlagCleanTask;
+  end;      
+  if (GetWindowClass(wn)=="MaintActDClass") then begin
+    todoflag = kTodoFlagRoomMaintenance;
+  end;
   if ((ProgramType==typFirstOffice) or 
       (ProgramType==typFirstOfficeSmall) or
       (ProgramType==typFirstOfficeCurrency) or
@@ -156,7 +166,7 @@ begin
   Actr.Supervisor = currentuser;// Edit ************************** BPI Ukraine - KramarAlexandr - Thursday, 16 November 2017 18:20:09
   
   Actr.Mother = mother;
-  if (GetWindowClass(wn)=="ActDClass" or GetWindowClass(wn)=="ProjActDClass") then begin
+  if (GetWindowClass(wn)=="ActDClass" or GetWindowClass(wn)=="ProjActDClass" or GetWindowClass(wn)=="CleanActDClass" or GetWindowClass(wn)=="MaintActDClass") then begin
     GetWindowRecord(wn,Act2r);
     if (blank(Actr.ActType)) then begin Actr.ActType = Act2r.ActType; end;
     if (blank(Actr.ActTypeComment)) then begin  Actr.ActTypeComment = Act2r.ActTypeComment; end;    
@@ -171,6 +181,10 @@ begin
       nwn = OpenWindow("RecActDClass",1,0,"","",Actr);
     case kTodoFlagProject:
       nwn = OpenWindow("ProjActDClass",1,wn,"","",Actr);
+    case kTodoFlagCleanTask:
+      nwn = OpenWindow("CleanActDClass",1,wn,"","",Actr);
+    case kTodoFlagRoomMaintenance:
+      nwn = OpenWindow("MaintActDClass",1,wn,"","",Actr);
     otherwise
       nwn = OpenWindow("ActDClass",1,wn,"","",Actr);
   end;
@@ -649,16 +663,27 @@ begin
   Boolean res;
   string 255 errorstr;
   longint errorcode;
-  integer wn;
+  integer wn,nwn;
   record ActVc Actr;
+  record LocalMachineBlock LMb;
+  record MailVc Mailr;
+
+  BlockLoad(LMb);
+  if (blank(LMb.GMTOffset)) then begin 
+    MessageBox(42506,"");
+    goto LSendInvitationDsm2;
+  end;
 
   wn = CurWindow;
   if (WindowState(wn)==Rs_normal) then begin
     GetWindowRecord(wn,Actr);
-    CreateInvitationAndSendRemote(Actr.SerNr);
+    if (CreateInvitationAndSendRemote(Actr.SerNr,LMb.GMTOffset,Mailr)) then begin
+      OpenWindow("MailDClass",1,0,"","",Mailr);
+    end;
   end else begin
     MessageBox(1356,errorstr);
   end;
+LSendInvitationDsm2:;
   return;
 end;
 
@@ -675,10 +700,14 @@ begin
   record ActVc Actr;
   
   wn = CurWindow;
-  GetWindowRecord(wn,Actr);
-  
-  DoNewActivity(wn,"",Actr.SerNr,kTodoFlagTodo);
-  //UpdateBrowses("ActVc");
+  if (WindowState(wn)==Rs_normal) then begin
+    GetWindowRecord(wn,Actr);
+    
+    DoNewActivity(wn,"",Actr.SerNr,kTodoFlagTodo);
+    //UpdateBrowses("ActVc");
+  end else begin
+    MessageBox(1356,"");
+  end;
   
   return;
 end;
@@ -794,7 +823,7 @@ function Boolean ToDoWClassAfterEditField(Integer wn,string fieldname,Integer fn
 begin
   Boolean res;
   record RcVc RepSpec; 
-  Date td; 
+  Date td;
   Boolean found;
   record ActVc Actr;
   string 255 index;
@@ -803,7 +832,7 @@ begin
   switch (fieldname) begin
     case "Period2Str":
       GetWindowRecord(wn,RepSpec);
-      In2Period(RepSpec.Period2Str,RepSpec.sStartDate,RepSpec.sEndDate);
+      In4Period(RepSpec.Period2Str,RepSpec.sStartDate,RepSpec.sEndDate);
       PutWindowRecord(wn,RepSpec);
     case "f1":
       GetWindowRecord(wn,RepSpec);
@@ -1055,8 +1084,10 @@ begin
 
   wn = CurWindow;  
   GetWindowRecord(wn,Actr);
+  ReportDefaults(RepSpec,"ActProjStatRClass");
   RepSpec.Media = mtScreen;
   RepSpec.f1 = Actr.SerNr;
+  RepSpec.ArtMode = 1;
   RepSpec.repname = "ActProjStatRn";
   RunReport(RepSpec,0);
   return;
@@ -1153,6 +1184,7 @@ begin
   record OPVc OPr;
   record LeaveApplicationVc LAr;
   record LeaveTransferVc LTr;
+//  record EPOrderDocVc EPOrderDocr;
   
   res = false;
   GetWindowRecord(wn,Actr);
@@ -1231,6 +1263,13 @@ begin
     res = true;
     goto LActDClassOpenFromSerNrRecord;
   end;
+/*
+  if (ReadRecordLink(Actr,1,EPOrderDocr,RLr)) then begin
+    OpenWindow("EPOrderDocDClass",0,0,"","",EPOrderDocr);
+    res = true;
+    goto LActDClassOpenFromSerNrRecord;
+  end;
+ */
   if (OuterActDClassOpenFromSerNrRecord(Actr)) then begin
     res = true;
     goto LActDClassOpenFromSerNrRecord;
@@ -1343,11 +1382,174 @@ LOpenTaskManagerOnLoginLsm:;
   return;
 end;
 
+function Boolean GetActivityTime(date td,row LeaveSchemeVc LSrw,var Time starttime,var Time endtime)
+begin
+  Boolean res;
+  
+  switch (GetDateId(td)) begin
+    case 1:
+      starttime =  LSrw.MonStartTime;     
+      endtime =  LSrw.MonEndTime;     
+      res = LSrw.Mondays==kIncludedinAllowance;
+    case 2:
+      starttime =  LSrw.TueStartTime;     
+      endtime =  LSrw.TueEndTime;     
+      res = LSrw.Tuesdays==kIncludedinAllowance;
+    case 3:
+      starttime =  LSrw.WedStartTime;     
+      endtime =  LSrw.WedEndTime;     
+      res = LSrw.Wednesdays==kIncludedinAllowance;
+    case 4:
+      starttime =  LSrw.ThuStartTime;     
+      endtime =  LSrw.ThuEndTime;     
+      res = LSrw.Thursdays==kIncludedinAllowance;
+    case 5:
+      starttime =  LSrw.FriStartTime;     
+      endtime =  LSrw.FriEndTime;     
+      res = LSrw.Fridays==kIncludedinAllowance;
+    case 6:
+      starttime =  LSrw.SatStartTime;     
+      endtime =  LSrw.SatEndTime;     
+      res = LSrw.Saturndays==kIncludedinAllowance;
+    case 7:
+      starttime =  LSrw.SunStartTime;     
+      endtime =  LSrw.SunEndTime;     
+      res = LSrw.Sundays==kIncludedinAllowance;
+  end;   
+  
+  GetActivityTime = res; 
+      
+  return;
+end;
+
+function Integer ActFromLA(var record LeaveApplicationVc LAr)
+begin
+  Integer res;
+  record HRMCOVc HRMCOr;
+  record LeaveSchemeVc LSr;
+  row LeaveSchemeVc LSrw;
+  Integer i,rwcnt;
+  record ActVc Actr;
+  Date td;
+  Boolean testf,foundf;
+  record LeaveRulesBlock LRb;
+  record HRMCOChangeVc HRMCOChanger;
+
+  BlockLoad(LRb);
+  
+  HRMCOr.Employee = LAr.Employee;
+  if (ReadFirstKey("Employee",HRMCOr,1,true)==false) then begin
+    res = 26121;
+    goto LActFromLA;
+  end;
+  LSr.Code = HRMCOr.LeaveScheme;
+  if (blank(LSr.Code)) then begin
+    foundf = true;
+    HRMCOChanger.HRMCOSerNr = HRMCOr.SerNr;
+    while (LoopKey("HRMCONrDate",HRMCOChanger,1,foundf)) begin 
+      if (HRMCOChanger.HRMCOSerNr!=HRMCOr.SerNr) then begin foundf = false; end;
+      if (foundf) then begin
+        testf = true;
+        if (blank(HRMCOChanger.LeaveScheme)) then begin testf = false; end;
+        //if (DateInRange(HRMCOChanger.TransDate,LAr.StartDate,LAr.EndDate)==false) then begin testf = false; end;
+        if (HRMCOChanger.TransDate>LAr.StartDate) then begin testf = false; end;
+        if (HRMCOChanger.OKFlag==0) then begin testf = false; end;
+        if (testf) then begin
+          LSr.Code = HRMCOChanger.LeaveScheme;
+        end;
+      end;
+    end;
+  end;
+  if (ReadFirstMain(LSr,1,true)==false) then begin
+    res = 26122;
+    goto LActFromLA;
+  end;
+  if (blankdate(LAr.StartDate)) then begin
+    res = 26123;
+    goto LActFromLA;
+  end;
+  if (LAr.OKFlag!=1) then begin
+    res = 26125;
+    goto LActFromLA;
+  end;
+  res = 26120;
+  rwcnt = MatRowCnt(LSr);
+  for (i=0;i<rwcnt;i=i+1) begin
+    MatRowGet(LSr,i,LSrw);
+    if (LAr.LeaveActType==LSrw.ActType) then begin
+      res = 0;
+      i = rwcnt;
+    end;
+  end;
+  if (res!=0) then begin
+    goto LActFromLA;
+  end;
+  Actr.FromFileName = "LeaveApplicationVc";
+  Actr.FromSerNr = LAr.SerNr;
+  if (ReadFirstKey("FromFileName",Actr,2,true)) then begin
+    goto LActFromLA;
+  end;    
+  if (LRb.AutCreateActivities==0) then begin
+    td = LAr.StartDate;
+    while (td<=LAr.EndDate) begin
+      RecordNew(Actr);
+      testf = GetActivityTime(td,LSrw,Actr.StartTime,Actr.EndTime);
+      if (testf) then begin
+        if (DateIsBankHoliDay(CalendarSystem,td)!=0) then begin
+          testf = LSrw.BankHolidays==kIncludedinAllowance;
+        end;
+      end;
+      if (testf) then begin
+        DoCreateActFromLA(Actr,LAr,td,false);
+      end;
+      td = AddDay(td,1);
+    end;  
+  end else begin
+    td = LAr.StartDate;
+    RecordNew(Actr);
+    testf = GetActivityTime(td,LSrw,Actr.StartTime,Actr.EndTime);
+    DoCreateActFromLA(Actr,LAr,td,true);
+  end;
+LActFromLA:;  
+  ActFromLA = res;
+  return;
+end;
+
+updating procedure CreateLArCalendarActivities(record ActVc Actr,record LeaveApplicationVc LAr)
+begin
+  Integer wn,err;
+  record LeaveApplicationVc oldLAr;
+  record RLinkVc RLr;
+
+  RecordCopy(oldLAr,LAr);
+  LAr.OKFlag = 1;
+  RecordUpdate(oldLAr,LAr,true);
+  err = LATestApprovalStatus(LAr);
+  if (err!=0) then begin
+    MessageBox(err,"");
+    goto LCreateCalendarActivities;
+  end;      
+  err = ActFromLA(LAr);
+  if (err!=0) then begin
+    MessageBox(err,"")
+  end else begin
+    CheckmarkBox(11686,"")
+  end;
+  
+LCreateCalendarActivities:;
+  return;
+end;
+
 global
 updating procedure ActDClassApproveActivity()
 begin
   record ActVc Actr;
   Integer wn;
+  record LeaveRulesBlock LRb;
+  record LeaveApplicationVc LAr;
+  record RLinkVc RLr;
+  
+  BlockLoad(LRb);
   
   wn = CurWindow;
   DeselectWindow(wn,false);
@@ -1359,6 +1561,9 @@ begin
   ApproveActivity(Actr,false);
   PutWindowRecord(wn,Actr);
   WindowDoOK(wn,0);
+  if (LRb.AutCreateActivities!=1 and ReadRecordLink(Actr,1,LAr,RLr)) then begin
+    CreateLArCalendarActivities(Actr,LAr);
+  end;
   
 LActDClassApproveActivity:;
 end;
@@ -1523,6 +1728,90 @@ begin
     nwn = OpenWindow("ActDClass",1,0,"","",wkfActr);
     SetRLink(wn,true);  
   end;
+  return;
+end;
+
+global
+procedure ShowCallTranscript(Integer wn,record ActVc Actr)
+begin
+  Integer i;
+  record NotepadVc NPr;
+  record RLinkVc RLr;
+  Boolean foundf;
+
+  while (ReadRecordLink(Actr,i,NPr,RLr)) begin
+    if (NPr.NoteType==kNoteTypeCallTranscript) then begin
+      foundf = true;
+      goto LShowCallTranscript_found_transcript;
+    end;
+    i = i + 1;
+  end;
+
+LShowCallTranscript_found_transcript:;
+  if (foundf) then begin
+    OpenRecordLink(0,RLr.ToRecidStr,0);
+  end else begin
+    AttachAsteriskRecordingToActivity(Actr.PBXConnection,Actr.PBXCallID,Actr.SerNr,CurrentCompany);
+  end;
+
+  return;
+end;
+
+global
+procedure ActDClassShowCallTranscript()
+begin
+  Integer wn,nwn,i;
+  record ActVc Actr;
+  record NotepadVc NPr;
+  record RLinkVc RLr;
+  Boolean foundf;
+
+  wn = CurWindow;
+  GetWindowRecord(wn,Actr);
+
+  if (blank(Actr.PBXCallID)) then begin
+    Beep;
+    goto LActDClassShowCallTranscript;
+  end;
+
+  ShowCallTranscript(wn,Actr);
+
+LActDClassShowCallTranscript:;
+  return;
+end;
+
+global
+procedure DisplayCallTranscriptForActivity(record ActVc Actr)
+begin
+  record ActVc Act2r;
+  Integer wn;
+
+  wn = FindWindow("ActDClass");
+  if (wn>0) then begin
+    GetWindowRecord(wn,Act2r);
+    if ((Act2r.SerNr==Actr.SerNr) and (Actr.MainPersons==CurrentUser)) then begin
+      ShowCallTranscript(wn,Actr);
+    end;
+  end;
+  return;
+end;
+
+global
+updating procedure ActDClassCleanFinishedState()
+begin
+  Integer wn;
+  record ActVc Actr;
+  
+  wn = CurWindow;
+  GetWindowRecord(wn,Actr);
+  
+  if (Actr.OKFlag!=0) then begin goto LActDClassCleanFinishedState; end;
+  UpdateCleaningActFinishedState(Actr);
+
+  PutWindowRecord(wn,Actr);
+  WindowDoOK(wn,0);
+  
+LActDClassCleanFinishedState:;
   return;
 end;
 

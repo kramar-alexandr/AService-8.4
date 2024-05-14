@@ -1,3 +1,4 @@
+external procedure MockObjFromRvrsVATCode(string,var string);
 external updating procedure BatchSMMainAccrual(record SMVc,Boolean);
 external function Boolean VATCodeExists(string);
 external procedure TransAccTurnover(string,string,Date,Date,Integer,Integer,Integer,string,string,var val,var val);
@@ -164,8 +165,8 @@ BEGIN
 END;
 
 global
-updating procedure UpdateBal(var Date PerDate,string accnumber,string objstr,
-                    val dvp,val cvp,string colname,string vatcodes,Boolean toarchive)
+updating procedure UpdateBal2(var Date PerDate,string accnumber,string objstr,
+                    val dvp,val cvp,string colname,string vatcodes,string rvrsvatcodes,Boolean toarchive)
 BEGIN
   Integer pos;
   string 255 ostr,vatcode;
@@ -192,8 +193,25 @@ BEGIN
         ExtractObj(vatcodes,pos,vatcode);
       end;
     end;
+    if (nonblank(rvrsvatcodes)) then begin
+      pos = 0;
+      ExtractObj(rvrsvatcodes,pos,vatcode);
+      while (nonblank(vatcode)) begin 
+        MockObjFromRvrsVATCode(vatcode,ostr);
+        UpdateObjBal(accnumber,ostr,PerDate,dvp,cvp,colname,toarchive);
+        ExtractObj(rvrsvatcodes,pos,vatcode);
+      end;
+    end;
   end;
 LUpdateBal:;
+  RETURN;
+END;
+
+global
+updating procedure UpdateBal(var Date PerDate,string accnumber,string objstr,
+                    val dvp,val cvp,string colname,string vatcodes,Boolean toarchive)
+BEGIN
+  UpdateBal2(PerDate,accnumber,objstr,dvp,cvp,colname,vatcodes,"",toarchive);
   RETURN;
 END;
 
@@ -390,7 +408,7 @@ begin
   Integer res;
   record SMVc SMr;
   row SMVc SMrw;
-  Integer rwcnt,i;
+  Integer rwcnt,i,simstat;
   Boolean found;
   
   res = 0;
@@ -404,7 +422,9 @@ begin
       rwcnt = MatRowCnt(SMr);
       for (i=0;i<rwcnt;i=i+1) begin
         MatRowGet(SMr,i,SMrw);
-        if (SMrw.RowSimStat!=0) then begin
+        simstat = SMrw.RowSimStat;
+        if (simstat==kSimulationRowTypeDefault) then begin simstat = SMr.SimStat; end;
+        if (simstat!=kSimulationRowTypeActive) then begin
           res = 7833;
           goto LAccrualSimulationsTransferred;
         end;
@@ -917,3 +937,24 @@ LFindNL:;
   RETURN;
 END;
 
+global
+procedure GetVATCodeSalesAccs(string vatcode,var string svatacc,var string pvatacc)
+begin
+  record VATCodeBlock VATRec;
+  row VATCodeBlock vatrw;
+  Integer i,rwcnt;
+
+  BlockLoad(VATRec);
+  svatacc = "";  
+  pvatacc = "";  
+  rwcnt = MatRowCnt(VATRec);  
+  for (i=0;i<rwcnt;i=i+1) begin
+    MatRowGet(VATRec,i,vatrw);
+    if (vatrw.VATCode==vatcode) then begin 
+      svatacc = vatrw.SalesVATAcc;
+      pvatacc = vatrw.PaySalesVATAcc;
+      i = rwcnt;
+    end;  
+  end;  
+  return;
+end;

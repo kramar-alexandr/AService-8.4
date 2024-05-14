@@ -60,10 +60,10 @@ external procedure GetFullCurncyRate (var string,Date,var val,var val,var val,va
 external procedure GetCurUser(var record UserVc);
 external procedure IVVc_PasteSalesMan(var record IVVc,string);
 external procedure FindUserMailboxName(string,var string,var string);
+external procedure GetUserDefActTypes(string,string,var string,var Integer,var Integer);
+external function Boolean FindStringInString(string,string);
 external function longint GetUserSerNrSeries(longint);// Edit ************************** Tuesday, 2 June 2015 18:37:37
 external function string 255 StrReplace(string,string,string);
-
-
 
 function Boolean IVRowItemEq(record IVVc IVp,record WSIVVc WSIVp,record INVc INp,string rowobjs,string SalesAcc,var Integer rownr)
 begin
@@ -152,6 +152,7 @@ begin
       IVp.ExportFlag = CUr.ExportFlag;
       IVp.CustVATCode = CUr.VATCode;
       IVp.FiscalFlag = CUr.FiscalFlag;
+      IVp.PayLinkFlag = CUr.PayLinkFlag;
     end else begin
       goto L20MakeInvHeader; // if customer is not found then use the original customer 
     end;
@@ -172,6 +173,7 @@ L20MakeInvHeader:;
       IVp.RegNr1 = CUr.RegNr1;
       IVp.ExportFlag = CUr.ExportFlag;
       IVp.FiscalFlag = CUr.FiscalFlag;
+      IVp.PayLinkFlag = CUr.PayLinkFlag;
     end;
   end;
   IVp.PriceList = SVOp.PriceList;
@@ -286,6 +288,8 @@ begin
   row WSVc WSrw;
   record SVOVc oldSVOr;
   row IVVc IVrw;
+  record RetVc Retr;
+  row RetVc Retrw;
   Boolean infound,TrHs,testf;
   Boolean res,itemexistf;
   Integer srw,rownr,oldstyle,i;
@@ -336,51 +340,58 @@ begin
     if (TrHs==false) then begin testf = false; end;
     if (testf) then begin
     if ((WSIVr.Type==1) and (WSIVr.InvNr==-1)) then begin//Inoicable
-    		
-    		
-       SVOr.SerNr = WSIVr.SVONr;
-       if (ReadFirstMain(SVOr,1,true)) then begin end;
-       RecordCopy(oldWSIVr,WSIVr);
-       INr.Code = WSIVr.ArtCode;
-       ReadFirstMain(INr,1,true);
-       itemexistf = false;
-       ClearRow(WSr,WSrw,1);
-       rowobjects = "";
-       SalesAcc = "";
-       switch (WSIVr.RecType) begin
-         case 0:
-           WSr.SerNr = WSIVr.SerNr;
-           if (ReadFirstMain(WSr,1,true)) then begin
-							if(WSr.ASBISFlag==1)then begin
-								IVp.CustCode = "ASBIS";// Edit ************************** BPI Ukraine - KramarAlexandr - Thursday, 15 November 2018 14:35:13
-							end;
-						 IVp.SalesFlag = WSr.SalesFlag;// Edit ************************** BPI Ukraine - KramarAlexandr - 04, 19 09 2019 y. at 3:43:45 PM
-						 IVp.TransDate = WSr.TransDate;// Edit ************************** Monday, 7 September 2015 10:33:04
-						 IVp.InvDate = WSr.TransDate;// Edit ************************** Monday, 7 September 2015 10:33:05
-             blockload(OAb); //Edit***************************Sasha2,15:01 20.06.2014
-             mtrw = matrowcnt(OAb);
-             For(j=0;j<mtrw;j=j+1) begin
-               matrowget(OAb,j,OArw);
-               if(setinset(OArw.Objects,WSr.Objects))then begin
-                 salesacc = OArw.SaleAccCode;// Edit ************************** Monday, 23 June 2014 09:57:01
-                 j = mtrw;			 
-               end;
-             end; //Edit***************************Sasha2,15:01 20.06.2014
-             MatRowGet(WSr,WSIVr.Row,WSrw);
-             if (SVOAb.WSHeaderObjectOnSVOIV!=0) then begin
-               rowobjects = WSr.Objects;
-             end;             
-             rowobjects = AddObjectToObjectList(rowobjects,WSrw.Objects);        
-             if (blank(WSrw.Objects)) then begin
-               rowobjects = AddObjectToObjectList(rowobjects,INr.Objects);        
+      SVOr.SerNr = WSIVr.SVONr;
+      if (ReadFirstMain(SVOr,1,true)) then begin end;
+      RecordCopy(oldWSIVr,WSIVr);
+      INr.Code = WSIVr.ArtCode;
+      ReadFirstMain(INr,1,true);
+      itemexistf = false;
+      ClearRow(WSr,WSrw,1);
+      rowobjects = "";
+      SalesAcc = "";
+      switch (WSIVr.RecType) begin
+        case kWSIVRecTypeWorkSheet:
+          WSr.SerNr = WSIVr.SerNr;
+          if (ReadFirstMain(WSr,1,true)) then begin
+            if(WSr.ASBISFlag==1)then begin
+              IVp.CustCode = "ASBIS";// Edit ************************** BPI Ukraine - KramarAlexandr - Thursday, 15 November 2018 14:35:13
+            end;
+            IVp.SalesFlag = WSr.SalesFlag;// Edit ************************** BPI Ukraine - KramarAlexandr - 04, 19 09 2019 y. at 3:43:45 PM
+            IVp.TransDate = WSr.TransDate;// Edit ************************** Monday, 7 September 2015 10:33:04
+            IVp.InvDate = WSr.TransDate;// Edit ************************** Monday, 7 September 2015 10:33:05
+            blockload(OAb); //Edit***************************Sasha2,15:01 20.06.2014
+            mtrw = matrowcnt(OAb);
+            For(j=0;j<mtrw;j=j+1) begin
+             matrowget(OAb,j,OArw);
+             if(setinset(OArw.Objects,WSr.Objects))then begin
+               salesacc = OArw.SaleAccCode;// Edit ************************** Monday, 23 June 2014 09:57:01
+               j = mtrw;			 
              end;
-           end;
-           if (SVOAb.WSHeaderObjectOnSVOIV==0) then begin
-             rowobjects = AddObjectToObjectList(rowobjects,INr.Objects);        
-           end;
-           SalesAcc = WSrw.SalesAcc;
-         case 1:
-           rowobjects = INr.Objects;
+            end; //Edit***************************Sasha2,15:01 20.06.2014
+            MatRowGet(WSr,WSIVr.Row,WSrw);
+            if (SVOAb.WSHeaderObjectOnSVOIV!=0) then begin
+              rowobjects = WSr.Objects;
+            end;             
+            rowobjects = AddObjectToObjectList(rowobjects,WSrw.Objects);        
+            if (blank(WSrw.Objects)) then begin
+              rowobjects = AddObjectToObjectList(rowobjects,INr.Objects);        
+            end;
+          end;
+          if (SVOAb.WSHeaderObjectOnSVOIV==0) then begin
+            rowobjects = AddObjectToObjectList(rowobjects,INr.Objects);        
+          end;
+          SalesAcc = WSrw.SalesAcc;
+        case kWSIVRecTypeActivity:
+          rowobjects = INr.Objects;
+        case kWSIVRecTypeReturnGoods:
+          Retr.SerNr = WSIVr.SerNr;
+          if (ReadFirstMain(Retr,1,true)) then begin
+            MatRowGet(Retr,WSIVr.Row,Retrw);
+            rowobjects = AddObjectToObjectList(rowobjects,Retrw.Objects);        
+            if (blank(Retrw.Objects)) then begin
+              rowobjects = AddObjectToObjectList(rowobjects,INr.Objects);        
+            end;
+          end;
        end;
        if (IVRowItemEq(IVp,WSIVr,INr,rowobjects,SalesAcc,rownr)==false) then begin
          ClearRow(IVp,IVrw,1);
@@ -426,10 +437,13 @@ begin
          IVrw.FIFO = blankval;
          IVrw.FIFORowVal = blankval;
          switch (WSIVr.RecType) begin
-           case 0:
+           case kWSIVRecTypeWorkSheet:
              IVrw.SalesAcc = WSrw.SalesAcc;
              IVrw.FIFO = WSrw.FIFO;
              IVrw.FIFORowVal = WSrw.FIFORowVal;
+           case kWSIVRecTypeReturnGoods:
+             IVrw.FIFO = -Retrw.CostPrice;
+             IVrw.FIFORowVal = IVrw.Quant * Retrw.CostPrice;
          end;
          if (blank(IVrw.SalesAcc)) then begin
            GetItemSalesAcc(INr.Code,IVp.ExportFlag,tstr);
@@ -440,10 +454,7 @@ begin
          end else begin
            GetItemSalesAcc(INr.Code,IVp.ExportFlag,tstr);
            IVrw.SalesAcc = tstr;
-         end; //Edit***************************Sasha2,15:07 20.06.2014
-         //GetItemSalesAcc(INr.Code,IVp.ExportFlag,tstr); //Edit***************************Sasha2,15:07 20.06.2014
-         //IVrw.SalesAcc = tstr; //Edit***************************Sasha2,15:07 20.06.2014
-         
+         end; //Edit***************************Sasha2,15:07 20.06.2014         
          
          Accr.AccNumber = IVrw.SalesAcc;
          ReadFirstMain(Accr,1,true);
@@ -1091,7 +1102,7 @@ begin
       end;  
     end;  
   end;    
-  BlockLoad(AcceptSet) 
+  BlockLoad(AcceptSet);
   if (IntORp.StatusFlag<>1) and (AcceptSet.ForceAcceptIntOR<>0) then begin
     res = -4;
     goto LRecordAction_raPasteIntOrdInStockMov;
@@ -1357,6 +1368,7 @@ begin
     end;
   end;
   BlockLoad(ASTRec);
+  GetUserDefActTypes(CurrentUser,"GenSalesOrd",ASTRec.GenSalesOrd,ASTRec.GenOrder,ASTRec.OrderDone);
   Actr.ActType = ASTRec.GenSalesOrd;
   if (PasteActTypeInAct("",Actr)) then begin
   end;
@@ -1396,7 +1408,6 @@ end;
 global
 updating function Boolean MakeActFromCU(record CUVc CUr,var record ActVc Actr,Boolean readf)
 begin
-  record ASTBlock ASTRec;
   Integer curcomp;
   Boolean res;
   record ContactRelVc ContactRelr;
@@ -1418,13 +1429,12 @@ begin
   end;
   if (blank(Actr.Contact)) then begin Actr.Contact = CUr.Person; end;
   if (blank(Actr.Phone)) then begin Actr.Phone = CUr.Phone; end;
-  BlockLoad(ASTRec);
   Actr.TransDate = CurrentDate;
   Actr.TodoFlag = 1;
   Actr.SerNr = NextSerNr("ActVc",Actr.TransDate,-1,false,"");
   if (RecordStore(Actr,false)) then begin
-//    CreateRecordLink(Actr,curcomp,CUr,curcomp); we dont like it
-//    CreateRecordLink(CUr,curcomp,Actr,curcomp);
+    CreateRecordLink(Actr,curcomp,CUr,curcomp);
+    CreateRecordLink(CUr,curcomp,Actr,curcomp);
     res = true;
   end;
   MakeActFromCU = res;
@@ -1434,7 +1444,6 @@ end;
 global
 function Boolean MakeMailFromCU(record CUVc CUr,var record MailVc Mailr,Boolean readf)
 begin
-  record ASTBlock ASTRec;
   Boolean res;
   string 255 tstr;
   row MailVc marw;
@@ -1531,6 +1540,7 @@ begin
   record CUVc CUr;
   Integer curcomp;
   Boolean res;
+  Integer tmp;
 
   if (ReadFirstMain(QTr,0,true)) then begin end;  
   curcomp = CurrentCompany;
@@ -1553,6 +1563,7 @@ begin
     end;
   end;
   BlockLoad(ASTRec);
+  GetUserDefActTypes(CurrentUser,"Quotes",ASTRec.Quotes,tmp,ASTRec.QuotesDone);
   Actr.ActType = ASTRec.Quotes;
   if (PasteActTypeInAct("",Actr)) then begin
   end;
@@ -1563,7 +1574,10 @@ begin
     Actr.EndDate = StringToDate(QTr.MakeContactDate);
   end else begin
     Actr.TransDate = QTr.QTDate;
-  end;  
+  end;
+  if (nonblank(Actr.EndDate) and Actr.EndDate<Actr.TransDate) then begin
+    Actr.EndDate = Actr.TransDate;
+  end;
   SetActTypeValues(Actr);
   Actr.MainPersons = QTr.SalesMan;
   if (QTr.SalesMan!=CurrentUser) then begin
@@ -1586,6 +1600,7 @@ begin
   record CUVc CUr;
   Integer curcomp;
   Boolean res;
+  Integer tmp;
 
   if (ReadFirstMain(RentQTr,0,true)) then begin end;  
   curcomp = CurrentCompany;
@@ -1607,6 +1622,8 @@ begin
     end;
   end;
   BlockLoad(ASTRec);
+  GetUserDefActTypes(CurrentUser,"Quotes",ASTRec.Quotes,tmp,ASTRec.QuotesDone);
+  GetUserDefActTypes(CurrentUser,"RentQT",ASTRec.RentQT,tmp,ASTRec.RentQTDone);
   Actr.ActType = ASTRec.RentQT;
   if (blank(Actr.ActType)) then begin
     Actr.ActType = ASTRec.Quotes;
@@ -1615,9 +1632,9 @@ begin
   end;
   SetActTypeValues(Actr);
   Actr.OKFlag = ASTRec.RentQTDone;
-  if (Actr.OKFlag==0) then begin
-    Actr.OKFlag = ASTRec.QuotesDone;
-  end;
+//  if (Actr.OKFlag==0) then begin
+//    Actr.OKFlag = ASTRec.QuotesDone;
+//  end;
   if (nonblank(RentQTr.MakeContactDate)) then begin
     Actr.TransDate = StringToDate(RentQTr.MakeContactDate);
     Actr.EndDate = StringToDate(RentQTr.MakeContactDate);
@@ -1648,6 +1665,7 @@ begin
   Integer rownr;
   row SVOVc SVOrw;
   record ASTBlock ASTb;
+  Integer tmp;
 
   if (ReadFirstMain(SVOr,0,true)) then begin end;  
   curcomp = CurrentCompany;
@@ -1681,6 +1699,7 @@ begin
   Actr.TransDate = currentdate;// Edit ************************** 29/08/2017
   
   BlockLoad(ASTb);
+  GetUserDefActTypes(CurrentUser,"GenServOrder",ASTb.GenServOrder,tmp,ASTb.SVODone);
   Actr.ActType = ASTb.GenServOrder;
   if (PasteActTypeInAct("",Actr)) then begin
   end;
@@ -1691,7 +1710,6 @@ begin
   if (SVOr.SalesMan!=CurrentUser) then begin
     //Actr.CCPersons = CurrentUser;
   end;
-  //Actr.CCPersons = "SEREGA";// Edit ************************** Monday, 21 August 2017 17:41:21
   Actr.SVOSerNr = SVOr.SerNr;
   if (MatRowCnt(SVOr)>0) then begin
     rownr = activerow;
@@ -1716,12 +1734,10 @@ begin
   record CUVc CUr;
   Integer curcomp;
   Boolean res;
-  record ASTBlock ASTb;
   row SVOVc SVOrw;
   Integer i,rwcnt;
   string 255 frrlink,torlink,warning;
 
-  BlockLoad(ASTb);
   curcomp = CurrentCompany;
 
   RecordNew(SVOr);
@@ -1754,6 +1770,7 @@ begin
   record CUVc CUr;
   Integer curcomp;
   Boolean res;
+  Integer tmp;
 
   if (ReadFirstMain(WOr,0,true)) then begin end;  
   curcomp = CurrentCompany;
@@ -1776,6 +1793,7 @@ begin
     end;
   end;
   BlockLoad(ASTb);
+  GetUserDefActTypes(CurrentUser,"GenWorkOrd",ASTb.GenWorkOrd,tmp,ASTb.WorkOrdDone);
   Actr.ActType = ASTb.GenWorkOrd;
   if (PasteActTypeInAct("",Actr)) then begin
   end;
@@ -1803,6 +1821,7 @@ begin
   record CUVc CUr;
   Integer curcomp;
   Boolean res;
+  Integer tmp;
 
   if (ReadFirstMain(WSr,0,true)) then begin end;  
   curcomp = CurrentCompany;
@@ -1825,6 +1844,7 @@ begin
     end;
   end;
   BlockLoad(ASTb);
+  GetUserDefActTypes(CurrentUser,"GenWorkSheet",ASTb.GenWorkSheet,tmp,ASTb.WorkSheetDone);
   Actr.ActType = ASTb.GenWorkSheet;
   if (PasteActTypeInAct("",Actr)) then begin
   end;
@@ -1853,6 +1873,7 @@ begin
   record CUVc CUr;
   Integer curcomp;
   Boolean res;
+  Integer tmp;
 
   if (ReadFirstMain(HRMPAr,0,true)) then begin end;  
   curcomp = CurrentCompany;
@@ -1870,6 +1891,7 @@ begin
     end;
   end;
   BlockLoad(ASTb);
+  GetUserDefActTypes(CurrentUser,"PerformanceAppraisal",ASTb.PerformanceAppraisal,tmp,ASTb.PerformanceAppraisalDone);
   Actr.ActType = ASTb.PerformanceAppraisal;
   if (PasteActTypeInAct("",Actr)) then begin
   end;
@@ -1898,8 +1920,10 @@ begin
   Integer curcomp;
   Boolean res;
   record ASTBlock ASTb;
+  Integer tmp;
 
   BlockLoad(ASTb);
+  GetUserDefActTypes(CurrentUser,"SVOSer",ASTb.SVOSer,tmp,ASTb.SVOSerDone);
   curcomp = CurrentCompany;
   RecordNew(Actr);
   Actr.SerNr = -1;
@@ -1941,8 +1965,12 @@ begin
   record ContactRelVc ContactRelr;
   record ASTBlock ASTb;
   record ActVc Act2r;
+  Integer tmp;
 
   BlockLoad(ASTb);
+  GetUserDefActTypes(CurrentUser,"AsteriskCalls",ASTb.AsteriskCalls,tmp,ASTb.AsteriskCallsDone);
+  GetUserDefActTypes(CurrentUser,"ServerAsteriskCalls",ASTb.ServerAsteriskCalls,tmp,ASTb.ServerAsteriskCallsDone);
+  GetUserDefActTypes(CurrentUser,"SkypeCalls",ASTb.SkypeCalls,tmp,ASTb.SkypeCallsDone);
   oldcomp = CurrentCompany;
   if (company>-1) then begin
     SetCompany(company,false);
@@ -2071,8 +2099,10 @@ begin
   Integer curcomp;
   Boolean res;
   record ASTBlock ASTb;
+  Integer tmp;
 
   BlockLoad(ASTb);
+  GetUserDefActTypes(CurrentUser,"SMS",ASTb.SMS,tmp,ASTb.SMSDone);
   curcomp = CurrentCompany;
   RecordNew(Actr);
   Actr.SerNr = -1;
@@ -2126,6 +2156,7 @@ begin
   Boolean res;
   Integer rownr;
   record ASTBlock ASTb;
+  Integer tmp;
 
   if (ReadFirstMain(RsrtEventr,0,true)) then begin end;  
   curcomp = CurrentCompany;
@@ -2141,6 +2172,7 @@ begin
   Actr.Resources = RsrtEventr.ResCode;
 
   BlockLoad(ASTb);
+  GetUserDefActTypes(CurrentUser,"RsrtEvent",ASTb.RsrtEvent,tmp,ASTb.RsrtEventDone);
   Actr.ActType = ASTb.RsrtEvent;
   if (PasteActTypeInAct("",Actr)) then begin
   end;
@@ -2602,6 +2634,85 @@ begin
   return;
 end;
 
+procedure AddToArray(string trainingpackcode,Array string acodes, var Integer acnt)
+begin
+  Integer i;
+
+  acodes[acnt] = trainingpackcode;
+  acnt = acnt + 1;
+  
+  return;
+end;
+
+updating procedure CreateTrainingPlan(string trainingTopic,string trainingTopicDecs,record CUVc CUr)
+begin
+  record TrainingPlanVc TrainingPlanr;
+  
+  RecordNew(TrainingPlanr);
+  TrainingPlanr.Employee = CUr.Code;
+  TrainingPlanr.Name = CUr.Name;
+  TrainingPlanr.Topic = trainingTopic;
+  TrainingPlanr.Description = trainingTopicDecs;
+  TrainingPlanr.SerNr = NextSerNr("TrainingPlanVc",CurrentDate,-1,true,"");
+  RecordStore(TrainingPlanr,false);
+  return;
+
+end;
+
+function Boolean IsAlreadyCreatedTrainingPlan(record CUVc CUr,string trainingtopic)
+begin
+  Boolean res,TrHs,testf;
+  Integer i;
+  record TrainingPlanVc TrainingPlanr;
+
+  res = false;
+  TrHs = true;
+  TrainingPlanr.Employee = CUr.Code;
+  while (LoopKey("Employee", TrainingPlanr,1,TrHs)) begin
+    if (TrHs) then begin
+      testf = true;
+      if (TrainingPlanr.Employee!= CUr.Code) then begin testf = false; end;
+    end;
+    if (testf) then begin
+      if (TrainingPlanr.Topic==trainingtopic) then begin 
+        res = true; 
+        goto LIsAlreadyCreatedTrainingPlan; 
+      end;
+    end;
+  end;
+LIsAlreadyCreatedTrainingPlan:;  
+  IsAlreadyCreatedTrainingPlan = res;
+  return;
+end;  
+
+global
+updating procedure MakeTrainingPlanFromCU(record CUVc CUr,var Integer rwcnt)
+begin
+  Integer acnt,i,j;
+  record TrainingPackVc TrainingPackr;
+  row TrainingPackVc TrainingPackrw;
+  array string 255 acodes;
+
+  while (LoopKey("RequiredFor",TrainingPackr,1,true)) begin
+    if (FindStringInString(TrainingPackr.RequiredFor,CUr.JobDesc)) then begin
+        AddToArray(TrainingPackr.Code,acodes,acnt);
+    end;
+  end;
+  
+  for (i=0;i<acnt;i=i+1) begin
+    TrainingPackr.Code = acodes[i];
+    ReadFirstMain(TrainingPackr,1,true);
+    rwcnt = MatRowCnt(TrainingPackr);
+    for (j=0;j<rwcnt;j=j+1) begin
+      MatRowGet(TrainingPackr,j,TrainingPackrw);
+      if (IsAlreadyCreatedTrainingPlan(CUr,TrainingPackrw.TrainingTopic)==false) then begin
+        CreateTrainingPlan(TrainingPackrw.TrainingTopic,TrainingPackrw.Comment,CUr);
+      end;
+    end;
+  end;
+  return;
+end;
+
 global
 updating procedure PhonesFromSVOMn(record RcVc RepSpec)
 begin
@@ -2982,4 +3093,3 @@ string 50 tstr;
 
 return;
 end;
-
