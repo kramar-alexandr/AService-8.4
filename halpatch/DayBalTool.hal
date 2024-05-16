@@ -450,10 +450,14 @@ BEGIN
   if (inval==0) then begin goto LAddSMRow; end;
   if (blank(acc)) then begin goto LAddSMRow; end;
   linval = Round(inval,DefaultRoundMode);
+
   if (objs!="-1") then begin
     NoDupObjs(objs,objects);
     AutoObj(objects);
   end;
+    if (blank(objects)) then begin
+  //HalCallStack;
+    end;
   found = false;
   rwcnt = MatRowCnt(SMp);
   if (accf) then begin

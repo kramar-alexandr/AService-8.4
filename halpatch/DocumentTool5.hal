@@ -961,6 +961,7 @@ begin
 
     OUTFORMFIELD("F_BRANCHREGNUMBER1",CUr.RegNr1);
     OUTFORMFIELD("F_BRANCHREGNUMBER2",CUr.RegNr2);
+    OUTFORMFIELD("F_BRANCH",BranchID);
   end;
   return;
 end;
@@ -1042,5 +1043,47 @@ begin
   res = res & chr(13) & chr(10);
   
   OMRCode = res;
+  return;
+end;
+
+global 
+updating procedure FormSetDocumentFilename(string fname)
+begin
+  SetDocumentFilename(fname);
+  return;
+end;
+
+global 
+updating function Boolean FormLinkDocumentFilenames(record MailVc Mailr,string PDFEmailFiles)
+begin
+  Boolean res;
+  LongInt pos;
+  string 255 fname;
+  
+  pos = 0;
+  while (GetNextSubstring(PDFEmailFiles,pos,",",fname)) begin
+    if (FileExists(fname)) then begin
+      RecordLinkFile(fname,0,Mailr,CurrentCompany);
+      Delete_File(fname);
+      res = true;
+    end;
+  end;
+  FormLinkDocumentFilenames = res;
+  return;
+end;
+
+global
+function string 255 FormGetDocumentFileNameForEmail(string PDFEmailFiles,string basestr,string formcode)
+begin
+  string 255 res;
+
+  res = "tmp/" & basestr & ".pdf";
+
+  if (nonblank(PDFEmailFiles) and SetInSet(res,PDFEmailFiles)) then begin
+    //Adding formcode doesn't seem the best idea, but we should never get here
+    res = basestr "-" & formcode & ".pdf";
+  end;
+  
+  FormGetDocumentFileNameForEmail = res;
   return;
 end;

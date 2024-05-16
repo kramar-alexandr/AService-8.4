@@ -24,6 +24,12 @@ external procedure B1ToB2Val(val,val,val,var val);
 external procedure GetFullCurncyRate (var string,Date,var val,var val,var val,var val,var val);
 external function Integer CountObjects(string);
 external procedure ExtractElemFromSet(string,integer,var string);
+external procedure AmazonMWSSendItem(string);
+external procedure AmazonMWSUpdStockSingleItem(string,Integer);
+external procedure AmazonMWSUpdPriceSingleItem(string,val);
+external procedure EbayCreateOrReplaceInventoryItem(string);
+external procedure AmazonMWSDeleteInventoryItem(string);
+external function Boolean HasAvalara();
 
 global
 function Boolean GetNextItemNr(var string itemnr)
@@ -221,8 +227,16 @@ global
 function LongInt INVcRecordRemove(var record INVc INr,record INVc IN2r,LongInt long3,LongInt long4)
 begin
   LongInt res;
+  string 255 itemcode;
 
   threadasync.SugarCRM_DELETE_INVc(INr);
+  if (INr.SyncToAmazon) then begin
+    itemcode = INr.Code;
+    if (nonblank(INr.AmazonSKU)) then begin
+      itemcode = INr.AmazonSKU;
+    end;
+    AmazonMWSDeleteInventoryItem(itemcode);
+  end;
   INVcRecordRemove = res; 
   return;
 end;
@@ -274,6 +288,11 @@ begin
     INr.ItemType = kItemTypeService;
   end;
   INr.colnr = 20;
+  if (HasLocalization("USA") and (BuildProductCode=="StandardAccounts" or BuildProductCode=="StandardPOS" or
+      BuildProductCode=="StandardHotel" or BuildProductCode=="StandardRestaurant")) then begin
+    INr.TaxTemplateCode = "DF";
+  end;
+
   INVcRecordDefaults = res; 
   return;
 end;
@@ -295,6 +314,8 @@ begin
   INr.LastPurchCurncyCode = "";
   INr.LastPriceChange = CurrentDate;
   INr.LastBasePriceChange = CurrentDate;
+  INr.SyncToAmazon = 0;
+  INr.AmazonSKU = "";
   INr.Terminated = 0;
   INVcRecordDuplicate = res; 
   return;
@@ -307,6 +328,7 @@ begin
   record SRBlock SRb;
   string 255 lastitemnr,curitemnr;
   LongInt lastinnr,curinnr;
+  record ItemStatusVc ISr;
 
   BlockLoad(SRb);
   SplitAlphaDigit(SRb.LastArtCode,lastitemnr,lastinnr);
@@ -320,12 +342,12 @@ begin
     SRb.LastArtCode = INr.Code;
     BlockStore(SRb);
   end;
-
   INr.LastPriceChange = CurrentDate;
   INr.LastBasePriceChange = CurrentDate;
   if (INr.colnr==0) then begin 
     INr.colnr = 20;
   end;
+
   INVcRecordSave = res; 
   return;
 end;
@@ -361,6 +383,7 @@ end;
 global
 function LongInt INVcRecordUpdate(var record INVc INr,record INVc IN2r,LongInt stat,LongInt long4)
 begin
+  record ItemStatusVc ISr;
   LongInt res;
 
   if (IN2r.InPrice!=INr.InPrice) then begin
@@ -369,6 +392,7 @@ begin
   if (IN2r.UPrice1!=INr.UPrice1) then begin
     INr.LastBasePriceChange = CurrentDate;
   end;
+
   INVcRecordUpdate = res; 
   return;
 end;
@@ -912,7 +936,7 @@ begin
   tstr = "";
   rownr = -1;
   gotofield = "";
-  if (len(INr.Name)>50) then begin
+  if (len(INr.Name)>35) then begin
     gotofield = "Name";
     res = 22139;
     goto LValidateItemDescriptionRows_Polish;
@@ -920,7 +944,7 @@ begin
   rwcnt = MatRowCnt(INr);
   for (i=0;i<rwcnt;i=i+1) begin
     MatRowGet(INr,i,INrw);
-    if (len(INrw.Text)>50) then begin
+    if (len(INrw.Text)>35) then begin
       gotofield = "Text";
       rownr = i;
       res = 22139;
@@ -1024,7 +1048,7 @@ begin
   end;
   if (INr.DonotRequireBatchNrOnIVCash!=0) then begin
     if (INr.SerNrf!=2) then begin
-      RecordCheckError(20106,"",-1,"MinLevel");      
+      RecordCheckError(21640,"",-1,"MinLevel");
       res = -1; 
       goto LINVcRecordCheck;
     end;
@@ -1481,7 +1505,7 @@ allow
             testf = true;
             if (IHr.StockAffectf==0) then begin testf = false; end;
             if (testf) then begin
-              /*RecordCheckError(1391," " & INr.Code,-1,"Code");      
+              /*RecordCheckError(1391," " & INr.Code,-1,"Code");    // Edit ************************** BPI Ukraine - KramarAlexandr - Thursday, 16 May 2024 at 10:12:23  
               res = -1; 
               goto LINVcRecordCheck;*/
             end;
@@ -1491,7 +1515,7 @@ allow
       if (nonblank(IN2r.VARSubsets)) then begin
         if (IN2r.VARSubsets!=INr.VARSubsets) then begin
           if (VarietyCanbeDeleted(INr.Code,INr.VARSubsets,IN2r.VARSubsets,tstr)==false) then begin
-            /*RecordCheckError(1391," " & tstr,-1,"VARSubsets");      
+            /*RecordCheckError(1391," " & tstr,-1,"VARSubsets"); // Edit ************************** BPI Ukraine - KramarAlexandr - Thursday, 16 May 2024 at 10:12:31     
             res = -1; 
             goto LINVcRecordCheck;*/
           end;
@@ -1554,6 +1578,13 @@ allow
         res = -1;
         goto LINVcRecordCheck;
       end;
+    end;
+  end;
+  if (HasLocalization("BRA") and HasAvalara) then begin
+    if (blank(INr.HSCode)) then begin
+      RecordCheckError(1058,"",-1,"HSCode");
+      res = -1; 
+      goto LINVcRecordCheck;
     end;
   end;
 

@@ -10,7 +10,7 @@ begin
   BlockLoad(CRMb);
   if (CRMb.ActTimeFromClient!=0) then begin
     Actr.TransDate = CurrentDate;
-    if (Actr.TodoFlag!=kTodoFlagRecurring and Actr.TodoFlag!=kTodoFlagProject) then begin
+    if (Actr.TodoFlag!=kTodoFlagRecurring and (Actr.TodoFlag!=kTodoFlagProject or Actr.TodoFlag!=kTodoFlagCleanTask or Actr.TodoFlag!=kTodoFlagRoomMaintenance)) then begin
       Actr.EndDate = CurrentDate;
       Actr.StartTime = CurrentTime;
     end;
@@ -97,6 +97,8 @@ begin
   UpdateBrowses("WorkflowWClass");
   UpdateBrowses("MonthWClass");
 //  UpdateBrowses("ActVc");
+
+//  UpdateWorkflowOverview(FindWindow("PipelineWClass"),BuildRecordIdStr(Actr,CurrentCompany));
   ActVcRecordUpdateClient = res; 
   return;
 end;
@@ -139,6 +141,12 @@ begin
   filename = "ActVc";
   if (Actr.TodoFlag==kTodoFlagProject) then begin
     filename = "ProjActVc";
+  end;
+  if (Actr.TodoFlag==kTodoFlagCleanTask) then begin
+    filename = "CleanActVc";
+  end;
+  if (Actr.TodoFlag==kTodoFlagRoomMaintenance) then begin
+    filename = "MaintActVc";
   end;
   ActDClassOnOpenWindowRemote(Actr,filename,AcceptanceStatusFlag,aspas,aactnr);
   PutWindowString(wn,"AcceptanceStatusFlag",StringFromSet(443,AcceptanceStatusFlag));  

@@ -1377,6 +1377,35 @@ begin
   return;
 end;
 
+global
+procedure LocationClassificationSClassArrayOnOpen(var Array string astr,var Integer acnt)
+BEGIN
+  record UserVc Userr;
+  record LocationVc Locationr;
+  Boolean testf;
+  string 200 classif;
+  
+    Userr.Code = CurrentUser;
+    if (ReadFirstMain(Userr,1,true) and NonBlank(Userr.Location)) then begin
+      Locationr.Code = Userr.Location;
+      if (ReadFirstMain(Locationr,1,true) and NonBlank(Locationr.Classification)) then begin
+        classif = Locationr.Classification;
+        Locationr.Code = "";
+        while (LoopMain(Locationr,1,true)) begin
+          testf = true;
+          if (classif!=Locationr.Classification) then begin testf = false; end;
+          if (testf) then begin 
+            astr[acnt] = Left(Locationr.Code & "    ",14);
+            astr[acnt] = astr[acnt] & Locationr.Name;
+            acnt = acnt + 1;
+          end;
+        end;
+      end;
+    end; 
+ 
+  RETURN;
+END;
+
 global //Edit***************************Sasha2,14:20 14.12.2015 {
 function Boolean LocationClassificationSClassOnOpenWindow(Integer wn)
 begin

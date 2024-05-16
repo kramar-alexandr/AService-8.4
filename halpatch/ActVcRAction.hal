@@ -37,7 +37,9 @@ external updating procedure ActOK(record ActVc);
 external function Boolean ActivityIsForAbsence(record ActVc);
 external function Boolean DateLocked(Date,string);
 external function Boolean DateWarned(Date,string);
+external procedure BlockLoadLocking(var record DBLockBlock);
 external procedure  CreateSVOSerNoterForMove(record SVOVc,string);// Edit ************************** BPI Ukraine - KramarAlexandr - Thursday, 29 March 2018 11:27:11
+
 
 SetLangMode(LangUkrainian,"UKR",0);
 
@@ -298,11 +300,12 @@ BEGIN
   ExtractObj(newActr.MainPersons,pos,usercode);
   while (nonblank(usercode)) begin
     ResetLoop(oldActr);
+    oldActr.SerNr = -1;
     oldActr.TransDate = newActr.TransDate;
     oldActr.TodoFlag = 0; // Calendar
     foundf = true;
     ukey = "UserMain:" & usercode;
-    while (LoopKey(ukey,oldActr,3,foundf)) begin
+    while (LoopKey(ukey,oldActr,2,foundf)) begin
       if (oldActr.TodoFlag!=0) then begin foundf = false; end;
       if (oldActr.TransDate>newActr.TransDate) then begin foundf = false; end;      
       if (foundf) then begin
@@ -456,7 +459,7 @@ end;
 
 global
 updating function LongInt ActVcRecordCheck(var record ActVc Actr,record ActVc Act2r,LongInt stat,LongInt long4)
-BEGIN
+begin
   LongInt res;
   record ActVc oldActr;
   record ActTypeVc ActTyper;
@@ -681,7 +684,7 @@ BEGIN
               if (bc1v<=Acptrw.Limit) or (blank(Acptrw.Limit)) then begin //is this needed if we have MainPersons ? 
                 switch (Acptrw.ApproverSelection) begin
                   case kAcceptanceApproverSelectionAutomatic:
-                    RecordCheckError(21333,"",-1,"ActResult");      
+                    RecordCheckError(21352,"",-1,"ActResult");
                     res = -1; 
                     goto LActVcRecordCheck;
                 end;
@@ -771,12 +774,12 @@ L44:;
     INr.Code = Actr.ItemCode;
     if (ReadFirstMain(INr,1,true)) then begin
       if (INr.ItemType<>3) then begin
-        RecordCheckError(1285,"",-1,"ItemCode");      
+        RecordCheckError(20119,"",-1,"ItemCode");
         res = -1;
         goto LActVcRecordCheck;
       end;
     end else begin
-      RecordCheckError(1120,Actr.ItemCode,-1,"ItemCode");      
+      RecordCheckError(1120,Actr.ItemCode,-1,"ItemCode");
       res = -1; 
       goto LActVcRecordCheck;
     end;
@@ -833,7 +836,7 @@ L44:;
   end;
   if ((Actr.CalTimeFlag!=0) and (Actr.TodoFlag==0)) then begin
     if (blanktime(Actr.EndTime)) then begin
-      RecordCheckError(1058,"",-1,"EndTime");      
+      RecordCheckError(1058,"",-1,"EndTime");   
       res = -1;
       goto LActVcRecordCheck;
     end;
@@ -888,15 +891,15 @@ L44:;
         goto LActVcRecordCheck;
       end;
     end;
-    if (Actr.TodoFlag!=kTodoFlagRecurring and Actr.TodoFlag!=kTodoFlagProject) then begin
-      if (ATGrr.ForceTime!=0) or (blank(Actr.ActType)) and (Actr.TodoFlag==0) then begin
+    if (Actr.TodoFlag!=kTodoFlagRecurring and (Actr.TodoFlag!=kTodoFlagProject or Actr.TodoFlag!=kTodoFlagCleanTask or Actr.TodoFlag!=kTodoFlagRoomMaintenance)) then begin
+      if ((ATGrr.ForceTime!=0) or (blank(Actr.ActType))) and (Actr.TodoFlag==0) then begin
         if ((blanktime(Actr.StartTime)) and (Actr.OKFlag!=0)) then begin
           RecordCheckError(1058,"",-1,"StartTime");      
           res = -1;
           goto LActVcRecordCheck;
         end;
         if (blanktime(Actr.EndTime)) then begin
-          RecordCheckError(1058,"",-1,"EndTime");      
+          RecordCheckError(1058,"",-1,"EndTime");
           res = -1;
           goto LActVcRecordCheck;
         end;
@@ -923,7 +926,7 @@ L44:;
       end;
     end;
   end;
-  if (Actr.TodoFlag==0) then begin
+  if (Actr.TodoFlag==0) or (Actr.TodoFlag==2) then begin
     if (Actr.EndDate==Actr.TransDate) then begin
       if (ATGrr.ForceTime!=0 or (nonblanktime(Actr.StartTime) and nonblanktime(Actr.EndTime))) then begin
         if (Actr.StartTime>Actr.EndTime) then begin
@@ -1001,8 +1004,7 @@ L44:;
 LActVcRecordCheck:;  
   if (res!=0) then begin Actr.SerNr = oldnr; end;
   ActVcRecordCheck = res;
-  RETURN;
-END;
+end;
 
 global
 function LongInt ActVcRecordDefaults(var record ActVc Actr,record ActVc Act2r,LongInt stat,LongInt long4)
@@ -1046,7 +1048,7 @@ global
 procedure ActVcRecordDefServer(var record ActVc Actr)
 begin
   Actr.TransDate = CurrentDate;
-  if (Actr.TodoFlag!=kTodoFlagRecurring and Actr.TodoFlag!=kTodoFlagProject) then begin
+  if (Actr.TodoFlag!=kTodoFlagRecurring and (Actr.TodoFlag!=kTodoFlagProject or Actr.TodoFlag!=kTodoFlagCleanTask or Actr.TodoFlag!=kTodoFlagRoomMaintenance)) then begin
     Actr.EndDate = CurrentDate;
     Actr.StartTime = CurrentTime;
   end;
@@ -1066,11 +1068,16 @@ function LongInt ActVcRecordDuplicate(var record ActVc Actr,record ActVc Act2r,L
 BEGIN
   LongInt res;
   Date blankd;
+  time blankt;
 
   Actr.OKFlag = 0;
   Actr.SerNr = -1;
-  Actr.EndDate = blankd;
+  //Actr.EndDate = blankd;
   Actr.Invalid = 0;
+  if (Actr.TodoFlag==kTodoFlagProject) then begin
+    Actr.TransDate = CurrentDate;
+    Actr.StartTime = CurrentTime;
+  end;
   if (Actr.TodoFlag==kTodoFlagApproval) then begin
     Actr.TodoFlag = kTodoFlagTodo;
   end;
@@ -1081,7 +1088,7 @@ BEGIN
   Actr.FromFileName = "";
   Actr.FromSerNr = "";
 */  
-  if (Actr.TodoFlag==kTodoFlagProject) then begin
+  if (Actr.TodoFlag==kTodoFlagProject or Actr.TodoFlag==kTodoFlagCleanTask or Actr.TodoFlag==kTodoFlagRoomMaintenance) then begin
     Actr.Supervisor = CurrentUser;
   end;
   if (DateLocked(Actr.TransDate,"ActVc")) then begin
@@ -1202,7 +1209,7 @@ BEGIN
   record DBLockBlock DBLb;
 
   res = 1;
-  BlockLoad(DBLb);
+  BlockLoadLocking(DBLb);
   if (Actr.OKFlag!=0) then begin
     if (nonblankdate(DBLb.DeleteBeforeDate)) then begin
       if (Actr.TransDate>DBLb.DeleteBeforeDate) then begin
@@ -1309,6 +1316,11 @@ BEGIN
   Actr.LengthClass = ActLenClass(Actr.TransDate,Actr.EndDate);
   Actr.CreationDate = CurrentDate;
   Actr.LastChangedDate = CurrentDate;
+  if (Actr.TodoFlag==kTodoFlagProject) then begin
+    if (blanktime(Actr.EndTime)) then begin
+    Actr.EndTime = CurrentTIme;
+    end;
+  end;
   ActVcRecordSave = res;
   RETURN;
 END;
@@ -1369,7 +1381,6 @@ moved to client side
           Actr.EndTime = CurrentTime;
         end;
 */  
-
     end;
   end;
 
@@ -1536,7 +1547,7 @@ BEGIN
       end;
     end;
   end;
-  BlockLoad(DBLb);
+  BlockLoadLocking(DBLb);
   if (Actp.OKFlag!=0) then begin
     if (Actp.TransDate<=DBLb.ActLock) then begin
       if (long3>0) then begin
@@ -1584,17 +1595,34 @@ begin
   
   res = 1;
   if (Actr.OKFlag!=0) then begin 
-    if (indexname=="ActComment")  then begin res = 0; end;
-    if (indexname=="ActActType")  then begin res = 0; end;
-    if (indexname=="ActDateTypeUserMain")  then begin res = 0; end;
-    if (indexname=="ActUserMain")  then begin res = 0; end;
+    if (indexname=="ActComment")              then begin res = 0; end;
+    if (indexname=="ActActType")              then begin res = 0; end;
+    if (indexname=="ActDateTypeUserMain")     then begin res = 0; end;
+    if (indexname=="ActUserMain")             then begin res = 0; end;
+    if (indexname=="ActActState")             then begin res = 0; end;
+    if (indexname=="ActDateStateUserMain")    then begin res = 0; end;
+    if (indexname=="ActActStateEndDate")      then begin res = 0; end;
+    if (indexname=="ActEndDateStateUserMain") then begin res = 0; end;
   end;
   if (Actr.TodoFlag!=kTodoFlagProject) then begin 
-    if (indexname=="ProjCUCode")  then begin res = 0; end;
-    if (indexname=="ProjTransDate")  then begin res = 0; end;
-    if (indexname=="ProjActType")  then begin res = 0; end;
+    if (indexname=="ProjCUCode")    then begin res = 0; end;
+    if (indexname=="ProjTransDate") then begin res = 0; end;
+    if (indexname=="ProjActType")   then begin res = 0; end;
     if (indexname=="ProjActState")  then begin res = 0; end;
   end;
+  if (Actr.TodoFlag!=kTodoFlagCleanTask) then begin 
+    if (indexname=="CleanCUCode")    then begin res = 0; end;
+    if (indexname=="CleanTransDate") then begin res = 0; end;
+    if (indexname=="CleanActType")   then begin res = 0; end;
+    if (indexname=="CleanActState")  then begin res = 0; end;
+  end;
+  if (Actr.TodoFlag!=kTodoFlagRoomMaintenance) then begin 
+    if (indexname=="MaintCUCode")    then begin res = 0; end;
+    if (indexname=="MaintTransDate") then begin res = 0; end;
+    if (indexname=="MaintActType")   then begin res = 0; end;
+    if (indexname=="MaintActState")  then begin res = 0; end;
+  end;
+
   ActVcRecordInIndex = res;
   return;
 end;

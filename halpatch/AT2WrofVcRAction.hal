@@ -22,10 +22,11 @@ external function string 255 CheckTrans(var record TRVc,Integer,Boolean);
 external updating procedure SaveTrans(record TRVc);
 external function Boolean CheckifAT2UnitSold(string,Date);
 external function Boolean SerNrTestAT2WrofVc(LongInt,Date,var Boolean);
+external procedure BlockLoadLocking(var record DBLockBlock);
 
 function
 Integer AddWrofTransRow(record TRVc gTRp,string inventorynr,string salesacc,Date wrofdp,Integer writeoff,val salesvalp,val dprvalp,string objects,val qty,record AT2AccBlock AT2Ab,val baserate1p,val baserate2p,record AC2Block ACRec,val TotSump,var string gotofield)
-BEGIN
+begin
   Integer res;
   record AccVc Accr;
   record AT2UnitVc ATUnitr;
@@ -398,7 +399,7 @@ BEGIN
   val t,resval; 
   string 255 tstr;
   Integer dprperiod,LastOfficialRev;
- 
+
   BlockLoad(AT2Ab);  
   rwcnt = MatRowCnt(ATWrofp);  
   for (i=0; i<rwcnt; i=i+1) begin
@@ -539,16 +540,30 @@ BEGIN
     switch (AT2Ab.Model) begin
       case 0: 
         if (blankdate(ATUnitr.StartingDate1)) then begin
-          RecordCheckError(2039,"",i,"StartingDate1");      
+          RecordCheckError(2039,"",i,"InventoryNr");      
           res = -1;
           goto LAT2WrofVcRecordCheck;
         end;
+        if (nonblankdate(ATUnitr.StartingDate1)) then begin
+          if (ATUnitr.StartingDate1>AT2Wrofr.TransDate) then begin
+            RecordCheckError(2031,"",i,"InventoryNr");      
+            res = -1;
+            goto LAT2WrofVcRecordCheck;
+          end;
+        end;
       case 1:
         if (blankdate(ATUnitr.StartingDate2)) then begin
-          RecordCheckError(2039,"",i,"StartingDate2");      
+          RecordCheckError(2039,"",i,"InventoryNr");      
           res = -1;
           goto LAT2WrofVcRecordCheck;
         end;      
+        if (nonblankdate(ATUnitr.StartingDate2)) then begin
+          if (ATUnitr.StartingDate2>AT2Wrofr.TransDate) then begin
+            RecordCheckError(2031,"",i,"InventoryNr");      
+            res = -1;
+            goto LAT2WrofVcRecordCheck;
+          end;
+        end;
     end;  
     if (invalidatingf==false) then begin
       InvBalr.InventoryNr = ATWrofrw.InventoryNr;
@@ -570,7 +585,16 @@ BEGIN
   if (DateWarned(AT2Wrofr.TransDate,"AT2WrofVc")) then begin
     MessageBox(1045,"");
   end;  
-  if (check>0) then begin AT2WrofDprVal(AT2Wrofr); end;
+  if (check>0) then begin 
+    if (stat==updatemode) begin
+      if (AT2Wrofr.TransDate==AT2Wrof2r.TransDate) then begin
+        if (nonblank(ATWrofrw.DprVal)) then begin
+        end else begin
+          AT2WrofDprVal(AT2Wrofr);
+        end;
+      end;
+    end;
+  end;
   transf = false;  
   if (AT2Wrofr.OKFlag==1) then begin
     if (stat==insertmode) then begin transf = true; end;
@@ -749,7 +773,7 @@ BEGIN
   record DBLockBlock DBLockRec;
 
   res = 1;
-  BlockLoad(DBLockRec);
+  BlockLoadLocking(DBLockRec);
   if (AT2Wrofr.TransDate<=DBLockRec.DeleteBeforeDate) then begin
     if ((blankdate(DBLockRec.OtherLock)) or (AT2Wrofr.TransDate>DBLockRec.OtherLock)) then begin
       res = 1;

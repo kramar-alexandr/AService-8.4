@@ -10,6 +10,7 @@ external procedure GetInventoryNrWrofComment(string,var string);
 external procedure GetInventoryNrWrofNumber(string,var LongInt);
 external procedure OneAT2UnitDeprCalculation(Integer,Integer,Integer,Boolean,Date,Date,string,var val,var val,var val,var val,var string,val,val,Boolean);
 external procedure GetMonthText(string,Date,var string);
+external procedure GetAT2UnitResponsiblePerson(record AT2unitVc,var string);
 external procedure CreateEAN128(var string);// Edit ************************** Thursday, 12 December 2013 16:11:49
 external procedure CreateEAN128C(var string);// Edit ************************** Thursday, 12 December 2013 16:11:49
 
@@ -83,8 +84,10 @@ BEGIN
   string 30 formcode;
   record FormDefVc FDr;
   row FormDefVc FDrw;
+  record UserVc Userr;
   integer lenth,j,c;// Edit ************************** Thursday, 22 October 2015 11:46:09
   string 100 newtstr;// Edit ************************** Thursday, 22 October 2015 11:46:10
+ 
     
   FDr.repname = RepSpec.repname;
   FDr.shortname = RepSpec.shortname;
@@ -189,6 +192,16 @@ LBREAK:;
         GetMonthText(FDrw.LangCode,AT2Unitr.ProdDate,tstr);
 
         OUTFORMFIELD("F_PRODACTIONDATEMONTH",tstr);
+
+        GetAT2UnitResponsiblePerson(AT2Unitr,tstr);
+        Userr.Code = tstr;
+        if (ReadFirstMain(Userr,1,true)) then begin
+        end;
+        OUTFORMFIELD("F_PERSNAME",Userr.Name);
+        if (FieldInForm("F_RESPONSIBLEPERSON")) then begin
+          OUTFORMFIELD("F_RESPONSIBLEPERSON",tstr);
+        end; 
+
         OUTFORMFIELD("F_WARRANTY",AT2Unitr.WarrantyNr);
         OUTFORMFIELD("F_SERIALNR",AT2Unitr.SerialNr);
         if (FIELDINFORM("F_DEPRVAL")) then begin

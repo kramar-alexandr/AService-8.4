@@ -549,7 +549,7 @@ begin
       end;
     end;
   end;
-  SetFaxInfo(contact,addr,faxno,USetStr(1820));  
+  SetFaxInfo(contact,addr,faxno,USetStr(42000));  
   return;
 end;
 

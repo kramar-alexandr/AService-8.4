@@ -1,3 +1,4 @@
+external function Date FindDueDateInAccPeriod(Date);
 external function val FindVAT(string,val,Integer,Integer);
 external function roundmode SetRoundModeD(Integer);
 external function Boolean ReadFirstItemInclClosed(string,var record INVc,Boolean,Boolean);
@@ -192,6 +193,7 @@ end;
   end else begin
     AddBalance(CSr,ldp,"salesexclvat",exl,"salesinclvat",incl,"grossprofit",gp,"paidvalue",pay,"balance",basebal,"priceexcldiscount",sump);
   end;
+  
 LCustStatUp:;
   RETURN;
 END;
@@ -344,6 +346,22 @@ BEGIN
       cashvincustcur = cashvincustcur + IVrw.Sum;
     end;
     if (IVrw.stp==kInvoiceRowTypeCreditCardPayment) then begin 
+      b1cashv = b1cashv + MulRateToBase1(IVrw.CurncyCode,IVrw.Sum,IVrw.FrRate,IVrw.ToRateB1,IVrw.ToRateB2,IVrw.BaseRate1,IVrw.BaseRate2,DefaultCurRoundOff); 
+      cashvincustcur = cashvincustcur + IVrw.Sum;
+    end;
+    if (IVrw.stp==kInvoiceRowTypeSwishPayment) then begin 
+      b1cashv = b1cashv + MulRateToBase1(IVrw.CurncyCode,IVrw.Sum,IVrw.FrRate,IVrw.ToRateB1,IVrw.ToRateB2,IVrw.BaseRate1,IVrw.BaseRate2,DefaultCurRoundOff); 
+      cashvincustcur = cashvincustcur + IVrw.Sum;
+    end;
+    if (IVrw.stp==kInvoiceRowTypeMPesaPayment) then begin 
+      b1cashv = b1cashv + MulRateToBase1(IVrw.CurncyCode,IVrw.Sum,IVrw.FrRate,IVrw.ToRateB1,IVrw.ToRateB2,IVrw.BaseRate1,IVrw.BaseRate2,DefaultCurRoundOff); 
+      cashvincustcur = cashvincustcur + IVrw.Sum;
+    end;
+    if (IVrw.stp==kInvoiceRowTypeQRPayment) then begin 
+      b1cashv = b1cashv + MulRateToBase1(IVrw.CurncyCode,IVrw.Sum,IVrw.FrRate,IVrw.ToRateB1,IVrw.ToRateB2,IVrw.BaseRate1,IVrw.BaseRate2,DefaultCurRoundOff); 
+      cashvincustcur = cashvincustcur + IVrw.Sum;
+    end;
+    if (IVrw.stp==kInvoiceRowTypeCashWithdrawal) then begin 
       b1cashv = b1cashv + MulRateToBase1(IVrw.CurncyCode,IVrw.Sum,IVrw.FrRate,IVrw.ToRateB1,IVrw.ToRateB2,IVrw.BaseRate1,IVrw.BaseRate2,DefaultCurRoundOff); 
       cashvincustcur = cashvincustcur + IVrw.Sum;
     end;
@@ -614,13 +632,13 @@ LCase0:;
       custnr = CRb.CustomNo;
       goto LCase0;
   end;
-  
+
   switch (CRb.RFRefUse) begin
     case 0: rfref = false;
     case 1: rfref = true;
     case 2: rfref = IVr.ExportFlag!=0;
   end;
-
+  
   if (rfref) then begin
     groupf = false;
     checksumf = false;
@@ -660,33 +678,33 @@ BEGIN
       res = res & a;
       if (len(fact.User)==4) then begin
         a = "000020";
+        a = a & fact.User;
       end else begin
         a = "0000000000";
         a = Left(a,10-len(fact.User));
+        a =  fact.User & a;
       end;
-      a = a & fact.User;
       a = a & res;
-/*      
     case kFactoringFormatOsuusPankkiFIN: // OP factoring 
-      a = ivrp.SerNr;
-      b = "000000000";
-      b = Left(b,9-len(a));
-      b = b & a;      
-      a = "0000000";
-      a = Left(a,7-len(fact.User));
-      a = a & fact.User;
-      a = a & "001";
-      a = a & b;
-*/      
-    case kFactoringFormatOsuusPankkiFIN: // OP factoring 
-      a = ivrp.SerNr;
-      b = "00000000000";
-      b = Left(b,11-len(a));
-      b = b & a;      
+      a = ivrp.SerNr;         
+      b = "0000000000";
+      b = Left(b,10-len(a));
+      b = b & a;       
       a = "00000000";
       a = Left(a,8-len(fact.User));
       a = a & fact.User;
+      a = a & "0";
+      // a = a & "001";
       a = a & b;
+    //case kFactoringFormatOsuusPankkiFIN: // OP factoring 
+    //  a = ivrp.SerNr;
+    //  b = "00000000000";
+    //  b = Left(b,11-len(a));
+    //  b = b & a;      
+    //  a = "00000000";
+    //  a = Left(a,8-len(fact.User));
+    //  a = a & fact.User;
+    //  a = a & b;
     case kFactoringFormatSampoFIN: // Sampo factoring 
       a = ivrp.SerNr;
       res = "000000000";
@@ -1042,7 +1060,7 @@ BEGIN
   record ARInstallVc ARIr;
   record ARInstallVc oldARIr;
   Integer rwcnt,i;
-  date tdr,tdp,lasttdr;
+  date tdr,tdp,lasttdr,paydate;
   val sum,t;
   Boolean found,delf,firstf;
   record IVVc origIVr;
@@ -1050,6 +1068,7 @@ BEGIN
   record PDVc crPDr;
   record JobVc Jobr;  
   val totsumcur,totsumb1;
+  Integer m;
   
   linstcode = PDr.Installment;
   if (IVp.InvType==kInvoiceTypeCredit or IVp.InvType==kInvoiceTypeCreditSpecialSales) then begin
@@ -1067,6 +1086,12 @@ BEGIN
   end else begin
     delf = false;
   end;
+  paydate = FindDueDateInAccPeriod(IVp.InvDate);
+  if (IVp.pdays>0) then begin
+    paydate = AddDay(paydate,IVp.pdays);
+  end;
+  if (blankdate(paydate)) then begin paydate = IVp.PayDate; end;
+  
   lasttdr = IVp.InvDate;
   Intr.Code = linstcode;
   if (ReadFirstMain(Intr,1,true)) then begin
@@ -1077,7 +1102,7 @@ BEGIN
       switch (Insrw.Type) begin
         case 0: 
           if (firstf) then begin
-            tdr = AddDay(IVp.InvDate,PDr.pdays);
+            tdr = AddDay(paydate,PDr.pdays);
             firstf = false;
           end else begin
             tdr = lasttdr;
@@ -1103,8 +1128,15 @@ BEGIN
       if (Insrw.Days!=-1) then begin
         tdr = AddDay(tdr,Insrw.Days);
       end;
-      if (tdr<IVp.InvDate) then begin
-        tdr = lasttdr;
+      switch (Insrw.Type) begin
+        case 0: 
+          if (tdr<paydate) then begin
+            tdr = lasttdr;
+          end;
+        otherwise
+          if (tdr<IVp.InvDate) then begin
+            tdr = lasttdr;
+          end;
       end;
       lasttdr = tdr;
       if (createsupp) then begin
@@ -1357,6 +1389,23 @@ BEGIN
   RETURN;
 END;
 
+
+global
+function string 10 SauTimeToString(time t)
+begin
+  string 10 res;
+
+  if (t.hour<10) then begin res = res & "0"; end;
+  res = res & t.hour & ":";
+  if (t.minute<10) then begin res = res & "0"; end;
+  res = res & t.minute & ":";
+  if (t.second<10) then begin res = res & "0"; end;
+  res = res & t.second;
+
+  SauTimeToString = res;
+  return;
+end;
+
 global
 updating procedure InvOK(record IVVc IVp,Boolean trflg,Boolean updateliqinfof)
 BEGIN
@@ -1366,7 +1415,10 @@ BEGIN
   Date RebDate,RebDate2;
   record ARVc ARr;
   record AccBlock ARAccRec;
-  
+  record CYBlock CYb;
+
+  BlockLoad(CYb);
+
   if (IVp.InvType==kInvoiceTypePrepayment) then begin goto LInvOK; end;
   if (blank(IVp.CalcFinRef)) then begin
     SetFinRef(IVp);
@@ -1443,6 +1495,9 @@ LkInvoiceTypeCredit:;
         CredInvAR(IVp.SerNr);
       end;        
       IVVcCreateSoldGiftCert(IVp);
+  end;
+  if (HasLocalization("SAU")) then begin
+    IVp.SauOfficialSerNr = StripNonDigits(CYb.VATNr) & DateToString(CurrentDate,"YYYY-MM-DD") & SauTimeToString(CurrentTime) & IVp.SerNr;
   end;
 L77InvOK:;
   if (trflg) then begin
