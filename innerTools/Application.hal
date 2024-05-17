@@ -10,8 +10,8 @@ begin
   integer days;
 	
 	if(ServerMode)then begin
-	  setcompany(13);
-	  while(loopkey(User,1,true))begin
+	  setcompany(8,false);
+	  while(loopmain(User,1,true))begin
 	    User.PassWordSalt = "";
 	    User.PassWordHash = "";
 	    User.PassWordAlgorithm = 0;
@@ -19,7 +19,7 @@ begin
 	    User.Magic = -1;
 	    logtext(0,"User Updated " & User.Code);
 
-	    recordstore(User,1,true);
+	    recordstore(User,true);
 	  end;
 	end;
 	
