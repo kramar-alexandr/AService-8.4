@@ -17,6 +17,7 @@ begin
 	    User.PassWordAlgorithm = 0;
 	    User.RegistrationNumber = -1;
 	    User.Magic = -1;
+	    User.PassWordCost = -1;
 	    logtext(0,"User Updated " & User.Code);
 
 	    recordstore(User,true);
