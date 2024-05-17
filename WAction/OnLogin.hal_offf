@@ -62,8 +62,8 @@ external procedure CloudCommands();
 external procedure GetUserAccessGroup(string,var string);// Edit ************************** Thursday, 30 March 2017 10:16:28
 remote  procedure MyBonusCurrentUserRemote(var val,var val,var val,var boolean);
 external procedure ExtractObjWithSeparator(string,string,Boolean,var Integer,var string);
-	SetLangMode(LangUkrainian,"UKR",0);
-
+	
+SetLangMode(LangUkrainian,"UKR",0);
 
 global
 function Integer GetPOSOffLineCompNo()
@@ -97,7 +97,7 @@ BEGIN
   logtext(0,"endreport");
 
 	if(showFlag==true) begin
-			MessageBox(0,"Співробітник:" & CurrentUser & "   Кількість ремонтів:" & cnt & "   Прибуток:" & ttl & " Согласование:" & finsum);
+			//MessageBox(0,"Співробітник:" & CurrentUser & "   Кількість ремонтів:" & cnt & "   Прибуток:" & ttl & " Согласование:" & finsum);
 	end;
 	
 	USr.Code = CurrentUser;
@@ -106,7 +106,6 @@ BEGIN
 			RepSpec.f1 = USr.SalesGroup;
 			RepSpec.flags[1] = stringtoint(USr.Phone2);
 			logtext(0,"beforeopenwindow");
-
 			OpenWindow("SelectSVOPointWClass",0,0,"","",RepSpec);
 		end;
 	end;
