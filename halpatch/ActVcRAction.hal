@@ -1162,6 +1162,11 @@ begin
     Actr.Resources = "";
   end;
 LActVcRecordImportTest:;
+
+  if(Actr.OKFlag==1 and Actr.TransDate<stringtodate("01/01/2024"))then begin  
+    res = false;
+  end;
+  
   ActVcRecordImportTest = res;
   RETURN;
 END;
