@@ -1231,12 +1231,9 @@ begin
 
 	//LOGO
 	addtexttoarea(PrintImage,aFile);
-	//addtexttoarea(SetMiddleAlignment,aFile);
-	//addtexttoarea("А-Сервіс",aFile);
-	
-	addtexttoarea(chr(13) & chr(10),aFile);
 	addtexttoarea(SmallLetterOff,aFile);
 	addtexttoarea(SetMiddleAlignment,aFile);
+	addtexttoarea(chr(13) & chr(10),aFile);
 	TLTOARR(cjecklength,SVOr.SerNr,aFile);
 	addtexttoarea(chr(13) & chr(10),aFile);
 	//Rekviziti
