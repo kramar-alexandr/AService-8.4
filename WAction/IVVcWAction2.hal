@@ -2098,8 +2098,9 @@ begin
   cnt = countlinesinarea(ainput);
   for(i=0;i<cnt;i=i+1)begin
     lowstr = getlinefromarea(ainput,i);
-    cdplowstr = convertstringtocodepage("CP1251",lowstr);
+    cdplowstr = trim(convertstringtocodepage("CP1251",lowstr));
     addtexttoarea(cdplowstr,atmp);
+    addtexttoarea(chr(13) & chr(10),atmp);
   end;
   
   setareazerosize(ainput);
