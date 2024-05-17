@@ -1163,8 +1163,8 @@ begin
   end;
 LActVcRecordImportTest:;
 
-  if(Actr.OKFlag==1 and Actr.StartDate<stringtodate("01/01/2024"))then begin  
-    res = false;
+  if(Actr.OKFlag==1 and Actr.TransDate<stringtodate("01/01/2024"))then begin  
+    res = 0;
   end;
   
   ActVcRecordImportTest = res;
