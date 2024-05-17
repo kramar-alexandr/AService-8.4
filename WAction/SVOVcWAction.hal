@@ -56,7 +56,7 @@ BEGIN
   area aFile;
   Boolean testf;
 	
-  SetExportCodePage("CP1251");
+  SetExportCodePage("CP-1251");
   HandleSVOAct1(SVOr,aFile);//Для сервиса
   PrintBixolonReceipt(aFile);
 
