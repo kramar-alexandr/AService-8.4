@@ -2089,13 +2089,34 @@ LIVSumup:;
   return;
 end;
 
+global procedure concertAreaCodepage(var area ainput,string codepage)
+begin
+  integer cnt,i;
+  area atmp;
+  string 255 lowstr,cdplowstr;
+
+  cnt = countlinesinarea(ainput);
+  for(i=0;i<cnt;i=i+1)begin
+    lowstr = getlinefromarea(ainput,i);
+    cdplowstr = convertstringtocodepage("CP1251",lowstr);
+    addtexttoarea(cdplowstr,atmp);
+  end;
+  
+  setareazerosize(ainput);
+  InsertAreaBeforeArea(atmp,ainput);
+  
+return;
+end;
+
+
 global 
 procedure PrintBixolonReceipt(area aFile)		//Edit----------------------Dima  21.09.2015
 begin
 	record ReceiptPrinterBlock RPb;
 	String 100 filename;
-
-
+	  
+	  concertAreaCodepage(aFile,"CP1251");
+	  
     blockload(RPb);
     filename = "Bixolon.txt";
     WriteAreaToFile(aFile,filename,0);
@@ -2121,9 +2142,10 @@ begin
   		DeselectWindow(wn,false);
   		GetWindowRecord(wn,WSr);
    		
-   		SetExportCodePage("CP1251");
+   		//SetExportCodePage("CP1251");
    		HandleWSReceiptPrinting(WSr,aFile);
    		AddAreaToArea(aFile,aFile);
+   		concertAreaCodepage(aFile,"CP1251");
      	PrintBixolonReceipt(aFile); 
      	WSr.PrintFlag = 1;
      	recordstore(WSr,true);
@@ -2161,9 +2183,10 @@ begin
    		
    		if(IVr.OKFlag==1)then begin
    		  if(blank(SGr.SGFisLogin) or nonblank(FRr.FiscalCode) or IVr.FastTerm==0)then begin
-					SetExportCodePage("CP1251");
+					//SetExportCodePage("CP1251");
 					HandleIVReceiptPrinting(IVr,aFile);
 					AddAreaToArea(aFile,aFile);
+					concertAreaCodepage(aFile,"CP1251");
 					PrintBixolonReceipt(aFile);
 					IVr.PrintedFlag = 1;
 					IVr.PrintedSum4 = IVr.Sum4;
@@ -2199,9 +2222,10 @@ begin
   readfirstmain(IVr,1,true);
   
   if(IVr.OKFlag==1)then begin
-    SetExportCodePage("CP1251");
+    //SetExportCodePage("CP1251");
     HandleIVReceiptPrinting(IVr,aFile);
     AddAreaToArea(aFile,aFile);
+    concertAreaCodepage(aFile,"CP1251");
     PrintBixolonReceipt(aFile);
     IVr.PrintedFlag = 1;
     IVr.PrintedSum4 = IVr.Sum4;
@@ -2248,9 +2272,10 @@ begin
         SVOr.OutTime = CurrentTime; //Edit***************************Sasha2,17:10 25.10.2016
         RecordUpdate(SVO2r,SVOr,true);// Edit ************************** Wednesday, 28 October 2015 14:30:39
         PutWindowRecord(wn,SVOr);
-        SetExportCodePage("CP1251");
+        //SetExportCodePage("CP1251");
         HandleSVOReceiptPrinting(SVOr,aFile);
         AddAreaToArea(aFile,aFile);
+        concertAreaCodepage(aFile,"CP1251");
         PrintBixolonReceipt(aFile);
       end else begin
         if(nonblank(SGr.SGFisLogin) or blank(FRr.FiscalCode))then begin
@@ -2287,9 +2312,10 @@ begin
     SVOr.RegDate = currentDate;// Edit ************************** Wednesday, 28 October 2015 14:28:31
     SVOr.OutTime = CurrentTime; //Edit***************************Sasha2,17:10 25.10.2016
     RecordUpdate(SVO2r,SVOr,true);// Edit ************************** Wednesday, 28 October 2015 14:30:39
-    SetExportCodePage("CP1251");
+    //SetExportCodePage("CP1251");
     HandleSVOReceiptPrinting(SVOr,aFile);
     AddAreaToArea(aFile,aFile);
+    concertAreaCodepage(aFile,"CP1251");
     PrintBixolonReceipt(aFile);
   end else begin
     MessageBox(1356,"");
