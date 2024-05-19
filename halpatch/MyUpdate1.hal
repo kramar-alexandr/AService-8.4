@@ -1129,7 +1129,7 @@ begin
 END;
 
 
-global
+/*global
 function LongInt RLinkVcRecordImportTest(var record RLinkVc IHr,record RLinkVc IH2r,LongInt long3,LongInt long4)
 begin
   LongInt res;
@@ -1145,7 +1145,7 @@ begin
 		
   RLinkVcRecordImportTest = res;
   RETURN;
-END;
+END;*/
 
 
 
