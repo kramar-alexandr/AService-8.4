@@ -1061,7 +1061,7 @@ return;
 end;
 
 
-global
+/*global
 function LongInt RHistVcRecordImportTest(var record RHistVc RHr,record RHistVc RH2r,LongInt long3,LongInt long4)
 begin
   LongInt res;
@@ -1072,5 +1072,77 @@ begin
 	res = 0;
 		
   RHistVcRecordImportTest = res;
+  RETURN;
+END;*/
+
+
+global
+function LongInt ItemHistVcRecordImportTest(var record ItemHistVc IHr,record ItemHistVc IH2r,LongInt long3,LongInt long4)
+begin
+  LongInt res;
+  string 10 c;
+  string 50 recname,compnr;
+  integer cter,i,pref,check;
+  
+	res = 1;
+	if(currentcompany==1)then begin
+   res = 0;
+  end;
+		
+  ItemHistVcRecordImportTest = res;
+  RETURN;
+END;
+
+
+global
+function LongInt ItemStatusVcRecordImportTest(var record ItemStatusVc IHr,record ItemStatusVc IH2r,LongInt long3,LongInt long4)
+begin
+  LongInt res;
+  string 10 c;
+  string 50 recname,compnr;
+  integer cter,i,pref,check;
+  
+	res = 1;
+	if(currentcompany==1)then begin
+   res = 0;
+  end;
+		
+  ItemStatusVcRecordImportTest = res;
+  RETURN;
+END;
+
+global
+function LongInt TRVcRecordImportTest(var record TRVc IHr,record TRVc IH2r,LongInt long3,LongInt long4)
+begin
+  LongInt res;
+  string 10 c;
+  string 50 recname,compnr;
+  integer cter,i,pref,check;
+  
+	res = 1;
+	if(currentcompany==1)then begin
+   res = 0;
+  end;
+		
+  TRVcRecordImportTest = res;
+  RETURN;
+END;
+
+
+global
+function LongInt RLinkVcRecordImportTest(var record RLinkVc IHr,record RLinkVc IH2r,LongInt long3,LongInt long4)
+begin
+  LongInt res;
+  string 10 c;
+  string 50 recname,compnr;
+  integer cter,i,pref,check;
+  
+	res = 1;
+	if(left(IHr.FromRecidStr,1)!="8" and left(IHr.ToRecidStr,1)!="8")then begin
+	  res = 0;
+	end;
+	
+		
+  RLinkVcRecordImportTest = res;
   RETURN;
 END;

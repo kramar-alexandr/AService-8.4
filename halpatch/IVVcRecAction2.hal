@@ -211,6 +211,10 @@ begin
   
   res = 1;
   if (IVr.SerNr==-1) then begin res = 0; end;
+  
+  if(currentcompany==1)then begin
+   res = 0;
+  end;
   IVVcRecordImportTest = res;
   RETURN;
 END;
