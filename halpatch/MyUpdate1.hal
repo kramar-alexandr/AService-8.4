@@ -1146,3 +1146,70 @@ begin
   RLinkVcRecordImportTest = res;
   RETURN;
 END;
+
+
+
+global
+function LongInt VIVcRecordImportTest(var record VIVc IVr,record VIVc IV2r,LongInt long3,LongInt long4)
+begin
+  LongInt res;
+  
+  res = 1;
+  if(currentcompany==1)then begin
+   res = 0;
+  end;
+  VIVcRecordImportTest = res;
+  RETURN;
+END;
+
+global
+function LongInt ORVcRecordImportTest(var record ORVc IVr,record ORVc IV2r,LongInt long3,LongInt long4)
+begin
+  LongInt res;
+  
+  res = 1;
+  if(currentcompany==1)then begin
+   res = 0;
+  end;
+  ORVcRecordImportTest = res;
+  RETURN;
+END;
+
+global
+function LongInt POVcRecordImportTest(var record POVc IVr,record POVc IV2r,LongInt long3,LongInt long4)
+begin
+  LongInt res;
+  
+  res = 1;
+  if(currentcompany==1)then begin
+   res = 0;
+  end;
+  POVcRecordImportTest = res;
+  RETURN;
+END;
+
+global
+function LongInt PUVcRecordImportTest(var record PUVc IVr,record PUVc IV2r,LongInt long3,LongInt long4)
+begin
+  LongInt res;
+  
+  res = 1;
+  if(currentcompany==1)then begin
+   res = 0;
+  end;
+  PUVcRecordImportTest = res;
+  RETURN;
+END;
+
+global
+function LongInt SHVcRecordImportTest(var record SHVc IVr,record SHVc IV2r,LongInt long3,LongInt long4)
+begin
+  LongInt res;
+  
+  res = 1;
+  if(currentcompany==1)then begin
+   res = 0;
+  end;
+  SHVcRecordImportTest = res;
+  RETURN;
+END;
