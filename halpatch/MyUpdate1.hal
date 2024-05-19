@@ -1213,3 +1213,54 @@ begin
   SHVcRecordImportTest = res;
   RETURN;
 END;
+
+global
+function LongInt PLVcRecordImportTest(var record PLVc IVr,record PLVc IV2r,LongInt long3,LongInt long4)
+begin
+  LongInt res;
+  
+  res = 1;
+  if(currentcompany==1)then begin
+   res = 0;
+  end;
+  PLVcRecordImportTest = res;
+  RETURN;
+END;
+
+
+global
+function LongInt OffSerNrIVVcRecordImportTest(var record OffSerNrIVVc IVr,record OffSerNrIVVc IV2r,LongInt long3,LongInt long4)
+begin
+  LongInt res;
+  
+   res = 0;
+   
+  OffSerNrIVVcRecordImportTest = res;
+  RETURN;
+END;
+
+
+global
+function LongInt IVCashVcRecordImportTest(var record IVCashVc IVr,record IVCashVc IV2r,LongInt long3,LongInt long4)
+begin
+  LongInt res;
+
+  res = 0;
+
+  IVCashVcRecordImportTest = res;
+  RETURN;
+END;
+
+
+global
+function LongInt AlarmVcRecordImportTest(var record AlarmVc IVr,record AlarmVc IV2r,LongInt long3,LongInt long4)
+begin
+  LongInt res;
+  
+  res = 1;
+  if(IVr.TransDate<currentdate)then begin
+   res = 0;
+  end;
+  AlarmVcRecordImportTest = res;
+  RETURN;
+END;

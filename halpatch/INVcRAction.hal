@@ -1613,6 +1613,22 @@ begin
   return;
 end;
 
+global
+function LongInt MyLabelItemVcRecordImportTest(var record MyLabelItemVc INr,record MyLabelItemVc IN2r,LongInt long3,LongInt long4)
+begin
+  LongInt res;
+  
+  res = 1;
+  if(currentcompany==1)then begin
+   res = 0;
+  end;
+  
+  MyLabelItemVcRecordImportTest = res;
+  return;
+end;
+
+
+
 global 
 function Boolean INVcRecordShouldBeSynchronised(record INVc INr,string tagstr)
 begin
