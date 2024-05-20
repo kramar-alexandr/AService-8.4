@@ -715,6 +715,67 @@ return;
 end;
 
 
+procedure ReplaceWebStrings(var string tstr,var longint movcnt)
+begin
+  integer i,l;
+  
+  l = len(tstr);
+  movcnt = 0;
+  for (i = 0; i < l;i = i + 1) begin
+    movcnt = movcnt + 1;
+    if mid(tstr,i,4)=="&lt;" then begin
+      tstr = left(tstr,i) & "<" & right(tstr,l-i-4);
+      l = l - 3;
+      movcnt = movcnt + 3;
+    end;
+    if mid(tstr,i,4)=="&gt;" then begin
+      tstr = left(tstr,i) & ">" & right(tstr,l-i-4);
+      l = l - 3;
+      movcnt = movcnt + 3;
+    end;
+    if mid(tstr,i,6)=="&apos;" then begin
+      tstr = left(tstr,i) & "'" & right(tstr,l-i-6);
+      l = l - 5;
+      movcnt = movcnt + 5;
+    end;
+    if mid(tstr,i,6)=="&quot;" then begin
+      tstr = left(tstr,i) & "\"" & right(tstr,l-i-6);
+      l = l - 5;
+      movcnt = movcnt + 5;
+    end;
+    if movcnt>220 then begin
+      tstr = left(tstr,len(tstr)-(255-movcnt));
+      i = l;
+    end;
+  end;
+
+return;
+end;
+
+global
+procedure FixAreaWebStrings(var area FileArea)
+begin
+  area newArea;
+  string 255 tstr;
+  longint asize,pos,movcnt;
+  
+  SetAreaZeroSize(newArea);
+  asize = GetAreaLength(FileArea);
+
+  pos = 0;
+  while pos < asize begin
+    tstr = GetStringFromArea(FileArea,pos,255);
+    ReplaceWebStrings(tstr,movcnt);
+    pos = pos + movcnt;
+    if movcnt==0 then begin
+      pos = pos + 1;
+    end; 
+    AddTextToArea(tstr,newArea);
+  end;
+  SetAreaZeroSize(FileArea);
+  InsertAreaBeforeArea(newArea,FileArea);
+return;
+end;
 
 webpublic global
 updating procedure Webattach()
@@ -729,8 +790,7 @@ longint areal,i,nl,imgstpos,filenapos,kav;
   logtext(0,"Webattach");
 		
 	webgetpostdata(webgetdata);
-	
-	writeareatofile(webgetdata,"Webattach.txt",0);
+	FixAreaWebStrings(webgetdata);
 	
 	areal = getarealength(webgetdata);
 	endmark = "------";
@@ -759,13 +819,13 @@ lEndArea:;
 				logtext(0,"Filename found " & i);
 			end;
 			if(filenapos>0)then begin
-				if(getstringfromarea(webgetdata,i,5)=="&quot")then begin
+				if(getstringfromarea(webgetdata,i,1)=="\"")then begin
 					
 					kav = kav + 1;
 					logtext(0,"kav found " & kav);
 					if(kav==1)then begin
 						logtext(0,"Second kav found");
-						fname = getstringfromarea(webgetdata,filenapos+len("filename=")+6,i-filenapos-len("filename=")-6);
+						fname = getstringfromarea(webgetdata,filenapos+len("filename=")+1,i-filenapos-len("filename=")-1);
 						filenapos = 0;
 						logtext(0,"fname " & fname);
 					end;
