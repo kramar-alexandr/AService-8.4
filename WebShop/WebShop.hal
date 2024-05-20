@@ -730,6 +730,7 @@ longint areal,i,nl,imgstpos,filenapos,kav;
 		
 	webgetpostdata(webgetdata);
 	
+	writeareatofile(webgetdata,"Webattach.txt",0);
 	
 	areal = getarealength(webgetdata);
 	endmark = "------";
