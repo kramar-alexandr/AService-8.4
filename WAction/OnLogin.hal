@@ -703,7 +703,7 @@ LOtherwise01:;
 				nwn = OpenToDoWClass(mailboxnr,mailboxname,acptRepSpec);// Edit ************************** Thursday, 13 October 2016 10:49:44
       end;
       logtext(0,"ShowUserInfo start");
-        //ShowUserInfo;//***************************************************************************** function added by dima-f 13.09.17
+        ShowUserInfo;//***************************************************************************** function added by dima-f 13.09.17
       logtext(0,"ShowUserInfo end");
 
   end;
@@ -727,7 +727,7 @@ LOtherwise01:;
 			acptRepSpec.Period2Str = acptRepSpec.Period2Str & acptRepSpec.sEndDate;
 			nwn = OpenToDoWClass(mailboxnr,mailboxname,acptRepSpec);  // Edit ************************** Thursday, 13 October 2016 10:51:19
     end;
-    //ShowUserInfo;//***************************************************************************** function added by dima-f 13.09.17
+    ShowUserInfo;//***************************************************************************** function added by dima-f 13.09.17
 
   end;
   if (aSPDr.length>0) then begin
