@@ -22,13 +22,12 @@ global updating procedure UpdateToDoWclass()
 	begin
 	record DateRnBlock DRB;
 	
-	BlockLoad(DRB);
-	
 	if(!servermode)then begin
 	  if(currentuser!="SA")then begin
       UpdateMasterWClassOnKPIs("");
     end;
   end else begin
+    BlockLoad(DRB);
     if(left(CurrentTime,2)=="20" and DRB.DateRn!=CurrentDate) then begin
       DayToolsRn;
       GenRnForMail;
