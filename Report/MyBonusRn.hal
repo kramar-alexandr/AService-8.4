@@ -2075,6 +2075,9 @@ global
 procedure MyBonusCurrentUserRemote(var val cnt, var val ttl,var val finishsum, var boolean showFlag) begin
     record RcVc RepSpec;
     record UserVc Userr;
+    
+    logtext(0,"MyBonusCurrentUserRemote start");
+
     Userr.Code = CurrentUser;
     if(ReadFirstMain(Userr,1,true))begin
         if(Userr.MonthStat==1) begin
@@ -2090,6 +2093,8 @@ procedure MyBonusCurrentUserRemote(var val cnt, var val ttl,var val finishsum, v
         finishsum = RepSpec.vals2;
         return;
     end;
+    
+    logtext(0,"MyBonusCurrentUserRemote end");
 end;
 //**************************************************************************** end edit
 
