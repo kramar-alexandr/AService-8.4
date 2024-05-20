@@ -2073,28 +2073,28 @@ end;
 //***************************************************************************** whole function added by dima-f 13.09.17
 global
 procedure MyBonusCurrentUserRemote(var val cnt, var val ttl,var val finishsum, var boolean showFlag) begin
-    record RcVc RepSpec;
-    record UserVc Userr;
-    
-    logtext(0,"MyBonusCurrentUserRemote start");
+  record RcVc RepSpec;
+  record UserVc Userr;
+  
+  logtext(0,"MyBonusCurrentUserRemote start");
 
-    Userr.Code = CurrentUser;
-    if(ReadFirstMain(Userr,1,true))begin
-        if(Userr.MonthStat==1) begin
-            showFlag=true;
-        end;
+  Userr.Code = CurrentUser;
+  if(ReadFirstMain(Userr,1,true))begin
+    if(Userr.MonthStat==1) begin
+        showFlag=true;
     end;
-    if(showFlag==true) begin
-        ReportDefaults(RepSpec,"MyBonusCurUserRClass");
-        RepSpec.flags[29]=1;
-        MyBonusCurrentUserRn(RepSpec);
-        cnt=RepSpec.vals3;//n distinct
-        ttl = RepSpec.vals4;//totGP
-        finishsum = RepSpec.vals2;
-        return;
-    end;
-    
-    logtext(0,"MyBonusCurrentUserRemote end");
+  end;
+  if(showFlag==true) begin
+    ReportDefaults(RepSpec,"MyBonusCurUserRClass");
+    RepSpec.flags[29]=1;
+    MyBonusCurrentUserRn(RepSpec);
+    cnt=RepSpec.vals3;//n distinct
+    ttl = RepSpec.vals4;//totGP
+    finishsum = RepSpec.vals2;
+    return;
+  end;
+  
+  logtext(0,"MyBonusCurrentUserRemote end");
 end;
 //**************************************************************************** end edit
 
