@@ -1,0 +1,37 @@
+external procedure 	DayTools1Rn(record RcVc);
+external procedure 	DayToolsRn();
+external procedure GenRnForMail();
+
+SetLangMode(LangUkrainian,"UKR",0);
+
+
+global procedure UpdateMasterWClassOnKPIs(string str)
+begin
+	Integer wn;
+	string 20 accessgroup;
+		
+    wn = FindWindow("ToDoWClass");
+    if(wn>0)then begin
+      updatebrowses("ToDoWClass");
+    end;
+			
+return;
+end;
+
+global updating procedure UpdateToDoWclass()
+	begin
+	record DateRnBlock DRB;
+	
+	BlockLoad(DRB);
+	
+	if(!servermode)then begin
+    UpdateMasterWClassOnKPIs("");
+  end else begin
+    if(left(CurrentTime,2)=="20" and DRB.DateRn!=CurrentDate) then begin
+      DayToolsRn;
+      GenRnForMail;
+      DRB.DateRn = CurrentDate;
+      BlockStore(DRB);
+    end;
+	end;
+end;

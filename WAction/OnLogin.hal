@@ -1144,21 +1144,6 @@ begin
   return;
 end;
 
-
-global procedure UpdateMasterWClassOnKPIs(string str)
-begin
-	Integer wn;
-	string 20 accessgroup;
-		
-    wn = FindWindow("ToDoWClass");
-    if(wn>0)then begin
-      updatebrowses("ToDoWClass");
-    end;
-			
-return;
-end;
-
-
 global procedure OpenNewClient(string param)
 begin
 	record CUVc CUr,newCUr,blankCUr;

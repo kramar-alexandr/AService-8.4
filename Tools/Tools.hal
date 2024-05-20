@@ -1376,25 +1376,6 @@ begin
 return;
 end;
 
-
-
-global updating procedure UpdateToDoWclass()
-	begin
-	record DateRnBlock DRB;
-	
-	BlockLoad(DRB);
-	
-  AllClientsRemoteAsync.UpdateMasterWClassOnKPIs("");
-	if(left(CurrentTime,2)=="20" and DRB.DateRn!=CurrentDate) then begin
-		logtext(0,CurrentTime);
-		DayToolsRn;
-		GenRnForMail;
-		DRB.DateRn = CurrentDate;
-		BlockStore(DRB);
-	end;
-end;
-
-
 global function Boolean HasProjects() 
 begin 
 
