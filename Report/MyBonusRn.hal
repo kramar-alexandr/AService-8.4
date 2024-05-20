@@ -2091,10 +2091,10 @@ procedure MyBonusCurrentUserRemote(var val cnt, var val ttl,var val finishsum, v
     cnt=RepSpec.vals3;//n distinct
     ttl = RepSpec.vals4;//totGP
     finishsum = RepSpec.vals2;
-    return;
   end;
   
   logtext(0,"MyBonusCurrentUserRemote end");
+  return;
 end;
 //**************************************************************************** end edit
 
