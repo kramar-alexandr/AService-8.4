@@ -789,8 +789,8 @@ longint areal,i,nl,imgstpos,filenapos,kav;
 
   logtext(0,"Webattach");
 		
-	webgetpostdata(webgetdata);
-	FixAreaWebStrings(webgetdata);
+	webgetrawpostdata(webgetdata);
+	//FixAreaWebStrings(webgetdata);
 	
 	areal = getarealength(webgetdata);
 	endmark = "------";
