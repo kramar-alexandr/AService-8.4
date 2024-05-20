@@ -16,6 +16,9 @@ external function Boolean SetInSet2(string,string);
 external function Boolean MySendWebRequest(string,longint,longint,boolean,string,string,string,string,boolean,area,var area,integer);
 external function Boolean FindStringInString(string, string);
 remote updating procedure RA_POFromSH(record SHVc);
+external procedure GetUserAccessGroup(string,var string);
+external function Boolean Getformcode(Integer,Integer,string,string,string,LongInt,LongInt,string,string,Integer,string,var string);
+external function string 255 GetTextForPrint(integer,string);
 
 SetLangMode(LangUkrainian,"UKR",0);
 
@@ -3334,5 +3337,66 @@ begin
   
   RA_POFromSH(SHr);
 
+return;
+end;
+
+
+global procedure RA_GetButtonsForPrint(string winclass, var array integer aintdocnr, var array string aTextForPrint,var integer mtrw,var string printfunc)
+begin
+  string 20 usergroup;
+  record FormDefVc FDr;
+  row FormDefVc FDrw;
+  string 200 formcode;
+  string 20 recname;
+  integer i;
+  
+  
+  GetUserAccessGroup(CurrentUser,usergroup);
+  switch (winclass) begin //Edit***************************Sasha2,11:20 20.01.2015 {
+	 case "ORDClass": 
+	       FDr.repname = "OrdForm";
+	       recname  = "ORVc";
+	       printfunc = "PrintDoOrdForm";
+	 case "StockMovDClass": 
+	       FDr.repname = "StockMovForm";
+	       recname  = "StockMovVc";
+	       printfunc = "PrintDoStockMovForm";
+	 case "SVODClass": 
+	       FDr.repname = "SVOForm";
+	       recname  = "SVOVc";			//Edit----------------------Dima  09.02.2015
+	       printfunc = "PrintDoSVOForm";
+	 case "IVDClass": 
+	       FDr.repname = "InvForm";
+	       recname  = "IVVc";
+	       printfunc = "PrintDoInvForm"; 
+	end; //Edit***************************Sasha2,11:20 20.01.2015 }
+  
+  if (ReadFirstMain(FDr,1,true)==false) then begin
+	end;
+	
+	mtrw = matrowcnt(FDr);
+  for(i=0;i<mtrw;i=i+1)begin
+		matrowget(FDr,i,FDrw);
+		formcode = ""; 
+		if(Getformcode(i,FDrw.intdocnr,FDrw.FPCode,FDrw.UserGroup,FDrw.LangCode,FDrw.SerNr,-1,FDrw.PrintGroupCode,"",i+1,recname,formcode))then begin
+			switch(usergroup)begin
+				case "ISTUD":
+					if(FDrw.UserGroup=="ISTUD")then begin
+					  aintdocnr[aintdocnr.length] = FDrw.intdocnr;
+					  aTextForPrint[aTextForPrint.length] = GetTextForPrint(i,recname);
+					end;
+				case "OBOLO":
+					if(FDrw.UserGroup=="OBOLO")then begin
+					  aintdocnr[aintdocnr.length] = FDrw.intdocnr;
+					  aTextForPrint[aTextForPrint.length] = GetTextForPrint(i,recname);
+					end;
+				otherwise
+				  aintdocnr[aintdocnr.length] = FDrw.intdocnr;
+          aTextForPrint[aTextForPrint.length] = GetTextForPrint(i,recname);
+			end;
+		end;
+	end;
+	mtrw = aintdocnr.length;
+  
 return;
 end;
