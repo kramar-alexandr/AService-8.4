@@ -759,7 +759,7 @@ lEndArea:;
 				logtext(0,"Filename found " & i);
 			end;
 			if(filenapos>0)then begin
-				if(getstringfromarea(webgetdata,i,1)=="\"")then begin
+				if(getstringfromarea(webgetdata,i,5)=="&quot")then begin
 					
 					kav = kav + 1;
 					logtext(0,"kav found " & kav);
