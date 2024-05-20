@@ -703,7 +703,7 @@ LOtherwise01:;
 				nwn = OpenToDoWClass(mailboxnr,mailboxname,acptRepSpec);// Edit ************************** Thursday, 13 October 2016 10:49:44
       end;
       logtext(0,"ShowUserInfo start");
-        ShowUserInfo;//***************************************************************************** function added by dima-f 13.09.17
+        //ShowUserInfo;//***************************************************************************** function added by dima-f 13.09.17
       logtext(0,"ShowUserInfo end");
 
   end;
@@ -727,7 +727,7 @@ LOtherwise01:;
 			acptRepSpec.Period2Str = acptRepSpec.Period2Str & acptRepSpec.sEndDate;
 			nwn = OpenToDoWClass(mailboxnr,mailboxname,acptRepSpec);  // Edit ************************** Thursday, 13 October 2016 10:51:19
     end;
-    ShowUserInfo;//***************************************************************************** function added by dima-f 13.09.17
+    //ShowUserInfo;//***************************************************************************** function added by dima-f 13.09.17
 
   end;
   if (aSPDr.length>0) then begin
@@ -1150,24 +1150,14 @@ begin
 	Integer wn;
 	string 20 accessgroup;
 		
-		//GetUserAccessGroup(currentuser,accessgroup);
-		//if(accessgroup!="FIN+" and accessgroup!="ADMIN" and accessgroup!="ISTUD")then begin
-			wn = FindWindow("ToDoWClass");
-			if(wn>0)then begin
-				updatebrowses("ToDoWClass");
-			end;
-		//end;
-	//end;
+    wn = FindWindow("ToDoWClass");
+    if(wn>0)then begin
+      updatebrowses("ToDoWClass");
+    end;
+			
 return;
 end;
 
-
-
-
-global function integer EmailValidationStatusWithStdID()// Edit ************************** BPI Ukraine - KramarAlexandr - Friday, 9 March 2018 15:29:23
-begin		
-	EmailValidationStatusWithStdID = 2;
-end;
 
 global procedure OpenNewClient(string param)
 begin

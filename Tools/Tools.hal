@@ -1384,7 +1384,7 @@ global updating procedure UpdateToDoWclass()
 	
 	BlockLoad(DRB);
 	
-    AllClientsRemoteAsync.UpdateMasterWClassOnKPIs("");
+  AllClientsRemoteAsync.UpdateMasterWClassOnKPIs("");
 	if(left(CurrentTime,2)=="20" and DRB.DateRn!=CurrentDate) then begin
 		logtext(0,CurrentTime);
 		DayToolsRn;
