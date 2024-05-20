@@ -761,7 +761,7 @@ lEndArea:;
 			if(filenapos>0)then begin
 				if(getstringfromarea(webgetdata,i,5)=="&quot")then begin
 					
-					kav = kav + 5;
+					kav = kav + 1;
 					logtext(0,"kav found " & kav);
 					if(kav==1)then begin
 						logtext(0,"Second kav found");
