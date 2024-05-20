@@ -87,29 +87,29 @@ BEGIN
   
   logtext(0,"ShowUserInfo 1");
 
+  if(currentuser=="SA")then begin
+    cnt=0;
+    ttl=0;
+    showFlag=false;
+    logtext(0,"startreport");
+
+    MyBonusCurrentUserRemote(cnt, ttl, finsum, showFlag);
+    logtext(0,"endreport");
+
+    if(showFlag==true) begin
+        MessageBox(0,"Співробітник:" & CurrentUser & "   Кількість ремонтів:" & cnt & "   Прибуток:" & ttl & " Согласование:" & finsum);
+    end;
   
-  cnt=0;
-  ttl=0;
-  showFlag=false;
-  logtext(0,"startreport");
-
-  MyBonusCurrentUserRemote(cnt, ttl, finsum, showFlag);
-  logtext(0,"endreport");
-
-	if(showFlag==true) begin
-			MessageBox(0,"Співробітник:" & CurrentUser & "   Кількість ремонтів:" & cnt & "   Прибуток:" & ttl & " Согласование:" & finsum);
+    USr.Code = CurrentUser;
+    if(readfirstmain(USr,1,true))then begin
+      if(USr.IsSalesMan==1)then begin
+        RepSpec.f1 = USr.SalesGroup;
+        RepSpec.flags[1] = stringtoint(USr.Phone2);
+        logtext(0,"beforeopenwindow");
+        OpenWindow("SelectSVOPointWClass",0,0,"","",RepSpec);
+      end;
+    end;
 	end;
-	
-	USr.Code = CurrentUser;
-	if(readfirstmain(USr,1,true))then begin
-		if(USr.IsSalesMan==1)then begin
-			RepSpec.f1 = USr.SalesGroup;
-			RepSpec.flags[1] = stringtoint(USr.Phone2);
-			logtext(0,"beforeopenwindow");
-			OpenWindow("SelectSVOPointWClass",0,0,"","",RepSpec);
-		end;
-	end;
-	
 	logtext(0,"ShowUserInfo 2");
 	
   return;
