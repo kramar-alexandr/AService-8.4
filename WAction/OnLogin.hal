@@ -87,7 +87,6 @@ BEGIN
   
   logtext(0,"ShowUserInfo 1");
 
-  if(currentuser=="SA" or currentuser=="SHILK")then begin
     cnt=0;
     ttl=0;
     showFlag=false;
@@ -109,7 +108,6 @@ BEGIN
         OpenWindow("SelectSVOPointWClass",0,0,"","",RepSpec);
       end;
     end;
-	end;
 	logtext(0,"ShowUserInfo 2");
 	
   return;
