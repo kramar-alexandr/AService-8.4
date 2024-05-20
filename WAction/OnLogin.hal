@@ -93,11 +93,11 @@ BEGIN
   showFlag=false;
   logtext(0,"startreport");
 
-  threadremote.MyBonusCurrentUserRemote(cnt, ttl, finsum, showFlag);
+  MyBonusCurrentUserRemote(cnt, ttl, finsum, showFlag);
   logtext(0,"endreport");
 
 	if(showFlag==true) begin
-			//MessageBox(0,"Співробітник:" & CurrentUser & "   Кількість ремонтів:" & cnt & "   Прибуток:" & ttl & " Согласование:" & finsum);
+			MessageBox(0,"Співробітник:" & CurrentUser & "   Кількість ремонтів:" & cnt & "   Прибуток:" & ttl & " Согласование:" & finsum);
 	end;
 	
 	USr.Code = CurrentUser;
