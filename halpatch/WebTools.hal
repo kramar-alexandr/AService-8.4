@@ -329,7 +329,8 @@ begin
   
   setcompany(8,false);
   
-  
+  logtext(0,"WebDeleteOldAct st");
+
   while(loopmain(Actr,1,true))begin
     if(Actr.OKFlag==1)then begin
       recorddelete(Actr);
@@ -337,6 +338,8 @@ begin
     end;
   
   end;
+  
+  logtext(0,"Actr end");
 
 return;
 end;
