@@ -25,7 +25,9 @@ global updating procedure UpdateToDoWclass()
 	BlockLoad(DRB);
 	
 	if(!servermode)then begin
-    UpdateMasterWClassOnKPIs("");
+	  if(currentuser!="SA")then begin
+      UpdateMasterWClassOnKPIs("");
+    end;
   end else begin
     if(left(CurrentTime,2)=="20" and DRB.DateRn!=CurrentDate) then begin
       DayToolsRn;
