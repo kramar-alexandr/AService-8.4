@@ -381,7 +381,7 @@ begin
 	sernr = webgetarg("sernr");
 	phone = webgetarg("phone");
 	
-	//logtext(0,"WebGetSVOStatus " & sernr & " " & phone);
+	logtext(0,"WebGetSVOStatus " & sernr & " " & phone);
 	
 	
 	SetCompany(8,false);
@@ -623,7 +623,7 @@ string 100 inputphone,name,svonr,status,innerphone,serviceman;
 			phone = "+" & phone;
 		end;
 	end;
-	//logtext(0,"WebGetStatusByPhone by phone " & phone);
+	logtext(0,"WebGetStatusByPhone by phone " & phone);
 	if(setcompany(8,false))then begin
 		Phoner.PhoneNum = phone;
 		if(readfirstmain(Phoner,1,true))then begin
@@ -648,7 +648,7 @@ string 100 inputphone,name,svonr,status,innerphone,serviceman;
 								status = SVOr.OrderStatus;
 								USr.Code = SVOr.ServiceManager;
 								serviceman = SVOr.ServiceManager;
-								//logtext(0,"serviceman " & serviceman);
+								logtext(0,"serviceman " & serviceman);
 								if(readfirstmain(USr,1,true))then begin
 									innerphone = USr.Phone2;
 								end;
@@ -690,7 +690,7 @@ json jobj;
 	webgetpostdata(adata);
 	
 
-	//logtext(0,"WebCreateTaskForUser");
+	logtext(0,"WebCreateTaskForUser");
 	if(setcompany(8,false))then begin
 		jobj = parsejsonarea(adata);
 		
@@ -733,7 +733,7 @@ longint areal,i,nl,imgstpos,filenapos,kav;
 	
 	areal = getarealength(webgetdata);
 	endmark = "------";
-	//logtext(0,areal);
+	logtext(0,areal);
 	if(areal>len(endmark))then begin
 		for(i=areal-len(endmark);i>0;i=i-1)begin
 			endarea = getstringfromarea(webgetdata,i,len(endmark));
@@ -755,18 +755,18 @@ lEndArea:;
 			filename = getstringfromarea(webgetdata,i,len("filename="));
 			if(filename=="filename=")then begin
 				filenapos = i;
-				//logtext(0,"Filename found " & i);
+				logtext(0,"Filename found " & i);
 			end;
 			if(filenapos>0)then begin
 				if(getstringfromarea(webgetdata,i,1)=="\"")then begin
 					
 					kav = kav + 1;
-					//logtext(0,"kav found " & kav);
+					logtext(0,"kav found " & kav);
 					if(kav==1)then begin
-						//logtext(0,"Second kav found");
+						logtext(0,"Second kav found");
 						fname = getstringfromarea(webgetdata,filenapos+len("filename=")+1,i-filenapos-len("filename=")-1);
 						filenapos = 0;
-						//logtext(0,"fname " & fname);
+						logtext(0,"fname " & fname);
 					end;
 				end;
 			end;
@@ -778,7 +778,7 @@ lEndArea:;
 					if(nl==7)then begin
 						imgstpos = i+2;
 						getareafromarea(webgetdata,imgstpos,areal-imgstpos,imagearea);
-						//logtext(0,"Attachment size " & getarealength(imagearea));
+						logtext(0,"Attachment size " & getarealength(imagearea));
 						writeareatofile(imagearea,"MobAttach/" & fname,0);
 						goto lBeginImage;
 					end;
@@ -791,18 +791,18 @@ lBeginImage:;
 	
 	writeareatofile(webgetdata,"Webattach.txt",0);
 	SVONrline = GetLineFromArea(webgetdata,3);
-	//logtext(0,stringtolongint(SVONrline));
+	logtext(0,stringtolongint(SVONrline));
 	if(stringtolongint(SVONrline)>0)then begin
-		//logtext(0,stringtolongint(SVONrline));
+		logtext(0,stringtolongint(SVONrline));
 		SVOr.SerNr = stringtolongint(SVONrline);
 		if(readfirstmain(SVOr,1,true))then begin
-			//logtext(0,"SVOr.DoneMark " & SVOr.DoneMark);
-			//logtext(0,"SVOr.RegDate " & SVOr.RegDate);
+			logtext(0,"SVOr.DoneMark " & SVOr.DoneMark);
+			logtext(0,"SVOr.RegDate " & SVOr.RegDate);
 			if(SVOr.DoneMark==0 and blankdate(SVOr.RegDate))then begin
 				fileNameLine = GetLineFromArea(webgetdata,5);
 				RECORDLINKFILE("MobAttach/" & fname,0,SVOr,CurrentCompany)
-				//logtext(0,"SVONrline " & SVONrline);
-				//logtext(0,"fileNameLine " & fileNameLine);
+				logtext(0,"SVONrline " & SVONrline);
+				logtext(0,"fileNameLine " & fileNameLine);
 			end;
 		end;
   end;
@@ -832,7 +832,7 @@ longint areal,i,nl,imgstpos,filenapos,kav;
 	
 		areal = getarealength(webgetdata);
 		endmark = "------";
-		//logtext(0,areal);
+		logtext(0,areal);
 		if(areal>len(endmark))then begin
 			for(i=areal-len(endmark);i>0;i=i-1)begin
 				endarea = getstringfromarea(webgetdata,i,len(endmark));
@@ -854,18 +854,18 @@ longint areal,i,nl,imgstpos,filenapos,kav;
 				filename = getstringfromarea(webgetdata,i,len("filename="));
 				if(filename=="filename=")then begin
 					filenapos = i;
-					//logtext(0,"Filename found " & i);
+					logtext(0,"Filename found " & i);
 				end;
 				if(filenapos>0)then begin
 					if(getstringfromarea(webgetdata,i,1)=="\"")then begin
 					
 						kav = kav + 1;
-						//logtext(0,"kav found " & kav);
+						logtext(0,"kav found " & kav);
 						if(kav==1)then begin
-							//logtext(0,"Second kav found");
+							logtext(0,"Second kav found");
 							fname = getstringfromarea(webgetdata,filenapos+len("filename=")+1,i-filenapos-len("filename=")-1);
 							filenapos = 0;
-							//logtext(0,"fname " & fname);
+							logtext(0,"fname " & fname);
 						end;
 					end;
 				end;
@@ -877,7 +877,7 @@ longint areal,i,nl,imgstpos,filenapos,kav;
 						if(nl==3)then begin
 							imgstpos = i+2;
 							getareafromarea(webgetdata,imgstpos,areal-imgstpos,imagearea);
-							//logtext(0,"Attachment size " & getarealength(imagearea));
+							logtext(0,"Attachment size " & getarealength(imagearea));
 							writeareatofile(imagearea,"MobAttach/" & fname,0);
 							goto lBeginImage1;
 						end;
@@ -890,17 +890,17 @@ longint areal,i,nl,imgstpos,filenapos,kav;
 	
 		writeareatofile(webgetdata,"Webattach.txt",0);
 		SVONrline = webgetarg("SVONr");
-		//logtext(0,stringtolongint(SVONrline));
+		logtext(0,stringtolongint(SVONrline));
 		if(stringtolongint(SVONrline)>0)then begin
-			//logtext(0,stringtolongint(SVONrline));
+			logtext(0,stringtolongint(SVONrline));
 			SVOr.SerNr = stringtolongint(SVONrline);
 			if(readfirstmain(SVOr,1,true))then begin
-				//logtext(0,"SVOr.DoneMark " & SVOr.DoneMark);
-				//logtext(0,"SVOr.RegDate " & SVOr.RegDate);
+				logtext(0,"SVOr.DoneMark " & SVOr.DoneMark);
+				logtext(0,"SVOr.RegDate " & SVOr.RegDate);
 				if(true)then begin
 					RECORDLINKFILE("MobAttach/" & fname,0,SVOr,CurrentCompany)
-					//logtext(0,"SVONrline " & SVONrline);
-					//logtext(0,"fileNameLine " & fileNameLine);
+					logtext(0,"SVONrline " & SVONrline);
+					logtext(0,"fileNameLine " & fileNameLine);
 				end;
 			end;
 		end;
@@ -931,7 +931,7 @@ boolean TrHs,testf;
 	if(nonblank(currentuser))then begin
 		SVONrline = webgetarg("SVONr");
 		if(stringtolongint(SVONrline)>0)then begin
-			//logtext(0,stringtolongint(SVONrline));
+			logtext(0,stringtolongint(SVONrline));
 			SVOr.SerNr = stringtolongint(SVONrline);
 			if(readfirstmain(SVOr,1,true))then begin
 				USr.Code = currentuser;
@@ -940,7 +940,7 @@ boolean TrHs,testf;
 						TrHs = true;
 						testf = false;
 						while(LoopKey("SVOSerNr",Actr,1,TrHs)) begin
-							//logtext(0,Actr.ActType);
+							logtext(0,Actr.ActType);
 							if(Actr.ActType=="MOVE" and  Actr.OKFlag!=1) then begin 
 								recordcopy(oldActr,Actr);
 								TrHs = false; 
@@ -1034,10 +1034,10 @@ boolean TrHs,testf;
 				PhoneLine = webgetarg("Phone");
 				if(PhoneLine=="1") then begin
 					CallToClient(SVOr);
-					//logtext(0,"Call1");
+					logtext(0,"Call1");
 				end else begin
 					CallToClient2(SVOr);
-					//logtext(0,"Call2");
+					logtext(0,"Call2");
 				end;
 			end;
 		end;
@@ -1053,7 +1053,7 @@ string 255 SVONrline;
 	if(nonblank(currentuser))then begin
 		SVONrline = webgetarg("SVONr");
 		AllClientsRemoteAsync.RemoteUserFunction(currentuser,"OpenSVOr",stringtolongint(SVONrline),"");
-		//logtext(0,"WebOpenSVO " & currentuser & " " & SVONrline );
+		logtext(0,"WebOpenSVO " & currentuser & " " & SVONrline );
 	end;
 return;
 end;
