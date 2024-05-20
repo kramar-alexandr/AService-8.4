@@ -323,3 +323,20 @@ begin
 return;
 end;
 
+global webpublic updating procedure WebDeleteOldAct()
+begin
+  record ActVc Actr;
+  
+  setcompany(8,false);
+  
+  
+  while(loopmain(Actr,1,true))begin
+    if(Actr.OKFlag==1)then begin
+      recorddelete(Actr);
+      stepback(Actr);
+    end;
+  
+  end;
+
+return;
+end;
