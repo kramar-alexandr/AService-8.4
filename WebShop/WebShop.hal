@@ -765,7 +765,7 @@ lEndArea:;
 					logtext(0,"kav found " & kav);
 					if(kav==1)then begin
 						logtext(0,"Second kav found");
-						fname = getstringfromarea(webgetdata,filenapos+len("filename=")+6,i-filenapos-len("filename=")-5);
+						fname = getstringfromarea(webgetdata,filenapos+len("filename=")+6,i-filenapos-len("filename=")-6);
 						filenapos = 0;
 						logtext(0,"fname " & fname);
 					end;
