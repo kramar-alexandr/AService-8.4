@@ -1,0 +1,20 @@
+global procedure getlistofnoter_ra(longint svonr, var array string astr)
+begin
+  record RLinkVc RLr;
+  record SVOVc SVOr;
+  integer pos,link;
+  record NotepadVc Noter;
+  string 200 tstr;
+  
+  SVOr.SerNr = svonr;
+  readfirstmain(SVOr,1,true);
+  
+  link = 1;
+  while (ReadRecordLink(SVOr,link,Noter,RLr)) begin
+    tstr = Noter.SerNr & " : " & RLr.Comment;
+    astr[astr.length] = tstr;
+    link = link + 1;
+  end;
+
+return;
+end;

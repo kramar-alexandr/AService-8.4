@@ -1,3 +1,5 @@
+remote procedure getlistofnoter_ra(longint,var array string);  
+
 global
 procedure NoteFromArchiveWsm()
 BEGIN
@@ -80,12 +82,11 @@ begin
   mmwn = MotherWindow(mwn);
   GetWindowRecord(mmwn,SVOr);
   
-  link = 1;
-  while (ReadRecordLink(SVOr,link,Noter,RLr)) begin
-    tstr = Noter.SerNr & " : " & RLr.Comment;
-    SetListString(wn,len(tstr),tstr,false);    
-    link = link + 1;
+  getlistofnoter_ra(SVOr.SerNr,astr);  
+  for(i=0;i<astr.length;i=i+1)begin
+    SetListString(wn,len(astr[i]),astr[i],false);    
   end;
+  
   
   NotepadSClassOnOpenWindow = false;
   return;
