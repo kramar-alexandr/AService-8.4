@@ -8028,6 +8028,6 @@ window NotepadSClass:1
 begin
   WindowBegin("Нотатки",NotepadSClass,CGother,HBlRecType);
   SetWRect(240,80,570,398);
-  StringList(9,9,206,209);
+  StringList(9,9,506,309);
   EndWindow;
 end;
