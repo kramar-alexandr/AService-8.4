@@ -24,3 +24,69 @@ BEGIN
 	LNoteFromArchiveWsm:;
   RETURN;
 END;
+
+
+global procedure OpenNotesPadLIstWsm()
+begin
+  integer wn,mwn;
+  record RcVc RepSpec;
+  
+  wn = CurWindow;
+  mwn = motherwindow(wn);
+  GetWindowRecord(wn,RepSpec);
+  
+  OpenWindow("NotepadSClass",0,wn,"","",RepSpec);
+  
+return;
+end;
+
+
+global
+function Boolean NotepadSClassOnOKWindow(Integer wn)
+begin
+  Integer Sel;
+  string 100 tstr;
+  record NotepadVc Noter;
+  
+  Sel = SelectedListLine(wn);
+  tstr = GetListString(wn,Sel);
+  tstr = firstinrange(tstr,10);
+  tstr = trim(tstr);
+  Noter.SerNr = stringtolongint(tstr);
+  if(readfirstmain(Noter,1,true))then begin
+    OpenWindow("NotepadDClass",0,0,"","",Noter);
+  end;
+  //Sel = SelectedListLine(wn);
+  //StringFromSysList(wn,cutlen);
+  //tstr = GetListString(wn,Sel);
+  
+  NotepadSClassOnOKWindow = false;
+  return;
+end;
+
+global
+function Boolean NotepadSClassOnOpenWindow(Integer wn)
+begin
+  Array string 255 astr;
+  string 255 tstr;
+  Integer i,acnt,rownr,mwn,mmwn;
+  record RcVc RepSpec;
+  record RLinkVc RLr;
+  record SVOVc SVOr;
+  integer pos,link;
+  record NotepadVc Noter;
+  
+  mwn = MotherWindow(wn);
+  mmwn = MotherWindow(mwn);
+  GetWindowRecord(mmwn,SVOr);
+  
+  link = 1;
+  while (ReadRecordLink(SVOr,link,Noter,RLr)) begin
+    tstr = Noter.SerNr & " : " & RLr.Comment;
+    SetListString(wn,len(tstr),tstr,false);    
+    link = link + 1;
+  end;
+  
+  NotepadSClassOnOpenWindow = false;
+  return;
+end;

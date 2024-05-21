@@ -7982,3 +7982,52 @@ begin
   SpecialMenu("Создать заказ поставщику",' ',2,"POFromIntORDsm");         
   EndWindow;
 end;
+
+
+window ArchiveWClass:4
+  wtag("language","UKR"), wtag("product","*"), wtag("productcode","*"), wtag("device","computer,iPad,iPhone,android,android_tab")
+begin
+  if (GuiType==kGuiiPhone or GuiType==kGuiAndroid) then begin
+  WindowBegin("Архів",ArchiveWClass,CGother,RcType);
+  end else begin
+    WindowBegin("Архів",ArchiveWClass,CGother,RcType);
+  end;
+  UseView(RcVc);
+  CloseOnCancel;
+  SetWRect(130,80,500,320);
+  Sizeable(100,100,0,0); 
+  ArchiveList(1,16,-16,-23);
+  SpecMenuItem("Приєднати файл",'a',mAttachFile); 
+  if (GuiType!=kGuiiPhone) then begin
+  SpecMenuItem("Зберегти файл",' ',mOpsDownloadFile); 
+  end;
+  SpecMenuItem("Відкрити запис",' ',mOpenRecord); 
+  SpecMenuItem("Редагувати текст посилання",' ',mOpsEditLinkComment); 
+  if (GuiType!=kGuiiPhone) then begin
+  SpecialMenu("(-",' ',5,"");
+  end;
+  SpecialMenu("Створити нотатку",' ',6,"NoteFromArchiveWsm");
+  if (HaseMail) then begin
+  SpecialMenu("Створити лист",' ',7,"MailFromArchiveWsm");
+  end;
+  SpecialMenu("Створити архів",' ',8,"ArchiveFromArchiveWsm");
+  SpecMenuItem("Переіменувати архів",'r',mRenameArchive);
+//  SpecialMenu("Створити дію",' ',8,"ActionFromArchiveWsm"); // No clue what it is for.
+  SpecialMenu("Створити Web посилання",' ',11,"TWebNavLinkFromArchiveWsm"); 
+  SpecialMenu("Створити Аудіо Запис",' ',12,"AudioRecordingFromArchiveWsm"); 
+  SpecialMenu("-- НОТАТКИ --",' ',13,"OpenNotesPadLIstWsm"); 
+  if (GuiType==kGuiiPhone or GuiType==kGuiAndroid) then begin
+    SpecMenuItem("Видалити посилання",' ',mRemoveLink); 
+  end;
+  EndWindow;
+end;
+
+
+window NotepadSClass:1
+  wtag("language","UKR"), wtag("product","*"), wtag("productcode","*"), wtag("device","computer")
+begin
+  WindowBegin("Нотатки",NotepadSClass,CGother,HBlRecType);
+  SetWRect(240,80,570,398);
+  StringList(9,9,206,209);
+  EndWindow;
+end;
