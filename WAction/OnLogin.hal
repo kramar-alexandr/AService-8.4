@@ -686,10 +686,11 @@ LOtherwise01:;
       accpetancef = true;
       reshot = OnLoginRemote3_compat(newf,resve,rescont,cleanmail,CurrentDate,CurrentTime,CurrentUser,forcestockmaint,DBStatus,aVEIVNr,aVEIVComp,clockinaction,accpetancef,acptRepSpec,mailboxnr,mailboxname,LMb.LocalMachineCode,aSPDr);
       reshot = true;      
-      if (accpetancef) then begin
+      nwn = OpenMasterWClass2(mailboxnr,mailboxname);
+      /*if (accpetancef) then begin
         nwn = OpenMasterWClass2(mailboxnr,mailboxname);
         nwn = OpenToDoWClass(mailboxnr,mailboxname,acptRepSpec);    
-      end;
+      end;*/
      GetUserAccessGroup(currentuser,accessgroup);
       if(accessgroup!="FIN+" and accessgroup!="ADMIN" and accessgroup!="ISTUD" and accessgroup!="OBOLO")then begin
 				acptRepSpec.f1 = CurrentUser;// Edit ************************** Thursday, 13 October 2016 16:26:39
@@ -711,10 +712,11 @@ LOtherwise01:;
     accpetancef = true;
     reshot = OnLoginRemote3_compat(newf,resve,rescont,cleanmail,CurrentDate,CurrentTime,CurrentUser,forcestockmaint,DBStatus,aVEIVNr,aVEIVComp,clockinaction,accpetancef,acptRepSpec,mailboxnr,mailboxname,LMb.LocalMachineCode,aSPDr);
     reshot = true;      
-    if (accpetancef) then begin
+    nwn = OpenMasterWClass2(mailboxnr,mailboxname);
+    /*if (accpetancef) then begin
       nwn = OpenMasterWClass2(mailboxnr,mailboxname);
       nwn = OpenToDoWClass(mailboxnr,mailboxname,acptRepSpec);    
-    end;
+    end;*/
     GetUserAccessGroup(currentuser,accessgroup);
       if(accessgroup!="FIN+" and accessgroup!="ADMIN" and accessgroup!="ISTUD" and accessgroup!="OBOLO")then begin
 			acptRepSpec.f1 = CurrentUser;// Edit ************************** Thursday, 13 October 2016 13:10:06
