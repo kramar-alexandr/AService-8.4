@@ -9,7 +9,8 @@ global procedure UpdateMasterWClassOnKPIs(string str)
 begin
 	Integer wn;
 	string 20 accessgroup;
-		
+		logtext(0,"UpdateMasterWClassOnKPIs");
+
     wn = FindWindow("ToDoWClass");
     if(wn>0)then begin
       updatebrowses("ToDoWClass");
