@@ -698,9 +698,7 @@ LOtherwise01:;
 				acptRepSpec.sEndDate = Currentdate;
 				acptRepSpec.d1 = stringtodate("01.01.2023");
 				acptRepSpec.d2 = Currentdate;
-				acptRepSpec.Period2Str = acptRepSpec.sStartDate;
-				acptRepSpec.Period2Str = acptRepSpec.Period2Str & ":";
-				acptRepSpec.Period2Str = acptRepSpec.Period2Str & acptRepSpec.sEndDate;
+				acptRepSpec.Period2Str = "01.01.2023" & ":" & DateToString(Currentdate,"DD.MM.YYYY");
 				nwn = OpenToDoWClass(mailboxnr,mailboxname,acptRepSpec);// Edit ************************** Thursday, 13 October 2016 10:49:44
 				logtext(0,"2 acptRepSpec.Period2Str " &  acptRepSpec.Period2Str);
       //end;
@@ -725,9 +723,7 @@ LOtherwise01:;
 			acptRepSpec.sEndDate = Currentdate;
 			acptRepSpec.d1 = stringtodate("01.01.2023");
 			acptRepSpec.d2 = Currentdate;
-			acptRepSpec.Period2Str = acptRepSpec.sStartDate;
-			acptRepSpec.Period2Str = acptRepSpec.Period2Str & ":";
-			acptRepSpec.Period2Str = acptRepSpec.Period2Str & acptRepSpec.sEndDate;
+			acptRepSpec.Period2Str = "01.01.2023" & ":" & DateToString(Currentdate,"DD.MM.YYYY");
 			logtext(0,"1 acptRepSpec.Period2Str " &  acptRepSpec.Period2Str);
 
 			nwn = OpenToDoWClass(mailboxnr,mailboxname,acptRepSpec);  // Edit ************************** Thursday, 13 October 2016 10:51:19
