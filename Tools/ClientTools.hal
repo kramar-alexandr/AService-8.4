@@ -23,9 +23,9 @@ global updating procedure UpdateToDoWclass()
 	record DateRnBlock DRB;
 	
 	if(!servermode)then begin
-	  if(currentuser!="SA")then begin
+	  //if(currentuser!="SA")then begin
       UpdateMasterWClassOnKPIs("");
-    end;
+    //end;
   end else begin
     BlockLoad(DRB);
     if(left(CurrentTime,2)=="20" and DRB.DateRn!=CurrentDate) then begin
