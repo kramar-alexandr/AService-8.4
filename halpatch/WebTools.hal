@@ -343,3 +343,30 @@ begin
 
 return;
 end;
+
+global webpublic updating procedure WebCheckNotes()
+begin
+  record NotepadVc Noter;
+  boolean TrHs;
+  integer counter;
+  
+  setcompany(8,false);
+  
+  logtext(0,"WebCheckNotes st");
+
+  TrHs = true;
+  while(loopbackkey("SerNr",Noter,1,TrHs))begin
+    
+    weboutstring(Noter.SerNr & " =======  " & Noter.CompanyNr & " ===== " & Noter.FromRecidStr);
+    
+    counter = counter + 1;
+    if(counter>1000)then begin
+      TrHs = true;
+    end;
+  end;
+  
+  logtext(0,"Actr end");
+
+return;
+end;
+
