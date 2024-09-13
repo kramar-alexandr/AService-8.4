@@ -354,6 +354,7 @@ begin
   
   logtext(0,"WebCheckNotes st");
 
+  Noter.SerNr = 99999999;
   TrHs = true;
   while(loopbackkey("SerNr",Noter,1,TrHs))begin
     
