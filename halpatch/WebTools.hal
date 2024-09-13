@@ -389,7 +389,8 @@ begin
         end;
       
         logtext(0,len(num));
-        for(i=0;i<len(num);i=i+1)begin
+        for(i=0;i<3;i=i+1)begin
+          num = right(Noter.FromRecidStr,3);
           tstr = tstr & "-" & NumToHex2(asc(mid(num,i,1)),2);
         end;
         weboutstring(Noter.SerNr & " =======  " & Noter.CompanyNr & " ===== " & Noter.FromRecidStr & " === " & vcname & " ==== num " & tstr &  "<BR>");
