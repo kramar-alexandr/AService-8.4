@@ -390,7 +390,7 @@ begin
       
         logtext(0,len(num));
         for(i=0;i<len(num);i=i+1)begin
-          tstr = asc(mid(Noter.FromRecidStr,i,1)) & tstr;
+          tstr = asc(mid(num,i,1)) & tstr;
         end;
         weboutstring(Noter.SerNr & " =======  " & Noter.CompanyNr & " ===== " & Noter.FromRecidStr & " === " & vcname & " ==== num " & tstr &  "<BR>");
       end;
