@@ -367,7 +367,7 @@ begin
     
     if(nonblank(Noter.FromRecidStr))then begin
       compnr = GetRecordLinkFields(Noter.FromRecidStr,vcname);
-      if(compnr==9)then begin
+      if(compnr==8)then begin
         c = left(Noter.FromRecidStr,1);
         recname = "";
         cter = 0;
@@ -392,8 +392,8 @@ begin
           tstr = NumToHex(asc(mid(Noter.FromRecidStr,i,1))) & tstr;
           pos = pos + 1;
         end;
+        weboutstring(Noter.SerNr & " =======  " & Noter.CompanyNr & " ===== " & Noter.FromRecidStr & " === " & vcname & " ==== num " & tstr &  "<BR>");
       end;
-      weboutstring(Noter.SerNr & " =======  " & Noter.CompanyNr & " ===== " & Noter.FromRecidStr & " === " & vcname & " ==== num " & tstr &  "<BR>");
   	end;
     counter = counter + 1;
     if(counter>1000)then begin
