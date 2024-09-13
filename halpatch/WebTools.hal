@@ -1,4 +1,5 @@
 external function string 255 NumToHex(string);
+external function string 255 NumToHex2(string,Integer);
 
 /*external updating procedure AutoRun();
 external updating procedure BuhExportEn();
@@ -389,7 +390,7 @@ begin
       
         logtext(0,len(num));
         for(i=0;i<len(num);i=i+1)begin
-          tstr = NumToHex(mid(Noter.FromRecidStr,i,1)) & tstr;
+          tstr = asc(mid(Noter.FromRecidStr,i,1)) & tstr;
         end;
         weboutstring(Noter.SerNr & " =======  " & Noter.CompanyNr & " ===== " & Noter.FromRecidStr & " === " & vcname & " ==== num " & tstr &  "<BR>");
       end;
