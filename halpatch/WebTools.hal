@@ -351,7 +351,9 @@ begin
   integer counter;
   string 1 c,nul;
 	integer cter,i,pref,check;
-	string 50 recname,compnr;
+	string 50 recname,compnr,num;
+	LongInt pos;
+	string 255 rlink,tstr;
   
   setcompany(8,false);
   
@@ -366,21 +368,31 @@ begin
     c = left(Noter.FromRecidStr,1);
     recname = "";
   	cter = 0;
+  	tstr = "";
+    pos = 1;
   	if(nonblank(Noter.FromRecidStr))then begin
   	  pref = asc(c) + 1;
   		compnr = mid(Noter.FromRecidStr,1,asc(c));
   		if(pref<len(Noter.FromRecidStr))then begin
 				for(i=pref;i<len(Noter.FromRecidStr);i=i+1)begin
-						c = mid(Noter.FromRecidStr,i,1);
+					c = mid(Noter.FromRecidStr,i,1);
 					if(asc(c)==0)then begin
+					  num = right(Noter.FromRecidStr,len(Noter.FromRecidStr)-i);
 						i = len(Noter.FromRecidStr);
 					end else begin
 						recname = recname & c;
 					end;
 				end;
   		end;
+  		
+  		
+      while (asc(right(Noter.FromRecidStr,pos))>0) begin
+        tstr = asc(right(Noter.FromRecidStr,pos)) & tstr;
+        pos = pos + 1;
+      end;
+  		
   	end;
-    weboutstring(Noter.SerNr & " =======  " & Noter.CompanyNr & " ===== " & Noter.FromRecidStr & " === " & recname & "<BR>");
+    weboutstring(Noter.SerNr & " =======  " & Noter.CompanyNr & " ===== " & Noter.FromRecidStr & " === " & recname & " ==== num " & tstr &  "<BR>");
     counter = counter + 1;
     if(counter>1000)then begin
       TrHs = false;
