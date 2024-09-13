@@ -1,5 +1,7 @@
 external function string 255 NumToHex(string);
 external function string 255 NumToHex2(string,Integer);
+external function LongInt POSNETHexToLong(string);
+
 
 /*external updating procedure AutoRun();
 external updating procedure BuhExportEn();
@@ -393,9 +395,9 @@ begin
         addtexttoarea(Noter.FromRecidStr,abin);
         for(i=0;i<3;i=i+1)begin
           lenare = getarealength(abin);
-          tstr = tstr & "-" & NumToHex2(asc(getstringfromarea(abin,lenare-3+i,1)),2);
+          tstr = tstr & NumToHex2(asc(getstringfromarea(abin,lenare-3+i,1)),2);
         end;
-        weboutstring(Noter.SerNr & " =======  " & Noter.CompanyNr & " ===== " & Noter.FromRecidStr & " === " & vcname & " ==== num " & tstr &  "<BR>");
+        weboutstring(Noter.SerNr & " =======  " & Noter.CompanyNr & " ===== " & Noter.FromRecidStr & " === " & vcname & " ==== num " & POSNETHexToLong(tstr) &  "<BR>");
       end;
   	end;
     counter = counter + 1;
