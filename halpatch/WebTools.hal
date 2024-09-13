@@ -353,7 +353,7 @@ begin
   boolean TrHs;
   integer counter,compnr;
   string 1 c,nul;
-	integer cter,i,pref,check;
+	integer cter,i,pref,check,lenare;
 	string 50 recname,num,vcname;
 	LongInt pos;
 	string 255 rlink,tstr;
@@ -389,12 +389,11 @@ begin
           end;
         end;
       
-        logtext(0,len(num));
         setareazerosize(abin);
-        addtexttoarea(right(Noter.FromRecidStr,3),abin);
+        addtexttoarea(Noter.FromRecidStr,abin);
         for(i=0;i<3;i=i+1)begin
-          num = right(Noter.FromRecidStr,3);
-          tstr = tstr & "-" & NumToHex2(asc(getstringfromarea(abin,i,1)),2);
+          lenare = getarealength(abin);
+          tstr = tstr & "-" & NumToHex2(asc(getstringfromarea(abin,lenare-3+i,1)),2);
         end;
         weboutstring(Noter.SerNr & " =======  " & Noter.CompanyNr & " ===== " & Noter.FromRecidStr & " === " & vcname & " ==== num " & tstr &  "<BR>");
       end;
