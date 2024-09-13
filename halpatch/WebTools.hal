@@ -349,6 +349,9 @@ begin
   record NotepadVc Noter;
   boolean TrHs;
   integer counter;
+  string 1 c,nul;
+	integer cter,i,pref,check;
+	string 50 recname,compnr;
   
   setcompany(8,false);
   
@@ -358,8 +361,26 @@ begin
   TrHs = true;
   while(loopbackkey("SerNr",Noter,1,TrHs))begin
     
-    weboutstring(Noter.SerNr & " =======  " & Noter.CompanyNr & " ===== " & Noter.FromRecidStr & "<BR>");
     
+    
+    c = left(Noter.FromRecidStr,1);
+    recname = "";
+  	cter = 0;
+  	if(nonblank(Noter.FromRecidStr))then begin
+  	  pref = asc(c) + 1;
+  		compnr = mid(Noter.FromRecidStr,1,asc(c));
+  		if(pref<len(Noter.FromRecidStr))then begin
+				for(i=pref;i<len(Noter.FromRecidStr);i=i+1)begin
+						c = mid(Noter.FromRecidStr,i,1);
+					if(asc(c)==0)then begin
+						i = len(Noter.FromRecidStr);
+					end else begin
+						recname = recname & c;
+					end;
+				end;
+  		end;
+  	end;
+    weboutstring(Noter.SerNr & " =======  " & Noter.CompanyNr & " ===== " & Noter.FromRecidStr & " === " & recname & "<BR>");
     counter = counter + 1;
     if(counter>1000)then begin
       TrHs = false;
