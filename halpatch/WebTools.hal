@@ -351,15 +351,17 @@ end;
 
 global webpublic updating procedure WebCheckNotes()
 begin
-  record NotepadVc Noter;
+  record NotepadVc Noter,Note2r;
   boolean TrHs;
-  integer counter,compnr;
+  integer counter,compnr,notenr;
   string 1 c,nul;
 	integer cter,i,pref,check,lenare;
 	string 50 recname,num,vcname;
 	LongInt pos;
 	string 255 rlink,tstr;
 	area abin;
+	record SVOVc SVOr;
+	record RLinkVc RLr;
   
   setcompany(8,false);
   
@@ -398,10 +400,20 @@ begin
           tstr = tstr & NumToHex2(asc(getstringfromarea(abin,lenare-3+i,1)),2);
         end;
         weboutstring(Noter.SerNr & " =======  " & Noter.CompanyNr & " ===== " & Noter.FromRecidStr & " === " & vcname & " ==== num " & POSNETHexToLong(tstr) &  "<BR>");
+        SVOr.SerNr = POSNETHexToLong(tstr);
+        if(readfirstmain(SVOr,1,true))then begin
+          notenr = 1;
+          while(ReadRecordLink(SVOr,notenr,Note2r,RLr)) begin
+            if(Note2r.SerNr==-1)then begin
+              weboutstring("Need to restore " & SVor.SerNr & " " & RLr.Comment &  "<BR>");
+            end;
+            notenr = notenr + 1;
+          end;
+        end;
       end;
   	end;
     counter = counter + 1;
-    if(counter>1000)then begin
+    if(counter>2000)then begin
       TrHs = false;
     end;
   end;
