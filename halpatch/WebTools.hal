@@ -380,7 +380,7 @@ begin
           for(i=pref;i<len(Noter.FromRecidStr);i=i+1)begin
             c = mid(Noter.FromRecidStr,i,1);
             if(asc(c)==0)then begin
-              num = right(Noter.FromRecidStr,len(Noter.FromRecidStr)-i);
+              num = right(Noter.FromRecidStr,len(Noter.FromRecidStr)-i+1);
               i = len(Noter.FromRecidStr);
             end else begin
               recname = recname & c;
