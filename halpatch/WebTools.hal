@@ -348,10 +348,10 @@ global webpublic updating procedure WebCheckNotes()
 begin
   record NotepadVc Noter;
   boolean TrHs;
-  integer counter;
+  integer counter,compnr;
   string 1 c,nul;
 	integer cter,i,pref,check;
-	string 50 recname,compnr,num;
+	string 50 recname,num,vcname;
 	LongInt pos;
 	string 255 rlink,tstr;
   
@@ -363,36 +363,36 @@ begin
   TrHs = true;
   while(loopbackkey("SerNr",Noter,1,TrHs))begin
     
+    if(nonblank(Noter.FromRecidStr))then begin
+      compnr = GetRecordLinkFields(Noter.FromRecidStr,vcname);
+      if(compnr==9)then begin
+        c = left(Noter.FromRecidStr,1);
+        recname = "";
+        cter = 0;
+        tstr = "";
+        pos = 1;
     
-    
-    c = left(Noter.FromRecidStr,1);
-    recname = "";
-  	cter = 0;
-  	tstr = "";
-    pos = 1;
-  	if(nonblank(Noter.FromRecidStr))then begin
-  	  pref = asc(c) + 1;
-  		compnr = mid(Noter.FromRecidStr,1,asc(c));
-  		if(pref<len(Noter.FromRecidStr))then begin
-				for(i=pref;i<len(Noter.FromRecidStr);i=i+1)begin
-					c = mid(Noter.FromRecidStr,i,1);
-					if(asc(c)==0)then begin
-					  num = right(Noter.FromRecidStr,len(Noter.FromRecidStr)-i);
-						i = len(Noter.FromRecidStr);
-					end else begin
-						recname = recname & c;
-					end;
-				end;
-  		end;
-  		
-  		
-      while (asc(right(Noter.FromRecidStr,pos))>0) begin
-        tstr = asc(right(Noter.FromRecidStr,pos)) & tstr;
-        pos = pos + 1;
+        pref = asc(c) + 1;
+        if(pref<len(Noter.FromRecidStr))then begin
+          for(i=pref;i<len(Noter.FromRecidStr);i=i+1)begin
+            c = mid(Noter.FromRecidStr,i,1);
+            if(asc(c)==0)then begin
+              num = right(Noter.FromRecidStr,len(Noter.FromRecidStr)-i);
+              i = len(Noter.FromRecidStr);
+            end else begin
+              recname = recname & c;
+            end;
+          end;
+        end;
+      
+      
+        while (asc(right(Noter.FromRecidStr,pos))>0) begin
+          tstr = asc(right(Noter.FromRecidStr,pos)) & tstr;
+          pos = pos + 1;
+        end;
       end;
-  		
+      weboutstring(Noter.SerNr & " =======  " & Noter.CompanyNr & " ===== " & Noter.FromRecidStr & " === " & vcname & " ==== num " & StringToLongInt(tstr) &  "<BR>");
   	end;
-    weboutstring(Noter.SerNr & " =======  " & Noter.CompanyNr & " ===== " & Noter.FromRecidStr & " === " & recname & " ==== num " & StringToLongInt(tstr) &  "<BR>");
     counter = counter + 1;
     if(counter>1000)then begin
       TrHs = false;
