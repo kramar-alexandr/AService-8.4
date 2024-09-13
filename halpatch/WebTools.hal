@@ -393,7 +393,7 @@ begin
           pos = pos + 1;
         end;
       end;
-      weboutstring(Noter.SerNr & " =======  " & Noter.CompanyNr & " ===== " & Noter.FromRecidStr & " === " & vcname & " ==== num " & StringToLongInt(tstr) &  "<BR>");
+      weboutstring(Noter.SerNr & " =======  " & Noter.CompanyNr & " ===== " & Noter.FromRecidStr & " === " & vcname & " ==== num " & tstr &  "<BR>");
   	end;
     counter = counter + 1;
     if(counter>1000)then begin
