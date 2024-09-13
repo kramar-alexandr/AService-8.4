@@ -358,7 +358,7 @@ begin
   TrHs = true;
   while(loopbackkey("SerNr",Noter,1,TrHs))begin
     
-    weboutstring(Noter.SerNr & " =======  " & Noter.CompanyNr & " ===== " & Noter.FromRecidStr);
+    weboutstring(Noter.SerNr & " =======  " & Noter.CompanyNr & " ===== " & Noter.FromRecidStr & "<BR>");
     
     counter = counter + 1;
     if(counter>1000)then begin
