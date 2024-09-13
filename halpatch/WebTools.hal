@@ -361,7 +361,7 @@ begin
     
     counter = counter + 1;
     if(counter>1000)then begin
-      TrHs = true;
+      TrHs = false;
     end;
   end;
   
