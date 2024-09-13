@@ -373,7 +373,7 @@ begin
     
     if(nonblank(Noter.FromRecidStr))then begin
       compnr = GetRecordLinkFields(Noter.FromRecidStr,vcname);
-      if(compnr==8)then begin
+      if(true)then begin
         c = left(Noter.FromRecidStr,1);
         recname = "";
         cter = 0;
