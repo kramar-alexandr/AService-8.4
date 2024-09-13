@@ -387,7 +387,7 @@ begin
           end;
         end;
       
-      
+        logtext(0,len(num));
         for(i=0;i<len(num);i=i+1)begin
           tstr = NumToHex(asc(mid(Noter.FromRecidStr,i,1))) & tstr;
           pos = pos + 1;
