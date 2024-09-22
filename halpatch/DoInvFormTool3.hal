@@ -1024,12 +1024,12 @@ LInvBREAK:;
       if (OpenForm(formcode)) then begin
         printf = PrintInvoiceWatermarks(IVr,true,-1);
         PrintInvoice(RepSpec,IVr,formcode,langcode);
-        GetFormLanguages(languages);
+        /*GetFormLanguages(languages);
         for (i = 0; i<languages.length; i = i + 1) begin
           SetOverrideLangCode(languages[i]);
           PrintInvoice(RepSpec,IVr,formcode,languages[i]);
         end;
-        SetOverrideLangCode("");
+        SetOverrideLangCode("");*/
         CloseForm;
       end else begin
         printf = false;

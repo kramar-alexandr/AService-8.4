@@ -319,8 +319,8 @@ end;
 global
 updating procedure UpdateLocalCCTerminalSet(string lm)
 begin
-  record RahaxiBlock Rahaxib; 
-  record LocalMachineBlock LMb;
+  //record RahaxiBlock Rahaxib; 
+  /*record LocalMachineBlock LMb;
 
   BlockLoad(Rahaxib);
   LMb.LocalMachineCode = lm;
@@ -337,7 +337,7 @@ begin
     Rahaxib.PrintReceipt = LMb.PrintReceipt; 
     Rahaxib.CutReceipt = LMb.CutReceipt; 
     BlockStore(Rahaxib);
-  end;
+  end;*/
 end;
 
 global

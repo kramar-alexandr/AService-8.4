@@ -71,7 +71,7 @@ BEGIN
   row IVCashVc IVCashrw;
   Integer updatemode,insertmode;
   record CYBlock CYRec;
-  record RahaxiBlock Rahaxib; 
+  //record RahaxiBlock Rahaxib; 
   record CashierDefBlock CDb;
   record CompaniesBlock CBb;
   row CompaniesBlock CBrw;
@@ -101,7 +101,7 @@ BEGIN
   
   if (wnst==updatemode) then begin  
     GetPrevWindowRecord(wn,IVCashr);
-    BlockLoad(Rahaxib);
+    //BlockLoad(Rahaxib);
     if (IVCashr.OKFlag!=0) then begin    
       res = false;  
       switch (fieldname) begin
@@ -170,10 +170,10 @@ BEGIN
           end;        
         case "VATNr": res = HasLocalization("PRT")==false;
         case "Addr0": res = HasLocalization("PRT")==false;
-        case "RecValue": res = (Rahaxib.TerminalType==kLocalCCTerminalNone);
-        case "CreditCard2": res = (Rahaxib.TerminalType==kLocalCCTerminalNone);
-        case "AuthorizationCode2": res = (Rahaxib.TerminalType==kLocalCCTerminalNone);
-        case "RecValue2": res = (Rahaxib.TerminalType==kLocalCCTerminalNone);
+        //case "RecValue": res = (Rahaxib.TerminalType==kLocalCCTerminalNone);
+        //case "CreditCard2": res = (Rahaxib.TerminalType==kLocalCCTerminalNone);
+        //case "AuthorizationCode2": res = (Rahaxib.TerminalType==kLocalCCTerminalNone);
+        //case "RecValue2": res = (Rahaxib.TerminalType==kLocalCCTerminalNone);
         case "MotherArtCode": res = false;
         case "RecipeQuant": res = false;
         case "Recepy": res = false;
@@ -202,7 +202,7 @@ BEGIN
       res = false;
       goto LIVCashDClassActiveEditField;
     end;
-    BlockLoad(Rahaxib);
+    //BlockLoad(Rahaxib);
     switch (fieldname) begin
       case "Spec": 
         if (UserCanAction("ChangeIVItemSpec",true)==false) then begin res = false; end;
@@ -224,12 +224,12 @@ BEGIN
           end else begin
             res = blank(IVCashr.AuthorizationCode);
           end;        
-      case "RecValue": res = (Rahaxib.TerminalType==kLocalCCTerminalNone);
+      //case "RecValue": res = (Rahaxib.TerminalType==kLocalCCTerminalNone);
       case "CreditCard2": 
         res = blank(IVCashr.AuthorizationCode2);
       case "AuthorizationCode2": 
         res = blank(IVCashr.AuthorizationCode2);
-      case "RecValue2": res = (Rahaxib.TerminalType==kLocalCCTerminalNone);
+      //case "RecValue2": res = (Rahaxib.TerminalType==kLocalCCTerminalNone);
       case "MotherArtCode": res = false;
       case "RecipeQuant": res = false;
       case "Recepy": res = false;
@@ -450,7 +450,7 @@ BEGIN
   row IVVc IVrw;
   record AccBlock ARAccb;
   record CYBlock CYRec;
-  record RahaxiBlock Rahaxib; 
+  //record RahaxiBlock Rahaxib; 
   row IVVc lastIVrw;
   record InternetEnablerBlock IEb;
   string 255 tstr;

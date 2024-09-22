@@ -832,7 +832,7 @@ begin
   switch (fieldname) begin
     case "Period2Str":
       GetWindowRecord(wn,RepSpec);
-      In4Period(RepSpec.Period2Str,RepSpec.sStartDate,RepSpec.sEndDate);
+      //In4Period(RepSpec.Period2Str,RepSpec.sStartDate,RepSpec.sEndDate);
       PutWindowRecord(wn,RepSpec);
     case "f1":
       GetWindowRecord(wn,RepSpec);

@@ -82,7 +82,7 @@ begin
   record IVVc IVr;
   row IVVc IVrw;
   Boolean res,puf;
-  record RahaxiBlock Rahaxib; 
+  //record RahaxiBlock Rahaxib; 
   record LocalMachineBlock LMb;
   record INVc INr;
   Integer i,rwcnt;

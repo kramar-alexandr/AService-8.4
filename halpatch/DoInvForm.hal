@@ -1089,11 +1089,11 @@ BEGIN
   record UserVc Userr;
   string 255 ivlangcode;
   
-  if (OverrideLangCode<>"") then begin
-    ivlangcode = langcode;
-  end else begin
+  //if (OverrideLangCode<>"") then begin
+  //  ivlangcode = langcode;
+  //end else begin
     ivlangcode = IVr.LangCode;
-  end;
+  //end;
   
   if (PreviewFlag==false) then begin
     transaction Boolean gIVCreateAndAttachPdf;
@@ -1168,8 +1168,8 @@ BEGIN
   end;
   OUTFORMFIELD("F_VATINDICATOR",tstr);
   
-  OUTFORMFIELD("F_EORINOCOMPANY",CYb.EORINumber);
-  OUTFORMFIELD("F_EORINOCUST",CUr.EORINumber);   
+  //OUTFORMFIELD("F_EORINOCOMPANY",CYb.EORINumber);
+  //OUTFORMFIELD("F_EORINOCUST",CUr.EORINumber);   
   if (IVr.Prntdf==0) then begin
     OUTFORMFIELD("F_COPYTYPE",USetStr(18630));
   end else begin
@@ -1692,17 +1692,17 @@ BEGIN
   if (HasLocalization("ARG")) then begin
     OUTFORMFIELD("F_ARGQRCODE",BuildArgQRCodeIV(IVr));
   end;
-  if (HasLocalization("SAU") and nonblank(IVr.QRCode)) then begin
+  /*if (HasLocalization("SAU") and nonblank(IVr.QRCode)) then begin
     OUTFORMFIELD("F_SAUQRCODE",IVr.QRCode);
-  end;
-  if (HasLocalization("PRY")) then begin
+  end;*/
+  /*if (HasLocalization("PRY")) then begin
     OUTFORMFIELD("F_PRYQRCODE",BuildPryQRCode(IVr.QRCodeURL));
-  end;
-  OUTFORMFIELD("F_QRCODEURL",IVr.QRCodeURL);
+  end;*/
+  //OUTFORMFIELD("F_QRCODEURL",IVr.QRCodeURL);
   if (HasLocalization("SAU")) then begin
     OUTFORMFIELD("F_QRCODE",SAUNoteQRCode(IVr));
   end else begin
-    OUTFORMFIELD("F_QRCODE",IVr.QRCode);
+    //OUTFORMFIELD("F_QRCODE",IVr.QRCode);
   end;
   OUTFORMFIELD("F_ORDERCOMMENT",ORr.Comment);  
   OUTFORMFIELD("F_PLANSHIP",ORr.PlanShip);  
