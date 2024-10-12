@@ -337,7 +337,7 @@ begin
   logtext(0,"WebDeleteOldAct st");
 
   while(loopmain(Actr,1,true))begin
-    if(Actr.OKFlag==1 and Actr.TransDate<addday(currentdate,-30))then begin
+    if(Actr.OKFlag==1 and Actr.TransDate<addday(currentdate,-60))then begin
       recorddelete(Actr);
       stepback(Actr);
     end;
