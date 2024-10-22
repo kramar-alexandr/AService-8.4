@@ -507,7 +507,8 @@ begin
   CheckBox(h4=-230,v,0,"Напечатано",PrintFlag);
   CheckBox(h4=-230,v+vs,0,"Работы приемки",SalesFlag);
   CheckBox(h4=-100,v,0,"OK",OKFlag);
-  CheckBox(h4=-100,v+vs,0,"ASBIS гарантия",ASBISFlag);
+  CheckBox(h4=-100,v+=vs,0,"ASBIS гарантія",ASBISFlag);
+  CheckBox(h4=-100,v+vs,0,"AMASTER деталі",AMASTERFlag);
   
   tilenr = 1;
   TileButton(tilenr,"Дата"); tilenr = tilenr + 1; 
