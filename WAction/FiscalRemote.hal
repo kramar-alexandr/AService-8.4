@@ -1,6 +1,7 @@
 external function string 255 NormalizeStrToJson(string);
 external function val AbsoluteVal(val);
 external procedure PrintFiscalREcieptSVO(string,longint);
+external procedure PrintFiscalREcieptASVO(string,longint);
 external procedure PrintFiscalREcieptIV(string,longint);
 
 SetLangMode(LangUkrainian,"UKR",0); 
@@ -173,6 +174,11 @@ begin
                       createrecordlink(SVOr,currentcompany,FRr,currentcompany);
 			                createrecordlink(FRr,currentcompany,SVOr,currentcompany);
                     end;
+      case "ASVOVc":SVOr.SerNr = FRr.SerNr;
+                    if(readfirstmain(SVor,1,true))then begin
+                      createrecordlink(SVOr,currentcompany,FRr,currentcompany);
+			                createrecordlink(FRr,currentcompany,SVOr,currentcompany);
+                    end;
                     
       case "IVVc":IVr.SerNr = FRr.SerNr;
                   if(readfirstmain(IVr,1,true))then begin
@@ -205,6 +211,24 @@ return;
 end;
 
 
+global updating procedure ASVOFiscalCallBack(Area a_reply,Area a_replyheader,boolean timeout)
+begin
+  json jobj;
+  string 255 tstr,sernr,filename;
+  
+  jobj = parsejsonarea(a_reply);
+  tstr = JSONGet(jobj,"SerNr");
+  sernr = firstinrange(tstr,20);
+  filename = lastinrange(tstr,20);
+  
+  FiscalReplyUniversal(a_reply);
+  AllClientsRemoteAsync.PrintFiscalREcieptASVO(JSONGet(jobj,"User"),stringtolongint(sernr));
+
+return;
+end;
+
+
+
 global updating procedure IVFiscalCallBack(Area a_reply,Area a_replyheader,boolean timeout)
 begin
   json jobj;
@@ -235,7 +259,6 @@ begin
   logtext(0,"FiscalizeDocument login " & login & " filename " & filename & " sernr " & sernr & " callback " & callback);
   
   res = 0;
-  
   
   FRr.FileName = filename;
   FRr.SerNr = sernr;
@@ -395,7 +418,8 @@ begin
     recordstore(FRr,true);
      
     SetWebHeaders("Authorization: Bearer " & token);//WEB HEADERS!
-    SendAsyncWebRequest("s.erpjs.biz",443,443,true,"POST","/checkbox/basic/complete-sell","application/json","",receipt,callback,20);
+    
+    SendAsyncWebRequest("s.erpjs.biz1",443,443,true,"POST","/checkbox/basic/complete-sell","application/json","",receipt,callback,20);
     //SendAsyncWebRequest("f4o.site",443,443,true,"POST","/checkbox/basic/complete-sell","application/json","",receipt,callback,20);
     writeareatofile(nl,"FiscalRequest.txt",1);
     writeareatofile(receipt,"FiscalRequest.txt",1);

@@ -285,6 +285,10 @@ begin
   	//RepSpec.vals1 = blankval;
   	RepSpec.flags[1] = 0;
   end;
+  RepSpec.flags[1] = 1;// Всегда фіскалка // Edit ************************** BPI Ukraine - KramarAlexandr - Wednesday, 23 October 2024 at 12:49:12
+  if(value==3)then begin
+    RepSpec.flags[1] = 0;
+  end;
   putwindowrecord(wn,RepSpec);
   selectwindow(wn);
   ManagerFastPaySVOWClassAccSpecButtonAction = res;

@@ -31,6 +31,7 @@ external function Boolean OpenContactRecord(string,string);
 remote function string 255 DuplicateSVOSerial(string);// Edit ************************** Tuesday, 2 June 2015 20:09:42
 remote updating function Integer RecordAction_raPasteSVOInOrder(var record ORVc,var record SVOVc);// Edit ************************** Wednesday, 3 June 2015 16:59:04
 remote updating procedure HandleSVOReceiptPrinting(record SVOVc,var area);
+remote updating procedure HandleASVOReceiptPrinting(record SVOVc,var area);
 remote updating procedure HandleSVOReceiptPrintingPrepay(record SVOVc,var area);
 external procedure PrintBixolonReceipt(area);
 external procedure ExtractObjWithSeparator(string,string,Boolean,var Integer,var string);// Edit ************************** Monday, 27 February 2017 15:43:57
@@ -117,6 +118,41 @@ BEGIN
   RETURN;
 END;
 
+global //Edit-------------------Vitalii 13:52 27.10.2016
+updating procedure PrintAndSetRegDateInASVOExecute(var record SVOVc SVOr)
+BEGIN
+  record SVOVc SVO2r;
+  Integer wn,nwn;
+  area aFile;
+  Boolean testf;
+	
+	if ((SVOr.WSCost!=blankval) and (SVOr.WSCost!=0)) then begin
+		SetExportCodePage("CP1251");
+		HandleASVOReceiptPrinting(SVOr,aFile);
+		if(SVOr.FastBank==0)then begin
+			AddAreaToArea(aFile,aFile);
+			PrintBixolonReceipt(aFile);
+		end;
+	end;
+	if (BlankDate(SVOr.RegDate)) then begin
+		testf = true;
+		if (BlankDate(SVOr.PlanShipDate)) then begin //Edit***************************Sasha2,14:47 16.02.2017
+			testf = false;
+			MessageBox(31089,"");
+		end;
+		if (testf) then begin
+			recordcopy(SVO2r,SVOr);
+			SVOr.RegDate = currentDate;
+			SVOr.OutTime = CurrentTime;
+			recordupdate(SVO2r,SVOr,true);
+			SVOr.OrderStatus = 998;
+			//queued.sendMessageToSergey(SVOr);// Edit ************************** BPI Ukraine - KramarAlexandr - 01, 01 06 2020 y. at 11:21:42 AM
+		end;
+	end;
+	
+  RETURN;
+END;
+
 
 
 global //Edit-------------------Vitalii 13:52 27.10.2016
@@ -134,7 +170,7 @@ begin
 	wn = curwindow;
 	deselectwindow(wn,true);
 	getwindowrecord(wn,RepSpec);
-	totpay = RepSpec.vals0 + RepSpec.vals1 + RepSpec.vals2;
+	totpay = RepSpec.vals0;
 	SVOr.SerNr = RepSpec.long1;
 	if(readfirstmain(SVOr,1,true))then begin
 		if(RepSpec.AccSpec>0)then begin
@@ -145,7 +181,7 @@ begin
 					SVOr.FastTerm = blankval;
 					SVOr.FastBank = blankval;
 					switch(RepSpec.AccSpec)begin
-						case 1:SVOr.FastCash = RepSpec.vals0;
+						case 1:SVOr.FastCash = RepSpec.vals0 - RepSpec.vals3;SVOr.FastTerm = RepSpec.vals3;
 						case 2:SVOr.FastTerm = RepSpec.vals0;
 						case 3:SVOr.FastBank = RepSpec.vals0;
 					end;
@@ -235,10 +271,13 @@ BEGIN
   record SVOVc SVOr,SVO2r;
   Integer wn,nwn;
   area aFile;
-  Boolean testf;
+  Boolean testf,TrHs;
   record RcVc RepSpec;
   record SalesGroupVc SGr;
   record UserVc USr;
+  record WSVc WSr;
+  val amastersum;
+  
 	
 	
 	wn = CurWindow;
@@ -247,6 +286,22 @@ BEGIN
   	if(SVOr.DoneMark==0)then begin
 			RepSpec.long1 = SVOr.SerNr;
 			RepSpec.vals0 = SVOr.WSCost;
+			WSr.SVONr = SVOr.SerNr;
+      TrHs = true;
+      while(loopkey("SVONr",WSr,1,TrHs))begin
+        testf = true;
+        if(WSr.SVONr!=SVOr.SerNr)then begin testf = false; TrHs = false; end;
+        if(WSr.AMASTERFlag==0)then begin testf = false; end;
+        if(WSr.OKFlag==0)then begin testf = false; end;
+        
+        if(testf)then begin
+          amastersum = amastersum + WSr.Sum4;
+        end;
+      end;
+      if(amastersum>0)then begin
+        RepSpec.vals3 = amastersum;
+        RepSpec.vals2 = RepSpec.vals0 - amastersum;
+      end;
 			USr.Code = currentuser;
       readfirstmain(USr,1,true);
       SGr.SGroupCode = USr.SalesGroup;
@@ -255,6 +310,7 @@ BEGIN
           RepSpec.flags[2] = 1;
         end;
 			end;
+			RepSpec.flags[1] = 1;
 			OpenWindow("ManagerFastPaySVOWClass",1,wn,"","",RepSpec);
   	end else begin
   		messagebox(0,"ђемонт уже завершен");

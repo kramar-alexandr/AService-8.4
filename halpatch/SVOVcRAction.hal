@@ -2020,7 +2020,7 @@ area mainRequest,replyarea;
 longint port;
 string 50 location,ser;
 record SalesGroupVc SGr;
-	
+		
 	wn = curwindow;
 	getwindowrecord(wn,SVOr);
 	if(windowstate(wn)==0)then begin
